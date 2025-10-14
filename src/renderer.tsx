@@ -2,11 +2,60 @@ import { jsxRenderer } from 'hono/jsx-renderer'
 
 export const renderer = jsxRenderer(({ children }) => {
   return (
-    <html>
+    <html lang="en">
       <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Monolite - Creative Landing</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script dangerouslySetInnerHTML={{__html: `
+          tailwind.config = {
+            theme: {
+              extend: {
+                fontFamily: {
+                  'sans': ['Inter', 'system-ui', 'sans-serif'],
+                  'mono': ['JetBrains Mono', 'monospace']
+                },
+                colors: {
+                  'purple': {
+                    50: '#f5f3ff',
+                    100: '#ede9fe',
+                    200: '#ddd6fe',
+                    300: '#c4b5fd',
+                    400: '#a78bfa',
+                    500: '#8b5cf6',
+                    600: '#7c3aed',
+                    700: '#6d28d9',
+                    800: '#5b21b6',
+                    900: '#4c1d95',
+                    950: '#2e1065'
+                  },
+                  'blue': {
+                    50: '#eff6ff',
+                    100: '#dbeafe',
+                    200: '#bfdbfe',
+                    300: '#93c5fd',
+                    400: '#60a5fa',
+                    500: '#3b82f6',
+                    600: '#2563eb',
+                    700: '#1d4ed8',
+                    800: '#1e40af',
+                    900: '#1e3a8a',
+                    950: '#172554'
+                  }
+                }
+              }
+            }
+          }
+        `}}></script>
         <link href="/static/style.css" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body class="bg-gradient-to-br from-purple-950 via-blue-950 to-purple-900 min-h-screen overflow-x-hidden">
+        {children}
+      </body>
     </html>
   )
 })
