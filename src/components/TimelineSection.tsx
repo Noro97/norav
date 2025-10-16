@@ -179,7 +179,7 @@ const StyleSheet = () => (
 
     .section-header p {
       font-size: 1.1rem;
-      color: #6b7280;
+      color: #ffffff;
       max-width: 600px;
       margin: 0 auto;
     }
@@ -251,16 +251,14 @@ const StyleSheet = () => (
 
     .timeline-content {
       padding: 30px;
-      background: white;
+      background: transparent;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .timeline-content:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     }
 
     .timeline-icon {
@@ -278,12 +276,15 @@ const StyleSheet = () => (
     .timeline-content h3 {
       font-size: 1.25rem;
       margin: 0 0 10px;
-      color: #111827;
+      background: linear-gradient(90deg, #4a6cf7 0%, #f123c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
     }
 
     .timeline-content p {
       font-size: 1rem;
-      color: #6b7280;
+      color: #ffffff;
       margin: 0;
       line-height: 1.6;
     }

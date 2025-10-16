@@ -145,7 +145,7 @@ const StyleSheet = () => (
 
     .section-header p {
       font-size: 1.1rem;
-      color: #6b7280;
+      color: #ffffff;
       max-width: 600px;
       margin: 0 auto;
     }
@@ -194,7 +194,7 @@ const StyleSheet = () => (
     .quote-text {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #4b5563;
+      color: #ffffff;
       margin-bottom: 25px;
       flex: 1;
     }
@@ -227,12 +227,12 @@ const StyleSheet = () => (
       font-size: 1rem;
       font-weight: 600;
       margin: 0 0 5px;
-      color: #111827;
+      color: #ffffff;
     }
 
     .author-info p {
       font-size: 0.875rem;
-      color: #6b7280;
+      color: #d1d5db;
       margin: 0;
     }
 
