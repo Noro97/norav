@@ -1,0 +1,320 @@
+import React, { useRef, useEffect } from 'react';
+import { motion, useAnimation, useInView } from 'motion/react';
+
+interface TimelineItemProps {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  index: number;
+}
+
+const timelineItems = [
+  {
+    title: "Research & Discovery",
+    description: "We analyze your needs and market opportunities to create a strategic roadmap.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  {
+    title: "Planning & Strategy",
+    description: "We develop a comprehensive plan tailored to your specific goals and requirements.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  {
+    title: "Design & Development",
+    description: "Our expert team brings your vision to life with cutting-edge technology and design.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 19L19 12L22 15L15 22L12 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M18 13L16.5 5.5L2 2L5.5 16.5L13 18L18 13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M2 2L9.586 9.586" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M11 13C12.1046 13 13 12.1046 13 11C13 9.89543 12.1046 9 11 9C9.89543 9 9 9.89543 9 11C9 12.1046 9.89543 13 11 13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  {
+    title: "Testing & Refinement",
+    description: "We rigorously test and optimize to ensure flawless performance and user experience.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.9 13.5C19.7388 15.5877 18.7603 17.5339 17.1518 18.9456C15.5434 20.3573 13.4365 21.1323 11.3 21.1323C9.16347 21.1323 7.05657 20.3573 5.44815 18.9456C3.83972 17.5339 2.86125 15.5877 2.7 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 2V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8 6L12 2L16 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  {
+    title: "Launch & Growth",
+    description: "We deploy your solution and provide ongoing support to ensure continued success.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  }
+];
+
+const TimelineItem: React.FC<TimelineItemProps> = ({ title, description, icon, index }) => {
+  const itemRef = useRef(null);
+  const isInView = useInView(itemRef, { once: false, amount: 0.3 });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('visible');
+    }
+  }, [isInView, controls]);
+
+  return (
+    <motion.div
+      ref={itemRef}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
+        visible: { 
+          opacity: 1, 
+          x: 0, 
+          transition: { 
+            duration: 0.6, 
+            ease: "easeOut",
+            delay: index * 0.2 
+          } 
+        }
+      }}
+      className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}
+    >
+      <div className="timeline-content">
+        <div className="timeline-icon">{icon}</div>
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+    </motion.div>
+  );
+};
+
+const TimelineSection: React.FC = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('visible');
+    }
+  }, [isInView, controls]);
+
+  return (
+    <section id="process" className="timeline-section">
+      <div className="container">
+        <motion.div
+          ref={sectionRef}
+          initial="hidden"
+          animate={controls}
+          variants={{
+            hidden: { opacity: 0, y: 50 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="section-header"
+        >
+          <h2>Our Process</h2>
+          <p>How we turn your vision into reality</p>
+        </motion.div>
+        
+        <div className="timeline">
+          <div className="timeline-line"></div>
+          {timelineItems.map((item, index) => (
+            <TimelineItem
+              key={index}
+              index={index}
+              title={item.title}
+              description={item.description}
+              icon={item.icon}
+            />
+          ))}
+        </div>
+      </div>
+      <StyleSheet />
+    </section>
+  );
+};
+
+const StyleSheet = () => (
+  <style>
+    {`
+    .timeline-section {
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, #4a6cf7 0%, #f123c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-header p {
+      font-size: 1.1rem;
+      color: #6b7280;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 0;
+      width: 100%;
+    }
+
+    .timeline-line {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: #e5e7eb;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .timeline-item.left {
+      left: 0;
+      padding-right: 60px;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+      padding-left: 60px;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #4a6cf7;
+      border-radius: 50%;
+      top: 30px;
+      z-index: 1;
+    }
+
+    .timeline-item.left::after {
+      right: -10px;
+    }
+
+    .timeline-item.right::after {
+      left: -10px;
+    }
+
+    .timeline-content {
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4a6cf7 0%, #f123c4 100%);
+      border-radius: 50%;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .timeline-content h3 {
+      font-size: 1.25rem;
+      margin: 0 0 10px;
+      color: #111827;
+    }
+
+    .timeline-content p {
+      font-size: 1rem;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .timeline-line {
+        left: 40px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 80px;
+        padding-right: 20px;
+      }
+      
+      .timeline-item.left, .timeline-item.right {
+        left: 0;
+        padding-left: 80px;
+        padding-right: 20px;
+      }
+      
+      .timeline-item.left::after, .timeline-item.right::after {
+        left: 30px;
+      }
+      
+      .section-header h2 {
+        font-size: 2rem;
+      }
+    }
+    `}
+  </style>
+);
+
+export default TimelineSection;

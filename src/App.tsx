@@ -5,7 +5,11 @@ import {
   FeaturesSection, 
   AboutSection, 
   ContactSection, 
-  Footer 
+  Footer,
+  ScrollLinked,
+  TestimonialsSection,
+  TimelineSection,
+  ParallaxSection
 } from './components'
 import { 
   useSmoothScroll, 
@@ -28,6 +32,10 @@ const App: React.FC = () => {
       <Navigation />
       <HeroSection />
       <FeaturesSection />
+      <TimelineSection />
+      <ParallaxSection />
+      <ScrollLinked />
+      <TestimonialsSection />
       <AboutSection />
       <ContactSection />
       <Footer />

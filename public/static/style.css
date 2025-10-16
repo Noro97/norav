@@ -16,6 +16,9 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   scroll-behavior: smooth;
   overflow-x: hidden; /* Prevent horizontal scroll from floating shapes */
+  background: linear-gradient(135deg, #2d1b69 0%, #1e1550 50%, #0f0c33 100%);
+  color: #ffffff;
+  min-height: 100vh;
 }
 
 /* Glass effect utility class */
