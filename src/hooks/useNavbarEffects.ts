@@ -5,28 +5,33 @@ export const useNavbarEffects = () => {
     const navbar = document.querySelector('nav')
     if (!navbar) return
 
+    navbar.style.transition = 'transform 0.3s ease-in-out'
+
     let lastScrollY = window.scrollY
+    let ticking = false
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      
-      if (currentScrollY > 100) {
-        navbar.classList.add('scrolled')
-      } else {
-        navbar.classList.remove('scrolled')
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY
+          
+          // Show/hide navbar based on scroll direction
+          if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scrolling down - hide navbar
+            navbar.style.transform = 'translateY(-100%)'
+          } else {
+            // Scrolling up - show navbar
+            navbar.style.transform = 'translateY(0)'
+          }
+          
+          lastScrollY = currentScrollY
+          ticking = false
+        })
+        ticking = true
       }
-      
-      // Hide/show navbar based on scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        navbar.style.transform = 'translateY(-100%)'
-      } else {
-        navbar.style.transform = 'translateY(0)'
-      }
-      
-      lastScrollY = currentScrollY
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 }

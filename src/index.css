@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Navbar scroll effects */
+nav {
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+nav.scrolled {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+}
+
 /* Loader for Spline fallback */
 .loader {
   width: 48px;
