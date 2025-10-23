@@ -6,7 +6,7 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
       <FloatingShapes />
 
-      <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+      <div className="max-w-7xl mx-auto px-6 text-center relative z-20">
         <div className="hero-content">
           <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-linear-to-r from-teal-400 via-teal-300 to-teal-400 mb-6 tracking-tight leading-tight animate-fade-in">
             Life Compass

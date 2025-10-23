@@ -1,9 +1,11 @@
 import StatCard from './StatCard'
+import FloatingShapes from './FloatingShapes'
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-20 relative">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="about" className="py-20 relative overflow-hidden">
+      <FloatingShapes />
+      <div className="max-w-7xl mx-auto px-6 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-teal-500 mb-6">
