@@ -17,3 +17,10 @@ export { default as ParallaxSection } from './ParallaxSection'
 
 // New Spline 3D component
 export { SplineSceneBasic } from './SplineSceneBasic'
+
+// UI Components
+export { Button, buttonVariants } from './ui/button'
+export { Label } from './ui/label'
+export { Switch } from './ui/switch'
+export { Pricing } from './ui/pricing'
+export { default as PricingSection } from './PricingSection'

@@ -105,26 +105,26 @@
 
 @media (prefers-color-scheme: dark) {
   @theme {
-    --color-background: oklch(9% 0 0);
-    --color-foreground: oklch(98% 0 0);
+    --color-background: #1a2332;
+    --color-foreground: #ffffff;
     
-    --color-card: oklch(9% 0 0);
-    --color-card-foreground: oklch(98% 0 0);
+    --color-card: #0a0e1a;
+    --color-card-foreground: #ffffff;
     
-    --color-primary: oklch(98% 0 0);
-    --color-primary-foreground: oklch(9% 0 0);
+    --color-primary: #38859c;
+    --color-primary-foreground: #ffffff;
     
     --color-secondary: #38859c;
-    --color-secondary-foreground: oklch(98% 0 0);
+    --color-secondary-foreground: #ffffff;
     
-    --color-muted: oklch(14.9% 0 0);
-    --color-muted-foreground: oklch(63.9% 0 0);
+    --color-muted: #2a3441;
+    --color-muted-foreground: #94a3b8;
     
-    --color-accent: oklch(14.9% 0 0);
-    --color-accent-foreground: oklch(98% 0 0);
+    --color-accent: #2a3441;
+    --color-accent-foreground: #ffffff;
     
-    --color-border: oklch(14.9% 0 0);
-    --color-input: oklch(14.9% 0 0);
-    --color-ring: oklch(83.1% 0 0);
+    --color-border: #2a3441;
+    --color-input: #2a3441;
+    --color-ring: #38859c;
   }
 }

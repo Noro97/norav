@@ -10,6 +10,7 @@ import {
   TestimonialsSection,
   TimelineSection,
   ParallaxSection,
+  PricingSection,
 } from "./components";
 import {
   useSmoothScroll,
@@ -43,6 +44,7 @@ const App = () => {
       <ScrollLinked />
       <TestimonialsSection />
       <AboutSection />
+      <PricingSection />
       <ContactSection />
       <Footer />
     </>
