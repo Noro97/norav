@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'motion/react';
 
 interface TestimonialProps {
@@ -33,7 +33,7 @@ const testimonials: TestimonialProps[] = [
   }
 ];
 
-const TestimonialCard: React.FC<TestimonialProps> = ({ name, role, company, quote, image }) => {
+const TestimonialCard = ({ name, role, company, quote, image }: TestimonialProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
   const controls = useAnimation();
@@ -76,7 +76,7 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ name, role, company, quot
   );
 };
 
-const TestimonialsSection: React.FC = () => {
+const TestimonialsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
   const controls = useAnimation();
@@ -113,144 +113,8 @@ const TestimonialsSection: React.FC = () => {
           ))}
         </div>
       </div>
-      <StyleSheet />
     </section>
   );
 };
-
-const StyleSheet = () => (
-  <style>
-    {`
-    .testimonials-section {
-      padding: 100px 0;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-header h2 {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      background: linear-gradient(90deg, #4a6cf7 0%, #f123c4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .section-header p {
-      font-size: 1.1rem;
-      color: #ffffff;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .testimonial-card {
-      backdrop-filter: blur(20px);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .testimonial-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    }
-
-    .testimonial-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .quote-icon {
-      color: #4a6cf7;
-      margin-bottom: 20px;
-    }
-
-    .quote-text {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #ffffff;
-      margin-bottom: 25px;
-      flex: 1;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      margin-top: auto;
-    }
-
-    .author-image {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: 15px;
-      background: #f3f4f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .author-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .author-info h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0 0 5px;
-      color: #ffffff;
-    }
-
-    .author-info p {
-      font-size: 0.875rem;
-      color: #d1d5db;
-      margin: 0;
-    }
-
-    @media (max-width: 768px) {
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .testimonials-section {
-        padding: 60px 0;
-      }
-      
-      .section-header h2 {
-        font-size: 2rem;
-      }
-    }
-    `}
-  </style>
-);
 
 export default TestimonialsSection;

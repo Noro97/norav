@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'motion/react';
 
 interface TimelineItemProps {
@@ -67,7 +67,7 @@ const timelineItems = [
   }
 ];
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ title, description, icon, index }) => {
+const TimelineItem = ({ title, description, icon, index }: TimelineItemProps) => {
   const itemRef = useRef(null);
   const isInView = useInView(itemRef, { once: false, amount: 0.3 });
   const controls = useAnimation();
@@ -106,7 +106,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ title, description, icon, i
   );
 };
 
-const TimelineSection: React.FC = () => {
+const TimelineSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
   const controls = useAnimation();
@@ -147,175 +147,8 @@ const TimelineSection: React.FC = () => {
           ))}
         </div>
       </div>
-      <StyleSheet />
     </section>
   );
 };
-
-const StyleSheet = () => (
-  <style>
-    {`
-    .timeline-section {
-      padding: 100px 0;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 80px;
-    }
-
-    .section-header h2 {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      background: linear-gradient(90deg, #4a6cf7 0%, #f123c4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .section-header p {
-      font-size: 1.1rem;
-      color: #ffffff;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .timeline {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 0;
-      width: 100%;
-    }
-
-    .timeline-line {
-      content: '';
-      position: absolute;
-      width: 4px;
-      background-color: #e5e7eb;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 2px;
-    }
-
-    .timeline-item {
-      position: relative;
-      width: 50%;
-      padding: 20px 40px;
-      box-sizing: border-box;
-      margin-bottom: 40px;
-      backdrop-filter: blur(20px);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .timeline-item.left {
-      left: 0;
-      padding-right: 60px;
-    }
-
-    .timeline-item.right {
-      left: 50%;
-      padding-left: 60px;
-    }
-
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #4a6cf7;
-      border-radius: 50%;
-      top: 30px;
-      z-index: 1;
-    }
-
-    .timeline-item.left::after {
-      right: -10px;
-    }
-
-    .timeline-item.right::after {
-      left: -10px;
-    }
-
-    .timeline-content {
-      padding: 30px;
-      background: transparent;
-      border-radius: 16px;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .timeline-content:hover {
-      transform: translateY(-5px);
-    }
-
-    .timeline-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #4a6cf7 0%, #f123c4 100%);
-      border-radius: 50%;
-      margin-bottom: 15px;
-      color: white;
-    }
-
-    .timeline-content h3 {
-      font-size: 1.25rem;
-      margin: 0 0 10px;
-      background: linear-gradient(90deg, #4a6cf7 0%, #f123c4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 600;
-    }
-
-    .timeline-content p {
-      font-size: 1rem;
-      color: #ffffff;
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-      .timeline-line {
-        left: 40px;
-      }
-      
-      .timeline-item {
-        width: 100%;
-        padding-left: 80px;
-        padding-right: 20px;
-      }
-      
-      .timeline-item.left, .timeline-item.right {
-        left: 0;
-        padding-left: 80px;
-        padding-right: 20px;
-      }
-      
-      .timeline-item.left::after, .timeline-item.right::after {
-        left: 30px;
-      }
-      
-      .section-header h2 {
-        font-size: 2rem;
-      }
-    }
-    `}
-  </style>
-);
 
 export default TimelineSection;

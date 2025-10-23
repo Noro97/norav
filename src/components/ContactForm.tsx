@@ -1,6 +1,6 @@
-import React, { useState, FormEvent } from 'react'
+import { useState, FormEvent } from 'react'
 
-const ContactForm: React.FC = () => {
+const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,7 +42,7 @@ const ContactForm: React.FC = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none transition-colors" 
+            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors" 
             placeholder="Your name"
             required 
           />
@@ -54,7 +54,7 @@ const ContactForm: React.FC = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none transition-colors" 
+            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors" 
             placeholder="your@email.com"
             required 
           />
@@ -67,7 +67,7 @@ const ContactForm: React.FC = () => {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-purple-400 focus:outline-none transition-colors resize-none" 
+          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors resize-none" 
           placeholder="Tell us about your goals and dreams..."
           required
         ></textarea>
@@ -75,8 +75,11 @@ const ContactForm: React.FC = () => {
       <button 
         type="submit" 
         disabled={isSubmitting || isSuccess}
-        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 py-3 rounded-lg text-white font-semibold hover:from-purple-500 hover:to-blue-500 transition-all duration-300 glass-effect disabled:opacity-70"
-        style={isSuccess ? { background: 'linear-gradient(to right, #10b981, #059669)' } : {}}
+        className={`w-full py-3 rounded-lg text-white font-semibold transition-all duration-300 glass-effect disabled:opacity-70 ${
+          isSuccess 
+            ? 'bg-linear-to-r from-green-500 to-green-600' 
+            : 'bg-linear-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600'
+        }`}
       >
         {isSubmitting ? 'Sending...' : isSuccess ? 'Message Sent!' : 'Send Message'}
       </button>

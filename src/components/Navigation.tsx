@@ -1,6 +1,4 @@
-import React from 'react'
-
-const Navigation: React.FC = () => {
+const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-filter backdrop-blur-md bg-black/10 border-b border-white/10 liquid-glass-card rounded-none">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -17,7 +15,7 @@ const Navigation: React.FC = () => {
           <a href="#about" className="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">About</a>
           <a href="#contact" className="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Contact</a>
         </div>
-        <button className="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-2 rounded-full text-white text-sm font-medium hover:from-purple-500 hover:to-blue-500 transition-all duration-300 glass-effect">
+        <button className="bg-linear-to-r from-teal-600 to-teal-700 px-6 py-2 rounded-full text-white text-sm font-medium hover:from-teal-500 hover:to-teal-600 transition-all duration-300 glass-effect">
           Start Journey
         </button>
       </div>

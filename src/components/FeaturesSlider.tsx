@@ -1,7 +1,7 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import SlideCard from './SlideCard'
 
-const FeaturesSlider: React.FC = () => {
+const FeaturesSlider = () => {
   const sliderRef = useRef<HTMLDivElement>(null)
 
   const handleMouseEnter = () => {
@@ -32,8 +32,8 @@ const FeaturesSlider: React.FC = () => {
           }
           title="Life Insights"
           description="Get deep insights into your progress with our AI-powered analytics that understand your personal growth patterns."
-          gradientFrom="from-purple-500"
-          gradientTo="to-blue-500"
+          gradientFrom="from-teal-400"
+          gradientTo="to-teal-500"
         />
         <SlideCard
           icon={
@@ -43,8 +43,8 @@ const FeaturesSlider: React.FC = () => {
           }
           title="Cross-Platform"
           description="Access your life compass on any device - seamlessly sync your goals and progress across all platforms."
-          gradientFrom="from-blue-500"
-          gradientTo="to-purple-500"
+          gradientFrom="from-teal-500"
+          gradientTo="to-teal-600"
         />
         <SlideCard
           icon={
@@ -54,8 +54,8 @@ const FeaturesSlider: React.FC = () => {
           }
           title="Goal Synchronization"
           description="Keep your aspirations aligned with real-time goal tracking and milestone celebrations with friends and mentors."
-          gradientFrom="from-purple-500"
-          gradientTo="to-pink-500"
+          gradientFrom="from-teal-400"
+          gradientTo="to-teal-500"
         />
         <SlideCard
           icon={
@@ -65,8 +65,8 @@ const FeaturesSlider: React.FC = () => {
           }
           title="Personal Security"
           description="Your personal journey and sensitive goal data are protected with military-grade encryption and privacy controls."
-          gradientFrom="from-blue-500"
-          gradientTo="to-cyan-500"
+          gradientFrom="from-teal-500"
+          gradientTo="to-teal-600"
         />
       </div>
     </div>

@@ -1,37 +1,43 @@
-import React from 'react'
-import { 
-  Navigation, 
-  HeroSection, 
-  FeaturesSection, 
-  AboutSection, 
-  ContactSection, 
+import {
+  SplineSceneBasic,
+  Navigation,
+  HeroSection,
+  FeaturesSection,
+  AboutSection,
+  ContactSection,
   Footer,
   ScrollLinked,
   TestimonialsSection,
   TimelineSection,
-  ParallaxSection
-} from './components'
-import { 
-  useSmoothScroll, 
-  useActiveNav, 
-  useNavbarEffects, 
-  useAnimationTriggers, 
-  useRippleEffect 
-} from './hooks'
+  ParallaxSection,
+} from "./components";
+import {
+  useSmoothScroll,
+  useActiveNav,
+  useNavbarEffects,
+  useAnimationTriggers,
+  useRippleEffect,
+} from "./hooks";
 
-const App: React.FC = () => {
+const App = () => {
   // Initialize all interactive features
-  useSmoothScroll()
-  useActiveNav()
-  useNavbarEffects()
-  useAnimationTriggers()
-  useRippleEffect()
+  useSmoothScroll();
+  useActiveNav();
+  useNavbarEffects();
+  useAnimationTriggers();
+  useRippleEffect();
 
   return (
-    <div id="root">
+    <>
       <Navigation />
       <HeroSection />
       <FeaturesSection />
+      
+      {/* Spline 3D Section */}
+      <section className="py-20 px-4 max-w-7xl mx-auto">
+        <SplineSceneBasic />
+      </section>
+      
       <TimelineSection />
       <ParallaxSection />
       <ScrollLinked />
@@ -39,8 +45,8 @@ const App: React.FC = () => {
       <AboutSection />
       <ContactSection />
       <Footer />
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export default App
+export default App;

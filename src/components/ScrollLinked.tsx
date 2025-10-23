@@ -35,7 +35,6 @@ export default function ScrollLinked() {
                 <li style={{ background: "#0cdcf7" }}></li> 
                 <li style={{ background: "#8df0cc" }}></li> 
             </motion.ul> 
-            <StyleSheet /> 
         </div> 
     ) 
 } 
@@ -45,7 +44,8 @@ const right = `100%`
 const leftInset = `20%` 
 const rightInset = `80%` 
 const transparent = `#0000` 
-const opaque = `#000` 
+const opaque = `#000`
+
 function useScrollOverflowMask(scrollXProgress: MotionValue<number>) { 
     const maskImage = useMotionValue( 
         `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})` 
@@ -74,75 +74,4 @@ function useScrollOverflowMask(scrollXProgress: MotionValue<number>) {
     }) 
 
     return maskImage 
-} 
-
-/** 
- * ==============   Styles   ================ 
- */ 
-
-function StyleSheet() { 
-    return ( 
-        <style>{` 
-            #example { 
-              width: 100%; 
-              max-width: 1280px; 
-              position: relative;
-              margin: 0 auto;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              padding: 40px 0;
-            } 
-
-            #example #progress { 
-                position: absolute; 
-                top: -65px; 
-                left: -15px; 
-                transform: rotate(-90deg); 
-            } 
-
-            #example .bg { 
-                stroke: #0b1011; 
-            } 
-
-            #example #progress circle { 
-                stroke-dashoffset: 0; 
-                stroke-width: 10%; 
-                fill: none; 
-            } 
-
-            #progress .indicator { 
-                stroke: #ff0088; 
-            } 
-
-            #example ul { 
-                display: flex; 
-                list-style: none; 
-                height: 180px; 
-                overflow-x: scroll; 
-                padding: 20px 0; 
-                width: 100%;
-                max-width: 1280px;
-                margin: 0 auto; 
-                gap: 20px; 
-            } 
-
-            #example ::-webkit-scrollbar { 
-                display: none;
-            } 
-            
-            #example ul {
-                -ms-overflow-style: none;  /* IE and Edge */
-                scrollbar-width: none;  /* Firefox */
-            }
-
-            #example li { 
-                flex: 0 0 250px;
-                height: 160px;
-                border-radius: 12px;
-                background: var(--accent); 
-            } 
-
-    `}</style> 
-    ) 
 }

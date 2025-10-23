@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* Loader for Spline fallback */
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spotlight animation */
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%,-40%) scale(1);
+  }
+}
+
+/* Custom theme variables */
+@theme {
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+  
+  --color-background: oklch(100% 0 0);
+  --color-foreground: oklch(9% 0 0);
+  
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(9% 0 0);
+  
+  --color-primary: oklch(9% 0 0);
+  --color-primary-foreground: oklch(98% 0 0);
+  
+    --color-secondary: #38859c;
+    --color-secondary-foreground: oklch(98% 0 0);  --color-muted: oklch(96.1% 0 0);
+  --color-muted-foreground: oklch(45.1% 0 0);
+  
+  --color-accent: oklch(96.1% 0 0);
+  --color-accent-foreground: oklch(9% 0 0);
+  
+  --color-border: oklch(89.8% 0 0);
+  --color-input: oklch(89.8% 0 0);
+  --color-ring: oklch(9% 0 0);
+  
+  /* Purple color scale */
+  --color-purple-50: #f5f3ff;
+  --color-purple-100: #ede9fe;
+  --color-purple-200: #ddd6fe;
+  --color-purple-300: #c4b5fd;
+  --color-purple-400: #a78bfa;
+  --color-purple-500: #8b5cf6;
+  --color-purple-600: #7c3aed;
+  --color-purple-700: #6d28d9;
+  --color-purple-800: #5b21b6;
+  --color-purple-900: #4c1d95;
+  --color-purple-950: #2e1065;
+  
+  /* Blue color scale */
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-blue-950: #172554;
+  
+  /* Teal color scale */
+  --color-teal-50: #f0f9fa;
+  --color-teal-100: #d7f0f4;
+  --color-teal-200: #afe1e9;
+  --color-teal-300: #7ccdd9;
+  --color-teal-400: #4a9fb8;
+  --color-teal-500: #38859c;
+  --color-teal-600: #2d6a7c;
+  --color-teal-700: #255563;
+  --color-teal-800: #1e4451;
+  --color-teal-900: #173844;
+  
+  --radius-sm: calc(0.5rem - 4px);
+  --radius-md: calc(0.5rem - 2px);
+  --radius-lg: 0.5rem;
+  
+  --animate-spotlight: spotlight 2s ease .75s 1 forwards;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(9% 0 0);
+    --color-foreground: oklch(98% 0 0);
+    
+    --color-card: oklch(9% 0 0);
+    --color-card-foreground: oklch(98% 0 0);
+    
+    --color-primary: oklch(98% 0 0);
+    --color-primary-foreground: oklch(9% 0 0);
+    
+    --color-secondary: #38859c;
+    --color-secondary-foreground: oklch(98% 0 0);
+    
+    --color-muted: oklch(14.9% 0 0);
+    --color-muted-foreground: oklch(63.9% 0 0);
+    
+    --color-accent: oklch(14.9% 0 0);
+    --color-accent-foreground: oklch(98% 0 0);
+    
+    --color-border: oklch(14.9% 0 0);
+    --color-input: oklch(14.9% 0 0);
+    --color-ring: oklch(83.1% 0 0);
+  }
+}

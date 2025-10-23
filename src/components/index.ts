@@ -14,3 +14,6 @@ export { default as ScrollLinked } from './ScrollLinked'
 export { default as TestimonialsSection } from './TestimonialsSection'
 export { default as TimelineSection } from './TimelineSection'
 export { default as ParallaxSection } from './ParallaxSection'
+
+// New Spline 3D component
+export { SplineSceneBasic } from './SplineSceneBasic'

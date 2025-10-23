@@ -1,6 +1,4 @@
-import React from 'react'
-
-const FloatingShapes: React.FC = () => {
+const FloatingShapes = () => {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="floating-shapes">
