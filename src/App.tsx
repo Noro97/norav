@@ -27,6 +27,11 @@ const SkillsMatrix = lazy(() =>
     default: m.SkillsMatrix,
   }))
 )
+const BentoGrid = lazy(() =>
+  import('@/components/sections/BentoGrid/BentoGrid').then((m) => ({
+    default: m.BentoGrid,
+  }))
+)
 const LogisticsWidget = lazy(() =>
   import('@/components/sections/LogisticsWidget').then((m) => ({
     default: m.LogisticsWidget,
@@ -89,6 +94,10 @@ function App() {
           <AboutHero />
           <ExperienceTimeline />
           <SkillsMatrix />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <BentoGrid />
         </Suspense>
 
         {/* Project case studies */}
