@@ -5,13 +5,13 @@ interface StatCardProps {
   gradientTo: string
 }
 
-const StatCard = ({ value, label, gradientFrom, gradientTo }: StatCardProps) => {
+const StatCard = ({ value, label }: StatCardProps) => {
   return (
-    <div className="stat-card text-center">
-      <div className={`text-3xl font-bold text-transparent bg-clip-text bg-linear-to-r ${gradientFrom} ${gradientTo} mb-2`}>
+    <div className="stat-card text-center py-4">
+      <div className="font-display text-4xl font-semibold text-white mb-1 tracking-tight">
         {value}
       </div>
-      <div className="text-gray-300 text-sm">{label}</div>
+      <div className="text-[#DAD4D4]/60 text-xs uppercase tracking-[0.15em]">{label}</div>
     </div>
   )
 }

@@ -17,7 +17,7 @@ const ContactForm = () => {
     setTimeout(() => {
       setIsSubmitting(false)
       setIsSuccess(true)
-      
+
       setTimeout(() => {
         setIsSuccess(false)
         setFormData({ name: '', email: '', message: '' })
@@ -32,53 +32,55 @@ const ContactForm = () => {
     })
   }
 
+  const inputClasses = "w-full p-3.5 rounded-lg bg-[#384358]/20 border border-[#DAD4D4]/8 text-white placeholder-[#DAD4D4]/30 focus:border-[#B51A2B]/40 focus:outline-none focus:shadow-[0_0_0_2px_rgba(181,26,43,0.1)] transition-all duration-300 text-sm"
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-gray-300 text-sm font-medium mb-2">Name</label>
-          <input 
-            type="text" 
+          <label className="block text-[#DAD4D4]/60 text-xs uppercase tracking-[0.1em] font-medium mb-2.5">Name</label>
+          <input
+            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors" 
+            className={inputClasses}
             placeholder="Your name"
-            required 
+            required
           />
         </div>
         <div>
-          <label className="block text-gray-300 text-sm font-medium mb-2">Email</label>
-          <input 
-            type="email" 
+          <label className="block text-[#DAD4D4]/60 text-xs uppercase tracking-[0.1em] font-medium mb-2.5">Email</label>
+          <input
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors" 
+            className={inputClasses}
             placeholder="your@email.com"
-            required 
+            required
           />
         </div>
       </div>
       <div>
-        <label className="block text-gray-300 text-sm font-medium mb-2">Message</label>
-        <textarea 
-          rows={4} 
+        <label className="block text-[#DAD4D4]/60 text-xs uppercase tracking-[0.1em] font-medium mb-2.5">Message</label>
+        <textarea
+          rows={4}
           name="message"
           value={formData.message}
           onChange={handleChange}
-          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-teal-400 focus:outline-none transition-colors resize-none" 
+          className={`${inputClasses} resize-none`}
           placeholder="Tell us about your goals and dreams..."
           required
         ></textarea>
       </div>
-      <button 
-        type="submit" 
+      <button
+        type="submit"
         disabled={isSubmitting || isSuccess}
-        className={`w-full py-3 rounded-lg text-white font-semibold transition-all duration-300 glass-effect disabled:opacity-70 ${
-          isSuccess 
-            ? 'bg-linear-to-r from-green-500 to-green-600' 
-            : 'bg-linear-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600'
+        className={`w-full py-3.5 rounded text-white text-xs font-semibold uppercase tracking-[0.15em] transition-all duration-400 disabled:opacity-70 ${
+          isSuccess
+            ? 'bg-emerald-600'
+            : 'bg-[#B51A2B] hover:bg-[#d63040] shadow-[0_8px_24px_rgba(181,26,43,0.25)]'
         }`}
       >
         {isSubmitting ? 'Sending...' : isSuccess ? 'Message Sent!' : 'Send Message'}

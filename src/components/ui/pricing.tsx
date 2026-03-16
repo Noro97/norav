@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
 import { useState, useRef } from "react";
 import confetti from "canvas-confetti";
-import NumberFlow from "@number-flow/react";
+
 
 interface PricingPlan {
   name: string;
@@ -49,10 +49,10 @@ export function Pricing({
           y: y / window.innerHeight,
         },
         colors: [
-          "#38859c",
-          "#4a9fb8",
-          "#2d6a7c",
-          "#7ccdd9",
+          "#B51A2B",
+          "#d63040",
+          "#541A2E",
+          "#f7a0a6",
         ],
         ticks: 200,
         gravity: 1.2,
@@ -64,26 +64,29 @@ export function Pricing({
   };
 
   return (
-    <div className="w-full py-20 px-4">
-      <div className="text-center space-y-4 mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-teal-500 mb-6">
-          {title}
+    <div className="w-full py-24 px-4">
+      <div className="text-center space-y-4 mb-14">
+        <span className="label-editorial tracking-[0.3em] text-xs mb-4 block">Plans</span>
+        <h2 className="font-display text-5xl md:text-6xl font-semibold text-white mb-4 tracking-[-0.02em] leading-[1.05]">
+          Simple, Transparent
+          <span className="italic text-[#B51A2B]"> Pricing</span>
         </h2>
-        <p className="text-white/80 text-lg whitespace-pre-line max-w-2xl mx-auto">
+        <div className="section-divider" />
+        <p className="text-[#DAD4D4]/70 text-base whitespace-pre-line max-w-xl mx-auto leading-relaxed">
           {description}
         </p>
       </div>
 
-      <div className="flex justify-center items-center mb-10 gap-3">
-        <span className="font-semibold text-white">Monthly</span>
+      <div className="flex justify-center items-center mb-12 gap-3">
+        <span className="font-medium text-[#DAD4D4]/70 text-sm uppercase tracking-wider">Monthly</span>
         <Switch
           ref={switchRef as any}
           checked={!isMonthly}
           onCheckedChange={handleToggle}
-          className="relative data-[state=checked]:bg-teal-500 data-[state=unchecked]:bg-white/20"
+          className="relative data-[state=checked]:bg-[#B51A2B] data-[state=unchecked]:bg-[#384358]/50"
         />
-        <span className="font-semibold text-white">
-          Annual <span className="text-teal-400">(Save 20%)</span>
+        <span className="font-medium text-[#DAD4D4]/70 text-sm uppercase tracking-wider">
+          Annual <span className="text-[#B51A2B]">(Save 20%)</span>
         </span>
       </div>
 
@@ -113,79 +116,63 @@ export function Pricing({
             }}
             className={cn(
               "liquid-glass-card p-8 text-center flex flex-col relative h-full",
-              plan.isPopular ? "border-teal-500 border-2 shadow-lg shadow-teal-500/20" : "",
+              plan.isPopular ? "border-[#B51A2B]/30 border-2 shadow-[0_0_40px_rgba(181,26,43,0.08)]" : "",
               !plan.isPopular && "mt-5"
             )}
           >
             {plan.isPopular && (
-              <div className="absolute top-0 right-0 bg-linear-to-r from-teal-600 to-teal-500 py-1 px-3 rounded-bl-xl rounded-tr-2xl flex items-center gap-1">
-                <Star className="text-white h-4 w-4 fill-current" />
-                <span className="text-white text-sm font-semibold">
+              <div className="absolute top-0 right-0 bg-[#B51A2B] py-1.5 px-4 rounded-bl-xl rounded-tr-[18px] flex items-center gap-1.5">
+                <Star className="text-white h-3.5 w-3.5 fill-current" />
+                <span className="text-white text-[10px] font-semibold uppercase tracking-wider">
                   Popular
                 </span>
               </div>
             )}
             <div className="flex-1 flex flex-col justify-between">
               <div>
-                <p className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-6">
+                <p className="text-[10px] font-semibold text-[#B51A2B] uppercase tracking-[0.25em] mb-6">
                   {plan.name}
                 </p>
                 <div className="mt-2 flex items-baseline justify-center gap-x-2">
-                  <span className="text-5xl md:text-6xl font-bold tracking-tight text-white">
-                    <NumberFlow
-                      value={
-                        isMonthly ? Number(plan.price) : Number(plan.yearlyPrice)
-                      }
-                      format={{
-                        style: "currency",
-                        currency: "USD",
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                      }}
-                      transformTiming={{
-                        duration: 500,
-                        easing: "ease-out",
-                      }}
-                      willChange
-                      className="font-variant-numeric: tabular-nums"
-                    />
+                  <span className="font-display text-6xl md:text-7xl font-semibold tracking-tight text-white">
+                    ${isMonthly ? Number(plan.price) : Number(plan.yearlyPrice)}
                   </span>
                   {plan.period !== "Next 3 months" && (
-                    <span className="text-sm font-medium text-white/60">
+                    <span className="text-xs font-medium text-[#DAD4D4]/40 uppercase tracking-wider">
                       / {plan.period}
                     </span>
                   )}
                 </div>
 
-                <p className="text-xs text-white/50 mt-2 mb-6">
+                <p className="text-[11px] text-[#DAD4D4]/40 mt-2 mb-8 uppercase tracking-wider">
                   {isMonthly ? "billed monthly" : "billed annually"}
                 </p>
 
-                <ul className="mt-5 gap-3 flex flex-col mb-6">
+                <ul className="mt-5 gap-3.5 flex flex-col mb-8">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-left">
-                      <Check className="h-5 w-5 text-teal-400 mt-0.5 shrink-0" />
-                      <span className="text-white/90">{feature}</span>
+                    <li key={idx} className="flex items-start gap-2.5 text-left">
+                      <Check className="h-4 w-4 text-[#B51A2B] mt-0.5 shrink-0" />
+                      <span className="text-[#DAD4D4]/80 text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               <div className="mt-auto">
-                <hr className="w-full mb-6 border-white/10" />
+                <hr className="w-full mb-6 border-[#DAD4D4]/6" />
 
                 <a
                   href={plan.href}
                   className={cn(
-                    "w-full px-8 py-4 rounded-full font-semibold transition-all duration-300 glass-effect transform hover:scale-105 text-center block",
+                    "w-full px-8 py-4 rounded font-semibold transition-all duration-300 text-center block text-xs uppercase tracking-[0.15em]",
                     plan.isPopular
-                      ? "bg-linear-to-r from-teal-600 to-teal-700 text-white hover:from-teal-500 hover:to-teal-600 shadow-lg shadow-teal-500/30"
-                      : "border border-white/30 text-white hover:bg-teal-500/20"
+                      ? "bg-[#B51A2B] text-white hover:bg-teal-400 shadow-[0_8px_30px_rgba(181,26,43,0.3)]"
+                      : "border border-[#DAD4D4]/12 text-[#DAD4D4] hover:border-[#B51A2B]/30 hover:text-white"
                   )}
                 >
                   {plan.buttonText}
                 </a>
-                <p className="mt-4 text-sm text-white/60">
+                <p className="mt-4 text-xs text-[#DAD4D4]/40">
                   {plan.description}
                 </p>
               </div>

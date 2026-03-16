@@ -3,14 +3,19 @@ import FloatingShapes from './FloatingShapes'
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-20 relative overflow-hidden">
+    <section id="features" className="py-24 relative overflow-hidden">
       <FloatingShapes />
+      {/* Section glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#B51A2B]/[0.04] blur-[100px] pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 relative z-20">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-teal-500 mb-6">
-            Powerful Life Navigation Tools
+          <span className="label-editorial tracking-[0.3em] text-xs mb-4 block">What We Offer</span>
+          <h2 className="font-display text-5xl md:text-6xl font-semibold text-white mb-4 tracking-[-0.02em] leading-[1.05]">
+            Powerful Life
+            <span className="italic text-[#B51A2B]"> Navigation</span> Tools
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <div className="section-divider mt-6" />
+          <p className="text-base text-[#DAD4D4]/70 max-w-xl mx-auto leading-relaxed">
             Discover what makes Life Compass the ultimate companion for personal growth and goal achievement
           </p>
         </div>

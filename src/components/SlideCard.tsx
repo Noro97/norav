@@ -9,11 +9,11 @@ interface SlideCardProps {
 const SlideCard = ({ icon, title, description, gradientFrom, gradientTo }: SlideCardProps) => {
   return (
     <div className="slide min-w-80 glass-card p-8 rounded-2xl">
-      <div className={`w-16 h-16 bg-linear-to-r ${gradientFrom} ${gradientTo} rounded-xl mb-6 glass-effect flex items-center justify-center`}>
+      <div className={`w-14 h-14 bg-linear-to-r ${gradientFrom} ${gradientTo} rounded-xl mb-6 flex items-center justify-center shadow-[0_4px_20px_rgba(181,26,43,0.2)]`}>
         {icon}
       </div>
-      <h3 className="text-2xl font-semibold text-white mb-4">{title}</h3>
-      <p className="text-gray-300 leading-relaxed">{description}</p>
+      <h3 className="text-lg font-semibold text-white mb-3 tracking-tight">{title}</h3>
+      <p className="text-[#DAD4D4]/60 text-sm leading-relaxed">{description}</p>
     </div>
   )
 }

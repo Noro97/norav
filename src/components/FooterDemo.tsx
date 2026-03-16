@@ -6,9 +6,9 @@ function FooterDemo() {
     <Footer
       logo={
         <img 
-          src="/assets/img/logo.svg" 
+          src="/assets/img/logo-new.svg" 
           alt="Life Compass" 
-          className="w-10 h-10" 
+          className="w-14 h-14" 
         />
       }
       brandName="Life Compass"
