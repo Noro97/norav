@@ -1,0 +1,23 @@
+{
+  "sectionLabel": "Background",
+  "title": "Education & Certifications",
+  "description": "Academic foundation and continuous learning — because frontend engineering never stands still.",
+  "educationHeading": "Education",
+  "certificationsHeading": "Certifications & Courses",
+  "degree.0.degree": "B.Sc.",
+  "degree.0.field": "Computer Science",
+  "degree.0.institution": "University of California, Berkeley",
+  "degree.0.highlights.0": "Focus: Human-Computer Interaction & Graphics",
+  "degree.0.highlights.1": "Senior thesis: Real-time WebGL data visualization",
+  "degree.0.highlights.2": "Teaching Assistant — CS 160: User Interface Design",
+  "certs.0.name": "AWS Certified Cloud Practitioner",
+  "certs.0.issuer": "Amazon Web Services",
+  "certs.1.name": "Professional Frontend Developer",
+  "certs.1.issuer": "Meta",
+  "certs.2.name": "Advanced TypeScript Patterns",
+  "certs.2.issuer": "Total TypeScript (Matt Pocock)",
+  "certs.3.name": "Three.js Journey",
+  "certs.3.issuer": "Bruno Simon",
+  "certs.4.name": "GSAP Professional Animation",
+  "certs.4.issuer": "GreenSock"
+}

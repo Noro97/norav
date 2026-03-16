@@ -1,0 +1,21 @@
+{
+  "nav.home": "Home",
+  "nav.about": "About",
+  "nav.experience": "Experience",
+  "nav.skills": "Skills",
+  "nav.projects": "Projects",
+  "nav.education": "Education",
+  "nav.contact": "Contact",
+  "buttons.downloadCv": "Download CV",
+  "buttons.clearFilters": "Clear filters",
+  "buttons.resetAll": "Reset all",
+  "status.available": "Available",
+  "status.live": "live",
+  "status.syncing": "syncing...",
+  "labels.total": "Total",
+  "labels.sku": "SKU",
+  "labels.delivery": "Delivery",
+  "labels.changes": "changes",
+  "labels.commands": "commands",
+  "footer.builtWith": "Built with React + Three.js + GSAP + TypeScript"
+}

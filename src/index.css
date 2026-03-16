@@ -82,3 +82,20 @@ body::before {
   background: linear-gradient(90deg, transparent, #B51A2B, transparent);
   margin: 0 auto 2rem;
 }
+
+/* ===== MICRO-GRID BACKGROUND ===== */
+.micro-grid-bg {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ===== MARQUEE ANIMATION ===== */
+.marquee-track {
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

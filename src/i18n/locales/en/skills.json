@@ -1,0 +1,11 @@
+{
+  "sectionLabel": "Expertise",
+  "title": "Skills & Tools",
+  "description": "Technical proficiency across the frontend spectrum — from core frameworks to GPU shaders and everything in between.",
+  "categories.0.name": "Frontend Core",
+  "categories.1.name": "Animation & 3D",
+  "categories.2.name": "Tooling & Infra",
+  "categories.3.name": "Backend & Data",
+  "proficiencyOverview": "Proficiency Overview",
+  "skillsTracked": "{{count}} skills tracked"
+}
