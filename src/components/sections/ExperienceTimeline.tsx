@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -6,76 +7,41 @@ import { useSectionObserver } from '@/hooks/useScrollProgress'
 gsap.registerPlugin(ScrollTrigger)
 
 interface Experience {
+  index: number
   period: string
-  role: string
-  company: string
-  type: string
-  description: string
-  achievements: string[]
+  achievementCount: number
   stack: string[]
 }
 
 const EXPERIENCES: Experience[] = [
   {
+    index: 0,
     period: '2022 — Present',
-    role: 'Senior Frontend Engineer',
-    company: 'NexusLogistics',
-    type: 'Full-time',
-    description:
-      'Leading frontend architecture for a real-time logistics platform serving 200+ enterprise clients across 18 global hubs.',
-    achievements: [
-      'Architected real-time dashboard handling 50K+ WebSocket events/sec',
-      'Built Mapbox-based fleet visualization with 2000+ concurrent markers at 60fps',
-      'Reduced initial bundle size by 42% through code splitting & tree shaking',
-      'Led migration from CRA to Vite, cutting CI build times from 8min to 90sec',
-    ],
+    achievementCount: 4,
     stack: ['React', 'TypeScript', 'Mapbox GL', 'WebSocket', 'Zustand', 'Vite'],
   },
   {
+    index: 1,
     period: '2020 — 2022',
-    role: 'Frontend Engineer',
-    company: 'MerchStack',
-    type: 'Full-time',
-    description:
-      'Core member of the product team building an AI-powered merchandise customization platform with 2M+ monthly active users.',
-    achievements: [
-      'Built real-time product configurator with live preview & JSON state sync',
-      'Implemented GSAP-powered animation system used across 40+ components',
-      'Designed component library adopted by 3 cross-functional teams',
-      'Achieved 98/100 Lighthouse performance score on key landing pages',
-    ],
+    achievementCount: 4,
     stack: ['React', 'Next.js', 'GSAP', 'Tailwind CSS', 'Redux Toolkit', 'Storybook'],
   },
   {
+    index: 2,
     period: '2019 — 2020',
-    role: 'Junior Frontend Developer',
-    company: 'DataViz Co.',
-    type: 'Full-time',
-    description:
-      'First engineering role — built interactive data visualization dashboards for financial analytics clients.',
-    achievements: [
-      'Created 15+ custom D3.js chart components for real-time financial data',
-      'First exposure to WebGL & shader programming through data viz experiments',
-      'Improved dashboard load performance by 60% via virtualized rendering',
-    ],
+    achievementCount: 3,
     stack: ['JavaScript', 'D3.js', 'Vue.js', 'SCSS', 'Node.js'],
   },
   {
+    index: 3,
     period: '2018 — 2019',
-    role: 'Frontend Intern',
-    company: 'StartupLab',
-    type: 'Internship',
-    description:
-      'Summer internship turned part-time role building prototypes and MVPs for early-stage startups in the accelerator program.',
-    achievements: [
-      'Shipped 3 MVP landing pages that helped startups secure seed funding',
-      'Learned React ecosystem from scratch and mentored by senior engineers',
-    ],
+    achievementCount: 2,
     stack: ['React', 'CSS', 'Firebase', 'Figma'],
   },
 ]
 
 export function ExperienceTimeline() {
+  const { t } = useTranslation('experience')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('experience', sectionRef)
 
@@ -117,13 +83,12 @@ export function ExperienceTimeline() {
       className="relative px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
-        <span className="label-mono">Career</span>
+        <span className="label-mono">{t('sectionLabel')}</span>
         <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
-          Experience
+          {t('title')}
         </h2>
         <p className="text-white/40 text-base max-w-xl mb-16">
-          A timeline of roles and impact — from first lines of code to leading
-          frontend architecture at scale.
+          {t('description')}
         </p>
 
         {/* Timeline */}
@@ -137,10 +102,11 @@ export function ExperienceTimeline() {
           <div className="space-y-12 md:space-y-16">
             {EXPERIENCES.map((exp, i) => {
               const isLeft = i % 2 === 0
+              const company = t(`entries.${exp.index}.company`)
 
               return (
                 <div
-                  key={exp.company}
+                  key={company}
                   className={`exp-card relative flex flex-col md:flex-row ${
                     isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
                   } items-start gap-8 md:gap-0`}
@@ -160,15 +126,15 @@ export function ExperienceTimeline() {
                         {/* Company logo placeholder */}
                         <div className="w-10 h-10 rounded-lg bg-crimson-500/10 border border-crimson-500/20 flex items-center justify-center shrink-0">
                           <span className="font-mono text-xs text-crimson-400 font-bold">
-                            {exp.company.slice(0, 2).toUpperCase()}
+                            {company.slice(0, 2).toUpperCase()}
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-base">{exp.role}</h3>
+                          <h3 className="text-white font-semibold text-base">{t(`entries.${exp.index}.role`)}</h3>
                           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                            <span className="font-mono text-xs text-crimson-400">{exp.company}</span>
+                            <span className="font-mono text-xs text-crimson-400">{company}</span>
                             <span className="text-white/15">·</span>
-                            <span className="font-mono text-[10px] text-white/30">{exp.type}</span>
+                            <span className="font-mono text-[10px] text-white/30">{t(`entries.${exp.index}.type`)}</span>
                           </div>
                         </div>
                       </div>
@@ -182,15 +148,15 @@ export function ExperienceTimeline() {
 
                       {/* Description */}
                       <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
-                        {exp.description}
+                        {t(`entries.${exp.index}.description`)}
                       </p>
 
                       {/* Achievements */}
                       <ul className="space-y-1.5 mb-4">
-                        {exp.achievements.map((a, j) => (
+                        {Array.from({ length: exp.achievementCount }, (_, j) => (
                           <li key={j} className={`flex gap-2 text-xs text-white/50 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
                             <span className="text-crimson-500 shrink-0 mt-0.5">▸</span>
-                            <span>{a}</span>
+                            <span>{t(`entries.${exp.index}.achievements.${j}`)}</span>
                           </li>
                         ))}
                       </ul>

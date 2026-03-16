@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -7,6 +8,7 @@ import { useTerminal } from '@/hooks/useTerminal'
 gsap.registerPlugin(ScrollTrigger)
 
 export function TerminalFooter() {
+  const { t } = useTranslation(['terminal', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('terminal', sectionRef)
   const outputRef = useRef<HTMLDivElement>(null)
@@ -41,12 +43,12 @@ export function TerminalFooter() {
     >
       <div className="relative z-10 w-full max-w-3xl mx-auto">
         <div className="mb-8 text-center">
-          <span className="label-mono">Contact</span>
+          <span className="label-mono">{t('terminal:sectionLabel')}</span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-            The Terminal
+            {t('terminal:title')}
           </h2>
           <p className="text-white/40 text-sm mt-2 font-mono">
-            $ interact with this portfolio
+            {t('terminal:subtitle')}
           </p>
         </div>
 
@@ -58,7 +60,7 @@ export function TerminalFooter() {
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
             <span className="ml-3 font-mono text-xs text-white/20">
-              visitor@portfolio ~ zsh
+              {t('terminal:titleBar')}
             </span>
           </div>
 
@@ -72,7 +74,7 @@ export function TerminalFooter() {
                 {line.type === 'input' ? (
                   <div className="flex gap-2">
                     <span className="text-crimson-500 shrink-0">
-                      visitor@portfolio:~$
+                      {t('terminal:prompt')}
                     </span>
                     <span className="text-white/80">{line.content}</span>
                   </div>
@@ -87,7 +89,7 @@ export function TerminalFooter() {
             {/* Current input line */}
             <div className="flex gap-2 font-mono text-sm items-center mt-1">
               <span className="text-crimson-500 shrink-0">
-                visitor@portfolio:~$
+                {t('terminal:prompt')}
               </span>
               <div className="relative flex-1">
                 <input
@@ -99,7 +101,7 @@ export function TerminalFooter() {
                   className="w-full bg-transparent text-white/80 outline-none caret-crimson-500 font-mono text-sm"
                   spellCheck={false}
                   autoComplete="off"
-                  placeholder="type a command..."
+                  placeholder={t('terminal:placeholder')}
                 />
               </div>
             </div>
@@ -108,7 +110,7 @@ export function TerminalFooter() {
           {/* Status bar */}
           <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-t border-white/5">
             <span className="font-mono text-[10px] text-white/20">
-              {lines.filter((l) => l.type === 'input').length} commands
+              {lines.filter((l) => l.type === 'input').length} {t('common:labels.commands')}
             </span>
             <span className="font-mono text-[10px] text-crimson-500/40">
               zsh 5.9
@@ -119,7 +121,7 @@ export function TerminalFooter() {
         {/* Footer credit */}
         <div className="mt-8 text-center">
           <p className="font-mono text-xs text-white/15">
-            Built with React + Three.js + GSAP + TypeScript
+            {t('common:footer.builtWith')}
           </p>
         </div>
       </div>

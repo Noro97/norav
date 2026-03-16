@@ -1,23 +1,26 @@
 import type { TerminalLine } from '@/types'
+import i18n from '@/i18n'
 
 type CommandHandler = (args: string[]) => string[]
+
+const t = (key: string) => i18n.t(key, { ns: 'terminal' })
 
 const COMMANDS: Record<string, CommandHandler> = {
   help: () => [
     '',
-    'Available commands:',
+    t('help.title'),
     '',
-    '  help              Show this help message',
-    '  ls [projects]     List portfolio projects',
-    '  cat <file>        Read a file (stack.txt, about.txt, experience.txt)',
-    '  whoami            Who are you?',
-    '  date              Current date',
-    '  echo <text>       Print text',
-    '  neofetch          System info',
-    '  sudo hire         Contact me',
-    '  clear             Clear terminal',
+    t('help.help'),
+    t('help.ls'),
+    t('help.cat'),
+    t('help.whoami'),
+    t('help.date'),
+    t('help.echo'),
+    t('help.neofetch'),
+    t('help.sudo'),
+    t('help.clear'),
     '',
-    'Try: ls, cat stack.txt, neofetch',
+    t('help.hint'),
     '',
   ],
 
@@ -25,14 +28,14 @@ const COMMANDS: Record<string, CommandHandler> = {
     if (args[0] === 'projects' || args.length === 0) {
       return [
         '',
-        'total 3',
-        'drwxr-xr-x  nexusroute/     Real-time logistics platform      [Mapbox, WebSocket, Canvas]',
-        'drwxr-xr-x  merchforge/     AI merch design configurator      [React, GSAP, JSON Sync]',
-        'drwxr-xr-x  filtergraph/    Faceted search + URL state        [Filters, SVG, useMemo]',
+        t('ls.total'),
+        t('ls.nexusroute'),
+        t('ls.merchforge'),
+        t('ls.filtergraph'),
         '',
-        '-rw-r--r--  stack.txt       Tech stack overview',
-        '-rw-r--r--  about.txt       Bio & background',
-        '-rw-r--r--  experience.txt  Work history',
+        t('ls.stacktxt'),
+        t('ls.abouttxt'),
+        t('ls.experiencetxt'),
         '',
       ]
     }
@@ -43,12 +46,12 @@ const COMMANDS: Record<string, CommandHandler> = {
         'drwxr-xr-x  .               .',
         'drwxr-xr-x  ..              ..',
         '-rw-------  .env            [HIDDEN]',
-        'drwxr-xr-x  nexusroute/     Real-time logistics platform',
-        'drwxr-xr-x  merchforge/     AI merch design configurator',
-        'drwxr-xr-x  filtergraph/    Faceted search + URL state',
-        '-rw-r--r--  stack.txt       Tech stack overview',
-        '-rw-r--r--  about.txt       Bio & background',
-        '-rw-r--r--  experience.txt  Work history',
+        t('ls.nexusroute'),
+        t('ls.merchforge'),
+        t('ls.filtergraph'),
+        t('ls.stacktxt'),
+        t('ls.abouttxt'),
+        t('ls.experiencetxt'),
         '',
       ]
     }
@@ -62,20 +65,20 @@ const COMMANDS: Record<string, CommandHandler> = {
       return [
         '',
         '╭──────────────────────────────────────────╮',
-        '│            TECH STACK                     │',
+        '│' + t('cat.stack.title') + '                     │',
         '╰──────────────────────────────────────────╯',
         '',
-        '  Languages      TypeScript, JavaScript, GLSL, Python',
-        '  Frameworks     React, Next.js, Vue 3, Nuxt',
-        '  Animation      GSAP, Framer Motion, Lenis, Three.js',
-        '  3D / WebGL     React Three Fiber, Custom Shaders',
-        '  State          Zustand, Redux Toolkit, Pinia',
-        '  Styling        Tailwind CSS, CSS Modules, Styled Components',
-        '  Build          Vite, Turbopack, Webpack, esbuild',
-        '  Maps           Mapbox GL, Leaflet, Deck.gl',
-        '  Testing        Vitest, Playwright, Cypress, Jest',
-        '  CI/CD          GitHub Actions, Vercel, Docker',
-        '  Databases      PostgreSQL, Redis, Firebase',
+        t('cat.stack.languages'),
+        t('cat.stack.frameworks'),
+        t('cat.stack.animation'),
+        t('cat.stack.3d'),
+        t('cat.stack.state'),
+        t('cat.stack.styling'),
+        t('cat.stack.build'),
+        t('cat.stack.maps'),
+        t('cat.stack.testing'),
+        t('cat.stack.cicd'),
+        t('cat.stack.databases'),
         '',
       ]
     }
@@ -83,20 +86,20 @@ const COMMANDS: Record<string, CommandHandler> = {
     if (file === 'about.txt') {
       return [
         '',
-        '  Alex Mercer',
-        '  Senior Frontend Engineer',
+        t('cat.about.name'),
+        t('cat.about.role'),
         '',
-        '  Building high-performance web applications with',
-        '  focus on real-time systems, data visualization,',
-        '  and interactive 3D experiences.',
+        t('cat.about.bio1'),
+        t('cat.about.bio2'),
+        t('cat.about.bio3'),
         '',
-        '  6+ years shipping production code at scale.',
-        '  Previously at fintech startups and logistics',
-        '  platforms. Passionate about WebGL, animation',
-        '  systems, and developer experience.',
+        t('cat.about.bio4'),
+        t('cat.about.bio5'),
+        t('cat.about.bio6'),
+        t('cat.about.bio7'),
         '',
-        '  Currently open to senior / staff opportunities',
-        '  at companies pushing frontend boundaries.',
+        t('cat.about.bio8'),
+        t('cat.about.bio9'),
         '',
       ]
     }
@@ -104,28 +107,28 @@ const COMMANDS: Record<string, CommandHandler> = {
     if (file === 'experience.txt') {
       return [
         '',
-        '  EXPERIENCE',
+        t('cat.experience.title'),
         '  ──────────────────────────────────',
         '',
-        '  2022-present  Senior Frontend Engineer @ NexusLogistics',
-        '                - Led real-time dashboard (50K+ events/sec)',
-        '                - Built Mapbox-based fleet visualization',
-        '                - Reduced bundle size by 42%',
+        t('cat.experience.entry0.title'),
+        t('cat.experience.entry0.line1'),
+        t('cat.experience.entry0.line2'),
+        t('cat.experience.entry0.line3'),
         '',
-        '  2020-2022     Frontend Engineer @ MerchStack',
-        '                - Built AI-powered product configurator',
-        '                - React + Zustand + GSAP animation system',
-        '                - Served 2M+ monthly active users',
+        t('cat.experience.entry1.title'),
+        t('cat.experience.entry1.line1'),
+        t('cat.experience.entry1.line2'),
+        t('cat.experience.entry1.line3'),
         '',
-        '  2019-2020     Junior Developer @ DataViz Co.',
-        '                - D3.js dashboards and chart components',
-        '                - First exposure to WebGL & shaders',
+        t('cat.experience.entry2.title'),
+        t('cat.experience.entry2.line1'),
+        t('cat.experience.entry2.line2'),
         '',
       ]
     }
 
     if (!file) {
-      return ['cat: missing file operand', "Try 'cat stack.txt' or 'cat about.txt'"]
+      return [t('cat.missingFile'), t('cat.missingFileHint')]
     }
 
     return [`cat: ${file}: No such file or directory`]
@@ -133,18 +136,18 @@ const COMMANDS: Record<string, CommandHandler> = {
 
   whoami: () => [
     '',
-    '  visitor',
+    t('whoami.visitor'),
     '',
-    '  You\'re exploring Alex Mercer\'s portfolio.',
-    '  Curious minds are always welcome here.',
+    t('whoami.exploring'),
+    t('whoami.welcome'),
     '',
-    '  Try: cat about.txt, neofetch, sudo hire',
+    t('whoami.hint'),
     '',
   ],
 
   date: () => [
     '',
-    `  ${new Date().toLocaleString('en-US', {
+    `  ${new Date().toLocaleString(i18n.language === 'ru' ? 'ru-RU' : 'en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -162,16 +165,16 @@ const COMMANDS: Record<string, CommandHandler> = {
     '',
     '                    visitor@portfolio',
     '    ╱╲              ─────────────────',
-    '   ╱  ╲             OS: Portfolio OS 2.0',
-    '  ╱    ╲            Host: React 19 + Vite 6',
-    ' ╱  AM  ╲           Kernel: TypeScript 5.9 (strict)',
-    ' ╲      ╱           Shell: zsh 5.9',
-    '  ╲    ╱            DE: Tailwind CSS 4.1',
-    '   ╲  ╱             WM: GSAP ScrollTrigger',
-    '    ╲╱              GPU: Three.js + R3F + GLSL',
-    '                    Memory: Zustand (lightweight)',
-    '                    Uptime: since 2019',
-    '                    Packages: 216 (npm)',
+    '   ╱  ╲             ' + t('neofetch.os'),
+    '  ╱    ╲            ' + t('neofetch.host'),
+    ' ╱  AM  ╲           ' + t('neofetch.kernel'),
+    ' ╲      ╱           ' + t('neofetch.shell'),
+    '  ╲    ╱            ' + t('neofetch.de'),
+    '   ╲  ╱             ' + t('neofetch.wm'),
+    '    ╲╱              ' + t('neofetch.gpu'),
+    '                    ' + t('neofetch.memory'),
+    '                    ' + t('neofetch.uptime'),
+    '                    ' + t('neofetch.packages'),
     '',
     '    ██ ██ ██ ██ ██',
     '',
@@ -190,23 +193,23 @@ const COMMANDS: Record<string, CommandHandler> = {
         '',
         '  ┌─────────────────────────────────────┐',
         '  │                                     │',
-        '  │   Let\'s build something great.       │',
+        '  │   ' + t('sudo.hire.message') + '       │',
         '  │                                     │',
         '  │   ✉  alex@mercer.dev                │',
         '  │   ◆  github.com/alexmercer          │',
         '  │   ●  linkedin.com/in/alexmercer     │',
         '  │                                     │',
-        '  │   Open to: Senior / Staff roles     │',
-        '  │   Location: Remote / SF / NYC       │',
+        '  │   ' + t('sudo.hire.openTo') + '     │',
+        '  │   ' + t('sudo.hire.location') + '       │',
         '  │                                     │',
         '  └─────────────────────────────────────┘',
         '',
-        '  ✦ PARTICLE BURST ACTIVATED ✦',
+        '  ' + t('sudo.hire.burst'),
         '',
       ]
     }
     if (args[0] === 'rm' || args[0] === 'su') {
-      return ['Nice try. ;)']
+      return [t('sudo.niceTry')]
     }
     return [`sudo: ${args.join(' ')}: command not found`]
   },
@@ -237,7 +240,7 @@ export function executeCommand(input: string): TerminalLine[] {
   } else {
     result.push({
       type: 'output',
-      content: `command not found: ${cmd}. Type 'help' for available commands.`,
+      content: i18n.t('terminal:commandNotFound', { cmd }),
     })
   }
 

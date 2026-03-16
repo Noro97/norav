@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -53,10 +54,10 @@ const MOCK_PRODUCTS: Product[] = (() => {
   return products
 })()
 
-const SORT_OPTIONS = [
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'name-asc', label: 'Name: A-Z' },
+const SORT_OPTION_KEYS: { value: string; labelKey: string }[] = [
+  { value: 'price-asc', labelKey: 'ecommerce.sort.priceLowHigh' },
+  { value: 'price-desc', labelKey: 'ecommerce.sort.priceHighLow' },
+  { value: 'name-asc', labelKey: 'ecommerce.sort.nameAZ' },
 ]
 
 function parseFiltersFromURL(): FilterState {
@@ -124,6 +125,7 @@ function FilterGraph({ filters }: { filters: FilterState }) {
 }
 
 export function EcommerceWidget() {
+  const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('ecommerce', sectionRef)
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
@@ -198,18 +200,17 @@ export function EcommerceWidget() {
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
-          <span className="label-mono">Case Study 03</span>
+          <span className="label-mono">{t('projects:ecommerce.sectionLabel')}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3">
-            FilterGraph
+            {t('projects:ecommerce.title')}
           </h2>
           <p className="text-white/50 text-lg max-w-2xl mt-4">
-            Faceted search with dependency-aware filtering and URL-as-state
-            architecture. Filter changes sync bidirectionally with query parameters.
+            {t('projects:ecommerce.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
-            {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo'].map((t) => (
-              <span key={t} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
-                {t}
+            {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo'].map((tag) => (
+              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+                {tag}
               </span>
             ))}
           </div>
@@ -221,7 +222,7 @@ export function EcommerceWidget() {
             {/* Dependency Graph */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
-                Filter Dependency Graph
+                {t('projects:ecommerce.filterDependencyGraph')}
               </h4>
               <FilterGraph filters={filters} />
             </div>
@@ -229,7 +230,7 @@ export function EcommerceWidget() {
             {/* Category filter */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
-                Categories
+                {t('projects:ecommerce.categories')}
               </h4>
               <div className="space-y-1.5">
                 {CATEGORIES.map((cat) => {
@@ -279,7 +280,7 @@ export function EcommerceWidget() {
             {/* Price range */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
-                Price Range
+                {t('projects:ecommerce.priceRange')}
               </h4>
               <div className="space-y-3">
                 <input
@@ -306,10 +307,10 @@ export function EcommerceWidget() {
             {/* Sort */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
-                Sort By
+                {t('projects:ecommerce.sortBy')}
               </h4>
               <div className="space-y-1">
-                {SORT_OPTIONS.map((opt) => (
+                {SORT_OPTION_KEYS.map((opt) => (
                   <button
                     key={opt.value}
                     onClick={() => setFilters((prev) => ({ ...prev, sortBy: opt.value }))}
@@ -319,7 +320,7 @@ export function EcommerceWidget() {
                         : 'text-white/40 hover:text-white/60 hover:bg-white/3'
                     }`}
                   >
-                    {opt.label}
+                    {t(`projects:${opt.labelKey}`)}
                   </button>
                 ))}
               </div>
@@ -328,7 +329,7 @@ export function EcommerceWidget() {
             {/* URL params display */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-2">
-                URL State
+                {t('projects:ecommerce.urlState')}
               </h4>
               <code className="text-[11px] font-mono text-crimson-400/80 break-all block leading-relaxed">
                 {window.location.pathname}{filtersToParams(filters) || ''}
@@ -340,14 +341,14 @@ export function EcommerceWidget() {
           <div className="ecom-grid">
             <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-xs text-white/40">
-                {filteredProducts.length} of {MOCK_PRODUCTS.length} products
+                {t('projects:ecommerce.productsCount', { filtered: filteredProducts.length, total: MOCK_PRODUCTS.length })}
               </span>
               {filters.categories.length > 0 && (
                 <button
                   onClick={() => setFilters((prev) => ({ ...prev, categories: [] }))}
                   className="font-mono text-[10px] text-crimson-400/60 hover:text-crimson-400 transition-colors"
                 >
-                  Clear filters
+                  {t('common:buttons.clearFilters')}
                 </button>
               )}
             </div>
@@ -386,12 +387,12 @@ export function EcommerceWidget() {
 
             {filteredProducts.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
-                <span className="font-mono text-sm text-white/20">No products match filters</span>
+                <span className="font-mono text-sm text-white/20">{t('projects:ecommerce.noProducts')}</span>
                 <button
                   onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
                   className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 mt-2 transition-colors"
                 >
-                  Reset all
+                  {t('common:buttons.resetAll')}
                 </button>
               </div>
             )}

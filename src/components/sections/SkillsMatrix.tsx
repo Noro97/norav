@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -12,14 +13,14 @@ interface Skill {
 }
 
 interface SkillCategory {
-  name: string
+  nameKey: string
   color: string
   skills: Skill[]
 }
 
 const SKILL_DATA: SkillCategory[] = [
   {
-    name: 'Frontend Core',
+    nameKey: 'categories.0.name',
     color: '#B51A2B',
     skills: [
       { name: 'TypeScript', level: 95, years: 5 },
@@ -30,7 +31,7 @@ const SKILL_DATA: SkillCategory[] = [
     ],
   },
   {
-    name: 'Animation & 3D',
+    nameKey: 'categories.1.name',
     color: '#d63040',
     skills: [
       { name: 'GSAP', level: 90, years: 4 },
@@ -41,7 +42,7 @@ const SKILL_DATA: SkillCategory[] = [
     ],
   },
   {
-    name: 'Tooling & Infra',
+    nameKey: 'categories.2.name',
     color: '#8c1523',
     skills: [
       { name: 'Vite / Webpack', level: 90, years: 5 },
@@ -52,7 +53,7 @@ const SKILL_DATA: SkillCategory[] = [
     ],
   },
   {
-    name: 'Backend & Data',
+    nameKey: 'categories.3.name',
     color: '#541A2E',
     skills: [
       { name: 'Node.js', level: 75, years: 4 },
@@ -96,7 +97,7 @@ function SkillBar({ skill, color, animate }: { skill: Skill; color: string; anim
 }
 
 // Radar / Pentagon chart
-function RadarChart({ categories, animate }: { categories: SkillCategory[]; animate: boolean }) {
+function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; animate: boolean; t: (key: string) => string }) {
   const size = 200
   const center = size / 2
   const radius = 80
@@ -190,7 +191,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
             fontSize="7"
             fontFamily="JetBrains Mono"
           >
-            {cat.name.split(' ')[0]}
+            {t(cat.nameKey).split(' ')[0]}
           </text>
         )
       })}
@@ -199,6 +200,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
 }
 
 export function SkillsMatrix() {
+  const { t } = useTranslation('skills')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('skills', sectionRef)
   const [animate, setAnimate] = useState(false)
@@ -220,6 +222,8 @@ export function SkillsMatrix() {
     return () => ctx.revert()
   }, [])
 
+  const totalSkills = SKILL_DATA.reduce((s, c) => s + c.skills.length, 0)
+
   return (
     <section
       id="skills"
@@ -228,13 +232,12 @@ export function SkillsMatrix() {
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="skills-header">
-          <span className="label-mono">Expertise</span>
+          <span className="label-mono">{t('sectionLabel')}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
-            Skills & Tools
+            {t('title')}
           </h2>
           <p className="text-white/40 text-base max-w-xl mb-12">
-            Technical proficiency across the frontend spectrum — from core frameworks
-            to GPU shaders and everything in between.
+            {t('description')}
           </p>
         </div>
 
@@ -243,7 +246,7 @@ export function SkillsMatrix() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {SKILL_DATA.map((category, catIdx) => (
               <div
-                key={category.name}
+                key={category.nameKey}
                 className={`glass-card p-5 cursor-pointer transition-all ${
                   activeCategory === catIdx ? 'border-crimson-500/20' : ''
                 }`}
@@ -256,7 +259,7 @@ export function SkillsMatrix() {
                     style={{ backgroundColor: category.color }}
                   />
                   <h3 className="font-mono text-xs text-white/50 tracking-wider uppercase">
-                    {category.name}
+                    {t(category.nameKey)}
                   </h3>
                 </div>
                 <div className="space-y-3">
@@ -276,9 +279,9 @@ export function SkillsMatrix() {
           {/* Radar chart */}
           <div className="glass-card p-6 sticky top-24">
             <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
-              Proficiency Overview
+              {t('proficiencyOverview')}
             </h4>
-            <RadarChart categories={SKILL_DATA} animate={animate} />
+            <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
 
             {/* Legend */}
             <div className="mt-6 space-y-1.5">
@@ -288,7 +291,7 @@ export function SkillsMatrix() {
                 )
                 return (
                   <div
-                    key={cat.name}
+                    key={cat.nameKey}
                     className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
                       activeCategory === i ? 'bg-white/5' : ''
                     }`}
@@ -299,7 +302,7 @@ export function SkillsMatrix() {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <span className="font-mono text-[10px] text-white/40 flex-1">{cat.name}</span>
+                    <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
                     <span className="font-mono text-[10px] text-white/25">{avg}%</span>
                   </div>
                 )
@@ -309,7 +312,7 @@ export function SkillsMatrix() {
             {/* Total count */}
             <div className="mt-4 pt-3 border-t border-white/5 text-center">
               <span className="font-mono text-[10px] text-white/20">
-                {SKILL_DATA.reduce((s, c) => s + c.skills.length, 0)} skills tracked
+                {t('skillsTracked', { count: totalSkills })}
               </span>
             </div>
           </div>

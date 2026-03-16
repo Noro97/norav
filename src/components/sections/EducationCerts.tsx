@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -6,67 +7,37 @@ import { useSectionObserver } from '@/hooks/useScrollProgress'
 gsap.registerPlugin(ScrollTrigger)
 
 interface Education {
-  degree: string
-  field: string
-  institution: string
+  index: number
   period: string
   gpa?: string
-  highlights?: string[]
+  highlightCount: number
 }
 
 interface Certification {
-  name: string
-  issuer: string
+  index: number
   date: string
   credentialId?: string
 }
 
 const EDUCATION: Education[] = [
   {
-    degree: 'B.Sc.',
-    field: 'Computer Science',
-    institution: 'University of California, Berkeley',
+    index: 0,
     period: '2015 — 2019',
     gpa: '3.8 / 4.0',
-    highlights: [
-      'Focus: Human-Computer Interaction & Graphics',
-      'Senior thesis: Real-time WebGL data visualization',
-      'Teaching Assistant — CS 160: User Interface Design',
-    ],
+    highlightCount: 3,
   },
 ]
 
 const CERTIFICATIONS: Certification[] = [
-  {
-    name: 'AWS Certified Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: 'Mar 2024',
-    credentialId: 'AWS-CP-2024-XXXXX',
-  },
-  {
-    name: 'Professional Frontend Developer',
-    issuer: 'Meta',
-    date: 'Nov 2023',
-    credentialId: 'META-FE-2023-XXXXX',
-  },
-  {
-    name: 'Advanced TypeScript Patterns',
-    issuer: 'Total TypeScript (Matt Pocock)',
-    date: 'Aug 2023',
-  },
-  {
-    name: 'Three.js Journey',
-    issuer: 'Bruno Simon',
-    date: 'Jan 2023',
-  },
-  {
-    name: 'GSAP Professional Animation',
-    issuer: 'GreenSock',
-    date: 'Sep 2022',
-  },
+  { index: 0, date: 'Mar 2024', credentialId: 'AWS-CP-2024-XXXXX' },
+  { index: 1, date: 'Nov 2023', credentialId: 'META-FE-2023-XXXXX' },
+  { index: 2, date: 'Aug 2023' },
+  { index: 3, date: 'Jan 2023' },
+  { index: 4, date: 'Sep 2022' },
 ]
 
 export function EducationCerts() {
+  const { t } = useTranslation('education')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('education', sectionRef)
 
@@ -96,23 +67,22 @@ export function EducationCerts() {
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="edu-header">
-          <span className="label-mono">Background</span>
+          <span className="label-mono">{t('sectionLabel')}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
-            Education & Certifications
+            {t('title')}
           </h2>
           <p className="text-white/40 text-base max-w-xl mb-12">
-            Academic foundation and continuous learning — because frontend
-            engineering never stands still.
+            {t('description')}
           </p>
         </div>
 
         {/* Education */}
         <div className="mb-16">
           <h3 className="font-mono text-xs text-white/30 tracking-wider uppercase mb-6">
-            Education
+            {t('educationHeading')}
           </h3>
           {EDUCATION.map((edu) => (
-            <div key={edu.institution} className="edu-card glass-card p-6 md:p-8 max-w-3xl">
+            <div key={edu.index} className="edu-card glass-card p-6 md:p-8 max-w-3xl">
               <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
                 {/* Icon */}
                 <div className="w-14 h-14 rounded-xl bg-crimson-500/10 border border-crimson-500/20 flex items-center justify-center shrink-0">
@@ -125,9 +95,9 @@ export function EducationCerts() {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
                     <div>
                       <h4 className="text-white font-semibold text-lg">
-                        {edu.degree} {edu.field}
+                        {t(`degree.${edu.index}.degree`)} {t(`degree.${edu.index}.field`)}
                       </h4>
-                      <span className="font-mono text-sm text-crimson-400">{edu.institution}</span>
+                      <span className="font-mono text-sm text-crimson-400">{t(`degree.${edu.index}.institution`)}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       {edu.gpa && (
@@ -139,12 +109,12 @@ export function EducationCerts() {
                     </div>
                   </div>
 
-                  {edu.highlights && (
+                  {edu.highlightCount > 0 && (
                     <ul className="mt-3 space-y-1.5">
-                      {edu.highlights.map((h, i) => (
+                      {Array.from({ length: edu.highlightCount }, (_, i) => (
                         <li key={i} className="flex gap-2 text-sm text-white/45">
                           <span className="text-crimson-500 shrink-0">▸</span>
-                          <span>{h}</span>
+                          <span>{t(`degree.${edu.index}.highlights.${i}`)}</span>
                         </li>
                       ))}
                     </ul>
@@ -158,12 +128,12 @@ export function EducationCerts() {
         {/* Certifications */}
         <div>
           <h3 className="font-mono text-xs text-white/30 tracking-wider uppercase mb-6">
-            Certifications & Courses
+            {t('certificationsHeading')}
           </h3>
           <div className="cert-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {CERTIFICATIONS.map((cert) => (
               <div
-                key={cert.name}
+                key={cert.index}
                 className="cert-card glass-card p-4 group hover:translate-y-[-2px] transition-transform"
               >
                 <div className="flex items-start gap-3">
@@ -176,10 +146,10 @@ export function EducationCerts() {
 
                   <div className="flex-1 min-w-0">
                     <h4 className="text-white/70 text-sm font-medium leading-tight group-hover:text-white/90 transition-colors">
-                      {cert.name}
+                      {t(`certs.${cert.index}.name`)}
                     </h4>
                     <span className="font-mono text-[10px] text-crimson-400/60 block mt-0.5">
-                      {cert.issuer}
+                      {t(`certs.${cert.index}.issuer`)}
                     </span>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="font-mono text-[10px] text-white/20">{cert.date}</span>

@@ -1,6 +1,6 @@
 export interface SectionConfig {
   id: string
-  label: string
+  labelKey: string
 }
 
 export interface TerminalLine {

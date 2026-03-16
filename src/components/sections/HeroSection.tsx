@@ -1,13 +1,13 @@
 import { useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const HERO_NAME = 'Alex Mercer'
-
 export function HeroSection() {
+  const { t } = useTranslation('hero')
   const containerRef = useRef<HTMLDivElement>(null)
   useSectionObserver('hero', containerRef)
   const charsRef = useRef<HTMLSpanElement[]>([])
@@ -68,6 +68,8 @@ export function HeroSection() {
     return () => ctx.revert()
   }, [])
 
+  const heroName = t('name')
+
   return (
     <section
       id="hero"
@@ -79,11 +81,11 @@ export function HeroSection() {
           ref={subtitleRef}
           className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-crimson-500 mb-6"
         >
-          Senior Frontend Engineer
+          {t('subtitle')}
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-none mb-8">
-          {HERO_NAME.split('').map((char, i) => (
+          {heroName.split('').map((char, i) => (
             <span
               key={i}
               ref={(el) => { if (el) charsRef.current[i] = el }}
@@ -98,9 +100,9 @@ export function HeroSection() {
           ref={taglineRef}
           className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-light"
         >
-          Building high-performance interfaces at the intersection of{' '}
-          <span className="text-crimson-400">engineering precision</span> and{' '}
-          <span className="text-white/80">visual storytelling</span>.
+          {t('tagline.before')}{' '}
+          <span className="text-crimson-400">{t('tagline.highlight1')}</span> {t('tagline.conjunction')}{' '}
+          <span className="text-white/80">{t('tagline.highlight2')}</span>{t('tagline.after')}
         </p>
       </div>
 
@@ -110,7 +112,7 @@ export function HeroSection() {
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
         <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/20">
-          Scroll to explore
+          {t('scrollHint')}
         </span>
         <div className="w-px h-8 bg-gradient-to-b from-crimson-500/50 to-transparent animate-pulse" />
       </div>

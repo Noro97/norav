@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -60,6 +61,7 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
 }
 
 export function LogisticsWidget() {
+  const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('logistics', sectionRef)
   const [markerCount, setMarkerCount] = useState(0)
@@ -135,21 +137,19 @@ export function LogisticsWidget() {
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
-          <span className="label-mono">Case Study 01</span>
+          <span className="label-mono">{t('logistics.sectionLabel')}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-            NexusRoute
+            {t('logistics.title')}
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-lg">
-            Real-time logistics optimization platform processing 50K+ WebSocket
-            events/sec across 18 global hubs. GeoJSON streaming with
-            high-frequency state reconciliation.
+            {t('logistics.description')}
           </p>
 
           {/* Tech stack tags */}
           <div className="flex flex-wrap gap-2">
-            {['Mapbox GL', 'WebSocket', 'GeoJSON', 'Canvas 2D', 'Zustand'].map((t) => (
-              <span key={t} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
-                {t}
+            {['Mapbox GL', 'WebSocket', 'GeoJSON', 'Canvas 2D', 'Zustand'].map((tag) => (
+              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+                {tag}
               </span>
             ))}
           </div>
@@ -158,23 +158,23 @@ export function LogisticsWidget() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
             <div className="glass-card p-3 text-center">
               <div className="text-xl font-bold text-crimson-400 font-mono">{markerCount}</div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">Nodes</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
             </div>
             <div className="glass-card p-3 text-center">
               <div className="text-xl font-bold text-crimson-400 font-mono">{latency}ms</div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">Latency</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.latency')}</div>
             </div>
             <div className="glass-card p-3 text-center">
               <div className="text-xl font-bold text-crimson-400 font-mono">
                 {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
               </div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">WS Events</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
             </div>
             <div className="glass-card p-3 text-center">
               <div className="text-xl font-bold text-crimson-400 font-mono">
                 {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
               </div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">Throughput</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
             </div>
           </div>
 
@@ -185,15 +185,15 @@ export function LogisticsWidget() {
             className="group relative inline-flex items-center gap-3 px-6 py-3 bg-crimson-500/10 border border-crimson-500/30 text-crimson-400 font-mono text-sm tracking-wider uppercase rounded transition-all hover:bg-crimson-500/20 hover:border-crimson-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className={`w-2 h-2 rounded-full ${isStressTesting ? 'bg-yellow-400 animate-pulse' : 'bg-crimson-500'}`} />
-            {isStressTesting ? `Rendering... ${markerCount}/500` : 'Run Stress Test — 500 Nodes'}
+            {isStressTesting ? t('logistics.stressTest.rendering', { count: markerCount }) : t('logistics.stressTest.run')}
           </button>
 
           {/* Live log */}
           {mapLoaded && (
             <div className="font-mono text-[10px] text-white/20 space-y-0.5 max-h-16 overflow-hidden">
-              <div>[ws] event batch received: {wsMessages % 30 + 5} items</div>
-              <div>[geo] source update: {markerCount} features, {connections?.features.length ?? 0} connections</div>
-              <div>[perf] frame budget: {(16.6 - (latency % 4)).toFixed(1)}ms / 16.6ms</div>
+              <div>{t('logistics.log.eventBatch', { count: wsMessages % 30 + 5 })}</div>
+              <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: connections?.features.length ?? 0 })}</div>
+              <div>{t('logistics.log.frameBudget', { time: (16.6 - (latency % 4)).toFixed(1) })}</div>
             </div>
           )}
         </div>
@@ -215,7 +215,7 @@ export function LogisticsWidget() {
           </Suspense>
           {/* Overlay label */}
           <div className="absolute top-3 left-3 font-mono text-[10px] text-white/20 bg-black/40 px-2 py-1 rounded">
-            LIVE — {HUBS.length} hubs
+            {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>
       </div>

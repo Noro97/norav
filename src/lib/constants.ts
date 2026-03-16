@@ -1,13 +1,14 @@
 import type { SectionConfig } from '@/types'
 
 export const SECTIONS: SectionConfig[] = [
-  { id: 'hero', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'logistics', label: 'Projects' },
-  { id: 'education', label: 'Education' },
-  { id: 'terminal', label: 'Contact' },
+  { id: 'hero', labelKey: 'nav.home' },
+  { id: 'about', labelKey: 'nav.about' },
+  { id: 'experience', labelKey: 'nav.experience' },
+  { id: 'skills', labelKey: 'nav.skills' },
+  { id: 'overview', labelKey: 'nav.overview' },
+  { id: 'logistics', labelKey: 'nav.projects' },
+  { id: 'education', labelKey: 'nav.education' },
+  { id: 'terminal', labelKey: 'nav.contact' },
 ]
 
 export const COLORS = {

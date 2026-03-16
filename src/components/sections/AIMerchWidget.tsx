@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -6,14 +7,27 @@ import type { MerchConfig } from '@/types'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const PRODUCT_TYPES = ['T-Shirt', 'Hoodie', 'Mug', 'Poster', 'Sticker Pack']
-const COLORS = [
-  { name: 'Midnight Black', hex: '#1a1a1a' },
-  { name: 'Arctic White', hex: '#f0f0f0' },
-  { name: 'Crimson Red', hex: '#B51A2B' },
-  { name: 'Navy Blue', hex: '#1e3a5f' },
-  { name: 'Forest Green', hex: '#2d5a3d' },
-]
+const PRODUCT_TYPE_KEYS = [
+  'merch.products.tshirt',
+  'merch.products.hoodie',
+  'merch.products.mug',
+  'merch.products.poster',
+  'merch.products.stickerPack',
+] as const
+
+const PRODUCT_TYPE_VALUES = ['T-Shirt', 'Hoodie', 'Mug', 'Poster', 'Sticker Pack']
+
+const COLOR_KEYS = [
+  'merch.colors.midnightBlack',
+  'merch.colors.arcticWhite',
+  'merch.colors.crimsonRed',
+  'merch.colors.navyBlue',
+  'merch.colors.forestGreen',
+] as const
+
+const COLOR_VALUES = ['Midnight Black', 'Arctic White', 'Crimson Red', 'Navy Blue', 'Forest Green']
+const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', '#B51A2B', '#1e3a5f', '#2d5a3d']
+
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const BASE_PRICES: Record<string, number> = {
@@ -59,6 +73,7 @@ function syntaxHighlight(json: string): string {
 }
 
 export function AIMerchWidget() {
+  const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('merch', sectionRef)
   const jsonRef = useRef<HTMLPreElement>(null)
@@ -140,7 +155,8 @@ export function AIMerchWidget() {
     []
   )
 
-  const activeColor = COLORS.find((c) => c.name === config.color)
+  const activeColorIdx = COLOR_VALUES.indexOf(config.color)
+  const activeHex = activeColorIdx >= 0 ? COLOR_HEXES[activeColorIdx] : '#1a1a1a'
 
   return (
     <section
@@ -150,18 +166,17 @@ export function AIMerchWidget() {
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
-          <span className="label-mono">Case Study 02</span>
+          <span className="label-mono">{t('projects:merch.sectionLabel')}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3">
-            MerchForge
+            {t('projects:merch.title')}
           </h2>
           <p className="text-white/50 text-lg max-w-2xl mt-4">
-            AI-powered merchandise designer with real-time state synchronization.
-            Every UI interaction instantly reflects in the live configuration output.
+            {t('projects:merch.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
-            {['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'].map((t) => (
-              <span key={t} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
-                {t}
+            {['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'].map((tag) => (
+              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+                {tag}
               </span>
             ))}
           </div>
@@ -175,16 +190,16 @@ export function AIMerchWidget() {
               <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
               <div className="w-3 h-3 rounded-full bg-green-500/40" />
               <span className="ml-3 font-mono text-xs text-white/30">constructor.ui</span>
-              <span className="ml-auto font-mono text-[10px] text-white/20">{changeCount} changes</span>
+              <span className="ml-auto font-mono text-[10px] text-white/20">{changeCount} {t('common:labels.changes')}</span>
             </div>
 
             {/* Product Type */}
             <div>
               <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                Product Type
+                {t('projects:merch.labels.productType')}
               </label>
               <div className="flex flex-wrap gap-2">
-                {PRODUCT_TYPES.map((type) => (
+                {PRODUCT_TYPE_VALUES.map((type, i) => (
                   <button
                     key={type}
                     onClick={() => updateConfig('productType', type)}
@@ -194,7 +209,7 @@ export function AIMerchWidget() {
                         : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
                     }`}
                   >
-                    {type}
+                    {t(`projects:${PRODUCT_TYPE_KEYS[i]}`)}
                   </button>
                 ))}
               </div>
@@ -203,30 +218,32 @@ export function AIMerchWidget() {
             {/* Color */}
             <div>
               <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                Color
+                {t('projects:merch.labels.color')}
               </label>
               <div className="flex gap-2">
-                {COLORS.map((c) => (
+                {COLOR_VALUES.map((colorName, i) => (
                   <button
-                    key={c.name}
-                    onClick={() => updateConfig('color', c.name)}
-                    title={c.name}
+                    key={colorName}
+                    onClick={() => updateConfig('color', colorName)}
+                    title={t(`projects:${COLOR_KEYS[i]}`)}
                     className={`w-8 h-8 rounded-full border-2 transition-all ${
-                      config.color === c.name
+                      config.color === colorName
                         ? 'border-crimson-500 scale-110'
                         : 'border-white/10 hover:border-white/30'
                     }`}
-                    style={{ backgroundColor: c.hex }}
+                    style={{ backgroundColor: COLOR_HEXES[i] }}
                   />
                 ))}
               </div>
-              <span className="font-mono text-[10px] text-white/25 mt-1 block">{config.color}</span>
+              <span className="font-mono text-[10px] text-white/25 mt-1 block">
+                {t(`projects:${COLOR_KEYS[COLOR_VALUES.indexOf(config.color)]}`)}
+              </span>
             </div>
 
             {/* Size */}
             <div>
               <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                Size
+                {t('projects:merch.labels.size')}
               </label>
               <div className="flex gap-1.5">
                 {SIZES.map((s) => (
@@ -248,7 +265,7 @@ export function AIMerchWidget() {
             {/* Custom Text */}
             <div>
               <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                Custom Text
+                {t('projects:merch.labels.customText')}
               </label>
               <input
                 type="text"
@@ -256,7 +273,7 @@ export function AIMerchWidget() {
                 onChange={(e) => updateConfig('text', e.target.value)}
                 maxLength={30}
                 className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white/80 font-mono focus:outline-none focus:border-crimson-500/50 transition-colors"
-                placeholder="Enter your text..."
+                placeholder={t('projects:merch.placeholder.enterText')}
               />
               <span className="font-mono text-[10px] text-white/15 mt-1 block">{config.text.length}/30</span>
             </div>
@@ -265,7 +282,7 @@ export function AIMerchWidget() {
             <div className="flex items-end gap-6">
               <div>
                 <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                  Quantity
+                  {t('projects:merch.labels.quantity')}
                 </label>
                 <div className="flex items-center gap-1">
                   <button
@@ -286,7 +303,7 @@ export function AIMerchWidget() {
 
               <div>
                 <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
-                  Premium
+                  {t('projects:merch.labels.premium')}
                 </label>
                 <button
                   onClick={() => updateConfig('premium', !config.premium)}
@@ -304,7 +321,7 @@ export function AIMerchWidget() {
 
               {/* Price preview */}
               <div className="ml-auto text-right">
-                <span className="font-mono text-[10px] text-white/30 block">Total</span>
+                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.total')}</span>
                 <span className="font-mono text-xl text-crimson-400 font-bold">
                   ${(fullOutput.pricing.total).toFixed(2)}
                 </span>
@@ -315,15 +332,15 @@ export function AIMerchWidget() {
             <div className="flex items-center gap-3 pt-2 border-t border-white/5">
               <div
                 className="w-8 h-8 rounded border border-white/10 shrink-0"
-                style={{ backgroundColor: activeColor?.hex ?? '#1a1a1a' }}
+                style={{ backgroundColor: activeHex }}
               />
               <div>
-                <span className="font-mono text-[10px] text-white/30 block">SKU</span>
+                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.sku')}</span>
                 <span className="font-mono text-xs text-white/60">{generateSKU(config)}</span>
               </div>
               <div className="ml-auto">
-                <span className="font-mono text-[10px] text-white/30 block">Delivery</span>
-                <span className="font-mono text-xs text-white/60">{config.premium ? '3 days' : '7 days'}</span>
+                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.delivery')}</span>
+                <span className="font-mono text-xs text-white/60">{config.premium ? t('projects:merch.delivery.days3') : t('projects:merch.delivery.days7')}</span>
               </div>
             </div>
           </div>
@@ -338,7 +355,7 @@ export function AIMerchWidget() {
                   isTyping ? 'text-crimson-400' : 'text-green-400/50'
                 }`}
               >
-                {isTyping ? 'syncing...' : 'live'}
+                {isTyping ? t('common:status.syncing') : t('common:status.live')}
               </span>
             </div>
 

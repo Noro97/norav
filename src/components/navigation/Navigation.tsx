@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
 
 export function Navigation() {
   const activeSection = useAppStore((s) => s.activeSection)
+  const { t, i18n } = useTranslation('common')
 
   const handleClick = useCallback((id: string) => {
     const el = document.getElementById(id)
@@ -67,16 +69,32 @@ export function Navigation() {
                   }
                 `}
               >
-                {section.label}
+                {t(section.labelKey)}
               </span>
             </button>
           )
         })}
+        <button
+          onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
+          className="font-mono text-[11px] tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          aria-label="Switch language"
+        >
+          {i18n.language === 'en' ? 'RU' : 'EN'}
+        </button>
       </div>
 
-      {/* Mobile — current section label */}
-      <div className="md:hidden font-mono text-[11px] text-white/40 tracking-widest uppercase">
-        {SECTIONS.find((s) => s.id === activeSection)?.label ?? ''}
+      {/* Mobile — current section label + language toggle */}
+      <div className="md:hidden flex items-center gap-3">
+        <span className="font-mono text-[11px] text-white/40 tracking-widest uppercase">
+          {t(SECTIONS.find((s) => s.id === activeSection)?.labelKey ?? '')}
+        </span>
+        <button
+          onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
+          className="font-mono text-[11px] tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          aria-label="Switch language"
+        >
+          {i18n.language === 'en' ? 'RU' : 'EN'}
+        </button>
       </div>
     </nav>
   )

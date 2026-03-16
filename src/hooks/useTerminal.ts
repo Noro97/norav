@@ -2,15 +2,18 @@ import { useState, useCallback, useRef } from 'react'
 import type { TerminalLine } from '@/types'
 import { executeCommand, shouldTriggerBurst } from '@/lib/terminal-commands'
 import { useAppStore } from '@/store/useAppStore'
+import i18n from '@/i18n'
 
-const WELCOME_LINES: TerminalLine[] = [
-  { type: 'output', content: "Welcome to Alex Mercer's portfolio terminal." },
-  { type: 'output', content: "Type 'help' for available commands." },
-  { type: 'output', content: '' },
-]
+function getWelcomeLines(): TerminalLine[] {
+  return [
+    { type: 'output', content: i18n.t('terminal:welcome.0') },
+    { type: 'output', content: i18n.t('terminal:welcome.1') },
+    { type: 'output', content: '' },
+  ]
+}
 
 export function useTerminal() {
-  const [lines, setLines] = useState<TerminalLine[]>(WELCOME_LINES)
+  const [lines, setLines] = useState<TerminalLine[]>(getWelcomeLines)
   const [input, setInput] = useState('')
   const historyRef = useRef<string[]>([])
   const historyIdxRef = useRef(-1)
