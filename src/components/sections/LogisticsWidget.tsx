@@ -1,0 +1,224 @@
+import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useSectionObserver } from '@/hooks/useScrollProgress'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const MapView = lazy(() => import('./MapView'))
+
+// Hub cities for realistic data
+const HUBS: [number, number, string][] = [
+  [-73.97, 40.77, 'New York'], [-118.24, 34.05, 'Los Angeles'], [-87.63, 41.88, 'Chicago'],
+  [-0.12, 51.51, 'London'], [2.35, 48.86, 'Paris'], [13.41, 52.52, 'Berlin'],
+  [139.69, 35.69, 'Tokyo'], [121.47, 31.23, 'Shanghai'], [103.82, 1.35, 'Singapore'],
+  [55.27, 25.2, 'Dubai'], [-43.17, -22.91, 'Rio'], [28.98, 41.01, 'Istanbul'],
+  [37.62, 55.75, 'Moscow'], [77.21, 28.61, 'Delhi'], [151.21, -33.87, 'Sydney'],
+  [-99.13, 19.43, 'Mexico City'], [18.42, -33.93, 'Cape Town'], [126.98, 37.57, 'Seoul'],
+]
+
+function generateMarkers(count: number): GeoJSON.FeatureCollection {
+  const features: GeoJSON.Feature[] = []
+  for (let i = 0; i < count; i++) {
+    // Cluster around real hub cities with some scatter
+    const hub = HUBS[i % HUBS.length]!
+    const scatter = Math.min(count / 50, 15)
+    features.push({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          hub[0] + (Math.random() - 0.5) * scatter,
+          hub[1] + (Math.random() - 0.5) * scatter,
+        ],
+      },
+      properties: { id: i, intensity: Math.random(), hub: hub[2] },
+    })
+  }
+  return { type: 'FeatureCollection', features }
+}
+
+function generateConnections(count: number): GeoJSON.FeatureCollection {
+  const features: GeoJSON.Feature[] = []
+  for (let i = 0; i < count; i++) {
+    const from = HUBS[Math.floor(Math.random() * HUBS.length)]!
+    const to = HUBS[Math.floor(Math.random() * HUBS.length)]!
+    if (from === to) continue
+    features.push({
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [from[0], from[1]],
+          [to[0], to[1]],
+        ],
+      },
+      properties: { id: i, from: from[2], to: to[2] },
+    })
+  }
+  return { type: 'FeatureCollection', features }
+}
+
+export function LogisticsWidget() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useSectionObserver('logistics', sectionRef)
+  const [markerCount, setMarkerCount] = useState(0)
+  const [isStressTesting, setIsStressTesting] = useState(false)
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const [markers, setMarkers] = useState<GeoJSON.FeatureCollection | null>(null)
+  const [connections, setConnections] = useState<GeoJSON.FeatureCollection | null>(null)
+  const [wsMessages, setWsMessages] = useState(0)
+  const [latency, setLatency] = useState(12)
+  const [throughput, setThroughput] = useState(0)
+  const stressRafRef = useRef(0)
+
+  // GSAP entrance
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.logistics-content', {
+        opacity: 0, x: -40, duration: 0.8,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+      })
+      gsap.from('.logistics-map', {
+        opacity: 0, x: 40, duration: 0.8,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+      })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  // Simulated live telemetry
+  useEffect(() => {
+    if (!mapLoaded) return
+    const interval = setInterval(() => {
+      setWsMessages((p) => p + Math.floor(Math.random() * 8 + 2))
+      setLatency(Math.round(8 + Math.random() * 12))
+      setThroughput((p) => p + Math.floor(Math.random() * 150 + 50))
+    }, 300)
+    return () => clearInterval(interval)
+  }, [mapLoaded])
+
+  // Cancel stress test rAF on unmount
+  useEffect(() => {
+    return () => cancelAnimationFrame(stressRafRef.current)
+  }, [])
+
+  const handleStressTest = useCallback(() => {
+    setIsStressTesting(true)
+    setMarkerCount(0)
+
+    const total = 500
+    let added = 0
+    const batchSize = 50
+
+    const addBatch = () => {
+      added += batchSize
+      const current = Math.min(added, total)
+      setMarkerCount(current)
+      setMarkers(generateMarkers(current))
+      setConnections(generateConnections(Math.floor(current / 8)))
+      if (current < total) {
+        stressRafRef.current = requestAnimationFrame(addBatch)
+      } else {
+        setIsStressTesting(false)
+      }
+    }
+    stressRafRef.current = requestAnimationFrame(addBatch)
+  }, [])
+
+  return (
+    <section
+      id="logistics"
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
+    >
+      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* Left — Content */}
+        <div className="logistics-content space-y-6">
+          <span className="label-mono">Case Study 01</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+            NexusRoute
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed max-w-lg">
+            Real-time logistics optimization platform processing 50K+ WebSocket
+            events/sec across 18 global hubs. GeoJSON streaming with
+            high-frequency state reconciliation.
+          </p>
+
+          {/* Tech stack tags */}
+          <div className="flex flex-wrap gap-2">
+            {['Mapbox GL', 'WebSocket', 'GeoJSON', 'Canvas 2D', 'Zustand'].map((t) => (
+              <span key={t} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+                {t}
+              </span>
+            ))}
+          </div>
+
+          {/* Live metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
+            <div className="glass-card p-3 text-center">
+              <div className="text-xl font-bold text-crimson-400 font-mono">{markerCount}</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">Nodes</div>
+            </div>
+            <div className="glass-card p-3 text-center">
+              <div className="text-xl font-bold text-crimson-400 font-mono">{latency}ms</div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">Latency</div>
+            </div>
+            <div className="glass-card p-3 text-center">
+              <div className="text-xl font-bold text-crimson-400 font-mono">
+                {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
+              </div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">WS Events</div>
+            </div>
+            <div className="glass-card p-3 text-center">
+              <div className="text-xl font-bold text-crimson-400 font-mono">
+                {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
+              </div>
+              <div className="text-[10px] text-white/40 font-mono mt-1">Throughput</div>
+            </div>
+          </div>
+
+          {/* Stress Test Button */}
+          <button
+            onClick={handleStressTest}
+            disabled={isStressTesting}
+            className="group relative inline-flex items-center gap-3 px-6 py-3 bg-crimson-500/10 border border-crimson-500/30 text-crimson-400 font-mono text-sm tracking-wider uppercase rounded transition-all hover:bg-crimson-500/20 hover:border-crimson-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span className={`w-2 h-2 rounded-full ${isStressTesting ? 'bg-yellow-400 animate-pulse' : 'bg-crimson-500'}`} />
+            {isStressTesting ? `Rendering... ${markerCount}/500` : 'Run Stress Test — 500 Nodes'}
+          </button>
+
+          {/* Live log */}
+          {mapLoaded && (
+            <div className="font-mono text-[10px] text-white/20 space-y-0.5 max-h-16 overflow-hidden">
+              <div>[ws] event batch received: {wsMessages % 30 + 5} items</div>
+              <div>[geo] source update: {markerCount} features, {connections?.features.length ?? 0} connections</div>
+              <div>[perf] frame budget: {(16.6 - (latency % 4)).toFixed(1)}ms / 16.6ms</div>
+            </div>
+          )}
+        </div>
+
+        {/* Right — Map */}
+        <div className="logistics-map relative aspect-[4/3] rounded-xl overflow-hidden border border-white/8 bg-[#0d0d1f]">
+          <Suspense
+            fallback={
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-crimson-500/30 border-t-crimson-500 rounded-full animate-spin" />
+              </div>
+            }
+          >
+            <MapView
+              markers={markers}
+              connections={connections}
+              onLoad={() => setMapLoaded(true)}
+            />
+          </Suspense>
+          {/* Overlay label */}
+          <div className="absolute top-3 left-3 font-mono text-[10px] text-white/20 bg-black/40 px-2 py-1 rounded">
+            LIVE — {HUBS.length} hubs
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

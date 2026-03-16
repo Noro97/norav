@@ -7,7 +7,7 @@ import {
     useMotionValue, 
     useMotionValueEvent, 
     useScroll, 
-} from "motion/react" 
+} from "framer-motion" 
 import { useRef } from "react" 
 
 export default function ScrollLinked() { 

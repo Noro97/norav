@@ -30,6 +30,7 @@ export function Pricing({
   title = "Simple, Transparent Pricing",
   description = "Choose the plan that works for you\nAll plans include access to our platform, lead generation tools, and dedicated support.",
 }: PricingProps) {
+  void title; // used via hardcoded heading
   const [isMonthly, setIsMonthly] = useState(true);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const switchRef = useRef<HTMLButtonElement>(null);
