@@ -22,6 +22,16 @@ export const COLORS = {
   border: 'rgba(255, 255, 255, 0.08)',
 } as const
 
-export const PARTICLE_COUNT_DESKTOP = 1000
-export const PARTICLE_COUNT_TABLET = 500
-export const PARTICLE_COUNT_MOBILE = 300
+// Constellation: node counts reduced (nodes are richer with connections now)
+export const PARTICLE_COUNT_DESKTOP = 150  // was 1000
+export const PARTICLE_COUNT_TABLET = 100   // was 500
+export const PARTICLE_COUNT_MOBILE = 60    // was 300
+
+// Max connections per node per device tier
+export const MAX_NEIGHBORS_DESKTOP = 6
+export const MAX_NEIGHBORS_TABLET = 4
+export const MAX_NEIGHBORS_MOBILE = 3
+
+// Connection geometry thresholds (world units)
+export const CONNECTION_DISTANCE_THRESHOLD = 2.5  // 3D Euclidean distance
+export const CONNECTION_Z_DEPTH_RANGE = 3.0        // max |z_i - z_j| for valid connection
