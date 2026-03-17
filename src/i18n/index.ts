@@ -53,6 +53,7 @@ i18n
     lng: 'en',
     fallbackLng: 'en',
     defaultNS: 'common',
+    keySeparator: false,
     interpolation: {
       escapeValue: false,
     },
