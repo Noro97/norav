@@ -17,6 +17,7 @@ export default defineConfig({
         manualChunks: {
           three: ['three', '@react-three/fiber', '@react-three/drei'],
           gsap: ['gsap'],
+          gmaps: ['@googlemaps/js-api-loader'],
         },
       },
     },

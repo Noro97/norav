@@ -106,3 +106,37 @@ body::before {
     animation-play-state: paused;
   }
 }
+
+/* ===== GOOGLE MAPS ADVANCED MARKER PULSE ===== */
+.gmap-marker {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+.gmap-marker-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(181, 26, 43, 0.4) 0%, transparent 70%);
+  animation: gmap-pulse 2s ease-in-out infinite;
+  animation-delay: calc(var(--intensity) * -2s);
+}
+.gmap-marker-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(3px + var(--intensity) * 4px);
+  height: calc(3px + var(--intensity) * 4px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(181, 26, 43, 0.8);
+  box-shadow: 0 0 6px rgba(181, 26, 43, 0.5);
+}
+@keyframes gmap-pulse {
+  0%, 100% { transform: scale(0.7); opacity: 0.5; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Google Maps container fixes */
+.gm-style { background-color: #0d0d1f !important; }
+.gm-style * { border-style: initial; }

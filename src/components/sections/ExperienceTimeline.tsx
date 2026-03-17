@@ -16,7 +16,7 @@ const EXPERIENCES: Experience[] = [
     index: 0,
     period: '2022 — Present',
     achievementCount: 4,
-    stack: ['React', 'TypeScript', 'Mapbox GL', 'WebSocket', 'Zustand', 'Vite'],
+    stack: ['React', 'TypeScript', 'Google Maps API', 'WebSocket', 'Zustand', 'Vite'],
   },
   {
     index: 1,

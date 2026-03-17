@@ -3,7 +3,7 @@
   "title": "Engineering Impact",
   "description": "Micro case studies and measurable outcomes from real-world projects.",
   "tiles.0.title": "Performance Audit",
-  "tiles.0.description": "Reduced map re-render time by 60% via GeoJSON-layer memoization",
+  "tiles.0.description": "Standard Google Maps markers caused main-thread jank with 500+ real-time updates. Migrated to Advanced Markers with a rAF buffer — 70% scripting reduction, stable 60 FPS.",
   "tiles.1.title": "Type-Safe Architecture",
   "tiles.1.description": "End-to-end type system between Node.js backend and React frontend, eliminating 99% of runtime API errors",
   "tiles.2.title": "User Experience",

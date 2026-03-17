@@ -6,14 +6,12 @@ import { useSectionObserver } from '@/hooks/useScrollProgress'
 
 const MapView = lazy(() => import('./MapView'))
 
-// Hub cities for realistic data
+// Hub cities — Armenia + neighbouring region
 const HUBS: [number, number, string][] = [
-  [-73.97, 40.77, 'New York'], [-118.24, 34.05, 'Los Angeles'], [-87.63, 41.88, 'Chicago'],
-  [-0.12, 51.51, 'London'], [2.35, 48.86, 'Paris'], [13.41, 52.52, 'Berlin'],
-  [139.69, 35.69, 'Tokyo'], [121.47, 31.23, 'Shanghai'], [103.82, 1.35, 'Singapore'],
-  [55.27, 25.2, 'Dubai'], [-43.17, -22.91, 'Rio'], [28.98, 41.01, 'Istanbul'],
-  [37.62, 55.75, 'Moscow'], [77.21, 28.61, 'Delhi'], [151.21, -33.87, 'Sydney'],
-  [-99.13, 19.43, 'Mexico City'], [18.42, -33.93, 'Cape Town'], [126.98, 37.57, 'Seoul'],
+  [44.51, 40.18, 'Yerevan'], [44.50, 40.79, 'Vanadzor'], [43.87, 40.30, 'Gyumri'],
+  [44.72, 41.72, 'Tbilisi'], [41.64, 41.63, 'Batumi'], [43.59, 41.99, 'Kutaisi'],
+  [28.98, 41.01, 'Istanbul'], [32.86, 39.93, 'Ankara'], [35.32, 37.00, 'Adana'],
+  [51.39, 35.69, 'Tehran'], [51.66, 32.65, 'Isfahan'], [46.30, 38.08, 'Tabriz'],
 ]
 
 function generateMarkers(count: number): GeoJSON.FeatureCollection {
@@ -108,13 +106,15 @@ export function LogisticsWidget() {
     return () => cancelAnimationFrame(stressRafRef.current)
   }, [])
 
+  const handleMapLoaded = useCallback(() => setMapLoaded(true), [])
+
   const handleStressTest = useCallback(() => {
     setIsStressTesting(true)
     setMarkerCount(0)
 
-    const total = 500
+    const total = 150
     let added = 0
-    const batchSize = 50
+    const batchSize = 25
 
     const addBatch = () => {
       added += batchSize
@@ -144,40 +144,40 @@ export function LogisticsWidget() {
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
             {t('logistics.title')}
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed max-w-lg">
+          <p className="text-white/70 text-xl leading-relaxed max-w-lg">
             {t('logistics.description')}
           </p>
 
           {/* Tech stack tags */}
           <div className="flex flex-wrap gap-2">
-            {['Mapbox GL', 'WebSocket', 'GeoJSON', 'Canvas 2D', 'Zustand'].map((tag) => (
-              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+            {['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'].map((tag) => (
+              <span key={tag} className="px-3 py-1.5 text-xs font-mono text-white/50 border border-white/10 rounded">
                 {tag}
               </span>
             ))}
           </div>
 
           {/* Live metrics */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
-            <div className="glass-card p-3 text-center">
-              <div className="text-xl font-bold text-crimson-400 font-mono">{markerCount}</div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
+            <div className="glass-card p-4 text-center">
+              <div className="text-2xl font-bold text-crimson-400 font-mono">{markerCount}</div>
+              <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
             </div>
-            <div className="glass-card p-3 text-center">
-              <div className="text-xl font-bold text-crimson-400 font-mono">{latency}ms</div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.latency')}</div>
+            <div className="glass-card p-4 text-center">
+              <div className="text-2xl font-bold text-crimson-400 font-mono">{latency}ms</div>
+              <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.latency')}</div>
             </div>
-            <div className="glass-card p-3 text-center">
-              <div className="text-xl font-bold text-crimson-400 font-mono">
+            <div className="glass-card p-4 text-center">
+              <div className="text-2xl font-bold text-crimson-400 font-mono">
                 {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
               </div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
+              <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
             </div>
-            <div className="glass-card p-3 text-center">
-              <div className="text-xl font-bold text-crimson-400 font-mono">
+            <div className="glass-card p-4 text-center">
+              <div className="text-2xl font-bold text-crimson-400 font-mono">
                 {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
               </div>
-              <div className="text-[10px] text-white/40 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
+              <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
             </div>
           </div>
 
@@ -185,15 +185,15 @@ export function LogisticsWidget() {
           <button
             onClick={handleStressTest}
             disabled={isStressTesting}
-            className="group relative inline-flex items-center gap-3 px-6 py-3 bg-crimson-500/10 border border-crimson-500/30 text-crimson-400 font-mono text-sm tracking-wider uppercase rounded transition-all hover:bg-crimson-500/20 hover:border-crimson-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-crimson-500/10 border border-crimson-500/30 text-crimson-400 font-mono text-base tracking-wider uppercase rounded transition-all hover:bg-crimson-500/20 hover:border-crimson-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span className={`w-2 h-2 rounded-full ${isStressTesting ? 'bg-yellow-400 animate-pulse' : 'bg-crimson-500'}`} />
+            <span className={`w-2.5 h-2.5 rounded-full ${isStressTesting ? 'bg-yellow-400 animate-pulse' : 'bg-crimson-500'}`} />
             {isStressTesting ? t('logistics.stressTest.rendering', { count: markerCount }) : t('logistics.stressTest.run')}
           </button>
 
           {/* Live log */}
           {mapLoaded && (
-            <div className="font-mono text-[10px] text-white/20 space-y-0.5 max-h-16 overflow-hidden">
+            <div className="font-mono text-xs text-white/40 space-y-1 max-h-20 overflow-hidden">
               <div>{t('logistics.log.eventBatch', { count: wsMessages % 30 + 5 })}</div>
               <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: connections?.features.length ?? 0 })}</div>
               <div>{t('logistics.log.frameBudget', { time: (16.6 - (latency % 4)).toFixed(1) })}</div>
@@ -213,11 +213,11 @@ export function LogisticsWidget() {
             <MapView
               markers={markers}
               connections={connections}
-              onLoad={() => setMapLoaded(true)}
+              onLoad={handleMapLoaded}
             />
           </Suspense>
           {/* Overlay label */}
-          <div className="absolute top-3 left-3 font-mono text-[10px] text-white/20 bg-black/40 px-2 py-1 rounded">
+          <div className="absolute top-3 left-3 font-mono text-xs text-white/40 bg-black/50 px-2.5 py-1.5 rounded">
             {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>

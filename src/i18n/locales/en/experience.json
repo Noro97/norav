@@ -7,7 +7,7 @@
   "entries.0.type": "Full-time",
   "entries.0.description": "Leading frontend architecture for a real-time logistics platform serving 200+ enterprise clients across 18 global hubs.",
   "entries.0.achievements.0": "Architected real-time dashboard handling 50K+ WebSocket events/sec",
-  "entries.0.achievements.1": "Built Mapbox-based fleet visualization with 2000+ concurrent markers at 60fps",
+  "entries.0.achievements.1": "Built Google Maps-based fleet visualization with 2000+ concurrent markers at 60fps",
   "entries.0.achievements.2": "Reduced initial bundle size by 42% through code splitting & tree shaking",
   "entries.0.achievements.3": "Led migration from CRA to Vite, cutting CI build times from 8min to 90sec",
   "entries.1.role": "Frontend Engineer",

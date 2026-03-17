@@ -21,7 +21,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
   {
     id: 'nexusroute',
     targetSectionId: 'logistics',
-    techStack: ['Mapbox GL', 'WebSocket', 'GeoJSON', 'Canvas 2D', 'Zustand'],
+    techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
     titleKey: 'projects.nexusroute.title',
     descriptionKey: 'projects.nexusroute.description',
     ctaKey: 'projects.nexusroute.cta',
