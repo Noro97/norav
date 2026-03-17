@@ -1,11 +1,9 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 import { useTerminal } from '@/hooks/useTerminal'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function TerminalFooter() {
   const { t } = useTranslation(['terminal', 'common'])
@@ -16,17 +14,16 @@ export function TerminalFooter() {
   const { lines, input, setInput, handleKeyDown } = useTerminal()
 
   // GSAP entrance
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.terminal-window', {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  useGSAP(() => {
+    const terminal = sectionRef.current!.querySelector('.terminal-window')
+    if (terminal) {
+      gsap.fromTo(terminal,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   // Auto-scroll output
   useEffect(() => {

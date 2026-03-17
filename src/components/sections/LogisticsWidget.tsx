@@ -1,10 +1,8 @@
 import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -75,19 +73,24 @@ export function LogisticsWidget() {
   const stressRafRef = useRef(0)
 
   // GSAP entrance
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.logistics-content', {
-        opacity: 0, x: -40, duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-      gsap.from('.logistics-map', {
-        opacity: 0, x: 40, duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  useGSAP(() => {
+    const content = sectionRef.current!.querySelector('.logistics-content')
+    const map = sectionRef.current!.querySelector('.logistics-map')
+    if (content) {
+      gsap.fromTo(content,
+        { opacity: 0, x: -40 },
+        { opacity: 1, x: 0, duration: 0.8,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+      )
+    }
+    if (map) {
+      gsap.fromTo(map,
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 0.8,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   // Simulated live telemetry
   useEffect(() => {

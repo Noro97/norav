@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useLenisScroll } from '@/hooks/useLenisScroll'
@@ -75,6 +76,26 @@ function App() {
 
   useLenisScroll()
 
+  const mainRef = useRef<HTMLElement>(null)
+
+  // Refresh ScrollTrigger when lazy sections change page height
+  useEffect(() => {
+    const main = mainRef.current
+    if (!main) return
+
+    let rafId: number
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => ScrollTrigger.refresh())
+    })
+    observer.observe(main)
+
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   return (
     <>
       {/* R3F Canvas */}
@@ -87,7 +108,7 @@ function App() {
       <Navigation />
       <ScrollProgress />
 
-      <main className="relative z-10">
+      <main ref={mainRef} className="relative z-10">
         <HeroSection />
 
         <Suspense fallback={<SectionLoader />}>

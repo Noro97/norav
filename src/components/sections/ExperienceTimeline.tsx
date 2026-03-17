@@ -1,10 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 interface Experience {
   index: number
@@ -45,36 +43,26 @@ export function ExperienceTimeline() {
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('experience', sectionRef)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animate timeline line drawing
-      gsap.from('.timeline-line-fill', {
-        scaleY: 0,
-        transformOrigin: 'top',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
-          end: 'bottom 40%',
-          scrub: 1,
-        },
-      })
+  useGSAP(() => {
+    const section = sectionRef.current!
+    const timelineFill = section.querySelector('.timeline-line-fill')
+    if (timelineFill) {
+      gsap.fromTo(timelineFill,
+        { scaleY: 0 },
+        { scaleY: 1, transformOrigin: 'top', ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 60%', end: 'bottom 40%', scrub: 1 } }
+      )
+    }
 
-      // Stagger reveal each card
-      gsap.utils.toArray<HTMLElement>('.exp-card').forEach((card, i) => {
-        gsap.from(card, {
-          opacity: 0,
-          x: i % 2 === 0 ? -40 : 40,
-          duration: 0.7,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 80%',
-          },
-        })
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+    const cards = section.querySelectorAll('.exp-card')
+    cards.forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, x: i % 2 === 0 ? -40 : 40 },
+        { opacity: 1, x: 0, duration: 0.7,
+          scrollTrigger: { trigger: card, start: 'top 90%' } }
+      )
+    })
+  }, { scope: sectionRef })
 
   return (
     <section

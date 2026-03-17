@@ -1,11 +1,9 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 import type { FilterState, Product } from '@/types'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const CATEGORIES = ['Electronics', 'Clothing', 'Home', 'Sports']
 const SUBCATEGORIES: Record<string, string[]> = {
@@ -131,19 +129,24 @@ export function EcommerceWidget() {
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
 
   // GSAP entrance
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.ecom-sidebar', {
-        opacity: 0, x: -30, duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-      gsap.from('.ecom-grid', {
-        opacity: 0, y: 30, duration: 0.8, delay: 0.2,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  useGSAP(() => {
+    const sidebar = sectionRef.current!.querySelector('.ecom-sidebar')
+    const grid = sectionRef.current!.querySelector('.ecom-grid')
+    if (sidebar) {
+      gsap.fromTo(sidebar,
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+      )
+    }
+    if (grid) {
+      gsap.fromTo(grid,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.2,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   // URL sync
   useEffect(() => {

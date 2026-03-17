@@ -1,10 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function HeroSection() {
   const { t } = useTranslation('hero')
@@ -15,58 +13,57 @@ export function HeroSection() {
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const scrollHintRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  useGSAP(() => {
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-      // Animate character spans
-      if (charsRef.current.length > 0) {
-        tl.to(
-          charsRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.03,
-          },
-          0.3
-        )
-      }
-
-      tl.from(
-        subtitleRef.current,
-        { opacity: 0, y: 20, duration: 0.8 },
-        0.8
-      )
-
-      tl.from(
-        taglineRef.current,
-        { opacity: 0, y: 20, duration: 0.8 },
-        1.0
-      )
-
-      tl.from(
-        scrollHintRef.current,
-        { opacity: 0, duration: 1 },
-        1.4
-      )
-
-      // Parallax on scroll
-      gsap.to(containerRef.current, {
-        yPercent: -20,
-        opacity: 0.3,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
+    // Animate character spans (gsap.to is safe — explicit end state)
+    if (charsRef.current.length > 0) {
+      tl.to(
+        charsRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.03,
         },
-      })
-    }, containerRef)
+        0.3
+      )
+    }
 
-    return () => ctx.revert()
-  }, [])
+    tl.fromTo(
+      subtitleRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8 },
+      0.8
+    )
+
+    tl.fromTo(
+      taglineRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8 },
+      1.0
+    )
+
+    tl.fromTo(
+      scrollHintRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1 },
+      1.4
+    )
+
+    // Parallax on scroll
+    gsap.to(containerRef.current, {
+      yPercent: -20,
+      opacity: 0.3,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    })
+  }, { scope: containerRef })
 
   const heroName = t('name')
 

@@ -1,10 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 interface Education {
   index: number
@@ -41,23 +39,35 @@ export function EducationCerts() {
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('education', sectionRef)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.edu-header', {
-        opacity: 0, y: 30, duration: 0.6,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-      gsap.from('.edu-card', {
-        opacity: 0, y: 20, duration: 0.5, stagger: 0.1,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' },
-      })
-      gsap.from('.cert-card', {
-        opacity: 0, x: -20, duration: 0.4, stagger: 0.08,
-        scrollTrigger: { trigger: '.cert-grid', start: 'top 75%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  useGSAP(() => {
+    const section = sectionRef.current!
+    const header = section.querySelector('.edu-header')
+    if (header) {
+      gsap.fromTo(header.children,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
+          scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+
+    const eduCards = section.querySelectorAll('.edu-card')
+    if (eduCards.length) {
+      gsap.fromTo(eduCards,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1,
+          scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+
+    const certCards = section.querySelectorAll('.cert-card')
+    if (certCards.length) {
+      gsap.fromTo(certCards,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.4, stagger: 0.08,
+          scrollTrigger: { trigger: section, start: 'top 50%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   return (
     <section

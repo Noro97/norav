@@ -1,10 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const SOCIAL_LINKS = [
   { key: 'social.github', href: '#', icon: 'GH' },
@@ -25,23 +23,33 @@ export function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('about', sectionRef)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.about-avatar', {
-        opacity: 0, scale: 0.8, duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-      gsap.from('.about-content > *', {
-        opacity: 0, y: 30, duration: 0.6, stagger: 0.1,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-      gsap.from('.about-facts > *', {
-        opacity: 0, y: 20, duration: 0.5, stagger: 0.08,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  useGSAP(() => {
+    const section = sectionRef.current!
+    const avatar = section.querySelector('.about-avatar')
+    if (avatar) {
+      gsap.fromTo(avatar,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.8,
+          scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+    const content = section.querySelector('.about-content')
+    if (content) {
+      gsap.fromTo(content.children,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
+          scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+    const facts = section.querySelector('.about-facts')
+    if (facts) {
+      gsap.fromTo(facts.children,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08,
+          scrollTrigger: { trigger: section, start: 'top 80%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   return (
     <section

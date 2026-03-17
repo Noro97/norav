@@ -1,10 +1,9 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-
-gsap.registerPlugin(ScrollTrigger)
 
 interface Skill {
   name: string
@@ -206,21 +205,23 @@ export function SkillsMatrix() {
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 65%',
-        onEnter: () => setAnimate(true),
-      })
+  useGSAP(() => {
+    const section = sectionRef.current!
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 85%',
+      onEnter: () => setAnimate(true),
+    })
 
-      gsap.from('.skills-header', {
-        opacity: 0, y: 30, duration: 0.6,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+    const header = section.querySelector('.skills-header')
+    if (header) {
+      gsap.fromTo(header.children,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
+          scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+  }, { scope: sectionRef })
 
   const totalSkills = SKILL_DATA.reduce((s, c) => s + c.skills.length, 0)
 
