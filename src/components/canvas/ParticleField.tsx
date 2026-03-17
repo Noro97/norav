@@ -31,9 +31,9 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
       offsets[i * 3 + 1] = (Math.random() - 0.5) * 12
       offsets[i * 3 + 2] = (Math.random() - 0.5) * 8
       // Initialize positions to same as offsets for first frame
-      positions[i * 3]     = offsets[i * 3]
-      positions[i * 3 + 1] = offsets[i * 3 + 1]
-      positions[i * 3 + 2] = offsets[i * 3 + 2]
+      positions[i * 3]     = offsets[i * 3]!
+      positions[i * 3 + 1] = offsets[i * 3 + 1]!
+      positions[i * 3 + 2] = offsets[i * 3 + 2]!
       scales[i] = Math.random() * 2.0 + 0.5
       speeds[i] = Math.random() * 0.8 + 0.4
     }
@@ -158,10 +158,10 @@ geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     const posArr = nodeGeometry.attributes['position']!.array as Float32Array
 
     for (let i = 0; i < count; i++) {
-      const bx = offsets[i * 3]
-      const by = offsets[i * 3 + 1]
-      const bz = offsets[i * 3 + 2]
-      const speed = speeds[i]
+      const bx = offsets[i * 3]!
+      const by = offsets[i * 3 + 1]!
+      const bz = offsets[i * 3 + 2]!
+      const speed = speeds[i]!
 
       const t = elapsed * speed * 0.3
 
@@ -222,13 +222,13 @@ geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     alphaArr.fill(0)
 
     for (let i = 0; i < count && pairCount < maxPairs; i++) {
-      if (neighborCounts[i] >= maxNeighbors) continue
-      const ax = posArr[i * 3], ay = posArr[i * 3 + 1], az = posArr[i * 3 + 2]
+      if (neighborCounts[i]! >= maxNeighbors) continue
+      const ax = posArr[i * 3]!, ay = posArr[i * 3 + 1]!, az = posArr[i * 3 + 2]!
 
       for (let j = i + 1; j < count && pairCount < maxPairs; j++) {
-        if (neighborCounts[j] >= maxNeighbors) continue
+        if (neighborCounts[j]! >= maxNeighbors) continue
 
-        const bx = posArr[j * 3], by = posArr[j * 3 + 1], bz = posArr[j * 3 + 2]
+        const bx = posArr[j * 3]!, by = posArr[j * 3 + 1]!, bz = posArr[j * 3 + 2]!
 
         // Z-depth filter
         if (Math.abs(az - bz) >= CONNECTION_Z_DEPTH_RANGE) continue
@@ -239,14 +239,14 @@ geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
 
         // Record connection
         const off3 = pairCount * 3
-        startArr[off3] = ax; startArr[off3 + 1] = ay; startArr[off3 + 2] = az
-        endArr[off3]   = bx; endArr[off3 + 1]   = by; endArr[off3 + 2]   = bz
+        startArr[off3]! = ax; startArr[off3 + 1]! = ay; startArr[off3 + 2]! = az
+        endArr[off3]!   = bx; endArr[off3 + 1]!  = by; endArr[off3 + 2]!  = bz
 
         // Alpha fades with distance
         alphaArr[pairCount] = (1 - d / CONNECTION_DISTANCE_THRESHOLD) * 0.4
 
-        neighborCounts[i]++
-        neighborCounts[j]++
+        neighborCounts[i]!++
+        neighborCounts[j]!++
         pairCount++
       }
     }
