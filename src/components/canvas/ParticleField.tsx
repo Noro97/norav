@@ -47,8 +47,7 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
     const posAttr = new THREE.BufferAttribute(positions, 3)
     posAttr.setUsage(THREE.DynamicDrawUsage)
     geo.setAttribute('position', posAttr)
-    geo.setAttribute('aOffset', new THREE.BufferAttribute(offsets, 3))
-    geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
+geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     geo.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1))
     return geo
   }, [positions, offsets, scales, speeds])
@@ -151,7 +150,7 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
 
     // Update connection uniforms
     const connMaterial = connectionMeshRef.current.material as THREE.ShaderMaterial
-    connMaterial.uniforms['uCollapsed']!.value = collapsed
+    connectionUniforms['uCollapsed']!.value = collapsed
     connMaterial.uniforms['uBurst']!.value = burst
     ;(connMaterial.uniforms['uMouse']!.value as THREE.Vector2).set(mx, my)
 
@@ -213,7 +212,7 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
     // --- Neighbor / connection computation ---
     neighborCounts.fill(0)
     let pairCount = 0
-    const maxPairs = Math.min(maxInstances, Math.floor(count * maxNeighbors / 2))
+    const maxPairs = maxInstances
 
     const startArr = instanceStartAttr.array as Float32Array
     const endArr = instanceEndAttr.array as Float32Array
