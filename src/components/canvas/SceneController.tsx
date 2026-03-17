@@ -6,6 +6,9 @@ import {
   PARTICLE_COUNT_DESKTOP,
   PARTICLE_COUNT_TABLET,
   PARTICLE_COUNT_MOBILE,
+  MAX_NEIGHBORS_DESKTOP,
+  MAX_NEIGHBORS_TABLET,
+  MAX_NEIGHBORS_MOBILE,
 } from '@/lib/constants'
 
 const ParticleField = lazy(() =>
@@ -25,10 +28,16 @@ function Scene() {
       ? PARTICLE_COUNT_TABLET
       : PARTICLE_COUNT_DESKTOP
 
+  const maxNeighbors = isMobile
+    ? MAX_NEIGHBORS_MOBILE
+    : isTablet
+      ? MAX_NEIGHBORS_TABLET
+      : MAX_NEIGHBORS_DESKTOP
+
   return (
     <>
       <Suspense fallback={null}>
-        <ParticleField count={count} />
+        <ParticleField count={count} maxNeighbors={maxNeighbors} />
         <GridPlane />
       </Suspense>
     </>
