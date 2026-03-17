@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { createNoise3D } from 'simplex-noise'
@@ -47,10 +47,12 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
     const posAttr = new THREE.BufferAttribute(positions, 3)
     posAttr.setUsage(THREE.DynamicDrawUsage)
     geo.setAttribute('position', posAttr)
-geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
+    geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     geo.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1))
     return geo
-  }, [positions, offsets, scales, speeds])
+  }, [positions, scales, speeds])
+
+  useEffect(() => () => { nodeGeometry.dispose() }, [nodeGeometry])
 
   // Connection geometry — pre-allocated instanced buffer
   const maxInstances = Math.floor(count * maxNeighbors / 2)
@@ -101,6 +103,8 @@ geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     }
   }, [maxInstances])
 
+  useEffect(() => () => { connectionGeometry.dispose() }, [connectionGeometry])
+
   const nodeUniforms = useMemo(() => ({
     uTime:        { value: 0 },
     uMouse:       { value: new THREE.Vector2(0, 0) },
@@ -149,10 +153,9 @@ geo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
     ;(nodeMaterial.uniforms['uMouse']!.value as THREE.Vector2).set(mx, my)
 
     // Update connection uniforms
-    const connMaterial = connectionMeshRef.current.material as THREE.ShaderMaterial
     connectionUniforms['uCollapsed']!.value = collapsed
-    connMaterial.uniforms['uBurst']!.value = burst
-    ;(connMaterial.uniforms['uMouse']!.value as THREE.Vector2).set(mx, my)
+    connectionUniforms['uBurst']!.value = burst
+    ;(connectionUniforms['uMouse']!.value as THREE.Vector2).set(mx, my)
 
     // --- CPU displacement ---
     const posArr = nodeGeometry.attributes['position']!.array as Float32Array
