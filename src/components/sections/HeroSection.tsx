@@ -1,8 +1,10 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useAppStore } from '@/store/useAppStore'
 
 export function HeroSection() {
   const { t } = useTranslation('hero')
@@ -63,7 +65,23 @@ export function HeroSection() {
         scrub: true,
       },
     })
+
+    // Write scroll progress to store for HeroMonolith fade
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: 'bottom top',
+      onUpdate: (self) => useAppStore.getState().setHeroScrollProgress(self.progress),
+    })
   }, { scope: containerRef })
+
+  const handleClick = () => {
+    const store = useAppStore.getState()
+    if (!store.heroExploded) {
+      store.setHeroExploded(true)
+      store.triggerParticleBurst()
+    }
+  }
 
   const heroName = t('name')
 
@@ -72,6 +90,8 @@ export function HeroSection() {
       id="hero"
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center"
+      onClick={handleClick}
+      style={{ cursor: 'pointer' }}
     >
       <div className="relative z-10 max-w-4xl mx-auto">
         <p
