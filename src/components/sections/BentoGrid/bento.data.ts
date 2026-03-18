@@ -1,3 +1,8 @@
+export interface VideoSource {
+  webm: string
+  mp4: string
+}
+
 export interface BentoProject {
   id: string
   targetSectionId: string
@@ -5,6 +10,7 @@ export interface BentoProject {
   titleKey: string
   descriptionKey: string
   ctaKey: string
+  videoSrc?: VideoSource
 }
 
 export interface BentoMetric {
@@ -25,6 +31,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.nexusroute.title',
     descriptionKey: 'projects.nexusroute.description',
     ctaKey: 'projects.nexusroute.cta',
+    videoSrc: { webm: '/videos/nexusroute.webm', mp4: '/videos/nexusroute.mp4' },
   },
   {
     id: 'merchforge',
@@ -33,6 +40,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.merchforge.title',
     descriptionKey: 'projects.merchforge.description',
     ctaKey: 'projects.merchforge.cta',
+    videoSrc: { webm: '/videos/merchforge.webm', mp4: '/videos/merchforge.mp4' },
   },
   {
     id: 'filtergraph',
@@ -41,6 +49,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.filtergraph.title',
     descriptionKey: 'projects.filtergraph.description',
     ctaKey: 'projects.filtergraph.cta',
+    videoSrc: { webm: '/videos/filtergraph.webm', mp4: '/videos/filtergraph.mp4' },
   },
 ]
 

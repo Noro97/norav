@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import type { BentoProject } from './bento.data'
 
 interface BentoProjectTileProps {
@@ -10,6 +11,39 @@ interface BentoProjectTileProps {
 
 export function BentoProjectTile({ project, className = '', index }: BentoProjectTileProps) {
   const { t } = useTranslation('bento')
+  const tileRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [inViewport, setInViewport] = useState(false)
+
+  const { scrollYProgress } = useScroll({
+    target: tileRef,
+    offset: ['start end', 'end start'],
+  })
+  const y = useTransform(scrollYProgress, [0, 1], [20, -20])
+
+  useEffect(() => {
+    if (!tileRef.current || !project.videoSrc) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setInViewport(entry!.isIntersecting),
+      { threshold: 0.1 }
+    )
+    observer.observe(tileRef.current)
+    return () => observer.disconnect()
+  }, [project.videoSrc])
+
+  const handleMouseEnter = () => {
+    if (videoRef.current && inViewport) {
+      videoRef.current.play().catch(() => {})
+      videoRef.current.style.opacity = '0.15'
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.style.opacity = '0'
+      setTimeout(() => videoRef.current?.pause(), 300)
+    }
+  }
 
   const handleScrollTo = useCallback(() => {
     document.getElementById(project.targetSectionId)?.scrollIntoView({ behavior: 'smooth' })
@@ -19,6 +53,10 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
   return (
     <div
+      ref={tileRef}
+      data-cursor={project.videoSrc ? 'play' : undefined}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
     >
       {/* Abstract gradient mesh — unique per tile via hue rotation */}
@@ -29,10 +67,25 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         }}
       />
 
+      {project.videoSrc && inViewport && (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-400 pointer-events-none"
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+        >
+          <source src={project.videoSrc.webm} type="video/webm" />
+          <source src={project.videoSrc.mp4} type="video/mp4" />
+        </video>
+      )}
+
       {/* Top accent line */}
       <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent" />
 
-      <div className="relative p-6 md:p-8">
+      <motion.div className="relative p-6 md:p-8" style={{ y }}>
         {/* Case study number — large watermark */}
         <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-white/[0.02] select-none pointer-events-none tracking-tighter">
           {caseNum}
@@ -93,7 +146,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
             <path d="M7 17l9.2-9.2M17 17V7H7" />
           </svg>
         </button>
-      </div>
+      </motion.div>
 
       {/* Bottom edge glow on hover */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-crimson-500/0 to-transparent group-hover:via-crimson-500/30 transition-all duration-700" />
