@@ -17,6 +17,9 @@ const ParticleField = lazy(() =>
 const GridPlane = lazy(() =>
   import('./GridPlane').then((m) => ({ default: m.GridPlane }))
 )
+const HeroMonolith = lazy(() =>
+  import('./HeroMonolith').then((m) => ({ default: m.HeroMonolith }))
+)
 
 function Scene() {
   const isMobile = useAppStore((s) => s.isMobile)
@@ -39,6 +42,9 @@ function Scene() {
       <Suspense fallback={null}>
         <ParticleField count={count} maxNeighbors={maxNeighbors} />
         <GridPlane />
+      </Suspense>
+      <Suspense fallback={null}>
+        <HeroMonolith />
       </Suspense>
     </>
   )
