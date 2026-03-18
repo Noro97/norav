@@ -1,4 +1,6 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 const ICONS: Record<string, React.ReactNode> = {
   zap: (
@@ -29,12 +31,20 @@ interface BentoMicroTileProps {
 
 export function BentoMicroTile({ index, icon }: BentoMicroTileProps) {
   const { t } = useTranslation('bento')
+  const tileRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: tileRef,
+    offset: ['start end', 'end start'],
+  })
+  const y = useTransform(scrollYProgress, [0, 1], [20, -20])
 
   return (
-    <div className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.025] to-transparent backdrop-blur-xl p-5 md:p-6 flex flex-col transition-all duration-500 hover:border-crimson-500/15">
+    <div ref={tileRef} className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.025] to-transparent backdrop-blur-xl p-5 md:p-6 flex flex-col transition-all duration-500 hover:border-crimson-500/15">
       {/* Ambient glow */}
       <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-crimson-500/[0.03] blur-2xl group-hover:bg-crimson-500/[0.06] transition-all duration-700 pointer-events-none" />
 
+      <motion.div style={{ y }}>
       {/* Icon with glow ring */}
       <div className="relative w-8 h-8 rounded-lg bg-crimson-500/[0.08] border border-crimson-500/15 flex items-center justify-center text-crimson-400/70 mb-4 group-hover:border-crimson-500/30 group-hover:text-crimson-400 transition-all duration-300">
         {ICONS[icon] ?? ICONS.zap}
@@ -55,6 +65,7 @@ export function BentoMicroTile({ index, icon }: BentoMicroTileProps) {
       <p className="text-[11px] text-white/30 leading-relaxed mt-auto">
         {t(`tiles.${index}.description`)}
       </p>
+      </motion.div>
 
       {/* Corner accent */}
       <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
