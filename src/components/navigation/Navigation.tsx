@@ -3,8 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
 
+// Map widget section IDs to their parent nav section
+const NAV_SECTION_MAP: Record<string, string> = {
+  ecommerce: 'logistics',
+  omnigrid: 'logistics',
+  merch: 'logistics',
+  vibecoding: 'overview',
+}
+
 export function Navigation() {
-  const activeSection = useAppStore((s) => s.activeSection)
+  const rawActiveSection = useAppStore((s) => s.activeSection)
+  const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
   const { t, i18n } = useTranslation('common')
 
   const handleClick = useCallback((id: string) => {

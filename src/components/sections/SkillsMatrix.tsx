@@ -27,6 +27,8 @@ const SKILL_DATA: SkillCategory[] = [
       { name: 'Next.js', level: 85, years: 4 },
       { name: 'Vue.js', level: 70, years: 2 },
       { name: 'HTML / CSS', level: 95, years: 7 },
+      { name: 'TanStack Query', level: 85, years: 3 },
+      { name: 'TanStack Table', level: 80, years: 2 },
     ],
   },
   {
@@ -239,7 +241,7 @@ export function SkillsMatrix() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
           {/* Skill category cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
             {SKILL_DATA.map((category, catIdx) => (
               <div
                 key={category.nameKey}

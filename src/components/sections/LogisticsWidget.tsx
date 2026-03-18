@@ -94,10 +94,10 @@ export function LogisticsWidget() {
   useEffect(() => {
     if (!mapLoaded) return
     const interval = setInterval(() => {
-      setWsMessages((p) => p + Math.floor(Math.random() * 8 + 2))
+      setWsMessages((p) => p + Math.floor(Math.random() * 3 + 1))
       setLatency(Math.round(8 + Math.random() * 12))
-      setThroughput((p) => p + Math.floor(Math.random() * 150 + 50))
-    }, 300)
+      setThroughput((p) => p + Math.floor(Math.random() * 30 + 10))
+    }, 1000)
     return () => clearInterval(interval)
   }, [mapLoaded])
 
@@ -112,9 +112,9 @@ export function LogisticsWidget() {
     setIsStressTesting(true)
     setMarkerCount(0)
 
-    const total = 150
+    const total = 40
     let added = 0
-    const batchSize = 25
+    const batchSize = 10
 
     const addBatch = () => {
       added += batchSize

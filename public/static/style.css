@@ -52,3 +52,8 @@ body {
   border-color: rgba(181, 26, 43, 0.15);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(181, 26, 43, 0.05);
 }
+
+@keyframes copiedPop {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-30px) scale(0.7); }
+}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 
-const WIDGET_SECTIONS = new Set(['logistics', 'merch', 'ecommerce'])
+const WIDGET_SECTIONS = new Set(['logistics', 'merch', 'ecommerce', 'omnigrid'])
 
 /**
  * Each section calls this hook with its id.
@@ -25,7 +25,7 @@ export function useSectionObserver(sectionId: string, ref: React.RefObject<HTMLE
         })
       },
       {
-        rootMargin: '-45% 0px -45% 0px',
+        rootMargin: '-35% 0px -35% 0px',
         threshold: 0,
       }
     )

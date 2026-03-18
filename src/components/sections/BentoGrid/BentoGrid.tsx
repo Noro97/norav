@@ -11,6 +11,7 @@ import { BentoMarquee } from './BentoMarquee'
 import { ProofVerificationTile } from './ProofVerificationTile'
 import { ProofEconomyTile } from './ProofEconomyTile'
 import { ProofGamificationTile } from './ProofGamificationTile'
+import { OmniGridBentoTile } from './OmniGridBentoTile'
 
 export function BentoGrid() {
   const { t } = useTranslation('bento')
@@ -77,11 +78,15 @@ export function BentoGrid() {
           {/* Row 4: FilterGraph (full width) */}
           <BentoProjectTile project={BENTO_PROJECTS[2]!} index={2} className="md:col-span-3" />
 
-          {/* Row 5: ProofVerification (2col) + ProofEconomy (1col) */}
+          {/* Row 5: Cache Hit-Rate (1col) + OmniGrid (2col) */}
+          <BentoMicroTile index={MICRO_TILES[4]!.index} icon={MICRO_TILES[4]!.icon} />
+          <OmniGridBentoTile className="md:col-span-2" />
+
+          {/* Row 6: ProofVerification (2col) + ProofEconomy (1col) */}
           <ProofVerificationTile className="md:col-span-2" />
           <ProofEconomyTile />
 
-          {/* Row 6: ProofMicro (1col) + ProofGamification (2col) */}
+          {/* Row 7: AI Liveness (1col) + ProofGamification (2col) */}
           <BentoMicroTile index={MICRO_TILES[3]!.index} icon={MICRO_TILES[3]!.icon} />
           <ProofGamificationTile className="md:col-span-2" />
         </div>
