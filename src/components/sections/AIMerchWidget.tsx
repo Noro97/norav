@@ -337,7 +337,7 @@ export function AIMerchWidget() {
                 <img
                   src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop"
                   alt=""
-                  className="w-full h-full object-cover opacity-30"
+                  className="w-full h-full object-cover opacity-60"
                   loading="lazy"
                 />
                 <div

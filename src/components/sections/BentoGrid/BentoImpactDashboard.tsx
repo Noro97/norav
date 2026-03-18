@@ -57,7 +57,7 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
             style={{ backgroundColor: metric.color }}
           />
         </span>
-        <span className="font-mono text-[10px] text-white/30 uppercase tracking-[0.15em]">
+        <span className="font-mono text-[10px] text-white/50 uppercase tracking-[0.15em]">
           {t(metric.labelKey)}
         </span>
       </div>
@@ -65,16 +65,16 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
       {/* Value */}
       <div className="relative flex items-baseline gap-1">
         {metric.prefix && (
-          <span className="font-mono text-base text-white/30 font-light">{metric.prefix}</span>
+          <span className="font-mono text-base text-white/50 font-light">{metric.prefix}</span>
         )}
         <motion.span className="font-mono text-3xl font-black text-white tabular-nums tracking-tight">
           {display}
         </motion.span>
-        <span className="font-mono text-xs text-white/25 font-medium ml-0.5">{metric.suffix}</span>
+        <span className="font-mono text-xs text-white/45 font-medium ml-0.5">{metric.suffix}</span>
       </div>
 
       {/* Detail line */}
-      <p className="font-mono text-[9px] text-white/15 mt-2 tracking-wide uppercase">
+      <p className="font-mono text-[9px] text-white/35 mt-2 tracking-wide uppercase">
         {t(metric.detailKey)}
       </p>
 
@@ -117,7 +117,7 @@ export function BentoImpactDashboard({ metrics }: BentoImpactDashboardProps) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
             </span>
-            <h3 className="font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+            <h3 className="font-mono text-[11px] text-white/60 uppercase tracking-[0.2em]">
               {t('dashboard.title')}
             </h3>
           </div>

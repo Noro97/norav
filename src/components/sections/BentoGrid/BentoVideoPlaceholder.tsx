@@ -74,7 +74,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
       ref={canvasRef}
       aria-hidden="true"
       className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500"
-      style={{ opacity: active ? 0.2 : 0 }}
+      style={{ opacity: active ? 0.4 : 0 }}
     />
   )
 }

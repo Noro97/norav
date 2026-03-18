@@ -260,7 +260,7 @@ export function EcommerceWidget() {
                       <span className={`text-sm font-mono ${isActive ? 'text-white/80' : 'text-white/50'}`}>
                         {cat}
                       </span>
-                      <span className="ml-auto text-[10px] font-mono text-white/20">{count}</span>
+                      <span className="ml-auto text-[10px] font-mono text-white/40">{count}</span>
                     </button>
                   )
                 })}
@@ -365,10 +365,10 @@ export function EcommerceWidget() {
                     className="aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 relative overflow-hidden"
                     style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                   >
-                    <span className="font-mono text-[10px] text-white/15 uppercase tracking-wider">
+                    <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
                       {product.category}
                     </span>
-                    <span className="font-mono text-xs text-white/25 group-hover:text-white/50 transition-colors">
+                    <span className="font-mono text-xs text-white/45 group-hover:text-white/70 transition-colors">
                       {product.subcategory}
                     </span>
                   </div>
@@ -379,7 +379,7 @@ export function EcommerceWidget() {
                     <span className="font-mono text-sm font-medium text-crimson-400">
                       ${product.price.toFixed(2)}
                     </span>
-                    <span className="font-mono text-[9px] text-white/15 uppercase">
+                    <span className="font-mono text-[9px] text-white/40 uppercase">
                       #{String(product.id).padStart(3, '0')}
                     </span>
                   </div>
@@ -389,7 +389,7 @@ export function EcommerceWidget() {
 
             {filteredProducts.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
-                <span className="font-mono text-sm text-white/20">{t('projects:ecommerce.noProducts')}</span>
+                <span className="font-mono text-sm text-white/40">{t('projects:ecommerce.noProducts')}</span>
                 <button
                   onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
                   className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 mt-2 transition-colors"

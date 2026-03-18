@@ -71,7 +71,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 pointer-events-none"
           style={{
             backgroundImage: `url(${project.imageSrc})`,
-            opacity: isHovered ? 0.12 : 0.05,
+            opacity: isHovered ? 0.3 : 0.12,
           }}
         />
       )}
@@ -125,7 +125,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-white/40 leading-relaxed mb-6 max-w-lg">
+        <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-lg">
           {t(project.descriptionKey)}
         </p>
 
@@ -134,7 +134,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-[10px] font-mono text-white/25 bg-white/[0.02] border border-white/[0.05] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-[10px] font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>
