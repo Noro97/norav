@@ -2,6 +2,7 @@
 
 /* ===== THEME ===== */
 @theme {
+  --font-family-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
   --font-family-sans: 'Inter', system-ui, sans-serif;
   --font-family-mono: 'JetBrains Mono', monospace;
 

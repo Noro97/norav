@@ -81,7 +81,7 @@ export function HeroSection() {
           {t('subtitle')}
         </p>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-none mb-8">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8" style={{ fontFamily: 'var(--font-family-display)' }}>
           {heroName.split('').map((char, i) => (
             <span
               key={i}
