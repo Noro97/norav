@@ -140,3 +140,10 @@ body::before {
 /* Google Maps container fixes */
 .gm-style { background-color: #0d0d1f !important; }
 .gm-style * { border-style: initial; }
+
+/* ===== CUSTOM CURSOR — hide native cursor on fine-pointer devices ===== */
+html, body { cursor: none; }
+a, button, [role="button"], input, select, textarea { cursor: none; }
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  html, body, a, button, [role="button"], input, select, textarea { cursor: auto; }
+}

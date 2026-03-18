@@ -6,6 +6,7 @@ import { useLenisScroll } from '@/hooks/useLenisScroll'
 import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { HeroSection } from '@/components/sections/HeroSection'
+import { CursorManager } from '@/components/cursor/CursorManager'
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -98,6 +99,8 @@ function App() {
 
   return (
     <>
+      <CursorManager />
+
       {/* R3F Canvas */}
       {!prefersReducedMotion && (
         <Suspense fallback={null}>
