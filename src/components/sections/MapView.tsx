@@ -298,6 +298,7 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
       ref={mapDivRef}
       className="absolute inset-0"
       style={{ backgroundColor: '#1d2c4d' }}
+      data-cursor="target"
     />
   )
 }

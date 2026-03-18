@@ -202,7 +202,7 @@ export function LogisticsWidget() {
         </div>
 
         {/* Right — Map */}
-        <div className="logistics-map relative aspect-[4/3] rounded-xl overflow-hidden border border-white/8 bg-[#0d0d1f]">
+        <div className="logistics-map relative aspect-[4/3] rounded-xl overflow-hidden border border-white/8 bg-[#0d0d1f]" data-cursor="target">
           <Suspense
             fallback={
               <div className="absolute inset-0 flex items-center justify-center">

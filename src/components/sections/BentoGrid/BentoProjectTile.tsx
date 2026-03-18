@@ -73,6 +73,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           onClick={handleScrollTo}
           aria-label={`${t(project.ctaKey)} — ${t(project.titleKey)}`}
           className="inline-flex items-center gap-2.5 text-[11px] font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
+          data-cursor="link"
         >
           <span className="relative">
             {t(project.ctaKey)}
