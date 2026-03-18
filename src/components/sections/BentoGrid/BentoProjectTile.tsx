@@ -55,7 +55,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
   return (
     <div
       ref={tileRef}
-      data-cursor={project.videoSrc ? 'play' : undefined}
+      data-cursor={project.videoSrc && inViewport ? 'play' : undefined}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
