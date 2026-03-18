@@ -147,18 +147,28 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   const dataLayerRef = useRef<google.maps.Data | null>(null)
   const lastUpdateRef = useRef(0)
   const pendingRafRef = useRef(0)
-  const [error, setError] = useState<string | null>(null)
+  const [authFailed, setAuthFailed] = useState(false)
 
   // Initialize map once
   useEffect(() => {
     let cancelled = false
 
+    // Google Maps calls this global when API key auth fails
+    ;(window as unknown as Record<string, unknown>).gm_authFailure = () => {
+      if (!cancelled) {
+        setAuthFailed(true)
+        onLoadRef.current()
+      }
+    }
+
     async function init() {
       try {
         await importLibrary('maps')
-      } catch (e) {
-        console.error('[MapView] Failed to load Google Maps:', e)
-        if (!cancelled) setError('Failed to load Google Maps. Check API key and domain restrictions.')
+      } catch {
+        if (!cancelled) {
+          setAuthFailed(true)
+          onLoadRef.current()
+        }
         return
       }
       if (cancelled || !mapDivRef.current) return
@@ -300,10 +310,15 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
     scheduleUpdate(markers, connections)
   }, [markers, connections, scheduleUpdate])
 
-  if (error) {
+  if (authFailed) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-[#1d2c4d]">
-        <p className="text-white/50 text-sm font-mono text-center px-6">{error}</p>
+      <div className="absolute inset-0 bg-[#1d2c4d]" data-cursor="target">
+        <img
+          src="/assets/img/world-map.webp"
+          alt="Map"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1d2c4d] via-transparent to-[#1d2c4d]/80" />
       </div>
     )
   }
