@@ -23,9 +23,9 @@ export const COLORS = {
 } as const
 
 // Constellation: node counts reduced (nodes are richer with connections now)
-export const PARTICLE_COUNT_DESKTOP = 150  // was 1000
-export const PARTICLE_COUNT_TABLET = 100   // was 500
-export const PARTICLE_COUNT_MOBILE = 60    // was 300
+export const PARTICLE_COUNT_DESKTOP = 80   // was 150
+export const PARTICLE_COUNT_TABLET = 50    // was 100
+export const PARTICLE_COUNT_MOBILE = 30    // was 60
 
 // Max connections per node per device tier
 export const MAX_NEIGHBORS_DESKTOP = 6
@@ -52,9 +52,9 @@ export const MAGNETIC_STRENGTH = 0.3
 export const MAGNETIC_TEXT_STRENGTH = 0.15
 
 // Floating artifacts
-export const ARTIFACT_COUNT_DESKTOP = 12
-export const ARTIFACT_COUNT_TABLET = 8
-export const ARTIFACT_COUNT_MOBILE = 4
+export const ARTIFACT_COUNT_DESKTOP = 6
+export const ARTIFACT_COUNT_TABLET = 4
+export const ARTIFACT_COUNT_MOBILE = 2
 export const ARTIFACT_SPEED_MIN = 0.1
 export const ARTIFACT_SPEED_MAX = 0.3
 

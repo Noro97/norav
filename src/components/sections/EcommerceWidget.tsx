@@ -4,8 +4,9 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 import type { FilterState, Product } from '@/types'
+import { ProductDetailModal } from './ProductDetailModal'
 
-const CATEGORY_COLORS: Record<string, string> = {
+export const CATEGORY_COLORS: Record<string, string> = {
   Electronics: 'from-blue-900/40 to-blue-800/10',
   Clothing: 'from-crimson-900/40 to-crimson-800/10',
   Home: 'from-amber-900/40 to-amber-800/10',
@@ -23,18 +24,18 @@ const SUBCATEGORIES: Record<string, string[]> = {
 }
 
 const PRODUCT_NAMES: Record<string, string[]> = {
-  Phones: ['Pixel Pro 9', 'Galaxy S25', 'iPhone 16', 'OnePlus 13', 'Xperia V', 'Nothing Phone 3'],
-  Laptops: ['MacBook Air M4', 'ThinkPad X1', 'Surface Pro', 'XPS 15', 'Gram 17', 'ZenBook S'],
-  Audio: ['AirPods Max', 'WH-1000XM6', 'Momentum 5', 'Buds Pro 3', 'QuietComfort', 'Pixel Buds'],
-  Shirts: ['Oxford Classic', 'Linen Breeze', 'Tech Polo', 'Merino Crew', 'Flannel Check', 'Henley Knit'],
-  Pants: ['Chino Slim', 'Cargo Tech', 'Jogger Pro', 'Denim Raw', 'Trouser Wool', 'Short Board'],
-  Shoes: ['Runner GT', 'Trail X3', 'Loafer Suede', 'Boot Chelsea', 'Sneaker V2', 'Sandal Sport'],
-  Kitchen: ['Brew Station', 'Chef Knife Set', 'Cast Iron Pro', 'Blender Turbo', 'Rice Cooker', 'Air Fryer XL'],
-  Furniture: ['Desk Stand Up', 'Chair Ergo Pro', 'Shelf Modular', 'Lamp Arc', 'Sofa Compact', 'Bed Frame Oak'],
-  Decor: ['Planter Geo', 'Mirror Round', 'Clock Minimal', 'Rug Woven', 'Vase Ceramic', 'Print Abstract'],
-  Fitness: ['Dumbbell Set', 'Yoga Mat Pro', 'Resistance Kit', 'Jump Rope', 'Kettlebell', 'Bench Flat'],
-  Outdoor: ['Tent Ultra', 'Pack 40L', 'Hammock Lite', 'Headlamp 600', 'Flask Insulated', 'Trekking Poles'],
-  Team: ['Jersey Custom', 'Ball Match', 'Goal Net', 'Whistle Pro', 'Shin Guard', 'Glove Keeper'],
+  Phones: ['Pixel Pro 9', 'Galaxy S25', 'iPhone 16', 'OnePlus 13', 'Xperia V'],
+  Laptops: ['MacBook Air M4', 'ThinkPad X1', 'Surface Pro', 'XPS 15', 'Gram 17'],
+  Audio: ['AirPods Max', 'WH-1000XM6', 'Momentum 5', 'Buds Pro 3', 'QuietComfort'],
+  Shirts: ['Oxford Classic', 'Linen Breeze', 'Tech Polo', 'Merino Crew'],
+  Pants: ['Chino Slim', 'Cargo Tech', 'Jogger Pro', 'Denim Raw'],
+  Shoes: ['Runner GT', 'Trail X3', 'Loafer Suede', 'Boot Chelsea'],
+  Kitchen: ['Brew Station', 'Chef Knife Set', 'Cast Iron Pro', 'Blender Turbo', 'Rice Cooker'],
+  Furniture: ['Desk Stand Up', 'Chair Ergo Pro', 'Shelf Modular', 'Lamp Arc', 'Sofa Compact'],
+  Decor: ['Planter Geo', 'Mirror Round', 'Clock Minimal', 'Rug Woven', 'Vase Ceramic'],
+  Fitness: ['Dumbbell Set', 'Yoga Mat Pro', 'Resistance Kit', 'Jump Rope'],
+  Outdoor: ['Tent Ultra', 'Pack 40L', 'Hammock Lite', 'Headlamp 600'],
+  Team: ['Jersey Custom', 'Ball Match', 'Goal Net', 'Whistle Pro'],
 }
 
 const MOCK_PRODUCTS: Product[] = (() => {
@@ -130,6 +131,7 @@ export function EcommerceWidget() {
   useSectionObserver('ecommerce', sectionRef)
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
   const [page, setPage] = useState(0)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   // GSAP entrance
   useGSAP(() => {
@@ -217,7 +219,7 @@ export function EcommerceWidget() {
             {t('projects:ecommerce.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
-            {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo'].map((tag) => (
+            {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo', 'Modal', 'Multi-step Form', 'Confetti'].map((tag) => (
               <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
                 {tag}
               </span>
@@ -225,9 +227,9 @@ export function EcommerceWidget() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-stretch">
           {/* Sidebar */}
-          <div className="ecom-sidebar space-y-5">
+          <div className="ecom-sidebar flex flex-col gap-5">
             {/* Dependency Graph */}
             <div className="glass-card p-4">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
@@ -335,7 +337,7 @@ export function EcommerceWidget() {
             </div>
 
             {/* URL params display */}
-            <div className="glass-card p-4">
+            <div className="glass-card p-4 flex-1">
               <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
@@ -367,6 +369,7 @@ export function EcommerceWidget() {
                 {paginatedProducts.map((product) => (
                   <div
                     key={product.id}
+                    onClick={() => setSelectedProduct(product)}
                     className="glass-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
                   >
                     <div
@@ -442,6 +445,12 @@ export function EcommerceWidget() {
           </div>
         </div>
       </div>
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
     </section>
   )
 }

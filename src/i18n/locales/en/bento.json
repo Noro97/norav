@@ -70,6 +70,13 @@
   "proof.architecture.gemini": "Gemini API",
   "proof.architecture.db": "DB Update",
 
+  "tiles.4.title": "Cache Hit-Rate",
+  "tiles.4.description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy.",
+
+  "projects.omnigrid.title": "OmniGrid",
+  "projects.omnigrid.description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management.",
+  "projects.omnigrid.cta": "View Case Study",
+
   "marquee.principles.0": "Composition over Inheritance",
   "marquee.principles.1": "DRY but not die",
   "marquee.principles.2": "Performance is a Feature",

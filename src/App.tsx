@@ -66,6 +66,11 @@ const EcommerceWidget = lazy(() =>
     default: m.EcommerceWidget,
   }))
 )
+const OmniGridWidget = lazy(() =>
+  import('@/components/sections/OmniGrid/OmniGridWidget').then((m) => ({
+    default: m.OmniGridWidget,
+  }))
+)
 const EducationCerts = lazy(() =>
   import('@/components/sections/EducationCerts').then((m) => ({
     default: m.EducationCerts,
@@ -155,6 +160,7 @@ function App() {
           <LogisticsWidget />
           <AIMerchWidget />
           <EcommerceWidget />
+          <OmniGridWidget />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>

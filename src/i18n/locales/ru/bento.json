@@ -70,6 +70,13 @@
   "proof.architecture.gemini": "Gemini API",
   "proof.architecture.db": "Обновление БД",
 
+  "tiles.4.title": "Cache Hit-Rate",
+  "tiles.4.description": "Виртуализированная таблица на 10K+ строк с суб-миллисекундными кэш-запросами через стратегию TanStack Query stale-while-revalidate.",
+
+  "projects.omnigrid.title": "OmniGrid",
+  "projects.omnigrid.description": "Оркестрация данных корпоративного уровня с headless-архитектурой таблиц и интеллектуальным управлением кэшем.",
+  "projects.omnigrid.cta": "Смотреть кейс",
+
   "marquee.principles.0": "Композиция вместо наследования",
   "marquee.principles.1": "DRY, но без фанатизма",
   "marquee.principles.2": "Производительность — это фича",

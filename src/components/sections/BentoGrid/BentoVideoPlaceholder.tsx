@@ -6,6 +6,7 @@ const VARIANT_COLORS: Record<BentoVariant, { primary: string; secondary: string 
   merch: { primary: '181, 26, 43', secondary: '120, 20, 50' },        // crimson
   ecommerce: { primary: '34, 197, 94', secondary: '22, 101, 52' },    // green
   proof: { primary: '181, 26, 43', secondary: '140, 21, 35' },        // crimson
+  omnigrid: { primary: '6, 182, 212', secondary: '8, 145, 178' },    // cyan/teal
 }
 
 interface Props {

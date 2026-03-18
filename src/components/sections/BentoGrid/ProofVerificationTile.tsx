@@ -117,7 +117,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
         <motion.div className="relative p-6 md:p-8" style={{ y }}>
           {/* Case study number watermark */}
           <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-white/[0.02] select-none pointer-events-none tracking-tighter">
-            04
+            05
           </div>
 
           {/* Label */}
