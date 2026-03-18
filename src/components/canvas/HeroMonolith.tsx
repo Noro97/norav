@@ -183,9 +183,23 @@ export function HeroMonolith() {
     group.rotation.x = rotX.current
     group.rotation.y = rotY.current
 
-    // --- Scroll fade ---
+    // --- Scroll fade (update ALL mesh materials in the logo group) ---
     const progress = heroScrollProgress
-    mat.opacity = 1 - progress
+    const fadeOpacity = 1 - progress
+    mat.opacity = fadeOpacity
+
+    // Also update all other meshes' materials in the logo group
+    if (logoGroupRef.current) {
+      logoGroupRef.current.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          const meshMat = (child as THREE.Mesh).material as THREE.MeshPhysicalMaterial
+          if (meshMat && meshMat !== mat) {
+            meshMat.opacity = fadeOpacity
+          }
+        }
+      })
+    }
+
     const scrollScale = 1 - progress * 0.2
     group.scale.setScalar(scrollScale)
     group.visible = progress < 0.99
