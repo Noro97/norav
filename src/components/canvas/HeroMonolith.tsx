@@ -11,8 +11,8 @@ const EXPLODE_DURATION = 1.5
 const TOTAL_DURATION = 3.0
 const GRAVITY = 4.0
 
-// Scale factor: SVG viewBox is ~454x544, we want it ~2.5 units wide in 3D
-const SVG_SCALE = 2.5 / 454
+// Scale factor: SVG viewBox is ~454x544, we want it ~1.5 units wide in 3D
+const SVG_SCALE = 1.5 / 454
 
 interface ShardState {
   origins: Float32Array
@@ -246,7 +246,7 @@ export function HeroMonolith() {
   })
 
   return (
-    <group ref={groupRef} position={[0, 0.5, 0]}>
+    <group ref={groupRef} position={[0, 1.8, 0]}>
       <Environment preset="city" />
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />

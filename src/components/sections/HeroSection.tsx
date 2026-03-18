@@ -93,7 +93,7 @@ export function HeroSection() {
       onClick={handleClick}
       style={{ cursor: 'pointer' }}
     >
-      <div className="relative z-10 max-w-4xl mx-auto">
+      <div className="relative z-10 max-w-4xl mx-auto pt-[28vh]">
         <p
           ref={subtitleRef}
           className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-crimson-500 mb-6"
