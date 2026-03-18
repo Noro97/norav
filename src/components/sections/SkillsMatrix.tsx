@@ -4,6 +4,32 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useAppStore } from '@/store/useAppStore'
+import { TechOrbit } from './TechOrbit'
+import type { TechNode } from './TechOrbit'
+import {
+  Layers,
+  Wrench,
+  Database,
+  FileCode2,
+  Globe,
+  Cpu,
+  Wind,
+  GitBranch,
+} from 'lucide-react'
+import {
+  IconBrandTypescript,
+  IconBrandReact,
+  IconBrandNextjs,
+  IconBrandVue,
+  IconBrandHtml5,
+  IconBrandTailwind,
+  IconBrandDocker,
+  IconBrandNodejs,
+  IconBrandGraphql,
+  IconBrandFirebase,
+  IconBrandGit,
+} from '@tabler/icons-react'
 
 interface Skill {
   name: string
@@ -63,6 +89,30 @@ const SKILL_DATA: SkillCategory[] = [
     ],
   },
 ]
+
+const TECH_NODES: TechNode[] = [
+  { name: 'TypeScript',      icon: <IconBrandTypescript size={18} />,  experience: '5 years' },
+  { name: 'React',           icon: <IconBrandReact size={18} />,       experience: '6 years' },
+  { name: 'Next.js',         icon: <IconBrandNextjs size={18} />,      experience: '4 years' },
+  { name: 'Vue.js',          icon: <IconBrandVue size={18} />,         experience: '2 years' },
+  { name: 'HTML / CSS',      icon: <IconBrandHtml5 size={18} />,       experience: '7 years' },
+  { name: 'GSAP',            icon: <Layers size={18} />,               experience: '4 years' },
+  { name: 'Framer Motion',   icon: <Cpu size={18} />,                  experience: '3 years' },
+  { name: 'Three.js / R3F',  icon: <Globe size={18} />,                experience: '2 years' },
+  { name: 'GLSL Shaders',    icon: <FileCode2 size={18} />,            experience: '1 year' },
+  { name: 'Lenis / Scroll',  icon: <Wind size={18} />,                 experience: '3 years' },
+  { name: 'Vite / Webpack',  icon: <Wrench size={18} />,               experience: '5 years' },
+  { name: 'Tailwind CSS',    icon: <IconBrandTailwind size={18} />,    experience: '4 years' },
+  { name: 'Git / GitHub',    icon: <IconBrandGit size={18} />,         experience: '6 years' },
+  { name: 'CI/CD',           icon: <GitBranch size={18} />,            experience: '3 years' },
+  { name: 'Docker',          icon: <IconBrandDocker size={18} />,      experience: '2 years' },
+  { name: 'Node.js',         icon: <IconBrandNodejs size={18} />,      experience: '4 years' },
+  { name: 'PostgreSQL',      icon: <Database size={18} />,             experience: '3 years' },
+  { name: 'REST / GraphQL',  icon: <IconBrandGraphql size={18} />,     experience: '5 years' },
+  { name: 'Redis',           icon: <Database size={18} />,             experience: '2 years' },
+  { name: 'Firebase',        icon: <IconBrandFirebase size={18} />,    experience: '3 years' },
+]
+
 
 function SkillBar({ skill, color, animate }: { skill: Skill; color: string; animate: boolean }) {
   return (
@@ -204,6 +254,7 @@ export function SkillsMatrix() {
   useSectionObserver('skills', sectionRef)
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
+  const isMobile = useAppStore((s) => s.isMobile)
 
   useGSAP(() => {
     const section = sectionRef.current!
@@ -242,82 +293,133 @@ export function SkillsMatrix() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 items-start">
-          {/* Skill bars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {SKILL_DATA.map((category, catIdx) => (
-              <div
-                key={category.nameKey}
-                className={`glass-card p-5 cursor-pointer transition-all ${
-                  activeCategory === catIdx ? 'border-crimson-500/20' : ''
-                }`}
-                onMouseEnter={() => setActiveCategory(catIdx)}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
-                <div className="flex items-center gap-2 mb-4">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: category.color }}
-                  />
-                  <h3 className="font-mono text-xs text-white/50 tracking-wider uppercase">
-                    {t(category.nameKey)}
-                  </h3>
-                </div>
-                <div className="space-y-3">
-                  {category.skills.map((skill) => (
-                    <SkillBar
-                      key={skill.name}
-                      skill={skill}
-                      color={category.color}
-                      animate={animate}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+        {!isMobile ? (
+          /* Desktop: 3D orbit */
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex-1 flex items-center justify-center">
+              <TechOrbit technologies={TECH_NODES} radius={200} />
+            </div>
 
-          {/* Radar chart */}
-          <div className="glass-card p-6 sticky top-24">
-            <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
-              {t('proficiencyOverview')}
-            </h4>
-            <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
+            {/* Radar chart sidebar */}
+            <div className="glass-card p-6 w-full lg:w-[280px] shrink-0">
+              <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
+                {t('proficiencyOverview')}
+              </h4>
+              <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
 
-            {/* Legend */}
-            <div className="mt-6 space-y-1.5">
-              {SKILL_DATA.map((cat, i) => {
-                const avg = Math.round(
-                  cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
-                )
-                return (
-                  <div
-                    key={cat.nameKey}
-                    className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
-                      activeCategory === i ? 'bg-white/5' : ''
-                    }`}
-                    onMouseEnter={() => setActiveCategory(i)}
-                    onMouseLeave={() => setActiveCategory(null)}
-                  >
+              {/* Legend */}
+              <div className="mt-6 space-y-1.5">
+                {SKILL_DATA.map((cat, i) => {
+                  const avg = Math.round(
+                    cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
+                  )
+                  return (
                     <div
-                      className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
-                    <span className="font-mono text-[10px] text-white/25">{avg}%</span>
-                  </div>
-                )
-              })}
-            </div>
+                      key={cat.nameKey}
+                      className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
+                        activeCategory === i ? 'bg-white/5' : ''
+                      }`}
+                      onMouseEnter={() => setActiveCategory(i)}
+                      onMouseLeave={() => setActiveCategory(null)}
+                    >
+                      <div
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: cat.color }}
+                      />
+                      <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
+                      <span className="font-mono text-[10px] text-white/25">{avg}%</span>
+                    </div>
+                  )
+                })}
+              </div>
 
-            {/* Total count */}
-            <div className="mt-4 pt-3 border-t border-white/5 text-center">
-              <span className="font-mono text-[10px] text-white/20">
-                {t('skillsTracked', { count: totalSkills })}
-              </span>
+              {/* Total count */}
+              <div className="mt-4 pt-3 border-t border-white/5 text-center">
+                <span className="font-mono text-[10px] text-white/20">
+                  {t('skillsTracked', { count: totalSkills })}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          /* Mobile: existing grid */
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 items-start">
+            {/* Skill bars */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {SKILL_DATA.map((category, catIdx) => (
+                <div
+                  key={category.nameKey}
+                  className={`glass-card p-5 cursor-pointer transition-all ${
+                    activeCategory === catIdx ? 'border-crimson-500/20' : ''
+                  }`}
+                  onMouseEnter={() => setActiveCategory(catIdx)}
+                  onMouseLeave={() => setActiveCategory(null)}
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: category.color }}
+                    />
+                    <h3 className="font-mono text-xs text-white/50 tracking-wider uppercase">
+                      {t(category.nameKey)}
+                    </h3>
+                  </div>
+                  <div className="space-y-3">
+                    {category.skills.map((skill) => (
+                      <SkillBar
+                        key={skill.name}
+                        skill={skill}
+                        color={category.color}
+                        animate={animate}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Radar chart */}
+            <div className="glass-card p-6 sticky top-24">
+              <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
+                {t('proficiencyOverview')}
+              </h4>
+              <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
+
+              {/* Legend */}
+              <div className="mt-6 space-y-1.5">
+                {SKILL_DATA.map((cat, i) => {
+                  const avg = Math.round(
+                    cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
+                  )
+                  return (
+                    <div
+                      key={cat.nameKey}
+                      className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
+                        activeCategory === i ? 'bg-white/5' : ''
+                      }`}
+                      onMouseEnter={() => setActiveCategory(i)}
+                      onMouseLeave={() => setActiveCategory(null)}
+                    >
+                      <div
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: cat.color }}
+                      />
+                      <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
+                      <span className="font-mono text-[10px] text-white/25">{avg}%</span>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Total count */}
+              <div className="mt-4 pt-3 border-t border-white/5 text-center">
+                <span className="font-mono text-[10px] text-white/20">
+                  {t('skillsTracked', { count: totalSkills })}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )
