@@ -19,10 +19,18 @@ const ICONS: Record<string, React.ReactNode> = {
       <circle cx="12" cy="7" r="4" />
     </svg>
   ),
+  brain: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2a6 6 0 0 0-6 6c0 1.6.6 3 1.7 4.1L12 17l4.3-4.9A6 6 0 0 0 12 2z" />
+      <path d="M9 10h.01M15 10h.01" />
+      <path d="M9.5 15a3.5 3.5 0 0 0 5 0" />
+      <path d="M12 17v5" />
+    </svg>
+  ),
 }
 
 // Pull the hero stat from each micro-tile description
-const HERO_STATS = ['60%', '99%', '15s']
+const HERO_STATS = ['60%', '99%', '15s', '98.4%']
 
 interface BentoMicroTileProps {
   index: number

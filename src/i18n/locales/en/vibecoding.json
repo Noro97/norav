@@ -1,0 +1,21 @@
+{
+  "sectionLabel": "Philosophy",
+  "title": "Vibe Coding: High-Velocity Orchestration",
+  "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
+  "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+  "slider.lowVibe": "Low Vibe",
+  "slider.highVibe": "High Vibe",
+  "slider.boringLabel": "basic-crud.ts",
+  "slider.archLabel": "proof-architecture.svg",
+  "arch.tma": "TMA (React)",
+  "arch.auth": "Auth",
+  "arch.storage": "Supabase Storage",
+  "arch.edge": "Edge Functions",
+  "arch.gemini": "Gemini AI",
+  "arch.db": "DB Update",
+  "arch.feed": "Real-time Feed",
+  "systemsSynced": "Systems Synced",
+  "stats.coverage": "Test Coverage",
+  "stats.migrations": "DB Migrations",
+  "stats.systems": "Systems"
+}

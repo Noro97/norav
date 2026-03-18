@@ -5,10 +5,10 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 
 const SOCIAL_LINKS = [
-  { key: 'social.github', href: '#', icon: 'GH' },
-  { key: 'social.linkedin', href: '#', icon: 'LI' },
-  { key: 'social.twitter', href: '#', icon: 'X' },
-  { key: 'social.email', href: 'mailto:alex@mercer.dev', icon: '@' },
+  { key: 'social.github', href: 'https://github.com/Noro97', icon: 'GH' },
+  { key: 'social.linkedin', href: 'https://www.linkedin.com/in/norayravetisyan/', icon: 'LI' },
+  { key: 'social.telegram', href: 'https://t.me/antaarber', icon: 'TG' },
+  { key: 'social.email', href: 'mailto:noroavetisyan@gmail.com', icon: '@' },
 ]
 
 const QUICK_FACTS = [
@@ -67,7 +67,7 @@ export function AboutHero() {
             <div className="about-avatar relative w-48 h-48 rounded-2xl overflow-hidden border border-white/8">
               <img
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-                alt="Alex Mercer"
+                alt="Norayr Avetisyan"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />

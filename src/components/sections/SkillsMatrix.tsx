@@ -4,36 +4,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
-import { useAppStore } from '@/store/useAppStore'
-import { TechOrbit } from './TechOrbit'
-import type { TechNode } from './TechOrbit'
-import {
-  Layers,
-  Wrench,
-  Database,
-  FileCode2,
-  Globe,
-  Cpu,
-  Wind,
-  GitBranch,
-} from 'lucide-react'
-import {
-  IconBrandTypescript,
-  IconBrandReact,
-  IconBrandNextjs,
-  IconBrandVue,
-  IconBrandHtml5,
-  IconBrandTailwind,
-  IconBrandDocker,
-  IconBrandNodejs,
-  IconBrandGraphql,
-  IconBrandFirebase,
-  IconBrandGit,
-} from '@tabler/icons-react'
 
 interface Skill {
   name: string
-  level: number // 0-100
+  level: number
   years: number
 }
 
@@ -90,30 +64,6 @@ const SKILL_DATA: SkillCategory[] = [
   },
 ]
 
-const TECH_NODES: TechNode[] = [
-  { name: 'TypeScript',      icon: <IconBrandTypescript size={18} />,  experience: '5 years' },
-  { name: 'React',           icon: <IconBrandReact size={18} />,       experience: '6 years' },
-  { name: 'Next.js',         icon: <IconBrandNextjs size={18} />,      experience: '4 years' },
-  { name: 'Vue.js',          icon: <IconBrandVue size={18} />,         experience: '2 years' },
-  { name: 'HTML / CSS',      icon: <IconBrandHtml5 size={18} />,       experience: '7 years' },
-  { name: 'GSAP',            icon: <Layers size={18} />,               experience: '4 years' },
-  { name: 'Framer Motion',   icon: <Cpu size={18} />,                  experience: '3 years' },
-  { name: 'Three.js / R3F',  icon: <Globe size={18} />,                experience: '2 years' },
-  { name: 'GLSL Shaders',    icon: <FileCode2 size={18} />,            experience: '1 year' },
-  { name: 'Lenis / Scroll',  icon: <Wind size={18} />,                 experience: '3 years' },
-  { name: 'Vite / Webpack',  icon: <Wrench size={18} />,               experience: '5 years' },
-  { name: 'Tailwind CSS',    icon: <IconBrandTailwind size={18} />,    experience: '4 years' },
-  { name: 'Git / GitHub',    icon: <IconBrandGit size={18} />,         experience: '6 years' },
-  { name: 'CI/CD',           icon: <GitBranch size={18} />,            experience: '3 years' },
-  { name: 'Docker',          icon: <IconBrandDocker size={18} />,      experience: '2 years' },
-  { name: 'Node.js',         icon: <IconBrandNodejs size={18} />,      experience: '4 years' },
-  { name: 'PostgreSQL',      icon: <Database size={18} />,             experience: '3 years' },
-  { name: 'REST / GraphQL',  icon: <IconBrandGraphql size={18} />,     experience: '5 years' },
-  { name: 'Redis',           icon: <Database size={18} />,             experience: '2 years' },
-  { name: 'Firebase',        icon: <IconBrandFirebase size={18} />,    experience: '3 years' },
-]
-
-
 function SkillBar({ skill, color, animate }: { skill: Skill; color: string; animate: boolean }) {
   return (
     <div className="group">
@@ -145,21 +95,18 @@ function SkillBar({ skill, color, animate }: { skill: Skill; color: string; anim
   )
 }
 
-// Radar / Pentagon chart
 function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; animate: boolean; t: (key: string) => string }) {
   const size = 200
   const center = size / 2
   const radius = 80
   const rings = 4
 
-  // Average skill level per category
   const values = categories.map(
     (cat) => cat.skills.reduce((sum, s) => sum + s.level, 0) / cat.skills.length / 100
   )
   const count = values.length
   const angleStep = (Math.PI * 2) / count
 
-  // Point positions
   const getPoint = (i: number, r: number) => {
     const angle = angleStep * i - Math.PI / 2
     return {
@@ -168,7 +115,6 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
     }
   }
 
-  // Ring paths
   const ringPaths = Array.from({ length: rings }, (_, ring) => {
     const r = (radius / rings) * (ring + 1)
     return Array.from({ length: count }, (_, i) => {
@@ -177,7 +123,6 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
     }).join(' ') + ' Z'
   })
 
-  // Data polygon
   const dataPath = values
     .map((v, i) => {
       const r = animate ? v * radius : 0
@@ -188,20 +133,15 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
 
   return (
     <svg viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[240px] mx-auto">
-      {/* Rings */}
       {ringPaths.map((path, i) => (
         <path key={i} d={path} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
       ))}
-
-      {/* Axis lines */}
       {values.map((_, i) => {
         const p = getPoint(i, radius)
         return (
           <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
         )
       })}
-
-      {/* Data polygon */}
       <path
         d={dataPath}
         fill="rgba(181, 26, 43, 0.15)"
@@ -209,8 +149,6 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
         strokeWidth="1.5"
         className="transition-all duration-1000 ease-out"
       />
-
-      {/* Data points */}
       {values.map((v, i) => {
         const r = animate ? v * radius : 0
         const p = getPoint(i, r)
@@ -225,8 +163,6 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
           />
         )
       })}
-
-      {/* Labels */}
       {categories.map((cat, i) => {
         const p = getPoint(i, radius + 18)
         return (
@@ -254,7 +190,6 @@ export function SkillsMatrix() {
   useSectionObserver('skills', sectionRef)
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
-  const isMobile = useAppStore((s) => s.isMobile)
 
   useGSAP(() => {
     const section = sectionRef.current!
@@ -270,6 +205,15 @@ export function SkillsMatrix() {
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
           scrollTrigger: { trigger: section, start: 'top 85%' } }
+      )
+    }
+
+    const cards = section.querySelectorAll('.skill-card')
+    if (cards.length) {
+      gsap.fromTo(cards,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 75%' } }
       )
     }
   }, { scope: sectionRef })
@@ -293,77 +237,39 @@ export function SkillsMatrix() {
           </p>
         </div>
 
-        {!isMobile ? (
-          /* Desktop: 3D orbit */
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="flex-1 flex items-center justify-center">
-              <TechOrbit technologies={TECH_NODES} radius={200} />
-            </div>
-
-            {/* Radar chart sidebar */}
-            <div className="glass-card p-6 w-full lg:w-[280px] shrink-0">
-              <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
-                {t('proficiencyOverview')}
-              </h4>
-              <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
-
-              {/* Legend */}
-              <div className="mt-6 space-y-1.5">
-                {SKILL_DATA.map((cat, i) => {
-                  const avg = Math.round(
-                    cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
-                  )
-                  return (
-                    <div
-                      key={cat.nameKey}
-                      className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
-                        activeCategory === i ? 'bg-white/5' : ''
-                      }`}
-                      onMouseEnter={() => setActiveCategory(i)}
-                      onMouseLeave={() => setActiveCategory(null)}
-                    >
-                      <div
-                        className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: cat.color }}
-                      />
-                      <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
-                      <span className="font-mono text-[10px] text-white/25">{avg}%</span>
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Total count */}
-              <div className="mt-4 pt-3 border-t border-white/5 text-center">
-                <span className="font-mono text-[10px] text-white/20">
-                  {t('skillsTracked', { count: totalSkills })}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* Mobile: existing grid */
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 items-start">
-            {/* Skill bars */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {SKILL_DATA.map((category, catIdx) => (
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
+          {/* Skill category cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {SKILL_DATA.map((category, catIdx) => (
+              <div
+                key={category.nameKey}
+                className={`skill-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_rgba(181,26,43,0.1)] ${
+                  activeCategory === catIdx ? 'border-crimson-500/20' : ''
+                }`}
+                onMouseEnter={() => setActiveCategory(catIdx)}
+                onMouseLeave={() => setActiveCategory(null)}
+              >
+                {/* Subtle category glow */}
                 <div
-                  key={category.nameKey}
-                  className={`glass-card p-5 cursor-pointer transition-all ${
-                    activeCategory === catIdx ? 'border-crimson-500/20' : ''
-                  }`}
-                  onMouseEnter={() => setActiveCategory(catIdx)}
-                  onMouseLeave={() => setActiveCategory(null)}
-                >
-                  <div className="flex items-center gap-2 mb-4">
+                  className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ backgroundColor: `${category.color}15` }}
+                />
+
+                <div className="relative">
+                  <div className="flex items-center gap-2.5 mb-4">
                     <div
-                      className="w-2 h-2 rounded-full"
+                      className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: category.color }}
                     />
-                    <h3 className="font-mono text-xs text-white/50 tracking-wider uppercase">
+                    <h3 className="font-mono text-[10px] text-white/50 tracking-[0.15em] uppercase">
                       {t(category.nameKey)}
                     </h3>
+                    <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
+                    <span className="font-mono text-[9px] text-white/20">
+                      {Math.round(category.skills.reduce((s, sk) => s + sk.level, 0) / category.skills.length)}%
+                    </span>
                   </div>
+
                   <div className="space-y-3">
                     {category.skills.map((skill) => (
                       <SkillBar
@@ -375,51 +281,50 @@ export function SkillsMatrix() {
                     ))}
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Radar chart sidebar */}
+          <div className="sticky top-24 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6">
+            <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
+              {t('proficiencyOverview')}
+            </h4>
+            <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
+
+            {/* Legend */}
+            <div className="mt-6 space-y-1.5">
+              {SKILL_DATA.map((cat, i) => {
+                const avg = Math.round(
+                  cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
+                )
+                return (
+                  <div
+                    key={cat.nameKey}
+                    className={`flex items-center gap-2 px-2 py-1 rounded transition-all cursor-default ${
+                      activeCategory === i ? 'bg-white/5' : ''
+                    }`}
+                    onMouseEnter={() => setActiveCategory(i)}
+                    onMouseLeave={() => setActiveCategory(null)}
+                  >
+                    <div
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                    <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
+                    <span className="font-mono text-[10px] text-white/25">{avg}%</span>
+                  </div>
+                )
+              })}
             </div>
 
-            {/* Radar chart */}
-            <div className="glass-card p-6 sticky top-24">
-              <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
-                {t('proficiencyOverview')}
-              </h4>
-              <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
-
-              {/* Legend */}
-              <div className="mt-6 space-y-1.5">
-                {SKILL_DATA.map((cat, i) => {
-                  const avg = Math.round(
-                    cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
-                  )
-                  return (
-                    <div
-                      key={cat.nameKey}
-                      className={`flex items-center gap-2 px-2 py-1 rounded transition-all ${
-                        activeCategory === i ? 'bg-white/5' : ''
-                      }`}
-                      onMouseEnter={() => setActiveCategory(i)}
-                      onMouseLeave={() => setActiveCategory(null)}
-                    >
-                      <div
-                        className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: cat.color }}
-                      />
-                      <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
-                      <span className="font-mono text-[10px] text-white/25">{avg}%</span>
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Total count */}
-              <div className="mt-4 pt-3 border-t border-white/5 text-center">
-                <span className="font-mono text-[10px] text-white/20">
-                  {t('skillsTracked', { count: totalSkills })}
-                </span>
-              </div>
+            <div className="mt-4 pt-3 border-t border-white/5 text-center">
+              <span className="font-mono text-[10px] text-white/20">
+                {t('skillsTracked', { count: totalSkills })}
+              </span>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </section>
   )

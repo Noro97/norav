@@ -1,0 +1,215 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { MagneticButton } from '@/components/ui/MagneticButton'
+import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
+import { ProofScanOverlay } from './ProofScanOverlay'
+import { ProofArchitectureModal } from './ProofArchitectureModal'
+import { PROOF_PROJECT } from './bento.data'
+
+interface Props {
+  className?: string
+}
+
+const LOG_KEYS = [
+  'proof.log.liveness',
+  'proof.log.detecting',
+  'proof.log.confidence',
+  'proof.log.verified',
+] as const
+
+const LOG_DELAYS = [200, 600, 400, 300]
+const TYPING_SPEED = 30
+
+export function ProofVerificationTile({ className = '' }: Props) {
+  const { t } = useTranslation('bento')
+  const tileRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const [showArchModal, setShowArchModal] = useState(false)
+  const [logLines, setLogLines] = useState<{ text: string; done: boolean }[]>([])
+  const abortRef = useRef(false)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  const { scrollYProgress } = useScroll({
+    target: tileRef,
+    offset: ['start end', 'end start'],
+  })
+  const y = useTransform(scrollYProgress, [0, 1], [20, -20])
+
+  const clearTimers = useCallback(() => {
+    abortRef.current = true
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
+  }, [])
+
+  // Typewriter animation on hover
+  useEffect(() => {
+    if (!isHovered) {
+      clearTimers()
+      return
+    }
+
+    abortRef.current = false
+    setLogLines([])
+
+    const translatedLines = LOG_KEYS.map((key) => t(key))
+    let totalDelay = 0
+
+    translatedLines.forEach((fullText, lineIdx) => {
+      totalDelay += LOG_DELAYS[lineIdx]!
+
+      // Add empty line
+      const addLineTimer = setTimeout(() => {
+        if (abortRef.current) return
+        setLogLines((prev) => [...prev, { text: '', done: false }])
+      }, totalDelay)
+      timersRef.current.push(addLineTimer)
+
+      // Type each character
+      for (let charIdx = 0; charIdx <= fullText.length; charIdx++) {
+        const charDelay = totalDelay + charIdx * TYPING_SPEED
+        const charTimer = setTimeout(() => {
+          if (abortRef.current) return
+          setLogLines((prev) => {
+            const updated = [...prev]
+            if (updated[lineIdx]) {
+              updated[lineIdx] = {
+                text: fullText.slice(0, charIdx),
+                done: charIdx === fullText.length,
+              }
+            }
+            return updated
+          })
+        }, charDelay)
+        timersRef.current.push(charTimer)
+      }
+
+      totalDelay += fullText.length * TYPING_SPEED
+    })
+
+    return clearTimers
+  }, [isHovered, t, clearTimers])
+
+  return (
+    <>
+      <div
+        ref={tileRef}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
+      >
+        {/* Gradient mesh */}
+        <div
+          className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
+          style={{
+            background:
+              'radial-gradient(ellipse at 25% 20%, rgba(181,26,43,0.6) 0%, transparent 50%), radial-gradient(ellipse at 75% 80%, rgba(140,21,35,0.3) 0%, transparent 60%)',
+          }}
+        />
+
+        {/* Canvas placeholders */}
+        <BentoVideoPlaceholder variant="proof" active={isHovered} />
+        <ProofScanOverlay active={isHovered} />
+
+        {/* Top accent line */}
+        <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent" />
+
+        <motion.div className="relative p-6 md:p-8" style={{ y }}>
+          {/* Case study number watermark */}
+          <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-white/[0.02] select-none pointer-events-none tracking-tighter">
+            04
+          </div>
+
+          {/* Label */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="font-mono text-[10px] text-crimson-400/70 tracking-[0.25em] uppercase">
+              {t('proof.verification.label')}
+            </span>
+            <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
+          </div>
+
+          {/* Title */}
+          <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-crimson-50 transition-colors duration-300">
+            {t('projects.proof.title')}
+            <span className="text-crimson-400/60 text-base font-normal ml-2">
+              — {t('proof.verification.subtitle')}
+            </span>
+          </h3>
+
+          {/* Description */}
+          <p className="text-sm text-white/60 leading-relaxed mb-2 max-w-lg">
+            {t('projects.proof.description')}
+          </p>
+
+          {/* Challenge & Complexity */}
+          <p className="text-xs text-white/40 leading-relaxed mb-1 max-w-lg italic">
+            {t('projects.proof.challenge')}
+          </p>
+          <p className="text-xs text-white/40 leading-relaxed mb-6 max-w-lg italic">
+            {t('projects.proof.complexity')}
+          </p>
+
+          {/* AI Analysis Logs */}
+          <div className="mb-6 min-h-[80px] rounded-lg bg-black/40 border border-crimson-500/10 p-3 font-mono text-[10px] leading-relaxed">
+            {logLines.map((line, i) => (
+              <div key={i} className="text-crimson-400/80">
+                {line.text}
+                {!line.done && (
+                  <span className="animate-cursor-blink text-crimson-300">|</span>
+                )}
+              </div>
+            ))}
+            {logLines.length === 0 && (
+              <span className="text-white/20">{'>'} Hover to start AI analysis...</span>
+            )}
+          </div>
+
+          {/* Tech stack */}
+          <div className="flex flex-wrap gap-1.5 mb-6">
+            {PROOF_PROJECT.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="px-2.5 py-1 text-[10px] font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <MagneticButton
+            onClick={() => setShowArchModal(true)}
+            aria-label={t('projects.proof.cta')}
+            className="inline-flex items-center gap-2.5 text-[11px] font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
+            data-cursor="link"
+          >
+            <span className="relative">
+              {t('projects.proof.cta')}
+              <span className="absolute -bottom-px left-0 w-0 h-px bg-crimson-500/50 group-hover/btn:w-full transition-all duration-300" />
+            </span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300"
+            >
+              <path d="M7 17l9.2-9.2M17 17V7H7" />
+            </svg>
+          </MagneticButton>
+        </motion.div>
+
+        {/* Bottom edge glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-crimson-500/0 to-transparent group-hover:via-crimson-500/30 transition-all duration-700" />
+      </div>
+
+      {showArchModal && (
+        <ProofArchitectureModal onClose={() => setShowArchModal(false)} />
+      )}
+    </>
+  )
+}

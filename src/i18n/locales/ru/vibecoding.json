@@ -1,0 +1,21 @@
+{
+  "sectionLabel": "Философия",
+  "title": "Vibe Coding: Высокоскоростная оркестровка",
+  "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
+  "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+  "slider.lowVibe": "Low Vibe",
+  "slider.highVibe": "High Vibe",
+  "slider.boringLabel": "basic-crud.ts",
+  "slider.archLabel": "proof-architecture.svg",
+  "arch.tma": "TMA (React)",
+  "arch.auth": "Auth",
+  "arch.storage": "Supabase Storage",
+  "arch.edge": "Edge Functions",
+  "arch.gemini": "Gemini AI",
+  "arch.db": "Обновление БД",
+  "arch.feed": "Лента активности",
+  "systemsSynced": "Синхронизировано",
+  "stats.coverage": "Покрытие тестами",
+  "stats.migrations": "Миграции БД",
+  "stats.systems": "Системы"
+}

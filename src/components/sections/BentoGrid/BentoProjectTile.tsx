@@ -67,12 +67,12 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
     >
       {/* Background image — subtle, brightens on hover */}
       {project.imageSrc && (
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 pointer-events-none"
-          style={{
-            backgroundImage: `url(${project.imageSrc})`,
-            opacity: isHovered ? 0.3 : 0.12,
-          }}
+        <img
+          src={project.imageSrc}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none"
+          style={{ opacity: isHovered ? 0.35 : 0.2 }}
         />
       )}
 
@@ -107,13 +107,13 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
       <motion.div className="relative p-6 md:p-8" style={{ y }}>
         {/* Case study number — large watermark */}
-        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-white/[0.02] select-none pointer-events-none tracking-tighter">
+        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-crimson-500/10 select-none pointer-events-none tracking-tighter">
           {caseNum}
         </div>
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-[10px] text-crimson-500/70 tracking-[0.25em] uppercase">
+          <span className="font-mono text-[10px] text-crimson-500 tracking-[0.25em] uppercase">
             Case Study {caseNum}
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />

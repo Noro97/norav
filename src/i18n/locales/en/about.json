@@ -1,6 +1,6 @@
 {
   "sectionLabel": "About Me",
-  "name": "Alex Mercer",
+  "name": "Norayr Avetisyan",
   "role": "Senior Frontend Engineer",
   "bio.paragraph1.before": "I build interfaces that feel alive. My work sits at the crossroads of",
   "bio.paragraph1.highlight1": " engineering rigor",
@@ -19,6 +19,6 @@
   "facts.status.value": "Open to offers",
   "social.github": "GitHub",
   "social.linkedin": "LinkedIn",
-  "social.twitter": "Twitter / X",
+  "social.telegram": "Telegram",
   "social.email": "Email"
 }

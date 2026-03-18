@@ -46,6 +46,11 @@ const BentoGrid = lazy(() =>
     default: m.BentoGrid,
   }))
 )
+const VibeCoding = lazy(() =>
+  import('@/components/sections/VibeCoding/VibeCoding').then((m) => ({
+    default: m.VibeCoding,
+  }))
+)
 const LogisticsWidget = lazy(() =>
   import('@/components/sections/LogisticsWidget').then((m) => ({
     default: m.LogisticsWidget,
@@ -139,6 +144,10 @@ function App() {
 
         <Suspense fallback={<SectionLoader />}>
           <BentoGrid />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <VibeCoding />
         </Suspense>
 
         {/* Project case studies */}

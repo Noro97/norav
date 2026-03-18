@@ -11,6 +11,7 @@ import bentoEn from './locales/en/bento.json'
 import projectsEn from './locales/en/projects.json'
 import educationEn from './locales/en/education.json'
 import terminalEn from './locales/en/terminal.json'
+import vibecodingEn from './locales/en/vibecoding.json'
 
 import commonRu from './locales/ru/common.json'
 import heroRu from './locales/ru/hero.json'
@@ -21,6 +22,7 @@ import bentoRu from './locales/ru/bento.json'
 import projectsRu from './locales/ru/projects.json'
 import educationRu from './locales/ru/education.json'
 import terminalRu from './locales/ru/terminal.json'
+import vibecodingRu from './locales/ru/vibecoding.json'
 
 i18n
   .use(LanguageDetector)
@@ -37,6 +39,7 @@ i18n
         projects: projectsEn,
         education: educationEn,
         terminal: terminalEn,
+        vibecoding: vibecodingEn,
       },
       ru: {
         common: commonRu,
@@ -48,6 +51,7 @@ i18n
         projects: projectsRu,
         education: educationRu,
         terminal: terminalRu,
+        vibecoding: vibecodingRu,
       },
     },
     lng: 'en',

@@ -5,6 +5,15 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 import type { FilterState, Product } from '@/types'
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Electronics: 'from-blue-900/40 to-blue-800/10',
+  Clothing: 'from-crimson-900/40 to-crimson-800/10',
+  Home: 'from-amber-900/40 to-amber-800/10',
+  Sports: 'from-emerald-900/40 to-emerald-800/10',
+}
+
+const ITEMS_PER_PAGE = 12
+
 const CATEGORIES = ['Electronics', 'Clothing', 'Home', 'Sports']
 const SUBCATEGORIES: Record<string, string[]> = {
   Electronics: ['Phones', 'Laptops', 'Audio'],
@@ -86,7 +95,6 @@ function FilterGraph({ filters }: { filters: FilterState }) {
 
   return (
     <svg viewBox="0 0 300 120" className="w-full">
-      {/* Edges — drawn first (behind nodes) */}
       <line x1="68" y1="30" x2="132" y2="30" stroke="#B51A2B" strokeWidth="1" opacity={hasCat ? 0.6 : 0.08} strokeDasharray={hasCat ? 'none' : '4 2'} />
       <line x1="168" y1="30" x2="228" y2="30" stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.5 : 0.08} strokeDasharray={hasSort ? 'none' : '4 2'} />
       <line x1="55" y1="48" x2="88" y2="80" stroke="#B51A2B" strokeWidth="1" opacity={hasPrice ? 0.4 : 0.06} />
@@ -94,25 +102,20 @@ function FilterGraph({ filters }: { filters: FilterState }) {
       <line x1="155" y1="48" x2="188" y2="78" stroke="#B51A2B" strokeWidth="1" opacity={0.25} />
       <line x1="238" y1="45" x2="212" y2="78" stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.4 : 0.08} />
 
-      {/* Category node */}
       <circle cx="50" cy="30" r="18" fill={hasCat ? '#B51A2B' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1.5" opacity={hasCat ? 1 : 0.3}>
         {hasCat && <animate attributeName="r" values="18;19;18" dur="2s" repeatCount="indefinite" />}
       </circle>
       <text x="50" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">CAT</text>
 
-      {/* Subcategory node */}
       <circle cx="150" cy="30" r="18" fill={hasCat ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasCat ? 0.8 : 0.2} />
       <text x="150" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SUB</text>
 
-      {/* Sort node */}
       <circle cx="250" cy="30" r="18" fill={hasSort ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.8 : 0.25} />
       <text x="250" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SORT</text>
 
-      {/* Price node */}
       <circle cx="100" cy="95" r="18" fill={hasPrice ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasPrice ? 0.8 : 0.2} />
       <text x="100" y="99" textAnchor="middle" fill="white" fontSize="7" fontFamily="JetBrains Mono">PRICE</text>
 
-      {/* Result node */}
       <circle cx="200" cy="95" r="22" fill="#B51A2B" fillOpacity="0.15" stroke="#B51A2B" strokeWidth="1.5" opacity={0.9}>
         <animate attributeName="r" values="22;23;22" dur="3s" repeatCount="indefinite" />
       </circle>
@@ -126,6 +129,7 @@ export function EcommerceWidget() {
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('ecommerce', sectionRef)
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
+  const [page, setPage] = useState(0)
 
   // GSAP entrance
   useGSAP(() => {
@@ -154,6 +158,7 @@ export function EcommerceWidget() {
   }, [filters])
 
   const toggleCategory = useCallback((cat: string) => {
+    setPage(0)
     setFilters((prev) => ({
       ...prev,
       categories: prev.categories.includes(cat)
@@ -162,7 +167,6 @@ export function EcommerceWidget() {
     }))
   }, [])
 
-  // Available subcategories based on selected categories
   const availableSubcategories = useMemo(() => {
     if (filters.categories.length === 0) return Object.values(SUBCATEGORIES).flat()
     return filters.categories.flatMap((cat) => SUBCATEGORIES[cat] ?? [])
@@ -194,11 +198,14 @@ export function EcommerceWidget() {
     return products
   }, [filters])
 
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+  const paginatedProducts = filteredProducts.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
+
   return (
     <section
       id="ecommerce"
       ref={sectionRef}
-      className="relative min-h-screen px-6 md:px-16 py-24"
+      className="relative px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
@@ -218,7 +225,7 @@ export function EcommerceWidget() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
           {/* Sidebar */}
           <div className="ecom-sidebar space-y-5">
             {/* Dependency Graph */}
@@ -265,7 +272,6 @@ export function EcommerceWidget() {
                   )
                 })}
               </div>
-              {/* Active subcategories */}
               {filters.categories.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-white/5">
                   <div className="flex flex-wrap gap-1">
@@ -315,7 +321,7 @@ export function EcommerceWidget() {
                 {SORT_OPTION_KEYS.map((opt) => (
                   <button
                     key={opt.value}
-                    onClick={() => setFilters((prev) => ({ ...prev, sortBy: opt.value }))}
+                    onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, sortBy: opt.value })) }}
                     className={`w-full text-left px-2 py-1.5 rounded text-xs font-mono transition-all ${
                       filters.sortBy === opt.value
                         ? 'text-crimson-400 bg-crimson-500/10'
@@ -341,13 +347,14 @@ export function EcommerceWidget() {
 
           {/* Product Grid */}
           <div className="ecom-grid">
+            {/* Header row */}
             <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-xs text-white/40">
                 {t('projects:ecommerce.productsCount', { filtered: filteredProducts.length, total: MOCK_PRODUCTS.length })}
               </span>
               {filters.categories.length > 0 && (
                 <button
-                  onClick={() => setFilters((prev) => ({ ...prev, categories: [] }))}
+                  onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, categories: [] })) }}
                   className="font-mono text-[10px] text-crimson-400/60 hover:text-crimson-400 transition-colors"
                 >
                   {t('common:buttons.clearFilters')}
@@ -355,46 +362,80 @@ export function EcommerceWidget() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-              {filteredProducts.slice(0, 24).map((product) => (
-                <div
-                  key={product.id}
-                  className="glass-card p-3 group cursor-pointer hover:translate-y-[-2px] transition-transform"
-                >
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
+                {paginatedProducts.map((product) => (
                   <div
-                    className="aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 relative overflow-hidden"
-                    style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                    key={product.id}
+                    className="glass-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
                   >
-                    <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
-                      {product.category}
-                    </span>
-                    <span className="font-mono text-xs text-white/45 group-hover:text-white/70 transition-colors">
-                      {product.subcategory}
-                    </span>
+                    <div
+                      className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}
+                    >
+                      <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+                        {product.category}
+                      </span>
+                      <span className="font-mono text-xs text-white/45 group-hover:text-white/70 transition-colors">
+                        {product.subcategory}
+                      </span>
+                    </div>
+                    <h5 className="font-mono text-xs text-white/70 truncate" title={product.name}>
+                      {product.name}
+                    </h5>
+                    <div className="flex items-center justify-between mt-1.5">
+                      <span className="font-mono text-sm font-medium text-crimson-400">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="font-mono text-[9px] text-white/40 uppercase">
+                        #{String(product.id).padStart(3, '0')}
+                      </span>
+                    </div>
                   </div>
-                  <h5 className="font-mono text-xs text-white/70 truncate" title={product.name}>
-                    {product.name}
-                  </h5>
-                  <div className="flex items-center justify-between mt-1.5">
-                    <span className="font-mono text-sm font-medium text-crimson-400">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    <span className="font-mono text-[9px] text-white/40 uppercase">
-                      #{String(product.id).padStart(3, '0')}
-                    </span>
-                  </div>
+                ))}
+              </div>
+
+              {filteredProducts.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <span className="font-mono text-sm text-white/40">{t('projects:ecommerce.noProducts')}</span>
+                  <button
+                    onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
+                    className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 mt-2 transition-colors"
+                  >
+                    {t('common:buttons.resetAll')}
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
 
-            {filteredProducts.length === 0 && (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <span className="font-mono text-sm text-white/40">{t('projects:ecommerce.noProducts')}</span>
+            {/* Pagination — always visible below scroll area */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-4">
                 <button
-                  onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
-                  className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 mt-2 transition-colors"
+                  onClick={() => setPage((p) => Math.max(0, p - 1))}
+                  disabled={page === 0}
+                  className="w-8 h-8 rounded border border-white/10 flex items-center justify-center font-mono text-xs text-white/40 hover:text-white/70 hover:border-white/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
-                  {t('common:buttons.resetAll')}
+                  &lt;
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setPage(i)}
+                    className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-xs transition-all ${
+                      page === i
+                        ? 'border-crimson-500/40 bg-crimson-500/10 text-crimson-400'
+                        : 'border-white/10 text-white/40 hover:text-white/70 hover:border-white/20'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+                  disabled={page === totalPages - 1}
+                  className="w-8 h-8 rounded border border-white/10 flex items-center justify-center font-mono text-xs text-white/40 hover:text-white/70 hover:border-white/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                >
+                  &gt;
                 </button>
               </div>
             )}

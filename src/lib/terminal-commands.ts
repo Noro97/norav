@@ -64,9 +64,11 @@ const COMMANDS: Record<string, CommandHandler> = {
     if (file === 'stack.txt') {
       return [
         '',
-        '╭──────────────────────────────────────────╮',
-        '│' + t('cat.stack.title') + '                     │',
-        '╰──────────────────────────────────────────╯',
+        (() => {
+          const title = t('cat.stack.title')
+          const w = title.length + 4
+          return '╭' + '─'.repeat(w) + '╮\n│  ' + title + '  │\n╰' + '─'.repeat(w) + '╯'
+        })(),
         '',
         t('cat.stack.languages'),
         t('cat.stack.frameworks'),
@@ -189,24 +191,24 @@ const COMMANDS: Record<string, CommandHandler> = {
 
   sudo: (args) => {
     if (args[0] === 'hire') {
-      return [
+      const rows = [
         '',
-        '  ┌─────────────────────────────────────┐',
-        '  │                                     │',
-        '  │   ' + t('sudo.hire.message') + '       │',
-        '  │                                     │',
-        '  │   ✉  alex@mercer.dev                │',
-        '  │   ◆  github.com/alexmercer          │',
-        '  │   ●  linkedin.com/in/alexmercer     │',
-        '  │                                     │',
-        '  │   ' + t('sudo.hire.openTo') + '     │',
-        '  │   ' + t('sudo.hire.location') + '       │',
-        '  │                                     │',
-        '  └─────────────────────────────────────┘',
+        '   ' + t('sudo.hire.message'),
         '',
-        '  ' + t('sudo.hire.burst'),
+        '   ✉  noroavetisyan@gmail.com',
+        '   ◆  github.com/Noro97',
+        '   ●  linkedin.com/in/norayravetisyan',
+        '',
+        '   ' + t('sudo.hire.openTo'),
+        '   ' + t('sudo.hire.location'),
         '',
       ]
+      const w = Math.max(...rows.map((r) => r.length)) + 2
+      const top = '  ┌' + '─'.repeat(w) + '┐'
+      const bot = '  └' + '─'.repeat(w) + '┘'
+      const boxed = rows.map((r) => '  │' + r + ' '.repeat(w - r.length) + '│')
+
+      return ['', top, ...boxed, bot, '', '  ' + t('sudo.hire.burst'), '']
     }
     if (args[0] === 'rm' || args[0] === 'su') {
       return [t('sudo.niceTry')]

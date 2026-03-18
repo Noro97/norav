@@ -3,7 +3,7 @@ export interface VideoSource {
   mp4: string
 }
 
-export type BentoVariant = 'logistics' | 'merch' | 'ecommerce'
+export type BentoVariant = 'logistics' | 'merch' | 'ecommerce' | 'proof'
 
 export interface BentoProject {
   id: string
@@ -36,7 +36,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
     descriptionKey: 'projects.nexusroute.description',
     ctaKey: 'projects.nexusroute.cta',
     variant: 'logistics',
-    imageSrc: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=60',
+    imageSrc: '/assets/img/world-map.webp',
   },
   {
     id: 'merchforge',
@@ -67,8 +67,26 @@ export const BENTO_METRICS: BentoMetric[] = [
   { key: 'testCoverage', value: 92, suffix: '%', labelKey: 'dashboard.metrics.testCoverage', detailKey: 'dashboard.metrics.testCoverageDetail', color: '#22c55e' },
 ]
 
+export const PROOF_PROJECT: BentoProject = {
+  id: 'proof',
+  targetSectionId: 'overview',
+  techStack: ['React', 'Supabase Edge Functions', 'Google Gemini API', 'TWA SDK'],
+  titleKey: 'projects.proof.title',
+  descriptionKey: 'projects.proof.description',
+  ctaKey: 'projects.proof.cta',
+  variant: 'proof',
+}
+
+export const PROOF_METRICS = {
+  aiConfidence: { value: 98.4, suffix: '%' },
+  dbMigrations: { value: 27, suffix: '' },
+  xpTotal: { value: 15000, suffix: 'XP' },
+  badgeCount: { value: 42, suffix: '' },
+}
+
 export const MICRO_TILES = [
   { index: 0, icon: 'zap' },    // Performance Audit
   { index: 1, icon: 'shield' }, // Type-Safe Architecture
   { index: 2, icon: 'user' },   // User Experience
+  { index: 3, icon: 'brain' },  // AI Liveness
 ]

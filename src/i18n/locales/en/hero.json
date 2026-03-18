@@ -1,5 +1,8 @@
 {
-  "name": "Alex Mercer",
+  "firstName.highlight": "Nor",
+  "firstName.rest": "ayr",
+  "lastName.highlight": "Av",
+  "lastName.rest": "etisyan",
   "subtitle": "Senior Frontend Engineer",
   "tagline.before": "Building high-performance interfaces at the intersection of",
   "tagline.highlight1": "engineering precision",

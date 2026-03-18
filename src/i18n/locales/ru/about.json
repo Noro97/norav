@@ -1,6 +1,6 @@
 {
   "sectionLabel": "Обо мне",
-  "name": "Алекс Мерсер",
+  "name": "Норайр Аветисян",
   "role": "Старший фронтенд-инженер",
   "bio.paragraph1.before": "Я создаю интерфейсы, которые оживают. Моя работа находится на пересечении",
   "bio.paragraph1.highlight1": " инженерной строгости",
@@ -19,6 +19,6 @@
   "facts.status.value": "Открыт к предложениям",
   "social.github": "GitHub",
   "social.linkedin": "LinkedIn",
-  "social.twitter": "Twitter / X",
+  "social.telegram": "Telegram",
   "social.email": "Почта"
 }

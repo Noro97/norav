@@ -260,7 +260,7 @@ export function HeroMonolith() {
   })
 
   return (
-    <group ref={groupRef} position={[0, 1.8, 0]}>
+    <group ref={groupRef} position={[0, 1.2, 0]}>
       <Environment preset="city" />
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />
@@ -277,15 +277,15 @@ export function HeroMonolith() {
             <mesh key={i} geometry={geo}>
               <meshPhysicalMaterial
                 ref={i === 0 ? matRef : undefined}
-                metalness={0.95}
-                roughness={0.05}
-                transmission={0.6}
+                metalness={0.6}
+                roughness={0.25}
+                transmission={0.25}
                 thickness={1.5}
-                ior={1.5}
-                envMapIntensity={2.0}
-                color="#1a0a10"
-                clearcoat={1.0}
-                clearcoatRoughness={0.1}
+                ior={1.3}
+                envMapIntensity={0.4}
+                color="#B51A2B"
+                clearcoat={0.15}
+                clearcoatRoughness={0.4}
                 transparent={true}
                 opacity={1}
               />
@@ -301,15 +301,15 @@ export function HeroMonolith() {
         visible={false}
       >
         <meshPhysicalMaterial
-          metalness={0.95}
-          roughness={0.05}
-          transmission={0.6}
+          metalness={0.3}
+          roughness={0.55}
+          transmission={0.15}
           thickness={1.5}
-          ior={1.5}
-          envMapIntensity={2.0}
-          color="#1a0a10"
-          clearcoat={1.0}
-          clearcoatRoughness={0.1}
+          ior={1.3}
+          envMapIntensity={0.4}
+          color="#B51A2B"
+          clearcoat={0.15}
+          clearcoatRoughness={0.6}
           transparent={true}
           opacity={0.9}
         />

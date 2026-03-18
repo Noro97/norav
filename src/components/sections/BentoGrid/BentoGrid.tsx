@@ -8,6 +8,9 @@ import { BentoProjectTile } from './BentoProjectTile'
 import { BentoMicroTile } from './BentoMicroTile'
 import { BentoImpactDashboard } from './BentoImpactDashboard'
 import { BentoMarquee } from './BentoMarquee'
+import { ProofVerificationTile } from './ProofVerificationTile'
+import { ProofEconomyTile } from './ProofEconomyTile'
+import { ProofGamificationTile } from './ProofGamificationTile'
 
 export function BentoGrid() {
   const { t } = useTranslation('bento')
@@ -73,6 +76,14 @@ export function BentoGrid() {
 
           {/* Row 4: FilterGraph (full width) */}
           <BentoProjectTile project={BENTO_PROJECTS[2]!} index={2} className="md:col-span-3" />
+
+          {/* Row 5: ProofVerification (2col) + ProofEconomy (1col) */}
+          <ProofVerificationTile className="md:col-span-2" />
+          <ProofEconomyTile />
+
+          {/* Row 6: ProofMicro (1col) + ProofGamification (2col) */}
+          <BentoMicroTile index={MICRO_TILES[3]!.index} icon={MICRO_TILES[3]!.icon} />
+          <ProofGamificationTile className="md:col-span-2" />
         </div>
 
         {/* Marquee */}

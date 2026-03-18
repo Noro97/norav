@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 interface MapViewProps {
@@ -147,13 +147,20 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   const dataLayerRef = useRef<google.maps.Data | null>(null)
   const lastUpdateRef = useRef(0)
   const pendingRafRef = useRef(0)
+  const [error, setError] = useState<string | null>(null)
 
   // Initialize map once
   useEffect(() => {
     let cancelled = false
 
     async function init() {
-      await importLibrary('maps')
+      try {
+        await importLibrary('maps')
+      } catch (e) {
+        console.error('[MapView] Failed to load Google Maps:', e)
+        if (!cancelled) setError('Failed to load Google Maps. Check API key and domain restrictions.')
+        return
+      }
       if (cancelled || !mapDivRef.current) return
 
       const map = new google.maps.Map(mapDivRef.current, {
@@ -292,6 +299,14 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   useEffect(() => {
     scheduleUpdate(markers, connections)
   }, [markers, connections, scheduleUpdate])
+
+  if (error) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-[#1d2c4d]">
+        <p className="text-white/50 text-sm font-mono text-center px-6">{error}</p>
+      </div>
+    )
+  }
 
   return (
     <div

@@ -1,5 +1,8 @@
 {
-  "name": "Алекс Мерсер",
+  "firstName.highlight": "Нор",
+  "firstName.rest": "айр",
+  "lastName.highlight": "Ав",
+  "lastName.rest": "етисян",
   "subtitle": "Старший фронтенд-инженер",
   "tagline.before": "Создаю высокопроизводительные интерфейсы на стыке",
   "tagline.highlight1": "инженерной точности",

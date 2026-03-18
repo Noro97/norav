@@ -83,7 +83,15 @@ export function HeroSection() {
     }
   }
 
-  const heroName = t('name')
+  const nameParts = [
+    { text: t('firstName.highlight'), crimson: true },
+    { text: t('firstName.rest'), crimson: false },
+    { text: ' ', crimson: false },
+    { text: t('lastName.highlight'), crimson: true },
+    { text: t('lastName.rest'), crimson: false },
+  ]
+
+  let charIndex = 0
 
   return (
     <section
@@ -102,15 +110,20 @@ export function HeroSection() {
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8" style={{ fontFamily: 'var(--font-family-display)' }}>
-          {heroName.split('').map((char, i) => (
-            <span
-              key={i}
-              ref={(el) => { if (el) charsRef.current[i] = el }}
-              className="inline-block opacity-0 translate-y-[40px]"
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
+          {nameParts.map((part) =>
+            part.text.split('').map((char) => {
+              const idx = charIndex++
+              return (
+                <span
+                  key={idx}
+                  ref={(el) => { if (el) charsRef.current[idx] = el }}
+                  className={`inline-block opacity-0 translate-y-[40px]${part.crimson ? ' text-crimson-500' : ''}`}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              )
+            })
+          )}
         </h1>
 
         <p

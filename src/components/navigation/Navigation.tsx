@@ -22,13 +22,8 @@ export function Navigation() {
         onClick={() => handleClick('hero')}
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
-        <img
-          src="/assets/img/logo-new.svg"
-          alt="Logo"
-          className="h-7 w-7"
-        />
-        <span className="hidden sm:inline font-mono text-sm font-semibold tracking-widest text-crimson-500 uppercase">
-          AM<span className="text-white/30">.</span>dev
+        <span className="hidden sm:inline font-mono text-sm font-semibold tracking-widest uppercase">
+          <span className="text-crimson-500">nor</span><span className="text-crimson-500">av</span><span className="text-white/30">.</span><span className="text-crimson-500">dev</span>
         </span>
       </button>
 
