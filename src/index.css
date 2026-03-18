@@ -72,14 +72,6 @@
   margin: 0 auto 2rem;
 }
 
-/* ===== MICRO-GRID BACKGROUND ===== */
-.micro-grid-bg {
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
 /* ===== MARQUEE ANIMATION ===== */
 .marquee-track {
   animation: marquee 40s linear infinite;

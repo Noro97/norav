@@ -8,6 +8,7 @@ import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { CursorManager } from '@/components/cursor/CursorManager'
 import { AnimatedGrain } from '@/components/ui/AnimatedGrain'
+import { DynamicGrid } from '@/components/ui/DynamicGrid'
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -100,6 +101,7 @@ function App() {
 
   return (
     <>
+      <DynamicGrid />
       <CursorManager />
       <AnimatedGrain />
 
