@@ -7,6 +7,7 @@ import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { CursorManager } from '@/components/cursor/CursorManager'
+import { AnimatedGrain } from '@/components/ui/AnimatedGrain'
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -100,6 +101,7 @@ function App() {
   return (
     <>
       <CursorManager />
+      <AnimatedGrain />
 
       {/* R3F Canvas */}
       {!prefersReducedMotion && (
