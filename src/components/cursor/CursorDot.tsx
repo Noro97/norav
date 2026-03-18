@@ -109,6 +109,7 @@ function applyDotConfig(dot: HTMLDivElement, cursorState: CursorState) {
 export function CursorDot() {
   const dotRef = useRef<HTMLDivElement>(null)
   const smoothRef = useRef({ x: 0, y: 0 })
+  const sizeRef = useRef(12) // cached size to avoid parseFloat every frame
 
   // Subscribe to cursorState to apply style changes imperatively
   useEffect(() => {
@@ -117,6 +118,7 @@ export function CursorDot() {
       const dot = dotRef.current
       if (!dot) return
       applyDotConfig(dot, state.cursorState)
+      sizeRef.current = CONFIG[state.cursorState].size
     })
   }, [])
 
@@ -130,10 +132,7 @@ export function CursorDot() {
     smooth.x += (raw.x - smooth.x) * CURSOR_LERP_FACTOR
     smooth.y += (raw.y - smooth.y) * CURSOR_LERP_FACTOR
 
-    // Read current size to center the dot on the cursor
-    const size = parseFloat(dot.style.width) || 12
-    const offset = size / 2
-
+    const offset = sizeRef.current / 2
     dot.style.transform = `translate(${smooth.x - offset}px, ${smooth.y - offset}px)`
   })
 

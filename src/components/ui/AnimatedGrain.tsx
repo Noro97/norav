@@ -5,6 +5,8 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 export function AnimatedGrain() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const offscreenRef = useRef<HTMLCanvasElement | null>(null)
+  const offCtxRef = useRef<CanvasRenderingContext2D | null>(null)
+  const mainCtxRef = useRef<CanvasRenderingContext2D | null>(null)
   const patternRef = useRef<CanvasPattern | null>(null)
   const accDtRef = useRef(0)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -15,9 +17,10 @@ export function AnimatedGrain() {
     offscreen.width = 256
     offscreen.height = 256
     offscreenRef.current = offscreen
+    offCtxRef.current = offscreen.getContext('2d')
 
     // Draw initial static grain
-    const ctx = offscreen.getContext('2d')
+    const ctx = offCtxRef.current
     if (ctx) {
       const imageData = ctx.createImageData(256, 256)
       const data = imageData.data
@@ -34,9 +37,9 @@ export function AnimatedGrain() {
     // Build pattern on the main canvas
     const canvas = canvasRef.current
     if (canvas) {
-      const mainCtx = canvas.getContext('2d')
-      if (mainCtx) {
-        patternRef.current = mainCtx.createPattern(offscreen, 'repeat')
+      mainCtxRef.current = canvas.getContext('2d')
+      if (mainCtxRef.current) {
+        patternRef.current = mainCtxRef.current.createPattern(offscreen, 'repeat')
       }
     }
   }, [])
@@ -52,9 +55,9 @@ export function AnimatedGrain() {
       canvas.height = window.innerHeight
 
       // Re-create pattern after resize since canvas dimensions changed
-      const mainCtx = canvas.getContext('2d')
-      if (mainCtx && offscreenRef.current) {
-        patternRef.current = mainCtx.createPattern(offscreenRef.current, 'repeat')
+      mainCtxRef.current = canvas.getContext('2d')
+      if (mainCtxRef.current && offscreenRef.current) {
+        patternRef.current = mainCtxRef.current.createPattern(offscreenRef.current, 'repeat')
       }
     }
 
@@ -77,7 +80,7 @@ export function AnimatedGrain() {
     if (!offscreen || !canvas) return
 
     // Regenerate noise on offscreen canvas
-    const offCtx = offscreen.getContext('2d')
+    const offCtx = offCtxRef.current
     if (offCtx) {
       const imageData = offCtx.createImageData(256, 256)
       const data = imageData.data
@@ -92,7 +95,7 @@ export function AnimatedGrain() {
     }
 
     // Re-create pattern and fill main canvas
-    const mainCtx = canvas.getContext('2d')
+    const mainCtx = mainCtxRef.current
     if (mainCtx) {
       patternRef.current = mainCtx.createPattern(offscreen, 'repeat')
       if (patternRef.current) {

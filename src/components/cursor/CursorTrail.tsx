@@ -14,6 +14,7 @@ interface TrailPoint {
 
 export function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
 
   // Ring buffer for trail points
   const bufferRef = useRef<TrailPoint[]>(
@@ -37,6 +38,7 @@ export function CursorTrail() {
       if (!canvas) return
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      ctxRef.current = canvas.getContext('2d')
     }
 
     resize()
@@ -46,9 +48,8 @@ export function CursorTrail() {
 
   useAnimationLoop(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const ctx = ctxRef.current
+    if (!canvas || !ctx) return
 
     const raw = useAppStore.getState().cursorPosition
     const smooth = smoothRef.current

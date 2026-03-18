@@ -6,13 +6,10 @@ import { GRID_SPACING, GRID_GLOW_RADIUS } from '@/lib/constants'
 
 export function DynamicGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const offscreenRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const cursorPosition = useAppStore((s) => s.cursorPosition)
-  const cursorRef = useRef({ x: 0, y: 0 })
-
-  // Keep cursor ref in sync without causing re-renders
-  cursorRef.current = cursorPosition
+  const lastDrawnCursor = useRef({ x: -999, y: -999 })
 
   const buildOffscreen = useCallback((width: number, height: number) => {
     const oc = document.createElement('canvas')
@@ -52,6 +49,7 @@ export function DynamicGrid() {
       const h = window.innerHeight
       canvas.width = w
       canvas.height = h
+      ctxRef.current = canvas.getContext('2d')
       offscreenRef.current = buildOffscreen(w, h)
     }
 
@@ -64,13 +62,18 @@ export function DynamicGrid() {
   useAnimationLoop(() => {
     const canvas = canvasRef.current
     const offscreen = offscreenRef.current
-    if (!canvas || !offscreen) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const ctx = ctxRef.current
+    if (!canvas || !offscreen || !ctx) return
 
     const { width, height } = canvas
-    const { x: cx, y: cy } = cursorRef.current
+    const { x: cx, y: cy } = useAppStore.getState().cursorPosition
+
+    // Skip redraw if cursor hasn't moved significantly
+    const dx = cx - lastDrawnCursor.current.x
+    const dy = cy - lastDrawnCursor.current.y
+    if (dx * dx + dy * dy < 4 && lastDrawnCursor.current.x !== -999) return
+    lastDrawnCursor.current.x = cx
+    lastDrawnCursor.current.y = cy
 
     // Clear
     ctx.clearRect(0, 0, width, height)

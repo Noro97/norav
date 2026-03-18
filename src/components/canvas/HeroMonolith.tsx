@@ -1,6 +1,6 @@
 import { useRef, useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Center, Environment, Text } from '@react-three/drei'
+import { Center, Environment, Text3D } from '@react-three/drei'
 import * as THREE from 'three'
 import { useAppStore } from '@/store/useAppStore'
 
@@ -221,12 +221,20 @@ export function HeroMonolith() {
   return (
     <group ref={groupRef} position={[0, 0.5, 0]}>
       <Environment preset="city" />
+      {/* Subtle lighting to enhance glass reflections */}
+      <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
+      <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />
       <Center>
-        <Text
-          fontSize={1.2}
-          letterSpacing={-0.05}
-          anchorX="center"
-          anchorY="middle"
+        <Text3D
+          font="/fonts/helvetiker_bold.typeface.json"
+          size={0.8}
+          height={0.3}
+          bevelEnabled
+          bevelThickness={0.02}
+          bevelSize={0.02}
+          bevelOffset={0}
+          bevelSegments={5}
+          letterSpacing={-0.03}
         >
           GY
           <meshPhysicalMaterial
@@ -243,7 +251,7 @@ export function HeroMonolith() {
             transparent={true}
             opacity={1}
           />
-        </Text>
+        </Text3D>
       </Center>
 
       {/* Shard instanced mesh — same glass material as text */}

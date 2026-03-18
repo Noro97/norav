@@ -6,10 +6,19 @@ import { useLenisScroll } from '@/hooks/useLenisScroll'
 import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { HeroSection } from '@/components/sections/HeroSection'
-import { CursorManager } from '@/components/cursor/CursorManager'
-import { AnimatedGrain } from '@/components/ui/AnimatedGrain'
-import { DynamicGrid } from '@/components/ui/DynamicGrid'
-import { FloatingArtifacts } from '@/components/ui/FloatingArtifacts'
+// Lazy-load overlay components
+const CursorManager = lazy(() =>
+  import('@/components/cursor/CursorManager').then((m) => ({ default: m.CursorManager }))
+)
+const AnimatedGrain = lazy(() =>
+  import('@/components/ui/AnimatedGrain').then((m) => ({ default: m.AnimatedGrain }))
+)
+const DynamicGrid = lazy(() =>
+  import('@/components/ui/DynamicGrid').then((m) => ({ default: m.DynamicGrid }))
+)
+const FloatingArtifacts = lazy(() =>
+  import('@/components/ui/FloatingArtifacts').then((m) => ({ default: m.FloatingArtifacts }))
+)
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -102,10 +111,12 @@ function App() {
 
   return (
     <>
-      <DynamicGrid />
-      <FloatingArtifacts />
-      <CursorManager />
-      <AnimatedGrain />
+      <Suspense fallback={null}>
+        <DynamicGrid />
+        <FloatingArtifacts />
+        <CursorManager />
+        <AnimatedGrain />
+      </Suspense>
 
       {/* R3F Canvas */}
       {!prefersReducedMotion && (

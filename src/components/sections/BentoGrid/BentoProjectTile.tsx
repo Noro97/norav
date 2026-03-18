@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { MagneticButton } from '@/components/ui/MagneticButton'
 import type { BentoProject } from './bento.data'
 
 interface BentoProjectTileProps {
@@ -122,7 +123,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         </div>
 
         {/* CTA */}
-        <button
+        <MagneticButton
           onClick={handleScrollTo}
           aria-label={`${t(project.ctaKey)} — ${t(project.titleKey)}`}
           className="inline-flex items-center gap-2.5 text-[11px] font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
@@ -145,7 +146,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           >
             <path d="M7 17l9.2-9.2M17 17V7H7" />
           </svg>
-        </button>
+        </MagneticButton>
       </motion.div>
 
       {/* Bottom edge glow on hover */}
