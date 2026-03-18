@@ -1,14 +1,14 @@
 # Visual Density & Interactivity Overhaul
 
 **Date:** 2026-03-18
-**Status:** Draft
+**Status:** Approved
 **Scope:** Transform the minimalist portfolio into a saturated media experience with heavy graphics and complex cursor interactions.
 
 ---
 
 ## 1. Decomposition
 
-This is a large initiative spanning 5 independent subsystems. Each becomes its own implementation phase, ordered by dependency:
+This is a large initiative spanning 6 phases. Each becomes its own implementation phase, ordered by dependency:
 
 | Phase | Subsystem | Dependency |
 |-------|-----------|------------|
@@ -43,7 +43,11 @@ Each state controls:
 
 ### 2.2 Cursor Position & Smoothing
 
-Reuse existing `mousemove` handler in `SceneController.tsx` which already writes to `useAppStore.mousePosition`. Add a second pair of coordinates for the **smoothed** cursor position using a lerp (factor 0.15) driven by `requestAnimationFrame`. This smoothed position drives the visual cursor; the raw position drives hover detection.
+The existing `mousemove` handler in `SceneController.tsx` writes NDC coordinates (range -1 to 1) to `useAppStore.mousePosition`. The cursor system needs **raw pixel coordinates**.
+
+**Solution:** `CursorManager` registers its own `mousemove` handler that writes `setCursorPosition({ x: e.clientX, y: e.clientY })` to the store. This is separate from the NDC handler in `SceneController` — each serves a different consumer (R3F vs DOM/Canvas cursor).
+
+The visible cursor position is **smoothed** using a lerp (factor 0.15) driven by `requestAnimationFrame`. The smoothed position drives the visual cursor; the raw position drives hover detection.
 
 ### 2.3 State Detection
 
@@ -55,7 +59,9 @@ Use `data-cursor` attributes on interactive elements:
 <a data-cursor="link" />
 ```
 
-Detection method: On each `mousemove`, run `document.elementFromPoint(x, y)` and walk up the DOM tree (max 5 levels) looking for `data-cursor`. Cache the last result to avoid redundant state changes. Throttle to every 2nd frame.
+Detection method: Use event delegation on `<main>` via `mouseover` events. On `mouseover`, call `e.target.closest('[data-cursor]')` to find the nearest ancestor with `data-cursor`. This avoids the cost of `elementFromPoint` (which forces layout/hit-test). Cache the last result to avoid redundant state changes.
+
+**Important:** All overlay layers (grain, cursor trail, dynamic grid) must keep `pointer-events: none` so that `mouseover` events reach the actual content elements beneath.
 
 ### 2.4 Trail Effect
 
@@ -67,8 +73,12 @@ Trail is **disabled** on mobile (touch devices) — detect via `useAppStore.isMo
 
 Two DOM layers for the cursor:
 
-1. **Canvas layer** (z-index: 9998) — Draws the trail. Pure 2D canvas, `pointer-events: none`.
-2. **DOM overlay** (z-index: 9998) — The cursor itself. A `<div>` with CSS transitions for size/shape changes. This layer handles `mix-blend-mode: difference` for the text state (canvas can't do mix-blend-mode against page content).
+1. **Canvas layer** (z-index: 9996) — Draws the trail. Pure 2D canvas, `pointer-events: none`.
+2. **DOM overlay** (z-index: 9997) — The cursor itself. A `<div>` with CSS transitions for size/shape changes. This layer handles `mix-blend-mode: difference` for the text state (canvas can't do mix-blend-mode against page content). Must be **below** grain (9999) in z-order.
+
+**Z-index stack (top to bottom):** grain canvas (9999) → cursor DOM dot (9997) → cursor trail canvas (9996).
+
+**Note on mix-blend-mode:** The `difference` blend on the cursor dot blends against the elements in its stacking context. Because the grain overlay sits above it at z-index 9999, the blend correctly applies against page content (not grain). If this proves visually problematic, add `isolation: isolate` on the cursor dot's parent to confine the blend context. This interaction must be tested visually during implementation.
 
 ### 2.6 CSS
 
@@ -108,7 +118,7 @@ The 3D object lives inside the existing `SceneController` Canvas — no second C
 
 ### 3.2 3D Object
 
-**Geometry:** `TextGeometry` from `@react-three/drei` (uses `troika-three-text` under the hood) for the initials "GY", or an `ExtrudeGeometry` from a custom SVG path if a logo exists.
+**Geometry:** `<Text3D>` from `@react-three/drei` for extruded 3D initials "GY". This uses Three.js `TextGeometry` internally and requires a typeface JSON font file (generated from a TTF via [Facetype.js](https://gero3.github.io/facetype.js/)). Place the generated font at `public/fonts/inter-tight-bold.json`. Alternatively, use `ExtrudeGeometry` from a custom SVG path if a logo exists.
 
 **Material:** `MeshPhysicalMaterial` with:
 - `metalness: 0.95`, `roughness: 0.05`
@@ -121,9 +131,10 @@ The 3D object lives inside the existing `SceneController` Canvas — no second C
 
 ### 3.3 Mouse Follow (Spring Physics)
 
-Use `@react-three/drei`'s `useSpring` (from `react-spring/three`) or `framer-motion-3d`:
+Use `framer-motion/three` (ships with framer-motion 12, already installed — no new dependency needed):
+- Import `motion` from `framer-motion/three` for `<motion.group>`
 - Map `useAppStore.mousePosition` (NDC) → rotation offset: `rotationX = mouseY * 0.3`, `rotationY = mouseX * 0.3`
-- Spring config: `mass: 1, tension: 120, friction: 14` (heavy, smooth follow)
+- Spring config via framer-motion's `transition`: `{ type: "spring", stiffness: 120, damping: 14, mass: 1 }`
 - Position stays fixed at `[0, 0.5, 0]`; only rotation is spring-driven
 
 ### 3.4 Explode/Reassemble on Click
@@ -150,10 +161,15 @@ The 2D text below the 3D object:
 
 ### 3.6 Scroll Behavior
 
-When user scrolls past hero:
-- The 3D object fades out (opacity → 0) and scales down (scale → 0.8) via GSAP ScrollTrigger
-- Constellation takes over as the sole background element
-- The 3D object is conditionally rendered only when `activeSection === 'hero'` to save GPU
+The HeroMonolith is **always mounted** while the hero section is in the viewport range, but toggles visibility via internal state:
+
+1. A scroll progress value (0–1) is derived from GSAP ScrollTrigger on the hero section (`start: "top top"`, `end: "bottom top"`)
+2. Inside `HeroMonolith`, this progress drives:
+   - `opacity`: 1 → 0 (via material opacity, `transparent: true`)
+   - `scale`: 1 → 0.8 (via `useFrame` lerp)
+3. When scroll progress reaches 1.0 (hero fully scrolled past), `HeroMonolith` sets `visible={false}` on the mesh group — Three.js skips it in the render loop (zero GPU cost) without unmounting from React
+
+This avoids the conflict between animate-then-unmount. The component stays mounted but invisible, with negligible overhead.
 
 ### 3.7 Files
 
@@ -162,17 +178,11 @@ When user scrolls past hero:
 | `src/components/canvas/HeroMonolith.tsx` | 3D text mesh with material, spring rotation, explode logic |
 | `src/components/canvas/HeroMonolith.shards.ts` | Pre-computed shard geometry utility |
 | `src/components/sections/HeroSection.tsx` | Updated: repositioned text, added click handler |
-| `src/components/canvas/SceneController.tsx` | Updated: conditionally render `<HeroMonolith>` when hero is active |
+| `src/components/canvas/SceneController.tsx` | Updated: render `<HeroMonolith>` (always mounted, visibility controlled internally) |
 
-### 3.8 Conditional Rendering
+### 3.8 Mounting Strategy
 
-The `HeroMonolith` is mounted inside `<Scene>` only when `activeSection === 'hero'`:
-
-```tsx
-{activeSection === 'hero' && <HeroMonolith />}
-```
-
-This avoids rendering a complex PBR material when it's not visible.
+The `HeroMonolith` is always mounted inside `<Scene>` (no conditional rendering). Visibility is controlled via `visible` prop on the Three.js group (see §3.6). This keeps the component in the React tree for animation continuity while having zero GPU cost when invisible.
 
 ---
 
@@ -278,7 +288,11 @@ Props: { frameDir: string, frameCount: number, width: number, height: number }
 - `scrub: 0.5` (smooth follow)
 - `onUpdate: (self) => setCurrentFrame(Math.floor(self.progress * (frameCount - 1)))`
 
-**Skeleton:** Show a loading skeleton (pulsing dark rectangle) while frames load, then crossfade to the canvas.
+**Loading strategy:**
+- Show a skeleton (pulsing dark rectangle with a subtle progress bar showing fraction loaded) while frames preload
+- Retry failed frames 2x with 500ms delay; after 2 failures, skip that frame (interpolate from neighbors)
+- If fewer than 50% of frames load within 8 seconds, abandon sequence and show a static fallback image
+- Crossfade from skeleton to canvas once all (or enough) frames are ready
 
 ### 5.4 Files
 
@@ -366,7 +380,7 @@ Small text elements ("artifacts") that drift slowly across the screen:
 
 **Implementation:**
 - A `<FloatingArtifacts>` component renders 8-12 `<span>` elements with `position: fixed`
-- Each artifact has a random starting position, slow velocity (0.1-0.3px/frame), and wraps around screen edges
+- Each artifact has a random starting position, slow velocity (0.1-0.3px/frame), and wraps around screen edges (hard teleport to opposite edge — at 4% opacity this is imperceptible)
 - Styled: `font-mono text-[10px] text-white/[0.04]` — extremely subtle
 - Animation driven by a single `requestAnimationFrame` loop
 - Z-index: 2 (above grid, below content)
@@ -393,12 +407,13 @@ Target: 60fps on desktop, 30fps acceptable on mobile.
 | Component | Estimated Cost |
 |-----------|---------------|
 | Constellation particles | ~4ms/frame (existing) |
-| Hero Monolith (PBR) | ~3ms/frame (only during hero section) |
+| Hero Monolith (PBR + transmission) | ~5-6ms/frame (only during hero section; transmission requires extra render pass) |
 | Cursor trail canvas | ~0.5ms/frame |
 | Grain canvas | ~0.3ms/frame (runs at 15fps) |
 | Dynamic grid canvas | ~1ms/frame (dirty rect) |
 | Floating artifacts | ~0.1ms/frame (DOM transform) |
-| **Total** | **~9ms/frame** (within 16.6ms budget) |
+| **Total (hero visible)** | **~12ms/frame** (within 16.6ms budget, but tight) |
+| **Total (hero scrolled past)** | **~6ms/frame** (comfortable) |
 
 ### 8.2 Lazy Loading Strategy
 
@@ -414,7 +429,7 @@ Target: 60fps on desktop, 30fps acceptable on mobile.
 |---------|---------|--------|--------|
 | Custom cursor | Yes | Yes (pointer devices) | No |
 | Cursor trail | Yes | No | No |
-| Hero Monolith 3D | Yes | Yes (lower quality) | 2D fallback |
+| Hero Monolith 3D | Yes (full PBR + transmission) | Yes (MeshStandardMaterial, no transmission — halves GPU cost) | 2D fallback (static hero image or CSS glass effect on text) |
 | Video backgrounds | Yes | Yes | Poster image only |
 | Image sequences | Yes (60 frames) | Yes (30 frames) | Static image |
 | Tech Orbit 3D | Yes | Yes | 2D grid |
@@ -463,11 +478,10 @@ All visual enhancements are decorative. Semantic content remains unchanged.
 
 | Package | Purpose | Size (gzip) |
 |---------|---------|-------------|
-| `@react-spring/three` | Spring physics for 3D monolith rotation | ~15KB |
-| `three/examples/jsm/utils/BufferGeometryUtils` | Shard computation (already in three) | 0KB |
 | `@fontsource/inter-tight` | Display font (hero headings) | ~20KB |
+| `three/examples/jsm/utils/BufferGeometryUtils` | Shard computation (already in three) | 0KB |
 
-No other new dependencies. All other features use existing deps (GSAP, framer-motion, R3F, Zustand) or vanilla Canvas/CSS.
+No other new dependencies. Spring physics use `framer-motion/three` (ships with framer-motion 12, already installed). All other features use existing deps (GSAP, framer-motion, R3F, Zustand) or vanilla Canvas/CSS.
 
 ---
 
@@ -493,7 +507,7 @@ setCursorPosition: (pos: { x: number; y: number }) => void
 
 ## 12. Summary of New & Modified Files
 
-### New Files (16)
+### New Files & Assets (17)
 
 ```
 src/components/cursor/CursorManager.tsx
@@ -509,8 +523,10 @@ src/components/ui/FloatingArtifacts.tsx
 src/components/ui/MagneticButton.tsx
 src/components/sections/TechOrbit.tsx
 src/hooks/useMagneticEffect.ts
+src/hooks/useAnimationLoop.ts
 public/videos/                          (asset dir)
 public/frames/merch-rotate/             (asset dir)
+public/fonts/inter-tight-bold.json      (typeface JSON for Text3D)
 ```
 
 ### Modified Files (10)
@@ -519,7 +535,7 @@ public/frames/merch-rotate/             (asset dir)
 src/store/useAppStore.ts                (cursor + hero state)
 src/App.tsx                             (mount Cursor, Grain, Grid, Artifacts)
 src/index.css                           (remove static grain, update cursor styles)
-src/components/canvas/SceneController.tsx (render HeroMonolith, raw cursor coords)
+src/components/canvas/SceneController.tsx (render HeroMonolith)
 src/components/sections/HeroSection.tsx  (typography, click handler, layout)
 src/components/sections/BentoGrid/BentoProjectTile.tsx (video, parallax)
 src/components/sections/BentoGrid/BentoMicroTile.tsx   (parallax)
@@ -527,3 +543,68 @@ src/components/sections/BentoGrid/bento.data.ts        (videoSrc field)
 src/components/sections/SkillsMatrix.tsx (conditional TechOrbit on desktop)
 src/lib/constants.ts                     (new constants for cursor, artifacts)
 ```
+
+---
+
+## 13. New Constants (`src/lib/constants.ts`)
+
+```typescript
+// Cursor
+export const CURSOR_SIZE_DEFAULT = 12
+export const CURSOR_SIZE_PLAY = 64
+export const CURSOR_SIZE_TARGET = 48
+export const CURSOR_SIZE_TEXT = 32
+export const CURSOR_SIZE_LINK = 24
+export const CURSOR_TRAIL_BUFFER_SIZE = 20
+export const CURSOR_TRAIL_SAMPLE_RATE = 2    // sample every Nth frame
+export const CURSOR_LERP_FACTOR = 0.15
+
+// Magnetic buttons
+export const MAGNETIC_RADIUS = 50            // px
+export const MAGNETIC_STRENGTH = 0.3         // transform multiplier
+export const MAGNETIC_TEXT_STRENGTH = 0.15   // inner text multiplier (half of container)
+
+// Floating artifacts
+export const ARTIFACT_COUNT_DESKTOP = 12
+export const ARTIFACT_COUNT_TABLET = 8
+export const ARTIFACT_COUNT_MOBILE = 4
+export const ARTIFACT_SPEED_MIN = 0.1        // px per frame
+export const ARTIFACT_SPEED_MAX = 0.3
+
+// Dynamic grid
+export const GRID_SPACING = 40              // px
+export const GRID_GLOW_RADIUS = 200         // px
+```
+
+---
+
+## 14. Shared Animation Loop (`useAnimationLoop`)
+
+Phases 1, 3, 6, and 7 each introduce `requestAnimationFrame` loops (cursor trail, grain update, dynamic grid glow, floating artifacts). To reduce scheduling overhead from 5+ independent rAF registrations:
+
+Create a `useAnimationLoop(callback, priority?)` hook that registers callbacks into a single shared rAF coordinator. The coordinator runs one `requestAnimationFrame` and calls all registered callbacks in priority order. Callbacks are added/removed via `useEffect` cleanup.
+
+```typescript
+// src/hooks/useAnimationLoop.ts
+// Single rAF loop, callbacks stored in a Set
+// Each consumer registers via: useAnimationLoop((dt) => { ... })
+// Automatic start when first callback registers, stop when last unregisters
+```
+
+This batches all frame work into one rAF call, reducing browser scheduling overhead.
+
+---
+
+## 15. Testing Strategy
+
+| Component | Test Type | What to verify |
+|-----------|-----------|---------------|
+| Cursor state machine | Unit test | State transitions: default → play → default, etc. Verify `setCursorState` updates correctly |
+| `useMagneticEffect` hook | Unit test (react-testing-library) | Transform values at various cursor distances; reset on mouse leave |
+| `useAnimationLoop` | Unit test | Callback registration/unregistration, cleanup on unmount |
+| Image sequence loader | Unit test | Retry logic, fallback on timeout, progress calculation |
+| Cursor `data-cursor` detection | Integration test | Verify `closest('[data-cursor]')` finds correct ancestors |
+| Device tier rendering | Manual test | Verify mobile/tablet/desktop feature gates match §8.3 table |
+| Reduced motion | Manual test | Verify all animations respect `prefers-reduced-motion` per §8.4 |
+| Z-index stacking | Visual regression | Screenshot cursor over text (difference blend), verify grain doesn't interfere |
+| Performance | Manual profiling | Chrome DevTools Performance tab: verify <16.6ms frame time on hero, <10ms elsewhere |
