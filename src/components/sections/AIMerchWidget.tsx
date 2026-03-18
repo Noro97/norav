@@ -333,10 +333,18 @@ export function AIMerchWidget() {
 
             {/* SKU preview */}
             <div className="flex items-center gap-3 pt-2 border-t border-white/5">
-              <div
-                className="w-8 h-8 rounded border border-white/10 shrink-0"
-                style={{ backgroundColor: activeHex }}
-              />
+              <div className="w-12 h-12 rounded-lg border border-white/10 shrink-0 relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop"
+                  alt=""
+                  className="w-full h-full object-cover opacity-30"
+                  loading="lazy"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{ backgroundColor: activeHex, mixBlendMode: 'multiply', opacity: 0.7 }}
+                />
+              </div>
               <div>
                 <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.sku')}</span>
                 <span className="font-mono text-xs text-white/60">{generateSKU(config)}</span>

@@ -65,9 +65,12 @@ export function AboutHero() {
           <div className="flex flex-col items-center lg:items-start gap-6">
             {/* Avatar */}
             <div className="about-avatar relative w-48 h-48 rounded-2xl overflow-hidden border border-white/8">
-              <div className="absolute inset-0 bg-gradient-to-br from-crimson-700/40 via-[#0d0d1f] to-crimson-900/30 flex items-center justify-center">
-                <span className="text-6xl font-bold text-white/10 font-mono select-none">AM</span>
-              </div>
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+                alt="Alex Mercer"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
               {/* Status badge */}
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

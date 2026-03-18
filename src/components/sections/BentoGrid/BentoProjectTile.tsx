@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { MagneticButton } from '@/components/ui/MagneticButton'
+import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
 import type { BentoProject } from './bento.data'
 
 interface BentoProjectTileProps {
@@ -32,7 +33,10 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
     return () => observer.disconnect()
   }, [project.videoSrc])
 
+  const [isHovered, setIsHovered] = useState(false)
+
   const handleMouseEnter = () => {
+    setIsHovered(true)
     if (videoRef.current && inViewport) {
       videoRef.current.play().catch(() => {})
       videoRef.current.style.opacity = '0.15'
@@ -40,6 +44,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
   }
 
   const handleMouseLeave = () => {
+    setIsHovered(false)
     if (videoRef.current) {
       videoRef.current.style.opacity = '0'
       setTimeout(() => videoRef.current?.pause(), 300)
@@ -60,6 +65,17 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       onMouseLeave={handleMouseLeave}
       className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
     >
+      {/* Background image — subtle, brightens on hover */}
+      {project.imageSrc && (
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 pointer-events-none"
+          style={{
+            backgroundImage: `url(${project.imageSrc})`,
+            opacity: isHovered ? 0.12 : 0.05,
+          }}
+        />
+      )}
+
       {/* Abstract gradient mesh — unique per tile via hue rotation */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
@@ -67,6 +83,9 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           background: `radial-gradient(ellipse at ${index === 0 ? '20% 30%' : index === 1 ? '80% 20%' : '50% 80%'}, rgba(181,26,43,0.6) 0%, transparent 50%), radial-gradient(ellipse at ${index === 0 ? '80% 70%' : index === 1 ? '20% 80%' : '90% 20%'}, rgba(100,20,40,0.3) 0%, transparent 60%)`,
         }}
       />
+
+      {/* Animated canvas placeholder (activates on hover) */}
+      <BentoVideoPlaceholder variant={project.variant} active={isHovered} />
 
       {project.videoSrc && inViewport && (
         <video

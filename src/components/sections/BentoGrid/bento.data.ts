@@ -3,6 +3,8 @@ export interface VideoSource {
   mp4: string
 }
 
+export type BentoVariant = 'logistics' | 'merch' | 'ecommerce'
+
 export interface BentoProject {
   id: string
   targetSectionId: string
@@ -11,6 +13,8 @@ export interface BentoProject {
   descriptionKey: string
   ctaKey: string
   videoSrc?: VideoSource
+  imageSrc?: string
+  variant: BentoVariant
 }
 
 export interface BentoMetric {
@@ -31,7 +35,8 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.nexusroute.title',
     descriptionKey: 'projects.nexusroute.description',
     ctaKey: 'projects.nexusroute.cta',
-    // videoSrc: { webm: '/videos/nexusroute.webm', mp4: '/videos/nexusroute.mp4' },  // uncomment when assets added
+    variant: 'logistics',
+    imageSrc: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=60',
   },
   {
     id: 'merchforge',
@@ -40,7 +45,8 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.merchforge.title',
     descriptionKey: 'projects.merchforge.description',
     ctaKey: 'projects.merchforge.cta',
-    // videoSrc: { webm: '/videos/merchforge.webm', mp4: '/videos/merchforge.mp4' },
+    variant: 'merch',
+    imageSrc: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=60',
   },
   {
     id: 'filtergraph',
@@ -49,7 +55,8 @@ export const BENTO_PROJECTS: BentoProject[] = [
     titleKey: 'projects.filtergraph.title',
     descriptionKey: 'projects.filtergraph.description',
     ctaKey: 'projects.filtergraph.cta',
-    // videoSrc: { webm: '/videos/filtergraph.webm', mp4: '/videos/filtergraph.mp4' },
+    variant: 'ecommerce',
+    imageSrc: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=60',
   },
 ]
 

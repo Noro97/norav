@@ -37,14 +37,13 @@ const MOCK_PRODUCTS: Product[] = (() => {
       const names = PRODUCT_NAMES[sub]!
       names.forEach((name) => {
         const basePrice = cat === 'Electronics' ? 200 : cat === 'Clothing' ? 40 : cat === 'Home' ? 60 : 30
-        const hue = id * 23 % 360
         products.push({
           id: id++,
           name,
           category: cat,
           subcategory: sub,
           price: Math.round((basePrice + Math.random() * basePrice * 3) * 100) / 100,
-          image: `hsl(${hue}, 25%, 12%)`,
+          image: `https://picsum.photos/seed/product${id}/200/200`,
         })
       })
     })
@@ -364,7 +363,7 @@ export function EcommerceWidget() {
                 >
                   <div
                     className="aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 relative overflow-hidden"
-                    style={{ background: product.image }}
+                    style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                   >
                     <span className="font-mono text-[10px] text-white/15 uppercase tracking-wider">
                       {product.category}
