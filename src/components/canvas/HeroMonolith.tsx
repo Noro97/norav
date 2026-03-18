@@ -1,7 +1,8 @@
-import { useRef, useEffect, useMemo } from 'react'
+import { useRef, useEffect, useMemo, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Center, Environment, Text3D } from '@react-three/drei'
+import { Center, Environment } from '@react-three/drei'
 import * as THREE from 'three'
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
 
 const SHARD_COUNT = 40
@@ -10,13 +11,15 @@ const EXPLODE_DURATION = 1.5
 const TOTAL_DURATION = 3.0
 const GRAVITY = 4.0
 
-// Per-shard simulation state stored in flat arrays (avoids object allocation in frame loop)
+// Scale factor: SVG viewBox is ~454x544, we want it ~2.5 units wide in 3D
+const SVG_SCALE = 2.5 / 454
+
 interface ShardState {
-  origins: Float32Array    // [x,y,z] * SHARD_COUNT  — home positions
-  positions: Float32Array  // current positions
-  velocities: Float32Array // current velocities
-  angularVels: Float32Array // [ax,ay,az] * SHARD_COUNT
-  rotations: Float32Array  // current euler angles
+  origins: Float32Array
+  positions: Float32Array
+  velocities: Float32Array
+  angularVels: Float32Array
+  rotations: Float32Array
 }
 
 function buildShards(): ShardState {
@@ -26,11 +29,10 @@ function buildShards(): ShardState {
   const angularVels = new Float32Array(SHARD_COUNT * 3)
   const rotations = new Float32Array(SHARD_COUNT * 3)
 
-  // Text bounding area: roughly ±1.4 wide, ±0.7 tall in local space
   for (let i = 0; i < SHARD_COUNT; i++) {
     const b = i * 3
-    const ox = (Math.random() - 0.5) * 2.8
-    const oy = (Math.random() - 0.5) * 1.4
+    const ox = (Math.random() - 0.5) * 2.5
+    const oy = (Math.random() - 0.5) * 3.0
     const oz = (Math.random() - 0.5) * 0.2
     origins[b] = ox
     origins[b + 1] = oy
@@ -39,7 +41,6 @@ function buildShards(): ShardState {
     positions[b + 1] = oy
     positions[b + 2] = oz
 
-    // Outward velocity from centre + upward bias
     const speed = 2.5 + Math.random() * 4.0
     const angle = Math.atan2(oy, ox) + (Math.random() - 0.5) * 1.2
     velocities[b] = Math.cos(angle) * speed
@@ -54,31 +55,66 @@ function buildShards(): ShardState {
   return { origins, positions, velocities, angularVels, rotations }
 }
 
-// Reusable temp objects for matrix composition (allocated once)
 const _pos = new THREE.Vector3()
 const _quat = new THREE.Quaternion()
 const _euler = new THREE.Euler()
 const _scale = new THREE.Vector3(1, 1, 1)
 const _mat4 = new THREE.Matrix4()
 
+/** Parse SVG and build extruded geometries for each path */
+function useSVGGeometries(url: string, depth: number) {
+  const [geometries, setGeometries] = useState<THREE.BufferGeometry[]>([])
+
+  useEffect(() => {
+    const loader = new SVGLoader()
+    loader.load(url, (data) => {
+      const geos: THREE.BufferGeometry[] = []
+
+      for (const path of data.paths) {
+        const shapes = SVGLoader.createShapes(path)
+        for (const shape of shapes) {
+          const geo = new THREE.ExtrudeGeometry(shape, {
+            depth,
+            bevelEnabled: true,
+            bevelThickness: 0.02 / SVG_SCALE,
+            bevelSize: 0.01 / SVG_SCALE,
+            bevelSegments: 3,
+          })
+          geos.push(geo)
+        }
+      }
+
+      setGeometries(geos)
+    })
+
+    return () => {
+      // Dispose on unmount
+      geometries.forEach((g) => g.dispose())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url, depth])
+
+  return geometries
+}
+
 export function HeroMonolith() {
   const groupRef = useRef<THREE.Group>(null)
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null)
+  const logoGroupRef = useRef<THREE.Group>(null)
   const instancedRef = useRef<THREE.InstancedMesh>(null)
   const shardGeoRef = useRef<THREE.BoxGeometry | null>(null)
 
-  // Spring state kept in refs to avoid re-renders
   const rotX = useRef(0)
   const rotY = useRef(0)
   const velX = useRef(0)
   const velY = useRef(0)
 
-  // Explosion state
   const explodeTimeRef = useRef(0)
   const wasExplodedRef = useRef(false)
   const shardState = useRef<ShardState>(buildShards())
 
-  // Build the geometry once and keep a ref for disposal
+  const svgGeometries = useSVGGeometries('/assets/img/logo-new.svg', 0.3 / SVG_SCALE)
+
   const shardGeometry = useMemo(() => {
     const geo = new THREE.BoxGeometry(SHARD_SIZE, SHARD_SIZE, SHARD_SIZE)
     shardGeoRef.current = geo
@@ -104,20 +140,17 @@ export function HeroMonolith() {
 
     // --- Detect explosion start ---
     if (heroExploded && !wasExplodedRef.current) {
-      // Reset timer and re-randomise velocities from current positions
       explodeTimeRef.current = 0
       wasExplodedRef.current = true
       const s = shardState.current
       for (let i = 0; i < SHARD_COUNT; i++) {
         const b = i * 3
-        // Reset positions to origins
         s.positions[b] = s.origins[b]!
         s.positions[b + 1] = s.origins[b + 1]!
         s.positions[b + 2] = s.origins[b + 2]!
         s.rotations[b] = 0
         s.rotations[b + 1] = 0
         s.rotations[b + 2] = 0
-        // Randomise velocities again for variety each click
         const ox = s.origins[b]!
         const oy = s.origins[b + 1]!
         const speed = 2.5 + Math.random() * 4.0
@@ -129,7 +162,6 @@ export function HeroMonolith() {
     }
 
     if (!heroExploded && wasExplodedRef.current) {
-      // Explosion finished, reset flag
       wasExplodedRef.current = false
     }
 
@@ -170,7 +202,6 @@ export function HeroMonolith() {
         const b = i * 3
 
         if (t < EXPLODE_DURATION) {
-          // Physics integration: apply gravity, integrate position
           s.velocities[b + 1] = s.velocities[b + 1]! - GRAVITY * dt
           s.positions[b] = s.positions[b]! + s.velocities[b]! * dt
           s.positions[b + 1] = s.positions[b + 1]! + s.velocities[b + 1]! * dt
@@ -179,9 +210,8 @@ export function HeroMonolith() {
           s.rotations[b + 1] = s.rotations[b + 1]! + s.angularVels[b + 1]! * dt
           s.rotations[b + 2] = s.rotations[b + 2]! + s.angularVels[b + 2]! * dt
         } else {
-          // Lerp back to origin
           const lerpAlpha = Math.min((t - EXPLODE_DURATION) / (TOTAL_DURATION - EXPLODE_DURATION), 1)
-          const smooth = lerpAlpha * lerpAlpha * (3 - 2 * lerpAlpha) // smoothstep
+          const smooth = lerpAlpha * lerpAlpha * (3 - 2 * lerpAlpha)
 
           s.positions[b] = s.positions[b]! + (s.origins[b]! - s.positions[b]!) * smooth * dt * 6
           s.positions[b + 1] = s.positions[b + 1]! + (s.origins[b + 1]! - s.positions[b + 1]!) * smooth * dt * 6
@@ -200,7 +230,6 @@ export function HeroMonolith() {
 
       instanced.instanceMatrix.needsUpdate = true
 
-      // End the explosion cycle
       if (t >= TOTAL_DURATION) {
         instanced.visible = false
         setHeroExploded(false)
@@ -210,51 +239,46 @@ export function HeroMonolith() {
       instanced.visible = false
     }
 
-    // Hide / show main text mesh while exploded
-    // The Text is the first child of the Center group, which is the first child of groupRef
-    const center = group.children[1] // Environment + Center
-    if (center) {
-      center.visible = !wasExplodedRef.current
+    // Hide/show logo group while exploded
+    if (logoGroupRef.current) {
+      logoGroupRef.current.visible = !wasExplodedRef.current
     }
   })
 
   return (
     <group ref={groupRef} position={[0, 0.5, 0]}>
       <Environment preset="city" />
-      {/* Subtle lighting to enhance glass reflections */}
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />
+
       <Center>
-        <Text3D
-          font="/fonts/helvetiker_bold.typeface.json"
-          size={0.8}
-          height={0.3}
-          bevelEnabled
-          bevelThickness={0.02}
-          bevelSize={0.02}
-          bevelOffset={0}
-          bevelSegments={5}
-          letterSpacing={-0.03}
+        {/* SVG logo extruded into 3D with glass material */}
+        <group
+          ref={logoGroupRef}
+          scale={[SVG_SCALE, -SVG_SCALE, SVG_SCALE]}  /* flip Y (SVG Y is inverted) */
         >
-          GY
-          <meshPhysicalMaterial
-            ref={matRef}
-            metalness={0.95}
-            roughness={0.05}
-            transmission={0.6}
-            thickness={1.5}
-            ior={1.5}
-            envMapIntensity={2.0}
-            color="#1a0a10"
-            clearcoat={1.0}
-            clearcoatRoughness={0.1}
-            transparent={true}
-            opacity={1}
-          />
-        </Text3D>
+          {svgGeometries.map((geo, i) => (
+            <mesh key={i} geometry={geo}>
+              <meshPhysicalMaterial
+                ref={i === 0 ? matRef : undefined}
+                metalness={0.95}
+                roughness={0.05}
+                transmission={0.6}
+                thickness={1.5}
+                ior={1.5}
+                envMapIntensity={2.0}
+                color="#1a0a10"
+                clearcoat={1.0}
+                clearcoatRoughness={0.1}
+                transparent={true}
+                opacity={1}
+              />
+            </mesh>
+          ))}
+        </group>
       </Center>
 
-      {/* Shard instanced mesh — same glass material as text */}
+      {/* Shard instanced mesh */}
       <instancedMesh
         ref={instancedRef}
         args={[shardGeometry, undefined, SHARD_COUNT]}
