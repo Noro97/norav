@@ -1,6 +1,6 @@
 import { useRef, useEffect, useMemo, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Center, Environment } from '@react-three/drei'
+import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
@@ -251,12 +251,14 @@ export function HeroMonolith() {
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />
 
-      <Center>
-        {/* SVG logo extruded into 3D with glass material */}
-        <group
-          ref={logoGroupRef}
-          scale={[SVG_SCALE, -SVG_SCALE, SVG_SCALE]}  /* flip Y (SVG Y is inverted) */
-        >
+      {/* SVG logo extruded into 3D with glass material */}
+      {/* SVG viewBox: x=213 y=341 w=454 h=544 → center at (440, 613) */}
+      {/* Translate so center is at origin, then scale + flip Y */}
+      <group
+        ref={logoGroupRef}
+        scale={[SVG_SCALE, -SVG_SCALE, SVG_SCALE]}
+      >
+        <group position={[-440, -613, 0]}>
           {svgGeometries.map((geo, i) => (
             <mesh key={i} geometry={geo}>
               <meshPhysicalMaterial
@@ -276,7 +278,7 @@ export function HeroMonolith() {
             </mesh>
           ))}
         </group>
-      </Center>
+      </group>
 
       {/* Shard instanced mesh */}
       <instancedMesh
