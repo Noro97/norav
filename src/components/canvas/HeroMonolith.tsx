@@ -169,7 +169,7 @@ export function HeroMonolith() {
     const stiffness = 120
     const damping = 14
 
-    const targetX = mousePosition.y * 0.3
+    const targetX = -mousePosition.y * 0.3
     const targetY = mousePosition.x * 0.3
 
     velX.current += (targetX - rotX.current) * stiffness * dt
