@@ -60,7 +60,7 @@ function ArchitectureModalContent({ onClose }: Props) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
                 </span>
-                <h3 className="font-mono text-[11px] text-white/60 uppercase tracking-[0.2em]">
+                <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
                   {t('proof.architecture.title')}
                 </h3>
               </div>
@@ -140,7 +140,7 @@ function ArchitectureModalContent({ onClose }: Props) {
             <div className="mt-6 grid grid-cols-5 gap-2">
               {['1. Upload', '2. Store', '3. Process', '4. Analyze', '5. Update'].map((step, i) => (
                 <div key={i} className="text-center">
-                  <span className="font-mono text-[9px] text-crimson-400/50 tracking-wide">{step}</span>
+                  <span className="font-mono text-[11px] text-crimson-400/50 tracking-wide">{step}</span>
                 </div>
               ))}
             </div>

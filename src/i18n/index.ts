@@ -12,6 +12,8 @@ import projectsEn from './locales/en/projects.json'
 import educationEn from './locales/en/education.json'
 import terminalEn from './locales/en/terminal.json'
 import vibecodingEn from './locales/en/vibecoding.json'
+import chatEn from './locales/en/chat.json'
+import workflowEn from './locales/en/workflow.json'
 
 import commonRu from './locales/ru/common.json'
 import heroRu from './locales/ru/hero.json'
@@ -23,6 +25,8 @@ import projectsRu from './locales/ru/projects.json'
 import educationRu from './locales/ru/education.json'
 import terminalRu from './locales/ru/terminal.json'
 import vibecodingRu from './locales/ru/vibecoding.json'
+import chatRu from './locales/ru/chat.json'
+import workflowRu from './locales/ru/workflow.json'
 
 i18n
   .use(LanguageDetector)
@@ -40,6 +44,8 @@ i18n
         education: educationEn,
         terminal: terminalEn,
         vibecoding: vibecodingEn,
+        chat: chatEn,
+        workflow: workflowEn,
       },
       ru: {
         common: commonRu,
@@ -52,6 +58,8 @@ i18n
         education: educationRu,
         terminal: terminalRu,
         vibecoding: vibecodingRu,
+        chat: chatRu,
+        workflow: workflowRu,
       },
     },
     lng: 'en',

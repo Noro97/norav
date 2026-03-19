@@ -56,7 +56,7 @@ export function TerminalFooter() {
             <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-            <span className="ml-3 font-mono text-xs text-white/20">
+            <span className="ml-3 font-mono text-xs text-white/40">
               {t('terminal:titleBar')}
             </span>
           </div>
@@ -106,10 +106,10 @@ export function TerminalFooter() {
 
           {/* Status bar */}
           <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-t border-white/5">
-            <span className="font-mono text-[10px] text-white/20">
+            <span className="font-mono text-xs text-white/40">
               {lines.filter((l) => l.type === 'input').length} {t('common:labels.commands')}
             </span>
-            <span className="font-mono text-[10px] text-crimson-500/40">
+            <span className="font-mono text-xs text-crimson-500/40">
               zsh 5.9
             </span>
           </div>
@@ -117,7 +117,7 @@ export function TerminalFooter() {
 
         {/* Footer credit */}
         <div className="mt-8 text-center">
-          <p className="font-mono text-xs text-white/15">
+          <p className="font-mono text-xs text-white/35">
             {t('common:footer.builtWith')}
           </p>
         </div>

@@ -112,12 +112,12 @@ function OmniGridContent() {
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
             {t('projects:omnigrid.title')}
           </h2>
-          <p className="text-white/35 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
             {t('projects:omnigrid.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
             {techStack.map((tech) => (
-              <span key={tech} className="px-3 py-1.5 text-[11px] font-mono text-cyan-400/70 bg-cyan-500/[0.06] border border-cyan-500/15 rounded-lg tracking-wide">
+              <span key={tech} className="px-3 py-1.5 text-xs font-mono text-cyan-400/70 bg-cyan-500/[0.06] border border-cyan-500/15 rounded-lg tracking-wide">
                 {tech}
               </span>
             ))}
@@ -144,7 +144,7 @@ function OmniGridContent() {
                   </svg>
                 )}
               </div>
-              <div className="space-y-2 text-[11px] font-mono text-white/30">
+              <div className="space-y-2 text-xs font-mono text-white/45">
                 <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.hitRate')}</span>
                   <span className="text-emerald-400">98.7%</span>
@@ -204,10 +204,10 @@ function OmniGridContent() {
               </h4>
 
               <div className="mb-4">
-                <h5 className="text-[11px] font-semibold text-cyan-400/80 mb-1.5">
+                <h5 className="text-xs font-semibold text-cyan-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.headlessVsComponent')}
                 </h5>
-                <p className="text-[10px] text-white/35 leading-relaxed">
+                <p className="text-xs text-white/45 leading-relaxed">
                   {t('projects:omnigrid.engineering.headlessDesc')}
                 </p>
               </div>
@@ -215,10 +215,10 @@ function OmniGridContent() {
               <div className="h-px bg-white/[0.06] my-3" />
 
               <div>
-                <h5 className="text-[11px] font-semibold text-cyan-400/80 mb-1.5">
+                <h5 className="text-xs font-semibold text-cyan-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.serverVsClient')}
                 </h5>
-                <p className="text-[10px] text-white/35 leading-relaxed">
+                <p className="text-xs text-white/45 leading-relaxed">
                   {t('projects:omnigrid.engineering.serverDesc')}
                 </p>
               </div>
@@ -229,7 +229,7 @@ function OmniGridContent() {
               <h4 className="text-xs font-mono text-white/40 uppercase tracking-wider mb-3">
                 Zod Validation
               </h4>
-              <div className="rounded-md bg-black/30 border border-white/[0.06] p-3 font-mono text-[10px] leading-relaxed">
+              <div className="rounded-md bg-black/30 border border-white/[0.06] p-3 font-mono text-xs leading-relaxed">
                 <div className="text-purple-400">{'z.object({'}</div>
                 <div className="text-white/40 pl-3">id: <span className="text-emerald-400">z.string()</span>,</div>
                 <div className="text-white/40 pl-3">status: <span className="text-cyan-400">z.enum([...])</span>,</div>
@@ -245,7 +245,7 @@ function OmniGridContent() {
             {/* Filter bar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
               <div className="relative flex-1 max-w-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">
                   <circle cx="11" cy="11" r="8" />
                   <path d="M21 21l-4.35-4.35" />
                 </svg>
@@ -254,19 +254,19 @@ function OmniGridContent() {
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
                   placeholder={t('projects:omnigrid.filterPlaceholder')}
-                  className="w-full pl-9 pr-4 py-2.5 text-xs font-mono text-white/70 bg-white/[0.03] border border-white/[0.08] rounded-xl placeholder:text-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors backdrop-blur-sm"
+                  className="w-full pl-9 pr-4 py-2.5 text-xs font-mono text-white/70 bg-white/[0.03] border border-white/[0.08] rounded-xl placeholder:text-white/35 focus:outline-none focus:border-cyan-500/30 transition-colors backdrop-blur-sm"
                 />
               </div>
 
               {/* Stats bar */}
-              <div className="flex items-center gap-3 text-[10px] font-mono text-white/30">
+              <div className="flex items-center gap-3 text-xs font-mono text-white/45">
                 <span>{rows.length.toLocaleString()} rows</span>
                 <span className="text-white/10">|</span>
                 <span>{sorting.length} sorted</span>
                 <span className="text-white/10">|</span>
                 <span>{renderTime < 1 ? '<1' : renderTime}ms render</span>
                 <span className="text-white/10">|</span>
-                <span className={`px-1.5 py-0.5 border rounded-full text-[9px] ${CACHE_COLORS[cacheStatus]}`}>
+                <span className={`px-1.5 py-0.5 border rounded-full text-xs ${CACHE_COLORS[cacheStatus]}`}>
                   {cacheStatus}
                 </span>
               </div>
@@ -281,7 +281,7 @@ function OmniGridContent() {
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
                     style={{ minWidth: header.getSize(), flex: '1 1 0%' }}
-                    className="px-3 py-3 text-left text-[10px] font-mono font-normal text-white/40 uppercase tracking-wider cursor-pointer hover:text-cyan-400/80 transition-colors select-none truncate"
+                    className="px-3 py-3 text-left text-xs font-mono font-normal text-white/40 uppercase tracking-wider cursor-pointer hover:text-cyan-400/80 transition-colors select-none truncate"
                   >
                     <span className="flex items-center gap-1">
                       {flexRender(header.column.columnDef.header, header.getContext())}

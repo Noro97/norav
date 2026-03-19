@@ -124,7 +124,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             </motion.div>
           )}
           <span
-            className={`px-2 py-0.5 text-[9px] font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
+            className={`px-2 py-0.5 text-[11px] font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
           >
             {cacheStatus}
           </span>
@@ -132,7 +132,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-[10px] text-cyan-400/70 tracking-[0.25em] uppercase">
+          <span className="font-mono text-xs text-cyan-400/70 tracking-[0.25em] uppercase">
             Case Study 04
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
@@ -155,13 +155,13 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Filter..."
-            className="w-full max-w-[200px] px-2.5 py-1 text-[10px] font-mono text-white/70 bg-black/40 border border-white/[0.08] rounded-md placeholder:text-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors"
+            className="w-full max-w-[200px] px-2.5 py-1 text-xs font-mono text-white/70 bg-black/40 border border-white/[0.08] rounded-md placeholder:text-white/35 focus:outline-none focus:border-cyan-500/30 transition-colors"
           />
         </div>
 
         {/* Mini Bloomberg table */}
         <div className="mb-5 rounded-lg bg-black/40 border border-white/[0.08] overflow-hidden">
-          <table className="w-full text-[10px] font-mono">
+          <table className="w-full text-xs font-mono">
             <thead>
               <tr className="border-b border-white/[0.06]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
@@ -208,7 +208,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
           {OMNIGRID_PROJECT.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-[10px] font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-xs font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>
@@ -219,7 +219,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         <MagneticButton
           onClick={handleScrollTo}
           aria-label={t('projects.omnigrid.cta')}
-          className="inline-flex items-center gap-2.5 text-[11px] font-mono text-cyan-400/80 uppercase tracking-[0.15em] group/btn hover:text-cyan-300 transition-colors duration-300"
+          className="inline-flex items-center gap-2.5 text-xs font-mono text-cyan-400/80 uppercase tracking-[0.15em] group/btn hover:text-cyan-300 transition-colors duration-300"
           data-cursor="link"
         >
           <span className="relative">

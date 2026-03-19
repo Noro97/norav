@@ -220,7 +220,7 @@ export function EcommerceWidget() {
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo', 'Modal', 'Multi-step Form', 'Confetti'].map((tag) => (
-              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+              <span key={tag} className="px-2 py-1 text-xs font-mono text-white/45 border border-white/8 rounded">
                 {tag}
               </span>
             ))}
@@ -232,7 +232,7 @@ export function EcommerceWidget() {
           <div className="ecom-sidebar flex flex-col gap-5">
             {/* Dependency Graph */}
             <div className="glass-card p-4">
-              <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.filterDependencyGraph')}
               </h4>
               <FilterGraph filters={filters} />
@@ -240,7 +240,7 @@ export function EcommerceWidget() {
 
             {/* Category filter */}
             <div className="glass-card p-4">
-              <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.categories')}
               </h4>
               <div className="space-y-1.5">
@@ -269,7 +269,7 @@ export function EcommerceWidget() {
                       <span className={`text-sm font-mono ${isActive ? 'text-white/80' : 'text-white/50'}`}>
                         {cat}
                       </span>
-                      <span className="ml-auto text-[10px] font-mono text-white/40">{count}</span>
+                      <span className="ml-auto text-xs font-mono text-white/40">{count}</span>
                     </button>
                   )
                 })}
@@ -278,7 +278,7 @@ export function EcommerceWidget() {
                 <div className="mt-3 pt-3 border-t border-white/5">
                   <div className="flex flex-wrap gap-1">
                     {availableSubcategories.map((sub) => (
-                      <span key={sub} className="px-1.5 py-0.5 text-[10px] font-mono text-crimson-400/60 bg-crimson-500/5 rounded">
+                      <span key={sub} className="px-1.5 py-0.5 text-xs font-mono text-crimson-400/60 bg-crimson-500/5 rounded">
                         {sub}
                       </span>
                     ))}
@@ -289,7 +289,7 @@ export function EcommerceWidget() {
 
             {/* Price range */}
             <div className="glass-card p-4">
-              <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.priceRange')}
               </h4>
               <div className="space-y-3">
@@ -316,7 +316,7 @@ export function EcommerceWidget() {
 
             {/* Sort */}
             <div className="glass-card p-4">
-              <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.sortBy')}
               </h4>
               <div className="space-y-1">
@@ -338,10 +338,10 @@ export function EcommerceWidget() {
 
             {/* URL params display */}
             <div className="glass-card p-4 flex-1">
-              <h4 className="font-mono text-[10px] text-white/40 tracking-wider uppercase mb-2">
+              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
-              <code className="text-[11px] font-mono text-crimson-400/80 break-all block leading-relaxed">
+              <code className="text-xs font-mono text-crimson-400/80 break-all block leading-relaxed">
                 {window.location.pathname}{filtersToParams(filters) || ''}
               </code>
             </div>
@@ -357,7 +357,7 @@ export function EcommerceWidget() {
               {filters.categories.length > 0 && (
                 <button
                   onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, categories: [] })) }}
-                  className="font-mono text-[10px] text-crimson-400/60 hover:text-crimson-400 transition-colors"
+                  className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 transition-colors"
                 >
                   {t('common:buttons.clearFilters')}
                 </button>
@@ -375,7 +375,7 @@ export function EcommerceWidget() {
                     <div
                       className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}
                     >
-                      <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
                         {product.category}
                       </span>
                       <span className="font-mono text-xs text-white/45 group-hover:text-white/70 transition-colors">
@@ -389,7 +389,7 @@ export function EcommerceWidget() {
                       <span className="font-mono text-sm font-medium text-crimson-400">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className="font-mono text-[9px] text-white/40 uppercase">
+                      <span className="font-mono text-xs text-white/40 uppercase">
                         #{String(product.id).padStart(3, '0')}
                       </span>
                     </div>

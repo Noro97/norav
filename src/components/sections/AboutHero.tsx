@@ -158,7 +158,7 @@ export function AboutHero() {
                   {/* Status badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-green-400/20">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="font-mono text-[9px] text-green-400/80">{t('common:status.available')}</span>
+                    <span className="font-mono text-xs text-green-400/80">{t('common:status.available')}</span>
                   </div>
                 </div>
 
@@ -241,7 +241,7 @@ export function AboutHero() {
             <div className="about-facts grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
               {QUICK_FACTS.map((fact) => (
                 <div key={fact.labelKey} className="glass-card p-3">
-                  <span className="font-mono text-[10px] text-white/30 tracking-wider uppercase block">
+                  <span className="font-mono text-xs text-white/30 tracking-wider uppercase block">
                     {t(`about:${fact.labelKey}`)}
                   </span>
                   <span className="font-mono text-sm text-white/80 mt-1 block">

@@ -27,8 +27,8 @@ const EDUCATION: Education[] = [
 ]
 
 const CERTIFICATIONS: Certification[] = [
-  { index: 0, date: 'Mar 2024', credentialId: 'AWS-CP-2024-XXXXX' },
-  { index: 1, date: 'Nov 2023', credentialId: 'META-FE-2023-XXXXX' },
+  { index: 0, date: 'Mar 2024' },
+  { index: 1, date: 'Nov 2023' },
   { index: 2, date: 'Aug 2023' },
   { index: 3, date: 'Jan 2023' },
   { index: 4, date: 'Sep 2022' },
@@ -111,7 +111,7 @@ export function EducationCerts() {
                     </div>
                     <div className="flex items-center gap-3">
                       {edu.gpa && (
-                        <span className="px-2 py-0.5 bg-crimson-500/10 border border-crimson-500/20 rounded font-mono text-[10px] text-crimson-400">
+                        <span className="px-2 py-0.5 bg-crimson-500/10 border border-crimson-500/20 rounded font-mono text-xs text-crimson-400">
                           GPA: {edu.gpa}
                         </span>
                       )}
@@ -158,15 +158,15 @@ export function EducationCerts() {
                     <h4 className="text-white/70 text-sm font-medium leading-tight group-hover:text-white/90 transition-colors">
                       {t(`certs.${cert.index}.name`)}
                     </h4>
-                    <span className="font-mono text-[10px] text-crimson-400/60 block mt-0.5">
+                    <span className="font-mono text-xs text-crimson-400/60 block mt-0.5">
                       {t(`certs.${cert.index}.issuer`)}
                     </span>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="font-mono text-[10px] text-white/20">{cert.date}</span>
+                      <span className="font-mono text-xs text-white/20">{cert.date}</span>
                       {cert.credentialId && (
                         <>
-                          <span className="text-white/10">·</span>
-                          <span className="font-mono text-[9px] text-white/15 truncate">
+                          <span className="text-white/30">·</span>
+                          <span className="font-mono text-xs text-white/35 truncate">
                             {cert.credentialId}
                           </span>
                         </>

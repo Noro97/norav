@@ -64,6 +64,17 @@ const SKILL_DATA: SkillCategory[] = [
       { name: 'Firebase', level: 70, years: 3 },
     ],
   },
+  {
+    nameKey: 'categories.4.name',
+    color: '#6C3AED',
+    skills: [
+      { name: 'Claude API / Anthropic SDK', level: 70, years: 1 },
+      { name: 'Prompt Engineering', level: 75, years: 1 },
+      { name: 'n8n Automation', level: 60, years: 1 },
+      { name: 'RAG / Embeddings', level: 55, years: 1 },
+      { name: 'AI Agents / MCP', level: 50, years: 1 },
+    ],
+  },
 ]
 
 function SkillBar({ skill, color, animate }: { skill: Skill; color: string; animate: boolean }) {
@@ -74,10 +85,10 @@ function SkillBar({ skill, color, animate }: { skill: Skill; color: string; anim
           {skill.name}
         </span>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] text-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="font-mono text-xs text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
             {skill.years}y
           </span>
-          <span className="font-mono text-[10px] text-white/30">
+          <span className="font-mono text-xs text-white/45">
             {skill.level}%
           </span>
         </div>
@@ -174,8 +185,8 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
             y={p.y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="rgba(255,255,255,0.35)"
-            fontSize="7"
+            fill="rgba(255,255,255,0.5)"
+            fontSize="9"
             fontFamily="JetBrains Mono"
           >
             {t(cat.nameKey).split(' ')[0]}
@@ -263,11 +274,11 @@ export function SkillsMatrix() {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: category.color }}
                     />
-                    <h3 className="font-mono text-[10px] text-white/50 tracking-[0.15em] uppercase">
+                    <h3 className="font-mono text-xs text-white/50 tracking-[0.15em] uppercase">
                       {t(category.nameKey)}
                     </h3>
                     <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
-                    <span className="font-mono text-[9px] text-white/20">
+                    <span className="font-mono text-xs text-white/40">
                       {Math.round(category.skills.reduce((s, sk) => s + sk.level, 0) / category.skills.length)}%
                     </span>
                   </div>
@@ -289,7 +300,7 @@ export function SkillsMatrix() {
 
           {/* Radar chart sidebar */}
           <div className="sticky top-24 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6">
-            <h4 className="font-mono text-[10px] text-white/30 tracking-wider uppercase mb-4 text-center">
+            <h4 className="font-mono text-xs text-white/45 tracking-wider uppercase mb-4 text-center">
               {t('proficiencyOverview')}
             </h4>
             <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
@@ -313,15 +324,15 @@ export function SkillsMatrix() {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <span className="font-mono text-[10px] text-white/40 flex-1">{t(cat.nameKey)}</span>
-                    <span className="font-mono text-[10px] text-white/25">{avg}%</span>
+                    <span className="font-mono text-xs text-white/40 flex-1">{t(cat.nameKey)}</span>
+                    <span className="font-mono text-xs text-white/40">{avg}%</span>
                   </div>
                 )
               })}
             </div>
 
             <div className="mt-4 pt-3 border-t border-white/5 text-center">
-              <span className="font-mono text-[10px] text-white/20">
+              <span className="font-mono text-xs text-white/40">
                 {t('skillsTracked', { count: totalSkills })}
               </span>
             </div>

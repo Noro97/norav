@@ -57,7 +57,7 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
             style={{ backgroundColor: metric.color }}
           />
         </span>
-        <span className="font-mono text-[10px] text-white/50 uppercase tracking-[0.15em]">
+        <span className="font-mono text-xs text-white/50 uppercase tracking-[0.15em]">
           {t(metric.labelKey)}
         </span>
       </div>
@@ -74,7 +74,7 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
       </div>
 
       {/* Detail line */}
-      <p className="font-mono text-[9px] text-white/35 mt-2 tracking-wide uppercase">
+      <p className="font-mono text-[11px] text-white/45 mt-2 tracking-wide uppercase">
         {t(metric.detailKey)}
       </p>
 
@@ -117,11 +117,11 @@ export function BentoImpactDashboard({ metrics }: BentoImpactDashboardProps) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
             </span>
-            <h3 className="font-mono text-[11px] text-white/60 uppercase tracking-[0.2em]">
+            <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
               {t('dashboard.title')}
             </h3>
           </div>
-          <span className="font-mono text-[9px] text-crimson-500/50 tracking-wider">
+          <span className="font-mono text-[11px] text-crimson-500/50 tracking-wider">
             REAL-TIME
           </span>
         </div>

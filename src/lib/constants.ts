@@ -7,6 +7,7 @@ export const SECTIONS: SectionConfig[] = [
   { id: 'skills', labelKey: 'nav.skills' },
   { id: 'overview', labelKey: 'nav.overview' },
   { id: 'logistics', labelKey: 'nav.projects' },
+  { id: 'workflows', labelKey: 'nav.workflows' },
   { id: 'education', labelKey: 'nav.education' },
   { id: 'terminal', labelKey: 'nav.contact' },
 ]

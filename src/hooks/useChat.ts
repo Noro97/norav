@@ -1,0 +1,128 @@
+import { useState, useCallback, useRef } from 'react'
+import type { ChatMessage } from '@/components/ai/chat.types'
+
+let messageId = 0
+const nextId = () => `msg-${++messageId}-${Date.now()}`
+
+export function useChat() {
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
+
+  const sendMessage = useCallback(async (content: string) => {
+    if (!content.trim() || isLoading) return
+
+    const userMessage: ChatMessage = {
+      id: nextId(),
+      role: 'user',
+      content: content.trim(),
+      timestamp: Date.now(),
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setIsLoading(true)
+    setError(null)
+
+    // Build conversation history for context
+    const history = [...messages, userMessage].map((m) => ({
+      role: m.role,
+      content: m.content,
+    }))
+
+    abortRef.current = new AbortController()
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+        signal: abortRef.current.signal,
+      })
+
+      if (!res.ok) {
+        const status = res.status
+        if (status === 429) {
+          setError('rateLimit')
+        } else {
+          setError('generic')
+        }
+        setIsLoading(false)
+        return
+      }
+
+      // Handle streaming response
+      const reader = res.body?.getReader()
+      if (!reader) {
+        setError('generic')
+        setIsLoading(false)
+        return
+      }
+
+      const assistantId = nextId()
+      const assistantMessage: ChatMessage = {
+        id: assistantId,
+        role: 'assistant',
+        content: '',
+        timestamp: Date.now(),
+      }
+
+      setMessages((prev) => [...prev, assistantMessage])
+
+      const decoder = new TextDecoder()
+      let accumulated = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = decoder.decode(value, { stream: true })
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6)
+            if (data === '[DONE]') continue
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.text) {
+                accumulated += parsed.text
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId ? { ...m, content: accumulated } : m
+                  )
+                )
+              }
+            } catch {
+              // Non-JSON line, might be raw text
+              accumulated += data
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId ? { ...m, content: accumulated } : m
+                )
+              )
+            }
+          }
+        }
+      }
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return
+      setError('generic')
+    } finally {
+      setIsLoading(false)
+      abortRef.current = null
+    }
+  }, [messages, isLoading])
+
+  const cancelRequest = useCallback(() => {
+    abortRef.current?.abort()
+    setIsLoading(false)
+  }, [])
+
+  const clearMessages = useCallback(() => {
+    setMessages([])
+    setError(null)
+  }, [])
+
+  return { messages, isLoading, error, sendMessage, cancelRequest, clearMessages }
+}

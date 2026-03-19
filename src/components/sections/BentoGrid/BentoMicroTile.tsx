@@ -77,7 +77,7 @@ export function BentoMicroTile({ index, icon }: BentoMicroTileProps) {
       </h3>
 
       {/* Description */}
-      <p className="text-[11px] text-white/50 leading-relaxed mt-auto">
+      <p className="text-xs text-white/50 leading-relaxed mt-auto">
         {t(`tiles.${index}.description`)}
       </p>
       </motion.div>

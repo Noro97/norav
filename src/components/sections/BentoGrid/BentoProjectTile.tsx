@@ -113,7 +113,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-[10px] text-crimson-500 tracking-[0.25em] uppercase">
+          <span className="font-mono text-xs text-crimson-500 tracking-[0.25em] uppercase">
             Case Study {caseNum}
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
@@ -134,7 +134,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-[10px] font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-xs font-mono text-white/50 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>
@@ -145,7 +145,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         <MagneticButton
           onClick={handleScrollTo}
           aria-label={`${t(project.ctaKey)} — ${t(project.titleKey)}`}
-          className="inline-flex items-center gap-2.5 text-[11px] font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
+          className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
           data-cursor="link"
         >
           <span className="relative">
