@@ -96,15 +96,15 @@ export function BentoGrid() {
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {/* Row 1: NexusRoute (2col) + Perf Audit (1col) */}
           <BentoProjectTile project={BENTO_PROJECTS[0]!} index={0} className="md:col-span-2" />
-          <BentoMicroTile index={MICRO_TILES[0]!.index} icon={MICRO_TILES[0]!.icon} />
+          <BentoMicroTile index={MICRO_TILES[0]!.index} icon={MICRO_TILES[0]!.icon} illustration="/assets/img/bento-perf-audit.png" />
 
           {/* Row 2: Type-Safe (1col) + MerchForge (2col) */}
-          <BentoMicroTile index={MICRO_TILES[1]!.index} icon={MICRO_TILES[1]!.icon} />
+          <BentoMicroTile index={MICRO_TILES[1]!.index} icon={MICRO_TILES[1]!.icon} illustration="/assets/img/bento-typesafe.png" />
           <BentoProjectTile project={BENTO_PROJECTS[1]!} index={1} className="md:col-span-2" />
 
           {/* Row 3: Impact Dashboard (2col) + UX Predict (1col) */}
           <BentoImpactDashboard metrics={BENTO_METRICS} />
-          <BentoMicroTile index={MICRO_TILES[2]!.index} icon={MICRO_TILES[2]!.icon} />
+          <BentoMicroTile index={MICRO_TILES[2]!.index} icon={MICRO_TILES[2]!.icon} illustration="/assets/img/bento-ux.png" />
 
           {/* Row 4: FilterGraph (full width) */}
           <BentoProjectTile project={BENTO_PROJECTS[2]!} index={2} className="md:col-span-3" />

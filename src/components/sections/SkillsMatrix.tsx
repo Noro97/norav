@@ -25,7 +25,7 @@ const SKILL_DATA: SkillCategory[] = [
       { name: 'TypeScript', level: 95, years: 5 },
       { name: 'React', level: 95, years: 6 },
       { name: 'Next.js', level: 85, years: 4 },
-      { name: 'Vue.js', level: 70, years: 2 },
+      { name: 'Vue.js', level: 90, years: 5 },
       { name: 'HTML / CSS', level: 95, years: 7 },
       { name: 'TanStack Query', level: 85, years: 3 },
       { name: 'TanStack Table', level: 80, years: 2 },

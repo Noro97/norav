@@ -62,7 +62,7 @@ export function HeroSection() {
         trigger: containerRef.current,
         start: 'top top',
         end: 'bottom top',
-        scrub: true,
+        scrub: 0.5,
       },
     })
 

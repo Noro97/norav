@@ -5,6 +5,11 @@ import { MagneticButton } from '@/components/ui/MagneticButton'
 import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
 import type { BentoProject } from './bento.data'
 
+const TILE_ILLUSTRATIONS: Record<string, string> = {
+  nexusroute: '/assets/img/bento-nexusroute.png',
+  merchforge: '/assets/img/bento-merchforge.png',
+}
+
 interface BentoProjectTileProps {
   project: BentoProject
   className?: string
@@ -65,17 +70,6 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       onMouseLeave={handleMouseLeave}
       className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
     >
-      {/* Background image — subtle, brightens on hover */}
-      {project.imageSrc && (
-        <img
-          src={project.imageSrc}
-          alt=""
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none"
-          style={{ opacity: isHovered ? 0.35 : 0.2 }}
-        />
-      )}
-
       {/* Abstract gradient mesh — unique per tile via hue rotation */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
@@ -100,6 +94,16 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           <source src={project.videoSrc.webm} type="video/webm" />
           <source src={project.videoSrc.mp4} type="video/mp4" />
         </video>
+      )}
+
+      {/* Illustration — right side */}
+      {TILE_ILLUSTRATIONS[project.id] && (
+        <img
+          src={TILE_ILLUSTRATIONS[project.id]}
+          alt=""
+          loading="lazy"
+          className="absolute right-0 top-0 h-full w-1/2 object-contain object-right opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none hidden md:block"
+        />
       )}
 
       {/* Top accent line */}

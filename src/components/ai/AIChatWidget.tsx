@@ -100,7 +100,7 @@ export function AIChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 min-h-[200px] max-h-[45vh] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+          <div className="flex-1 overflow-y-auto px-4 py-4 min-h-[200px] max-h-[45vh] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10" data-lenis-prevent>
             {messages.length === 0 ? (
               <div className="space-y-4">
                 {/* Welcome message */}

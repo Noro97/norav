@@ -79,11 +79,6 @@ const WorkflowAutomation = lazy(() =>
     default: m.WorkflowAutomation,
   }))
 )
-const EducationCerts = lazy(() =>
-  import('@/components/sections/EducationCerts').then((m) => ({
-    default: m.EducationCerts,
-  }))
-)
 const TerminalFooter = lazy(() =>
   import('@/components/sections/TerminalFooter').then((m) => ({
     default: m.TerminalFooter,
@@ -114,16 +109,16 @@ function App() {
     const main = mainRef.current
     if (!main) return
 
-    let rafId: number
+    let timerId: ReturnType<typeof setTimeout>
     const observer = new ResizeObserver(() => {
-      cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(() => ScrollTrigger.refresh())
+      clearTimeout(timerId)
+      timerId = setTimeout(() => ScrollTrigger.refresh(), 300)
     })
     observer.observe(main)
 
     return () => {
       observer.disconnect()
-      cancelAnimationFrame(rafId)
+      clearTimeout(timerId)
     }
   }, [])
 
@@ -176,7 +171,6 @@ function App() {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <EducationCerts />
           <TerminalFooter />
         </Suspense>
       </main>

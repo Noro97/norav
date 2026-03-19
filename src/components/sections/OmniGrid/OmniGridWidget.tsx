@@ -224,20 +224,6 @@ function OmniGridContent() {
               </div>
             </div>
 
-            {/* Zod Validation */}
-            <div className="glass-card p-5 flex-1">
-              <h4 className="text-xs font-mono text-white/40 uppercase tracking-wider mb-3">
-                Zod Validation
-              </h4>
-              <div className="rounded-md bg-black/30 border border-white/[0.06] p-3 font-mono text-xs leading-relaxed">
-                <div className="text-purple-400">{'z.object({'}</div>
-                <div className="text-white/40 pl-3">id: <span className="text-emerald-400">z.string()</span>,</div>
-                <div className="text-white/40 pl-3">status: <span className="text-cyan-400">z.enum([...])</span>,</div>
-                <div className="text-white/40 pl-3">cost: <span className="text-amber-400">z.number()</span>,</div>
-                <div className="text-white/40 pl-3">...</div>
-                <div className="text-purple-400">{'})'}  <span className="text-emerald-400">// 100 validated</span></div>
-              </div>
-            </div>
           </div>
 
           {/* Main table area */}
@@ -273,14 +259,14 @@ function OmniGridContent() {
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm max-h-[600px] overflow-y-auto overflow-x-hidden" data-lenis-prevent>
+            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden" data-lenis-prevent>
               {/* Table header */}
-              <div className="flex items-center border-b border-white/[0.06] sticky top-0 z-10 bg-[#0d0d1f]">
+              <div className="flex items-center border-b border-white/[0.06] sticky top-0 z-10 bg-[#0d0d1f] min-w-[1060px]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
                   <div
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    style={{ minWidth: header.getSize(), flex: '1 1 0%' }}
+                    style={{ width: header.getSize(), flexShrink: 0 }}
                     className="px-3 py-3 text-left text-xs font-mono font-normal text-white/40 uppercase tracking-wider cursor-pointer hover:text-cyan-400/80 transition-colors select-none truncate"
                   >
                     <span className="flex items-center gap-1">
@@ -298,7 +284,7 @@ function OmniGridContent() {
                   <div
                     key={row.id}
                     onClick={() => handleRowClick(row.original)}
-                    className="flex items-center border-b border-white/[0.03] hover:bg-cyan-500/[0.04] transition-colors cursor-pointer"
+                    className="flex items-center border-b border-white/[0.03] hover:bg-cyan-500/[0.04] transition-colors cursor-pointer min-w-[1060px]"
                   >
                     {row.getVisibleCells().map((cell) => {
                       const isStatus = cell.column.id === 'status'
@@ -310,7 +296,7 @@ function OmniGridContent() {
                       return (
                         <div
                           key={cell.id}
-                          style={{ minWidth: cell.column.getSize(), flex: '1 1 0%' }}
+                          style={{ width: cell.column.getSize(), flexShrink: 0 }}
                           className={`px-3 py-2.5 text-xs font-mono truncate ${cellClass}`}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}

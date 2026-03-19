@@ -65,6 +65,7 @@ export function TerminalFooter() {
           <div
             ref={outputRef}
             className="p-4 h-[350px] overflow-y-auto scrollbar-thin"
+            data-lenis-prevent
           >
             {lines.map((line, i) => (
               <div key={i} className="font-mono text-sm leading-relaxed">

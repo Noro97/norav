@@ -160,8 +160,8 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         </div>
 
         {/* Mini Bloomberg table */}
-        <div className="mb-5 rounded-lg bg-black/40 border border-white/[0.08] overflow-hidden">
-          <table className="w-full text-xs font-mono">
+        <div className="mb-5 rounded-lg bg-black/40 border border-white/[0.08] overflow-x-auto scrollbar-hidden" data-lenis-prevent>
+          <table className="w-full min-w-[450px] text-xs font-mono">
             <thead>
               <tr className="border-b border-white/[0.06]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (

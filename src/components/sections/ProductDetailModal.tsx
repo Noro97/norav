@@ -245,7 +245,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
           {/* Top accent */}
           <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent shrink-0" />
 
-          <div className="p-5 md:p-6 overflow-y-auto">
+          <div className="p-5 md:p-6 overflow-y-auto" data-lenis-prevent>
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2.5">

@@ -42,9 +42,10 @@ const HERO_STATS = ['60%', '99%', '15s', '98.4%', '10K+']
 interface BentoMicroTileProps {
   index: number
   icon: string
+  illustration?: string
 }
 
-export function BentoMicroTile({ index, icon }: BentoMicroTileProps) {
+export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProps) {
   const { t } = useTranslation('bento')
   const tileRef = useRef<HTMLDivElement>(null)
 
@@ -56,6 +57,16 @@ export function BentoMicroTile({ index, icon }: BentoMicroTileProps) {
 
   return (
     <div ref={tileRef} className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.025] to-transparent backdrop-blur-xl p-5 md:p-6 flex flex-col transition-all duration-500 hover:border-crimson-500/15">
+      {/* Illustration */}
+      {illustration && (
+        <img
+          src={illustration}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-contain object-center opacity-15 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none"
+        />
+      )}
+
       {/* Ambient glow */}
       <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-crimson-500/[0.03] blur-2xl group-hover:bg-crimson-500/[0.06] transition-all duration-700 pointer-events-none" />
 

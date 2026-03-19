@@ -23,7 +23,11 @@ function ArchitectureModalContent({ onClose }: Props) {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', handleKey)
-    return () => document.removeEventListener('keydown', handleKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = ''
+    }
   }, [onClose])
 
   return (
@@ -77,7 +81,7 @@ function ArchitectureModalContent({ onClose }: Props) {
             </div>
 
             {/* Architecture diagram */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" data-lenis-prevent>
               <svg viewBox="0 0 730 120" className="w-full h-auto min-w-[500px]">
                 {/* Nodes */}
                 {NODES.map((node) => (

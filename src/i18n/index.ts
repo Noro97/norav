@@ -9,7 +9,6 @@ import experienceEn from './locales/en/experience.json'
 import skillsEn from './locales/en/skills.json'
 import bentoEn from './locales/en/bento.json'
 import projectsEn from './locales/en/projects.json'
-import educationEn from './locales/en/education.json'
 import terminalEn from './locales/en/terminal.json'
 import vibecodingEn from './locales/en/vibecoding.json'
 import chatEn from './locales/en/chat.json'
@@ -22,7 +21,6 @@ import experienceRu from './locales/ru/experience.json'
 import skillsRu from './locales/ru/skills.json'
 import bentoRu from './locales/ru/bento.json'
 import projectsRu from './locales/ru/projects.json'
-import educationRu from './locales/ru/education.json'
 import terminalRu from './locales/ru/terminal.json'
 import vibecodingRu from './locales/ru/vibecoding.json'
 import chatRu from './locales/ru/chat.json'
@@ -41,7 +39,6 @@ i18n
         skills: skillsEn,
         bento: bentoEn,
         projects: projectsEn,
-        education: educationEn,
         terminal: terminalEn,
         vibecoding: vibecodingEn,
         chat: chatEn,
@@ -55,7 +52,6 @@ i18n
         skills: skillsRu,
         bento: bentoRu,
         projects: projectsRu,
-        education: educationRu,
         terminal: terminalRu,
         vibecoding: vibecodingRu,
         chat: chatRu,

@@ -36,7 +36,6 @@ export const BENTO_PROJECTS: BentoProject[] = [
     descriptionKey: 'projects.nexusroute.description',
     ctaKey: 'projects.nexusroute.cta',
     variant: 'logistics',
-    imageSrc: '/assets/img/world-map.webp',
   },
   {
     id: 'merchforge',
@@ -46,7 +45,6 @@ export const BENTO_PROJECTS: BentoProject[] = [
     descriptionKey: 'projects.merchforge.description',
     ctaKey: 'projects.merchforge.cta',
     variant: 'merch',
-    imageSrc: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=60',
   },
   {
     id: 'filtergraph',
@@ -56,7 +54,6 @@ export const BENTO_PROJECTS: BentoProject[] = [
     descriptionKey: 'projects.filtergraph.description',
     ctaKey: 'projects.filtergraph.cta',
     variant: 'ecommerce',
-    imageSrc: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=60',
   },
 ]
 
