@@ -73,7 +73,7 @@ function StarRating({ rating }: { rating: number }) {
           </svg>
         )
       })}
-      <span className="ml-1.5 font-mono text-[10px] text-white/40">
+      <span className="ml-1.5 font-mono text-xs text-white/40">
         {rating.toFixed(1)}
       </span>
     </div>
@@ -101,8 +101,8 @@ function StepIndicator({ current }: { current: Step }) {
                   : 'bg-white/5 border-white/10'
               }`}
             />
-            <span className={`font-mono text-[8px] tracking-wider uppercase ${
-              i <= stepIndex ? 'text-crimson-400/70' : 'text-white/20'
+            <span className={`font-mono text-xs tracking-wider uppercase ${
+              i <= stepIndex ? 'text-crimson-400/70' : 'text-white/40'
             }`}>
               {labels[i]}
             </span>
@@ -253,7 +253,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
                 </span>
-                <span className="font-mono text-[9px] text-white/30 uppercase tracking-[0.15em]">
+                <span className="font-mono text-xs text-white/45 uppercase tracking-[0.15em]">
                   #{String(product.id).padStart(3, '0')}
                 </span>
               </div>
@@ -286,7 +286,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                   >
                     {/* Product gradient area */}
                     <div className={`aspect-[5/2] rounded-xl mb-4 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}>
-                      <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
                         {product.category}
                       </span>
                       <span className="font-mono text-sm text-white/50">
@@ -302,7 +302,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <span className="font-mono text-2xl font-medium text-crimson-400">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className={`font-mono text-[10px] px-2 py-0.5 rounded-full ${
+                      <span className={`font-mono text-xs px-2 py-0.5 rounded-full ${
                         stock > 10
                           ? 'text-emerald-400/80 bg-emerald-500/10 border border-emerald-500/20'
                           : stock > 0
@@ -329,7 +329,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
 
                     {/* Quantity */}
                     <div className="mt-5 flex items-center gap-3">
-                      <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
                         {t('projects:ecommerce.modal.quantity')}
                       </span>
                       <div className="flex items-center gap-0">
@@ -384,7 +384,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <div className="flex items-center justify-between">
                         <div>
                           <span className="font-mono text-xs text-white/70">{product.name}</span>
-                          <span className="font-mono text-[10px] text-white/30 ml-2">x{quantity}</span>
+                          <span className="font-mono text-xs text-white/45 ml-2">x{quantity}</span>
                         </div>
                         <span className="font-mono text-sm text-crimson-400 font-medium">${total}</span>
                       </div>
@@ -393,7 +393,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     {/* Payment form */}
                     <div className="space-y-3">
                       <div>
-                        <label className="block font-mono text-[10px] text-white/30 uppercase tracking-wider mb-1.5">
+                        <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
                           {t('projects:ecommerce.modal.cardNumber')}
                         </label>
                         <input
@@ -402,11 +402,11 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           onChange={(e) => setForm((f) => ({ ...f, cardNumber: formatCardNumber(e.target.value) }))}
                           placeholder="0000 0000 0000 0000"
                           maxLength={19}
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/15 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block font-mono text-[10px] text-white/30 uppercase tracking-wider mb-1.5">
+                        <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
                           {t('projects:ecommerce.modal.cardName')}
                         </label>
                         <input
@@ -414,12 +414,12 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           value={form.cardName}
                           onChange={(e) => setForm((f) => ({ ...f, cardName: e.target.value }))}
                           placeholder="John Doe"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/15 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block font-mono text-[10px] text-white/30 uppercase tracking-wider mb-1.5">
+                          <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
                             {t('projects:ecommerce.modal.expiry')}
                           </label>
                           <input
@@ -428,11 +428,11 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, expiry: formatExpiry(e.target.value) }))}
                             placeholder="MM/YY"
                             maxLength={5}
-                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/15 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                         <div>
-                          <label className="block font-mono text-[10px] text-white/30 uppercase tracking-wider mb-1.5">
+                          <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
                             {t('projects:ecommerce.modal.cvv')}
                           </label>
                           <input
@@ -441,7 +441,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, cvv: e.target.value.replace(/\D/g, '').slice(0, 3) }))}
                             placeholder="***"
                             maxLength={3}
-                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/15 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                       </div>
@@ -552,7 +552,7 @@ function ConfirmationStep({
       <h3 className="font-mono text-lg text-white/90 font-medium">
         {t('projects:ecommerce.modal.orderConfirmed')}
       </h3>
-      <p className="font-mono text-[10px] text-white/30 mt-1 tracking-wider">
+      <p className="font-mono text-xs text-white/45 mt-1 tracking-wider">
         {t('projects:ecommerce.modal.orderId', { id: orderId })}
       </p>
 
@@ -561,7 +561,7 @@ function ConfirmationStep({
         <div className="flex items-center justify-between">
           <div className="text-left">
             <span className="font-mono text-xs text-white/70 block">{product.name}</span>
-            <span className="font-mono text-[10px] text-white/30">
+            <span className="font-mono text-xs text-white/45">
               {quantity} {t('projects:ecommerce.modal.items', { count: quantity })}
             </span>
           </div>
@@ -569,7 +569,7 @@ function ConfirmationStep({
         </div>
       </div>
 
-      <p className="font-mono text-[11px] text-white/30 mt-4">
+      <p className="font-mono text-xs text-white/45 mt-4">
         {t('projects:ecommerce.modal.thankYou')}
       </p>
 

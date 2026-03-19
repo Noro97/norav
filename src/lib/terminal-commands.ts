@@ -18,6 +18,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     t('help.echo'),
     t('help.neofetch'),
     t('help.sudo'),
+    t('help.ask'),
     t('help.clear'),
     '',
     t('help.hint'),
@@ -81,6 +82,7 @@ const COMMANDS: Record<string, CommandHandler> = {
         t('cat.stack.testing'),
         t('cat.stack.cicd'),
         t('cat.stack.databases'),
+        t('cat.stack.ai'),
         '',
       ]
     }
@@ -214,6 +216,14 @@ const COMMANDS: Record<string, CommandHandler> = {
       return [t('sudo.niceTry')]
     }
     return [`sudo: ${args.join(' ')}: command not found`]
+  },
+
+  ask: (args) => {
+    if (args.length === 0) {
+      return ['', '  Usage: ask <question>', '  Example: ask What projects demonstrate real-time data?', '']
+    }
+    // Return a special marker — async handling is done in useTerminal
+    return ['__ASK__' + args.join(' ')]
   },
 
   // 'clear' is handled as a special case in executeCommand

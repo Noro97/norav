@@ -124,14 +124,14 @@ export function Pricing({
             {plan.isPopular && (
               <div className="absolute top-0 right-0 bg-[#B51A2B] py-1.5 px-4 rounded-bl-xl rounded-tr-[18px] flex items-center gap-1.5">
                 <Star className="text-white h-3.5 w-3.5 fill-current" />
-                <span className="text-white text-[10px] font-semibold uppercase tracking-wider">
+                <span className="text-white text-xs font-semibold uppercase tracking-wider">
                   Popular
                 </span>
               </div>
             )}
             <div className="flex-1 flex flex-col justify-between">
               <div>
-                <p className="text-[10px] font-semibold text-[#B51A2B] uppercase tracking-[0.25em] mb-6">
+                <p className="text-xs font-semibold text-[#B51A2B] uppercase tracking-[0.25em] mb-6">
                   {plan.name}
                 </p>
                 <div className="mt-2 flex items-baseline justify-center gap-x-2">
@@ -145,7 +145,7 @@ export function Pricing({
                   )}
                 </div>
 
-                <p className="text-[11px] text-[#DAD4D4]/40 mt-2 mb-8 uppercase tracking-wider">
+                <p className="text-xs text-[#DAD4D4]/40 mt-2 mb-8 uppercase tracking-wider">
                   {isMonthly ? "billed monthly" : "billed annually"}
                 </p>
 

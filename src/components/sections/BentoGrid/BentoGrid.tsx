@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
@@ -12,6 +12,37 @@ import { ProofVerificationTile } from './ProofVerificationTile'
 import { ProofEconomyTile } from './ProofEconomyTile'
 import { ProofGamificationTile } from './ProofGamificationTile'
 import { OmniGridBentoTile } from './OmniGridBentoTile'
+
+function BentoIllustration({ src, alt }: { src: string; alt: string }) {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    e.currentTarget.style.transform = `perspective(600px) rotateX(${(y - 0.5) * -14}deg) rotateY(${(x - 0.5) * 14}deg) scale3d(1.04,1.04,1.04)`
+  }, [])
+
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+  }, [])
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl flex items-center justify-center p-4 transition-all duration-500 hover:border-crimson-500/20 will-change-transform"
+      style={{ transition: 'transform 0.15s ease-out' }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="w-full h-auto max-h-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-105"
+      />
+      {/* Glare */}
+      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.06),transparent_60%)]" />
+    </div>
+  )
+}
 
 export function BentoGrid() {
   const { t } = useTranslation('bento')
@@ -55,7 +86,7 @@ export function BentoGrid() {
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
             {t('title')}
           </h2>
-          <p className="text-white/35 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
             {t('description')}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
@@ -78,16 +109,22 @@ export function BentoGrid() {
           {/* Row 4: FilterGraph (full width) */}
           <BentoProjectTile project={BENTO_PROJECTS[2]!} index={2} className="md:col-span-3" />
 
-          {/* Row 5: Cache Hit-Rate (1col) + OmniGrid (2col) */}
-          <BentoMicroTile index={MICRO_TILES[4]!.index} icon={MICRO_TILES[4]!.icon} />
+          {/* Row 5: Cache Hit-Rate + illustration (1col stacked) + OmniGrid (2col) */}
+          <div className="flex flex-col gap-3 md:gap-4">
+            <BentoMicroTile index={MICRO_TILES[4]!.index} icon={MICRO_TILES[4]!.icon} />
+            <BentoIllustration src="/assets/img/bento-omnigrid.png" alt="OmniGrid illustration" />
+          </div>
           <OmniGridBentoTile className="md:col-span-2" />
 
           {/* Row 6: ProofVerification (2col) + ProofEconomy (1col) */}
           <ProofVerificationTile className="md:col-span-2" />
           <ProofEconomyTile />
 
-          {/* Row 7: AI Liveness (1col) + ProofGamification (2col) */}
-          <BentoMicroTile index={MICRO_TILES[3]!.index} icon={MICRO_TILES[3]!.icon} />
+          {/* Row 7: AI Liveness + illustration (1col stacked) + ProofGamification (2col) */}
+          <div className="flex flex-col gap-3 md:gap-4">
+            <BentoMicroTile index={MICRO_TILES[3]!.index} icon={MICRO_TILES[3]!.icon} />
+            <BentoIllustration src="/assets/img/bento-gamification.png" alt="Gamification illustration" />
+          </div>
           <ProofGamificationTile className="md:col-span-2" />
         </div>
 

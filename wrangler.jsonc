@@ -6,9 +6,9 @@
   "compatibility_flags": [
     "nodejs_compat"
   ]
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
+  // Note: ANTHROPIC_API_KEY must be set as a secret via:
+  //   npx wrangler pages secret put ANTHROPIC_API_KEY
+  //
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",

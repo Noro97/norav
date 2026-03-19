@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -9,6 +9,7 @@ interface Experience {
   period: string
   achievementCount: number
   stack: string[]
+  image: string
 }
 
 const EXPERIENCES: Experience[] = [
@@ -17,26 +18,79 @@ const EXPERIENCES: Experience[] = [
     period: '2022 — Present',
     achievementCount: 4,
     stack: ['React', 'TypeScript', 'Google Maps API', 'WebSocket', 'Zustand', 'Vite'],
+    image: '/assets/img/exp-logistics.png',
   },
   {
     index: 1,
     period: '2020 — 2022',
     achievementCount: 4,
     stack: ['React', 'Next.js', 'GSAP', 'Tailwind CSS', 'Redux Toolkit', 'Storybook'],
+    image: '/assets/img/exp-merch.png',
   },
   {
     index: 2,
     period: '2019 — 2020',
     achievementCount: 3,
     stack: ['JavaScript', 'D3.js', 'Vue.js', 'SCSS', 'Node.js'],
+    image: '/assets/img/exp-dataviz.png',
   },
   {
     index: 3,
     period: '2018 — 2019',
     achievementCount: 2,
     stack: ['React', 'CSS', 'Firebase', 'Figma'],
+    image: '/assets/img/exp-startup.png',
   },
 ]
+
+function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [transform, setTransform] = useState('perspective(800px) rotateX(0deg) rotateY(0deg)')
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 })
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    const rotateX = (y - 0.5) * -16
+    const rotateY = (x - 0.5) * 16
+    setTransform(`perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`)
+    setGlare({ x: x * 100, y: y * 100, opacity: 0.15 })
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setTransform('perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)')
+    setGlare({ x: 50, y: 50, opacity: 0 })
+  }, [])
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_rgba(181,26,43,0.2)] will-change-transform"
+      style={{ transform, transition: 'transform 0.15s ease-out' }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="w-full h-full object-cover"
+      />
+      {/* Glare overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}), transparent 60%)`,
+        }}
+      />
+      {/* Edge highlight */}
+      <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/[0.08]" />
+    </div>
+  )
+}
 
 export function ExperienceTimeline() {
   const { t } = useTranslation('experience')
@@ -60,6 +114,15 @@ export function ExperienceTimeline() {
         { opacity: 0, x: i % 2 === 0 ? -40 : 40 },
         { opacity: 1, x: 0, duration: 0.7,
           scrollTrigger: { trigger: card, start: 'top 90%' } }
+      )
+    })
+
+    const illustrations = section.querySelectorAll('.exp-illustration')
+    illustrations.forEach((el, i) => {
+      gsap.fromTo(el,
+        { opacity: 0, x: i % 2 === 0 ? 40 : -40, scale: 0.92 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.8, delay: 0.2,
+          scrollTrigger: { trigger: el, start: 'top 90%' } }
       )
     })
   }, { scope: sectionRef })
@@ -121,15 +184,15 @@ export function ExperienceTimeline() {
                           <h3 className="text-white font-semibold text-base">{t(`entries.${exp.index}.role`)}</h3>
                           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                             <span className="font-mono text-xs text-crimson-400">{company}</span>
-                            <span className="text-white/15">·</span>
-                            <span className="font-mono text-[10px] text-white/30">{t(`entries.${exp.index}.type`)}</span>
+                            <span className="text-white/35">·</span>
+                            <span className="font-mono text-xs text-white/45">{t(`entries.${exp.index}.type`)}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Period badge */}
                       <div className={`mb-3 ${isLeft ? 'md:text-right' : ''}`}>
-                        <span className="inline-block px-2 py-0.5 bg-white/5 rounded font-mono text-[10px] text-white/40 tracking-wider">
+                        <span className="inline-block px-2 py-0.5 bg-white/5 rounded font-mono text-xs text-white/40 tracking-wider">
                           {exp.period}
                         </span>
                       </div>
@@ -154,13 +217,25 @@ export function ExperienceTimeline() {
                         {exp.stack.map((tech) => (
                           <span
                             key={tech}
-                            className="px-2 py-0.5 text-[10px] font-mono text-white/30 bg-white/3 border border-white/5 rounded"
+                            className="px-2 py-0.5 text-xs font-mono text-white/45 bg-white/3 border border-white/5 rounded"
                           >
                             {tech}
                           </span>
                         ))}
                       </div>
                     </div>
+                  </div>
+
+                  {/* Interactive illustration */}
+                  <div
+                    className={`exp-illustration hidden md:flex md:w-1/2 items-center ${
+                      isLeft ? 'md:pl-12' : 'md:pr-12'
+                    }`}
+                  >
+                    <InteractiveImageCard
+                      src={exp.image}
+                      alt={`${company} illustration`}
+                    />
                   </div>
                 </div>
               )

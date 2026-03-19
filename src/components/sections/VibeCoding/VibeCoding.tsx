@@ -73,7 +73,7 @@ export function VibeCoding() {
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
             {t('title')}
           </h2>
-          <p className="text-white/35 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
             {t('body')}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
@@ -92,7 +92,7 @@ export function VibeCoding() {
 
             {/* Systems synced */}
             <div>
-              <span className="font-mono text-[10px] text-white/25 uppercase tracking-[0.2em] block mb-3">
+              <span className="font-mono text-xs text-white/40 uppercase tracking-[0.2em] block mb-3">
                 {t('systemsSynced')}
               </span>
               <div className="flex flex-wrap gap-2">
@@ -122,7 +122,7 @@ export function VibeCoding() {
                   <div className="font-display text-2xl md:text-3xl font-bold text-white/80 tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="font-mono text-[9px] text-white/25 uppercase tracking-wider mt-1">
+                  <div className="font-mono text-xs text-white/40 uppercase tracking-wider mt-1">
                     {stat.label}
                   </div>
                 </div>

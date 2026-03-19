@@ -32,7 +32,7 @@ export function Navigation() {
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
         <span className="hidden sm:inline font-mono text-sm font-semibold tracking-widest uppercase">
-          <span className="text-crimson-500">nor</span><span className="text-crimson-500">av</span><span className="text-white/30">.</span><span className="text-crimson-500">dev</span>
+          <span className="text-crimson-500">nor</span><span className="text-crimson-500">av</span><span className="text-white/45">.</span><span className="text-crimson-500">dev</span>
         </span>
       </button>
 
@@ -65,7 +65,7 @@ export function Navigation() {
               />
               <span
                 className={`
-                  text-[11px] font-mono tracking-wider uppercase
+                  text-xs font-mono tracking-wider uppercase
                   transition-all duration-300
                   ${isActive
                     ? 'text-crimson-400'
@@ -80,7 +80,7 @@ export function Navigation() {
         })}
         <button
           onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
-          className="font-mono text-[11px] tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
           aria-label="Switch language"
         >
           {i18n.language === 'en' ? 'RU' : 'EN'}
@@ -89,12 +89,12 @@ export function Navigation() {
 
       {/* Mobile — current section label + language toggle */}
       <div className="md:hidden flex items-center gap-3">
-        <span className="font-mono text-[11px] text-white/40 tracking-widest uppercase">
+        <span className="font-mono text-xs text-white/40 tracking-widest uppercase">
           {t(SECTIONS.find((s) => s.id === activeSection)?.labelKey ?? '')}
         </span>
         <button
           onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
-          className="font-mono text-[11px] tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
           aria-label="Switch language"
         >
           {i18n.language === 'en' ? 'RU' : 'EN'}

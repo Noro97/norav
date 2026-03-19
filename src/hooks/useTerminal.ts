@@ -12,14 +12,87 @@ function getWelcomeLines(): TerminalLine[] {
   ]
 }
 
+async function streamAskResponse(
+  question: string,
+  pushLine: (line: TerminalLine) => void
+) {
+  pushLine({ type: 'output', content: '  [AI] Thinking...' })
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: question }],
+      }),
+    })
+
+    if (!res.ok) {
+      pushLine({ type: 'output', content: '  [AI] Error: Could not reach AI service.' })
+      return
+    }
+
+    const reader = res.body?.getReader()
+    if (!reader) {
+      pushLine({ type: 'output', content: '  [AI] Error: No response stream.' })
+      return
+    }
+
+    const decoder = new TextDecoder()
+    let accumulated = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const chunk = decoder.decode(value, { stream: true })
+      const lines = chunk.split('\n')
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6)
+          if (data === '[DONE]') continue
+          try {
+            const parsed = JSON.parse(data)
+            if (parsed.text) accumulated += parsed.text
+          } catch {
+            accumulated += data
+          }
+        }
+      }
+    }
+
+    // Format the response as terminal lines
+    if (accumulated) {
+      const responseLines = accumulated.split('\n')
+      for (const rl of responseLines) {
+        pushLine({ type: 'output', content: '  ' + rl })
+      }
+    }
+  } catch {
+    pushLine({ type: 'output', content: '  [AI] Error: Request failed.' })
+  }
+
+  pushLine({ type: 'output', content: '' })
+}
+
 export function useTerminal() {
   const [lines, setLines] = useState<TerminalLine[]>(getWelcomeLines)
   const [input, setInput] = useState('')
+  const [isAsking, setIsAsking] = useState(false)
   const historyRef = useRef<string[]>([])
   const historyIdxRef = useRef(-1)
 
+  const pushLine = useCallback((line: TerminalLine) => {
+    setLines((prev) => {
+      // Remove the "Thinking..." placeholder if present
+      const filtered = prev.filter((l) => l.content !== '  [AI] Thinking...')
+      return [...filtered, line]
+    })
+  }, [])
+
   const handleSubmit = useCallback(() => {
-    if (!input.trim()) return
+    if (!input.trim() || isAsking) return
 
     historyRef.current.unshift(input)
     historyIdxRef.current = -1
@@ -34,12 +107,31 @@ export function useTerminal() {
     // Handle clear
     if (result.length === 1 && result[0]?.content === 'CLEAR') {
       setLines([])
-    } else {
-      setLines((prev) => [...prev, ...result])
+      setInput('')
+      return
     }
 
+    // Check for async ask command
+    const askMarker = result.find(
+      (r) => r.type === 'output' && r.content.startsWith('__ASK__')
+    )
+
+    if (askMarker) {
+      const question = askMarker.content.slice(7) // Remove '__ASK__' prefix
+      // Add input line only
+      setLines((prev) => [...prev, { type: 'input', content: input.trim() }])
+      setInput('')
+      setIsAsking(true)
+
+      streamAskResponse(question, pushLine).finally(() => {
+        setIsAsking(false)
+      })
+      return
+    }
+
+    setLines((prev) => [...prev, ...result])
     setInput('')
-  }, [input])
+  }, [input, isAsking, pushLine])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -68,5 +160,5 @@ export function useTerminal() {
     [handleSubmit]
   )
 
-  return { lines, input, setInput, handleSubmit, handleKeyDown }
+  return { lines, input, setInput, handleSubmit, handleKeyDown, isAsking }
 }

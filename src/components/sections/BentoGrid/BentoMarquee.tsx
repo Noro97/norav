@@ -41,10 +41,10 @@ export function BentoMarquee() {
       >
         {items.map((principle, i) => (
           <span key={i} className="flex items-center shrink-0">
-            <span className="font-mono text-sm text-white/30 uppercase tracking-[0.2em] px-6">
+            <span className="font-mono text-sm text-white/45 uppercase tracking-[0.2em] px-6">
               {principle}
             </span>
-            <span className="text-crimson-500/40 text-[10px]">&#9670;</span>
+            <span className="text-crimson-500/40 text-xs">&#9670;</span>
           </span>
         ))}
       </div>

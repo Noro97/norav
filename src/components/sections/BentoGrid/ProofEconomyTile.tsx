@@ -57,7 +57,7 @@ export function ProofEconomyTile() {
           <path d="M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-7l-1.5-1.5" />
           <path d="M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-7l-1.5-1.5" />
         </svg>
-        <h3 className="font-mono text-[10px] text-white/60 uppercase tracking-[0.2em]">
+        <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
           {t('proof.economy.label')}
         </h3>
       </div>
@@ -69,7 +69,7 @@ export function ProofEconomyTile() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400/70">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
-            <span className="font-mono text-[8px] text-white/40 uppercase tracking-wider">
+            <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
               {t('proof.economy.starsBalance')}
             </span>
           </div>
@@ -80,7 +80,7 @@ export function ProofEconomyTile() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400/70">
               <path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z" />
             </svg>
-            <span className="font-mono text-[8px] text-white/40 uppercase tracking-wider">
+            <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
               {t('proof.economy.tonBalance')}
             </span>
           </div>
@@ -92,7 +92,7 @@ export function ProofEconomyTile() {
       <button
         onClick={handleConnect}
         disabled={walletState !== 'idle'}
-        className={`w-full py-2 px-3 rounded-lg font-mono text-[10px] uppercase tracking-wider border transition-all duration-300 mb-4 ${
+        className={`w-full py-2 px-3 rounded-lg font-mono text-xs uppercase tracking-wider border transition-all duration-300 mb-4 ${
           walletState === 'idle'
             ? 'border-crimson-500/20 text-crimson-400/60 bg-crimson-500/[0.05] hover:bg-crimson-500/[0.1] hover:border-crimson-500/30 cursor-pointer'
             : walletState === 'connecting'
@@ -120,7 +120,7 @@ export function ProofEconomyTile() {
 
       {/* Transaction flow SVG */}
       <div className="mt-auto">
-        <p className="font-mono text-[8px] text-white/30 uppercase tracking-wider mb-2">
+        <p className="font-mono text-[10px] text-white/45 uppercase tracking-wider mb-2">
           {t('proof.economy.txFlow')}
         </p>
         <svg viewBox="0 0 260 40" className="w-full h-auto" aria-hidden="true">
@@ -147,7 +147,7 @@ export function ProofEconomyTile() {
                 y={23}
                 textAnchor="middle"
                 fill={isConnected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'}
-                fontSize={7}
+                fontSize={9}
                 fontFamily="'JetBrains Mono', monospace"
               >
                 {node.label}

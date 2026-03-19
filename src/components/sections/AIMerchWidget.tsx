@@ -66,7 +66,7 @@ function syntaxHighlight(json: string): string {
     .replace(/(&quot;.*?&quot;)\s*:/g, '<span class="text-crimson-400">$1</span>:')
     .replace(/:\s*(&quot;.*?&quot;)/g, ': <span class="text-emerald-400">$1</span>')
     .replace(/:\s*(true)/g, ': <span class="text-yellow-400">$1</span>')
-    .replace(/:\s*(false)/g, ': <span class="text-white/30">$1</span>')
+    .replace(/:\s*(false)/g, ': <span class="text-white/45">$1</span>')
     .replace(/:\s*(\d+\.?\d*)/g, ': <span class="text-sky-400">$1</span>')
 }
 
@@ -178,7 +178,7 @@ export function AIMerchWidget() {
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'].map((tag) => (
-              <span key={tag} className="px-2 py-1 text-[10px] font-mono text-white/30 border border-white/8 rounded">
+              <span key={tag} className="px-2 py-1 text-xs font-mono text-white/45 border border-white/8 rounded">
                 {tag}
               </span>
             ))}
@@ -192,13 +192,13 @@ export function AIMerchWidget() {
               <div className="w-3 h-3 rounded-full bg-crimson-500/60" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
               <div className="w-3 h-3 rounded-full bg-green-500/40" />
-              <span className="ml-3 font-mono text-xs text-white/30">constructor.ui</span>
-              <span className="ml-auto font-mono text-[10px] text-white/20">{changeCount} {t('common:labels.changes')}</span>
+              <span className="ml-3 font-mono text-xs text-white/45">constructor.ui</span>
+              <span className="ml-auto font-mono text-xs text-white/40">{changeCount} {t('common:labels.changes')}</span>
             </div>
 
             {/* Product Type */}
             <div>
-              <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+              <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                 {t('projects:merch.labels.productType')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -220,7 +220,7 @@ export function AIMerchWidget() {
 
             {/* Color */}
             <div>
-              <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+              <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                 {t('projects:merch.labels.color')}
               </label>
               <div className="flex gap-2">
@@ -238,14 +238,14 @@ export function AIMerchWidget() {
                   />
                 ))}
               </div>
-              <span className="font-mono text-[10px] text-white/25 mt-1 block">
+              <span className="font-mono text-xs text-white/40 mt-1 block">
                 {t(`projects:${COLOR_KEYS[COLOR_VALUES.indexOf(config.color)]}`)}
               </span>
             </div>
 
             {/* Size */}
             <div>
-              <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+              <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                 {t('projects:merch.labels.size')}
               </label>
               <div className="flex gap-1.5">
@@ -267,7 +267,7 @@ export function AIMerchWidget() {
 
             {/* Custom Text */}
             <div>
-              <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+              <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                 {t('projects:merch.labels.customText')}
               </label>
               <input
@@ -278,13 +278,13 @@ export function AIMerchWidget() {
                 className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white/80 font-mono focus:outline-none focus:border-crimson-500/50 transition-colors"
                 placeholder={t('projects:merch.placeholder.enterText')}
               />
-              <span className="font-mono text-[10px] text-white/15 mt-1 block">{config.text.length}/30</span>
+              <span className="font-mono text-xs text-white/35 mt-1 block">{config.text.length}/30</span>
             </div>
 
             {/* Quantity + Premium */}
             <div className="flex items-end gap-6">
               <div>
-                <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+                <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                   {t('projects:merch.labels.quantity')}
                 </label>
                 <div className="flex items-center gap-1">
@@ -305,7 +305,7 @@ export function AIMerchWidget() {
               </div>
 
               <div>
-                <label className="block font-mono text-[10px] text-white/40 mb-2 tracking-wider uppercase">
+                <label className="block font-mono text-xs text-white/40 mb-2 tracking-wider uppercase">
                   {t('projects:merch.labels.premium')}
                 </label>
                 <button
@@ -324,7 +324,7 @@ export function AIMerchWidget() {
 
               {/* Price preview */}
               <div className="ml-auto text-right">
-                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.total')}</span>
+                <span className="font-mono text-xs text-white/45 block">{t('common:labels.total')}</span>
                 <span className="font-mono text-xl text-crimson-400 font-bold">
                   ${(fullOutput.pricing.total).toFixed(2)}
                 </span>
@@ -346,11 +346,11 @@ export function AIMerchWidget() {
                 />
               </div>
               <div>
-                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.sku')}</span>
+                <span className="font-mono text-xs text-white/45 block">{t('common:labels.sku')}</span>
                 <span className="font-mono text-xs text-white/60">{generateSKU(config)}</span>
               </div>
               <div className="ml-auto">
-                <span className="font-mono text-[10px] text-white/30 block">{t('common:labels.delivery')}</span>
+                <span className="font-mono text-xs text-white/45 block">{t('common:labels.delivery')}</span>
                 <span className="font-mono text-xs text-white/60">{config.premium ? t('projects:merch.delivery.days3') : t('projects:merch.delivery.days7')}</span>
               </div>
             </div>
@@ -360,9 +360,9 @@ export function AIMerchWidget() {
           <div className="merch-right bg-[#08080f] p-6 md:p-8 border-l border-white/5 relative">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-green-500/40" />
-              <span className="font-mono text-xs text-white/30">output.json</span>
+              <span className="font-mono text-xs text-white/45">output.json</span>
               <span
-                className={`ml-auto font-mono text-[10px] tracking-wider uppercase ${
+                className={`ml-auto font-mono text-xs tracking-wider uppercase ${
                   isTyping ? 'text-crimson-400' : 'text-green-400/50'
                 }`}
               >

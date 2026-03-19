@@ -141,7 +141,7 @@ export function HeroSection() {
         ref={scrollHintRef}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
-        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/20">
+        <span className="font-mono text-xs tracking-[0.3em] uppercase text-white/20">
           {t('scrollHint')}
         </span>
         <div className="w-px h-8 bg-gradient-to-b from-crimson-500/50 to-transparent animate-pulse" />

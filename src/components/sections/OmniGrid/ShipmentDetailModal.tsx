@@ -72,12 +72,12 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
-                <div className="font-mono text-[10px] text-cyan-400/60 tracking-[0.25em] uppercase mb-2">
+                <div className="font-mono text-xs text-cyan-400/60 tracking-[0.25em] uppercase mb-2">
                   Shipment Details
                 </div>
                 <h3 className="text-xl font-bold text-white tracking-tight">
                   {shipment.id}
-                  <span className="text-white/30 text-sm font-normal ml-2">({shipment.code})</span>
+                  <span className="text-white/45 text-sm font-normal ml-2">({shipment.code})</span>
                 </h3>
               </div>
               <button
@@ -113,7 +113,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
 
             {/* Tracking timeline */}
             <div className="mb-2">
-              <div className="font-mono text-[10px] text-white/30 uppercase tracking-wider mb-4">
+              <div className="font-mono text-xs text-white/45 uppercase tracking-wider mb-4">
                 Tracking Timeline
               </div>
               <div className="flex items-center gap-1">
@@ -134,8 +134,8 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                         >
                           <span className={isActive ? '' : 'opacity-30'}>{step.icon}</span>
                         </div>
-                        <span className={`text-[8px] font-mono mt-1.5 text-center leading-tight ${
-                          isActive ? 'text-white/50' : 'text-white/15'
+                        <span className={`text-xs font-mono mt-1.5 text-center leading-tight ${
+                          isActive ? 'text-white/50' : 'text-white/35'
                         }`}>
                           {step.label}
                         </span>
@@ -164,7 +164,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
 function DetailField({ label, value, valueClass = 'text-white/70' }: { label: string; value: string; valueClass?: string }) {
   return (
     <div className="rounded-lg bg-white/[0.02] border border-white/[0.06] p-3">
-      <div className="text-[9px] font-mono text-white/25 uppercase tracking-wider mb-1">{label}</div>
+      <div className="text-xs font-mono text-white/40 uppercase tracking-wider mb-1">{label}</div>
       <div className={`text-sm font-mono ${valueClass}`}>{value}</div>
     </div>
   )

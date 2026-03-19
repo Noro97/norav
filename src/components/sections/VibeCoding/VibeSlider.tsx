@@ -126,13 +126,13 @@ export function VibeSlider() {
           <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
           <div className="ml-3 relative">
             <motion.span
-              className="font-mono text-[10px] text-white/20 absolute left-0 whitespace-nowrap"
+              className="font-mono text-xs text-white/40 absolute left-0 whitespace-nowrap"
               style={{ opacity: filenameOpacity }}
             >
               {t('slider.boringLabel')}
             </motion.span>
             <motion.span
-              className="font-mono text-[10px] text-white/20 whitespace-nowrap"
+              className="font-mono text-xs text-white/40 whitespace-nowrap"
               style={{ opacity: archFilenameOpacity }}
             >
               {t('slider.archLabel')}
@@ -156,7 +156,7 @@ export function VibeSlider() {
               style={{ opacity: codeOpacity, backfaceVisibility: 'hidden' }}
             >
               <pre
-                className="font-mono text-[11px] md:text-xs leading-relaxed text-white/60 whitespace-pre-wrap"
+                className="font-mono text-xs md:text-xs leading-relaxed text-white/60 whitespace-pre-wrap"
                 dangerouslySetInnerHTML={{ __html: HIGHLIGHTED_CODE }}
               />
               {/* Scanline overlay for code */}
@@ -186,10 +186,10 @@ export function VibeSlider() {
       {/* Slider control */}
       <div className="px-1">
         <div className="flex items-center justify-between mb-2.5">
-          <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">
+          <span className="font-mono text-xs text-white/45 uppercase tracking-wider">
             {t('slider.lowVibe')}
           </span>
-          <span className="font-mono text-[10px] text-crimson-500/60 uppercase tracking-wider">
+          <span className="font-mono text-xs text-crimson-500/60 uppercase tracking-wider">
             {t('slider.highVibe')}
           </span>
         </div>

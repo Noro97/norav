@@ -19,6 +19,9 @@ const DynamicGrid = lazy(() =>
 const FloatingArtifacts = lazy(() =>
   import('@/components/ui/FloatingArtifacts').then((m) => ({ default: m.FloatingArtifacts }))
 )
+const AIChatWidget = lazy(() =>
+  import('@/components/ai/AIChatWidget').then((m) => ({ default: m.AIChatWidget }))
+)
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -69,6 +72,11 @@ const EcommerceWidget = lazy(() =>
 const OmniGridWidget = lazy(() =>
   import('@/components/sections/OmniGrid/OmniGridWidget').then((m) => ({
     default: m.OmniGridWidget,
+  }))
+)
+const WorkflowAutomation = lazy(() =>
+  import('@/components/sections/WorkflowAutomation/WorkflowAutomation').then((m) => ({
+    default: m.WorkflowAutomation,
   }))
 )
 const EducationCerts = lazy(() =>
@@ -164,10 +172,19 @@ function App() {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
+          <WorkflowAutomation />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
           <EducationCerts />
           <TerminalFooter />
         </Suspense>
       </main>
+
+      {/* AI Chat Widget */}
+      <Suspense fallback={null}>
+        <AIChatWidget />
+      </Suspense>
     </>
   )
 }
