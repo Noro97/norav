@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import type { ChatMessage } from '@/components/ai/chat.types'
 
 let messageId = 0
@@ -9,6 +9,10 @@ export function useChat() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const abortRef = useRef<AbortController | null>(null)
+  const messagesRef = useRef<ChatMessage[]>([])
+
+  // Keep ref in sync with state to avoid stale closures
+  useEffect(() => { messagesRef.current = messages }, [messages])
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) return
@@ -24,8 +28,8 @@ export function useChat() {
     setIsLoading(true)
     setError(null)
 
-    // Build conversation history for context
-    const history = [...messages, userMessage].map((m) => ({
+    // Build conversation history from ref to avoid stale closure
+    const history = [...messagesRef.current, userMessage].map((m) => ({
       role: m.role,
       content: m.content,
     }))
@@ -71,13 +75,15 @@ export function useChat() {
 
       const decoder = new TextDecoder()
       let accumulated = ''
+      let buffer = ''
 
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
 
-        const chunk = decoder.decode(value, { stream: true })
-        const lines = chunk.split('\n')
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || '' // keep incomplete line in buffer
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
@@ -94,13 +100,7 @@ export function useChat() {
                 )
               }
             } catch {
-              // Non-JSON line, might be raw text
-              accumulated += data
-              setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantId ? { ...m, content: accumulated } : m
-                )
-              )
+              // Skip malformed chunk — likely a partial line
             }
           }
         }
@@ -112,7 +112,7 @@ export function useChat() {
       setIsLoading(false)
       abortRef.current = null
     }
-  }, [messages, isLoading])
+  }, [isLoading])
 
   const cancelRequest = useCallback(() => {
     abortRef.current?.abort()

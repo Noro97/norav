@@ -41,14 +41,14 @@ describe('executeCommand', () => {
     const result = executeCommand('cat about.txt')
     const contents = result.map((l) => l.content).join('\n')
     expect(contents).toContain('Norayr Avetisyan')
-    expect(contents).toContain('Frontend + AI Engineer')
+    expect(contents).toContain('Senior Frontend Engineer / UI Architect')
   })
 
   it('returns experience for cat experience.txt', () => {
     const result = executeCommand('cat experience.txt')
     const contents = result.map((l) => l.content).join('\n')
-    expect(contents).toContain('2022')
-    expect(contents).toContain('NexusLogistics')
+    expect(contents).toContain('2025')
+    expect(contents).toContain('Vizogen')
   })
 
   it('handles missing file for cat', () => {

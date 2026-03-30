@@ -6,59 +6,62 @@ export const PORTFOLIO_CONTEXT = `You are a helpful AI assistant embedded in Nor
 
 ## Profile
 - Name: Norayr Avetisyan
-- Role: Frontend + AI Engineer
-- Experience: 6+ years
-- Location: San Francisco, CA (open to remote, SF, NYC)
+- Role: Senior Frontend Engineer / UI Architect
+- Experience: 7+ years (since 2018)
+- Location: Yerevan, Armenia (open to remote)
 - Status: Open to senior / staff-level roles
 - Email: noroavetisyan@gmail.com
 - GitHub: github.com/Noro97
 - LinkedIn: linkedin.com/in/norayravetisyan
 - Telegram: @antarber
+- Languages: Armenian (Native), Russian (Highly Proficient), English (Very Good Command)
 
 ## Summary
-Builds high-performance web applications at the intersection of engineering rigor, visual craft, and AI integration. Specializes in real-time systems (50K+ events/sec), GPU-accelerated graphics, and Claude API / n8n workflow automation. Bridging frontend engineering with AI — building intelligent interfaces, RAG-based conversational experiences, and automated pipelines.
+Senior Front-End Engineer with extensive experience building high-impact products across enterprise UI systems, generative AI platforms, iGaming, fintech, and Telegram Mini Apps. Proven track record of architecting scalable frontend systems (React, Next.js, TypeScript), significantly reducing development cycles, and delivering measurable performance gains. Expert in bridging design and engineering, with hands-on experience shipping B2B and B2C products from zero to production.
 
 ## Experience
-1. **2022–Present: Senior Frontend Engineer @ NexusLogistics**
-   - Led real-time logistics dashboard processing 50K+ events/sec
-   - Built Google Maps fleet visualization with 2000+ concurrent markers at 60fps
-   - Reduced bundle size by 42%
-   - Tech: React, TypeScript, Google Maps API, WebSocket, Zustand
+1. **Sep 2025–Feb 2026: Lead Frontend Engineer @ Vizogen (Generative AI / Fashion-Tech)**
+   - Led frontend development of an innovative Fashion-Tech platform with async generative AI pipelines
+   - Designed scalable workspaces for enterprise clients (B2B digital asset libraries)
+   - Eliminated heavy media transfer bottlenecks via critical rendering path optimization
+   - Tech: React, TypeScript, Generative AI pipelines
 
-2. **2020–2022: Frontend Engineer @ MerchStack**
-   - Built AI-powered product configurator serving 2M+ MAU
-   - React + Zustand + GSAP animation system
-   - Tech: React, GSAP, Zustand, JSON state sync
+2. **Feb 2024–Jun 2025: Core Frontend / UI Architect @ MTS Group**
+   - Designed and scaled global UI component infrastructure (React, Styled Components) for multi-million MAU ecosystem
+   - Built fault-tolerant documentation and testing environment on Storybook
+   - Transformed design-engineering collaboration processes, minimizing technical debt
+   - Tech: React, Styled Components, Storybook, Design Systems
 
-3. **2019–2020: Junior Developer @ DataViz Co.**
-   - D3.js dashboards and chart components
-   - First exposure to WebGL & shaders
+3. **Sep 2023–Jan 2024: Senior Frontend Engineer @ Appfox (iGaming & Fintech)**
+   - Developed high-load client portal for iGaming ecosystem with full resilience under peak loads
+   - Designed interfaces for complex liquidity management flows and loyalty systems
+   - Delivered high-conversion digital storefronts with aggressive bundle optimization and SEO
+   - Tech: React, Next.js, TypeScript, Fintech UI
 
-## Projects (Showcased in Portfolio)
-1. **NexusRoute** — Real-time logistics platform with Google Maps, WebSocket, GeoJSON, Advanced Markers, 50K+ events/sec
-2. **MerchForge** — AI merchandise configurator with React state sync, GSAP animations, live preview
-3. **FilterGraph** — Faceted search engine with filter dependency graph, URL state management
-4. **OmniGrid** — High-performance data grid with TanStack Table/Query, Zod validation, virtual scrolling (5000+ rows)
-5. **Proof** — Web3/AI verification system with Google Gemini API, Supabase Edge Functions, Telegram Web App SDK
+4. **May 2020–Sep 2023: Lead Front-End Developer @ TIRSoft LLC**
+   - Designed end-to-end frontend architecture on Next.js with strict routing and security standards
+   - Initiated transition to hybrid rendering (SSR/CSR) with major performance gains
+   - Built centralized component system, cutting development time across multiple projects
+   - Tech: Next.js, React, TypeScript, REST/GraphQL
+
+5. **Aug 2018–May 2020: Front-End Developer @ TIRSoft LLC**
+   - Translated complex requirements into responsive, pixel-perfect interfaces (Tailwind CSS, Sass)
+   - Delivered React-based admin dashboard ahead of schedule
+   - Partnered with backend engineers to define API schemas
+   - Tech: React, Tailwind CSS, Sass, REST API
 
 ## Technical Skills
-- **Frontend Core:** TypeScript (95%), React (95%), Next.js (85%), Vue.js (70%), TanStack Query/Table
-- **Animation & 3D:** GSAP (90%), Framer Motion (85%), Three.js/R3F (75%), GLSL Shaders (60%)
-- **Tooling:** Vite/Webpack (90%), Tailwind CSS (95%), Git (90%), CI/CD, Docker
-- **Backend:** Node.js (75%), PostgreSQL, REST/GraphQL (85%), Redis, Firebase
-- **AI & Automation:** Claude API / Anthropic SDK, Prompt Engineering, n8n Automation, RAG, AI Agents / MCP
+- **Core:** JavaScript (ES6+), TypeScript, HTML5, CSS3
+- **Frontend:** React.js, Next.js (SSR/ISR), Vue.js, Nuxt.js, VitePress, Micro-frontends
+- **State & Data:** Redux Toolkit, TanStack Tools, Zustand, Pinia, Context API, MobX, GraphQL, REST API
+- **Styling:** Tailwind CSS, Styled Components, Material UI, Sass, Bootstrap
+- **Infrastructure:** Telegram Mini Apps, Telegram Bot API, Supabase (BaaS), PostgreSQL, Node.js, Docker, Vercel
+- **Testing & Tools:** Vitest, Storybook, Git, Webpack, Claude Code, CI/CD
+- **Architecture:** SSR, CSR, ISR, Feature-Sliced Design (FSD), Component-Based Architecture, Design Systems
+- **Animation & 3D:** GSAP, Framer Motion, Three.js/R3F, GLSL Shaders
 
 ## Education
-- B.Sc. Computer Science, University of California, Berkeley (2015–2019, GPA 3.8/4.0)
-- Focus: Human-Computer Interaction & Graphics
-- Senior thesis: Real-time WebGL data visualization
-
-## Certifications
-- AWS Certified Cloud Practitioner (2024)
-- Professional Frontend Developer — Meta (2023)
-- Advanced TypeScript Patterns — Total TypeScript (2023)
-- Three.js Journey — Bruno Simon (2023)
-- GSAP Professional Animation — GreenSock (2022)
+- Bachelor of Computer Science — Armenian State University of Economics, Yerevan, Armenia
 
 ## This Portfolio
 Built with React 19, TypeScript, Three.js (R3F), GSAP, Framer Motion, Tailwind CSS 4, Zustand, Lenis smooth scroll, i18n (English/Russian), and deployed on Cloudflare Pages. Features include a 3D particle constellation, interactive terminal, custom cursor system, magnetic buttons, and this AI chat widget powered by Claude API.

@@ -200,6 +200,7 @@ const COMMANDS: Record<string, CommandHandler> = {
         '   ✉  noroavetisyan@gmail.com',
         '   ◆  github.com/Noro97',
         '   ●  linkedin.com/in/norayravetisyan',
+        '   ✈  t.me/antarber',
         '',
         '   ' + t('sudo.hire.openTo'),
         '   ' + t('sudo.hire.location'),

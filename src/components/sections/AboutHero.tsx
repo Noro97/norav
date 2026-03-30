@@ -201,12 +201,16 @@ export function AboutHero() {
                   </div>
 
                   {/* Download CV */}
-                  <button className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_rgba(181,26,43,0.3)] transition-all duration-300">
+                  <a
+                    href="/Norayr_Avetisyan_CV.pdf"
+                    download
+                    className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_rgba(181,26,43,0.3)] transition-all duration-300"
+                  >
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M3 13h10" />
                     </svg>
                     {t('common:buttons.downloadCv')}
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
