@@ -18,21 +18,21 @@ const EXPERIENCES: Experience[] = [
     period: 'Sep 2025 — Feb 2026',
     achievementCount: 3,
     stack: ['React', 'TypeScript', 'Generative AI', 'Fashion-Tech'],
-    image: '/assets/img/exp-logistics.png',
+    image: '/assets/img/exp-dataviz.png',
   },
   {
     index: 1,
     period: 'Feb 2024 — Jun 2025',
     achievementCount: 3,
     stack: ['React', 'Styled Components', 'Storybook', 'Design Systems'],
-    image: '/assets/img/exp-merch.png',
+    image: '/assets/img/exp-logistics.png',
   },
   {
     index: 2,
     period: 'Sep 2023 — Jan 2024',
     achievementCount: 3,
     stack: ['React', 'Next.js', 'TypeScript', 'Fintech', 'iGaming'],
-    image: '/assets/img/exp-dataviz.png',
+    image: '/assets/img/exp-merch.png',
   },
   {
     index: 3,
@@ -46,7 +46,7 @@ const EXPERIENCES: Experience[] = [
     period: 'Aug 2018 — May 2020',
     achievementCount: 2,
     stack: ['React', 'Tailwind CSS', 'Sass', 'REST API'],
-    image: '/assets/img/exp-startup.png',
+    image: '/assets/img/exp-dataviz.png',
   },
 ]
 

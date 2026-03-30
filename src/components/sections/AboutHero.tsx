@@ -203,7 +203,8 @@ export function AboutHero() {
                   {/* Download CV */}
                   <a
                     href="/Norayr_Avetisyan_CV.pdf"
-                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_rgba(181,26,43,0.3)] transition-all duration-300"
                   >
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">

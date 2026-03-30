@@ -1,12 +1,12 @@
 {
   "sectionLabel": "Expertise",
   "title": "Skills & Tools",
-  "description": "Technical proficiency across the frontend spectrum — from core frameworks and GPU shaders to AI integration and workflow automation.",
+  "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
   "categories.0.name": "Frontend Core",
-  "categories.1.name": "Animation & 3D",
-  "categories.2.name": "Tooling & Infra",
-  "categories.3.name": "Backend & Data",
-  "categories.4.name": "AI & Automation",
+  "categories.1.name": "State & Data",
+  "categories.2.name": "Styling & Design",
+  "categories.3.name": "Tooling & Infra",
+  "categories.4.name": "Platform & AI",
   "proficiencyOverview": "Proficiency Overview",
   "skillsTracked": "{{count}} skills tracked"
 }

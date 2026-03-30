@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 
-const WIDGET_SECTIONS = new Set(['logistics', 'merch', 'ecommerce', 'omnigrid'])
+const WIDGET_SECTIONS = new Set(['logistics', 'merch', 'ecommerce', 'omnigrid', 'proof'])
 
 /**
  * Each section calls this hook with its id.

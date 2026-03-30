@@ -74,6 +74,11 @@ const OmniGridWidget = lazy(() =>
     default: m.OmniGridWidget,
   }))
 )
+const ProofWidget = lazy(() =>
+  import('@/components/sections/ProofWidget').then((m) => ({
+    default: m.ProofWidget,
+  }))
+)
 const WorkflowAutomation = lazy(() =>
   import('@/components/sections/WorkflowAutomation/WorkflowAutomation').then((m) => ({
     default: m.WorkflowAutomation,
@@ -164,6 +169,7 @@ function App() {
           <AIMerchWidget />
           <EcommerceWidget />
           <OmniGridWidget />
+          <ProofWidget />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
