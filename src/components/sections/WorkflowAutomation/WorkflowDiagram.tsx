@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import gsap from 'gsap'
+import {
+  Zap, Brain, MessageSquare, BarChart3, Clock,
+  CheckCircle, Rocket, GitBranch, FlaskConical, Hammer, Cloud,
+} from 'lucide-react'
 import type { Workflow, WorkflowNode } from './workflow.data'
+
+const WORKFLOW_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  zap: Zap, brain: Brain, messageSquare: MessageSquare, barChart3: BarChart3,
+  clock: Clock, checkCircle: CheckCircle, rocket: Rocket, gitBranch: GitBranch,
+  flaskConical: FlaskConical, hammer: Hammer, cloud: Cloud,
+}
 
 interface WorkflowDiagramProps {
   workflow: Workflow
@@ -53,7 +63,10 @@ function NodeBox({ node, isActive }: { node: WorkflowNode; isActive: boolean }) 
         isActive ? `${styles.border} ${styles.glow}` : NODE_INACTIVE
       }`}
     >
-      <span className="text-lg shrink-0">{node.icon}</span>
+      {(() => {
+        const Icon = WORKFLOW_ICONS[node.icon]
+        return Icon ? <Icon size={18} className="shrink-0" /> : null
+      })()}
       <span
         className={`font-mono text-sm transition-colors duration-300 ${
           isActive ? 'text-white/90' : 'text-white/40'

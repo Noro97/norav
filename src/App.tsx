@@ -19,9 +19,9 @@ const DynamicGrid = lazy(() =>
 const FloatingArtifacts = lazy(() =>
   import('@/components/ui/FloatingArtifacts').then((m) => ({ default: m.FloatingArtifacts }))
 )
-const AIChatWidget = lazy(() =>
-  import('@/components/ai/AIChatWidget').then((m) => ({ default: m.AIChatWidget }))
-)
+// const AIChatWidget = lazy(() =>
+//   import('@/components/ai/AIChatWidget').then((m) => ({ default: m.AIChatWidget }))
+// )
 
 // Lazy-load heavy sections
 const SceneController = lazy(() =>
@@ -182,9 +182,9 @@ function App() {
       </main>
 
       {/* AI Chat Widget */}
-      <Suspense fallback={null}>
+      {/* <Suspense fallback={null}>
         <AIChatWidget />
-      </Suspense>
+      </Suspense> */}
     </>
   )
 }

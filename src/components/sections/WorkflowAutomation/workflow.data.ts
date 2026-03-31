@@ -26,10 +26,10 @@ export const WORKFLOWS: Workflow[] = [
     titleKey: 'workflows.lead.title',
     descriptionKey: 'workflows.lead.description',
     nodes: [
-      { id: 'webhook', label: 'Webhook', icon: '⚡', type: 'trigger', x: 0, y: 50 },
-      { id: 'claude', label: 'Claude AI', icon: '🧠', type: 'ai', x: 160, y: 50 },
-      { id: 'slack', label: 'Slack', icon: '💬', type: 'output', x: 320, y: 20 },
-      { id: 'crm', label: 'CRM', icon: '📊', type: 'output', x: 320, y: 80 },
+      { id: 'webhook', label: 'Webhook', icon: 'zap', type: 'trigger', x: 0, y: 50 },
+      { id: 'claude', label: 'Claude AI', icon: 'brain', type: 'ai', x: 160, y: 50 },
+      { id: 'slack', label: 'Slack', icon: 'messageSquare', type: 'output', x: 320, y: 20 },
+      { id: 'crm', label: 'CRM', icon: 'barChart3', type: 'output', x: 320, y: 80 },
     ],
     edges: [
       { from: 'webhook', to: 'claude' },
@@ -42,10 +42,10 @@ export const WORKFLOWS: Workflow[] = [
     titleKey: 'workflows.content.title',
     descriptionKey: 'workflows.content.description',
     nodes: [
-      { id: 'schedule', label: 'Schedule', icon: '⏰', type: 'trigger', x: 0, y: 50 },
-      { id: 'claude', label: 'Claude API', icon: '🧠', type: 'ai', x: 140, y: 50 },
-      { id: 'review', label: 'Review', icon: '✅', type: 'action', x: 280, y: 50 },
-      { id: 'publish', label: 'Publish', icon: '🚀', type: 'output', x: 420, y: 50 },
+      { id: 'schedule', label: 'Schedule', icon: 'clock', type: 'trigger', x: 0, y: 50 },
+      { id: 'claude', label: 'Claude API', icon: 'brain', type: 'ai', x: 140, y: 50 },
+      { id: 'review', label: 'Review', icon: 'checkCircle', type: 'action', x: 280, y: 50 },
+      { id: 'publish', label: 'Publish', icon: 'rocket', type: 'output', x: 420, y: 50 },
     ],
     edges: [
       { from: 'schedule', to: 'claude' },
@@ -58,10 +58,10 @@ export const WORKFLOWS: Workflow[] = [
     titleKey: 'workflows.cicd.title',
     descriptionKey: 'workflows.cicd.description',
     nodes: [
-      { id: 'github', label: 'GitHub Push', icon: '📦', type: 'trigger', x: 0, y: 50 },
-      { id: 'test', label: 'Test', icon: '🧪', type: 'action', x: 130, y: 50 },
-      { id: 'build', label: 'Build', icon: '🔨', type: 'action', x: 260, y: 50 },
-      { id: 'deploy', label: 'Deploy', icon: '☁️', type: 'output', x: 390, y: 50 },
+      { id: 'github', label: 'GitHub Push', icon: 'gitBranch', type: 'trigger', x: 0, y: 50 },
+      { id: 'test', label: 'Test', icon: 'flaskConical', type: 'action', x: 130, y: 50 },
+      { id: 'build', label: 'Build', icon: 'hammer', type: 'action', x: 260, y: 50 },
+      { id: 'deploy', label: 'Deploy', icon: 'cloud', type: 'output', x: 390, y: 50 },
     ],
     edges: [
       { from: 'github', to: 'test' },

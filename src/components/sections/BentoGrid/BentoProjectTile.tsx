@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
 import { MagneticButton } from '@/components/ui/MagneticButton'
 import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
 import type { BentoProject } from './bento.data'
@@ -8,6 +9,8 @@ import type { BentoProject } from './bento.data'
 const TILE_ILLUSTRATIONS: Record<string, string> = {
   nexusroute: '/assets/img/bento-nexusroute.png',
   merchforge: '/assets/img/bento-merchforge.png',
+  filtergraph: '/assets/img/bento-filtergraph.png',
+  omnigrid: '/assets/img/bento-omnigrid.png',
 }
 
 interface BentoProjectTileProps {
@@ -156,19 +159,10 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
             {t(project.ctaKey)}
             <span className="absolute -bottom-px left-0 w-0 h-px bg-crimson-500/50 group-hover/btn:w-full transition-all duration-300" />
           </span>
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <ArrowUpRight
+            size={12}
             className="transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300"
-          >
-            <path d="M7 17l9.2-9.2M17 17V7H7" />
-          </svg>
+          />
         </MagneticButton>
       </motion.div>
 

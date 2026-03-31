@@ -3,7 +3,7 @@ import { PORTFOLIO_CONTEXT } from './src/lib/portfolio-context'
 
 /**
  * Vite dev server plugin that handles /api/chat requests locally.
- * In production, Cloudflare Pages Functions handle this route.
+ * In production, Vercel serverless functions handle this route.
  */
 export function apiDevPlugin(): Plugin {
   return {

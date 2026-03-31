@@ -1,8 +1,14 @@
 import { useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Package, Warehouse, Truck, ShieldCheck, MapPin, CircleCheckBig, X } from 'lucide-react'
 import type { ShipmentRecord } from './omnigrid.data'
 import { STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
+
+const TRACKING_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  package: Package, warehouse: Warehouse, truck: Truck,
+  shieldCheck: ShieldCheck, mapPin: MapPin, circleCheckBig: CircleCheckBig,
+}
 
 interface Props {
   shipment: ShipmentRecord
@@ -10,12 +16,12 @@ interface Props {
 }
 
 const TRACKING_STEPS = [
-  { label: 'Order Placed', icon: '📦' },
-  { label: 'Picked Up', icon: '🏭' },
-  { label: 'In Transit', icon: '🚛' },
-  { label: 'Customs', icon: '🛃' },
-  { label: 'Last Mile', icon: '📍' },
-  { label: 'Delivered', icon: '✅' },
+  { label: 'Order Placed', icon: 'package' },
+  { label: 'Picked Up', icon: 'warehouse' },
+  { label: 'In Transit', icon: 'truck' },
+  { label: 'Customs', icon: 'shieldCheck' },
+  { label: 'Last Mile', icon: 'mapPin' },
+  { label: 'Delivered', icon: 'circleCheckBig' },
 ]
 
 function getTrackingProgress(status: string): number {
@@ -85,9 +91,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                 className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/40 hover:text-white/70"
                 aria-label="Close"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+                <X size={16} />
               </button>
             </div>
 
@@ -132,7 +136,10 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                                 : 'border-white/[0.06] bg-white/[0.02]'
                           }`}
                         >
-                          <span className={isActive ? '' : 'opacity-30'}>{step.icon}</span>
+                          {(() => {
+                            const Icon = TRACKING_ICONS[step.icon]
+                            return Icon ? <Icon size={16} className={isActive ? '' : 'opacity-30'} /> : null
+                          })()}
                         </div>
                         <span className={`text-xs font-mono mt-1.5 text-center leading-tight ${
                           isActive ? 'text-white/50' : 'text-white/35'
