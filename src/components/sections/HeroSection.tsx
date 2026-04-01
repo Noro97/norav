@@ -86,7 +86,7 @@ export function HeroSection() {
   const nameParts = [
     { text: t('firstName.highlight'), crimson: true },
     { text: t('firstName.rest'), crimson: false },
-    { text: ' ', crimson: false },
+    { text: ' ', crimson: false, lineBreak: true },
     { text: t('lastName.highlight'), crimson: true },
     { text: t('lastName.rest'), crimson: false },
   ]
@@ -110,20 +110,24 @@ export function HeroSection() {
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
-          {nameParts.map((part) =>
-            part.text.split('').map((char) => {
+          {nameParts.map((part) => {
+            const elements = part.text.split('').map((char) => {
               const idx = charIndex++
               return (
                 <span
                   key={idx}
                   ref={(el) => { if (el) charsRef.current[idx] = el }}
-                  className={`inline-block opacity-0 translate-y-[40px]${part.crimson ? ' text-crimson-500' : ''}`}
+                  className={`inline-block opacity-0 translate-y-[40px]${part.crimson ? ' text-crimson-500' : ''}${'lineBreak' in part && part.lineBreak ? ' hidden min-[425px]:inline-block' : ''}`}
                 >
                   {char === ' ' ? '\u00A0' : char}
                 </span>
               )
             })
-          )}
+            if ('lineBreak' in part && part.lineBreak) {
+              return [...elements, <br key="name-br" className="min-[425px]:hidden" />]
+            }
+            return elements
+          })}
         </h1>
 
         <p
