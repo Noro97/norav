@@ -219,9 +219,13 @@ export function AboutHero() {
 
           {/* Right — Bio */}
           <div className="about-content space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+            {/* Visually the name, but not a heading — the hero <h1> already owns that role, and repeating it confuses screen readers. */}
+            <p
+              className="text-3xl md:text-5xl font-bold text-white leading-tight"
+              aria-hidden="true"
+            >
               {t('about:name')}
-            </h2>
+            </p>
             <p className="font-mono text-sm text-crimson-400 tracking-wider">
               {t('about:role')}
             </p>

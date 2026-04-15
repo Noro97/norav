@@ -89,6 +89,10 @@ const TerminalFooter = lazy(() =>
     default: m.TerminalFooter,
   }))
 )
+// Static import: enables tree-shaking of unused warmbros-components exports
+// (Receipt3D pulls in Rapier/physics ~700KB gz, SplineScene pulls the Spline runtime ~585KB gz).
+// A dynamic import of the barrel can't tree-shake, so we import statically.
+import { ContainerScroll } from '@warmbros/warmbros-components'
 
 const SectionLoader = () => (
   <div className="min-h-[50vh] flex items-center justify-center">
@@ -161,6 +165,42 @@ function App() {
 
         <Suspense fallback={<SectionLoader />}>
           <VibeCoding />
+        </Suspense>
+
+        {/* Scroll reveal intro for case studies */}
+        <Suspense fallback={<SectionLoader />}>
+          <section id="projects-intro" className="relative">
+            <ContainerScroll
+              titleComponent={
+                <>
+                  <p className="label-editorial tracking-[0.3em] text-xs mb-4">
+                    Selected Work · 2024 — 2026
+                  </p>
+                  <h2
+                    className="font-display font-semibold text-white tracking-[-0.02em] leading-[1.05]"
+                    style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)', margin: 0 }}
+                  >
+                    From zero to{' '}
+                    <span className="italic text-[#B51A2B]">production</span>
+                    <br />
+                    in every frame.
+                  </h2>
+                  <p className="mt-6 text-[#DAD4D4]/70 text-base max-w-xl mx-auto leading-relaxed">
+                    Five years, six shipped products — logistics, commerce,
+                    merch AI, and an ops console powering thousands of daily users.
+                  </p>
+                </>
+              }
+            >
+              <img
+                src="/assets/img/case-studies-hero.webp"
+                alt="A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+            </ContainerScroll>
+          </section>
         </Suspense>
 
         {/* Project case studies */}

@@ -164,7 +164,7 @@ export function ExperienceTimeline() {
 
               return (
                 <div
-                  key={company}
+                  key={`${exp.index}-${i}`}
                   className={`exp-card relative flex flex-col md:flex-row ${
                     isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
                   } items-start gap-8 md:gap-0`}

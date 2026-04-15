@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './i18n'
 import App from './App'
 import './index.css'
+import '@warmbros/warmbros-components/styles.css'
 
 // Register GSAP plugins once
 gsap.registerPlugin(ScrollTrigger)

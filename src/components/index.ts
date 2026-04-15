@@ -1,26 +1,8 @@
-export { default as Navigation } from './Navigation'
-export { default as HeroSection } from './HeroSection'
-export { default as FeaturesSection } from './FeaturesSection'
-export { default as AboutSection } from './AboutSection'
-export { default as ContactSection } from './ContactSection'
-export { default as Footer } from './Footer'
-export { default as FloatingShapes } from './FloatingShapes'
-export { default as FeatureCard } from './FeatureCard'
-export { default as SlideCard } from './SlideCard'
-export { default as FeaturesSlider } from './FeaturesSlider'
-export { default as StatCard } from './StatCard'
-export { default as ContactForm } from './ContactForm'
-export { default as ScrollLinked } from './ScrollLinked'
-export { default as TestimonialsSection } from './TestimonialsSection'
-export { default as TimelineSection } from './TimelineSection'
-export { default as ParallaxSection } from './ParallaxSection'
-
-// New Spline 3D component
-export { SplineSceneBasic } from './SplineSceneBasic'
+// Warmbros brand bits
+export { default as Logo } from './Logo'
+export { default as GlitchText } from './GlitchText'
 
 // UI Components
 export { Button, buttonVariants } from './ui/button'
 export { Label } from './ui/label'
 export { Switch } from './ui/switch'
-export { Pricing } from './ui/pricing'
-export { default as PricingSection } from './PricingSection'
