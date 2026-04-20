@@ -26,7 +26,7 @@ Senior Front-End Engineer with extensive experience building high-impact product
    - Eliminated heavy media transfer bottlenecks via critical rendering path optimization
    - Tech: React, TypeScript, Generative AI pipelines
 
-2. **Feb 2024–Jun 2025: Core Frontend / UI Architect @ MTS Group**
+2. **Feb 2024–Jun 2025: Core Frontend / UI Architect @ BlazeIT**
    - Designed and scaled global UI component infrastructure (React, Styled Components) for multi-million MAU ecosystem
    - Built fault-tolerant documentation and testing environment on Storybook
    - Transformed design-engineering collaboration processes, minimizing technical debt
