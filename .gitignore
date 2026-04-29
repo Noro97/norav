@@ -29,3 +29,8 @@ lerna-debug.log*
 # misc
 .DS_Store
 .vercel
+
+# claude / skill tooling
+.agents/
+.claude/skills/
+skills-lock.json
