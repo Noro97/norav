@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+/* ===== VIEW TRANSITIONS (cross-document opt-in) ===== */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 /* ===== THEME ===== */
 @theme {
   --font-family-display: 'Inter Tight', 'Inter', system-ui, sans-serif;

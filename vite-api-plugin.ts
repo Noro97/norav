@@ -29,7 +29,7 @@ export function apiDevPlugin(): Plugin {
           body += chunk
         }
 
-        let parsed: { messages: Array<{ role: string; content: string }> }
+        let parsed: { messages: Array<{ role: 'user' | 'assistant'; content: string }> }
         try {
           parsed = JSON.parse(body)
         } catch {
@@ -53,7 +53,7 @@ export function apiDevPlugin(): Plugin {
               'anthropic-version': '2023-06-01',
             },
             body: JSON.stringify({
-              model: 'claude-sonnet-4-20250514',
+              model: 'claude-sonnet-4-6',
               max_tokens: 1024,
               system: PORTFOLIO_CONTEXT,
               messages: parsed.messages.slice(-10),

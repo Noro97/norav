@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { ChatMessage } from '@/components/ai/chat.types'
 
 let messageId = 0
@@ -10,12 +10,14 @@ export function useChat() {
   const [error, setError] = useState<string | null>(null)
   const abortRef = useRef<AbortController | null>(null)
   const messagesRef = useRef<ChatMessage[]>([])
+  const loadingRef = useRef(false)
 
-  // Keep ref in sync with state to avoid stale closures
-  useEffect(() => { messagesRef.current = messages }, [messages])
+  // Render-phase ref sync — cheaper than running an effect after every commit
+  messagesRef.current = messages
+  loadingRef.current = isLoading
 
   const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim() || isLoading) return
+    if (!content.trim() || loadingRef.current) return
 
     const userMessage: ChatMessage = {
       id: nextId(),
@@ -93,11 +95,13 @@ export function useChat() {
               const parsed = JSON.parse(data)
               if (parsed.text) {
                 accumulated += parsed.text
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId ? { ...m, content: accumulated } : m
-                  )
-                )
+                setMessages((prev) => {
+                  const last = prev[prev.length - 1]
+                  if (!last || last.id !== assistantId) return prev
+                  const next = prev.slice(0, -1)
+                  next.push({ ...last, content: accumulated })
+                  return next
+                })
               }
             } catch {
               // Skip malformed chunk — likely a partial line
@@ -112,7 +116,7 @@ export function useChat() {
       setIsLoading(false)
       abortRef.current = null
     }
-  }, [isLoading])
+  }, [])
 
   const cancelRequest = useCallback(() => {
     abortRef.current?.abort()

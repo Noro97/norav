@@ -134,10 +134,14 @@ function App() {
   return (
     <>
       <Suspense fallback={null}>
-        <DynamicGrid />
-        <FloatingArtifacts />
+        {!prefersReducedMotion && (
+          <>
+            <DynamicGrid />
+            <FloatingArtifacts />
+            <AnimatedGrain />
+          </>
+        )}
         <CursorManager />
-        <AnimatedGrain />
       </Suspense>
 
       {/* R3F Canvas */}
@@ -195,6 +199,8 @@ function App() {
               <img
                 src="/assets/img/case-studies-hero.webp"
                 alt="A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+                width={1800}
+                height={1029}
                 loading="lazy"
                 decoding="async"
                 draggable={false}

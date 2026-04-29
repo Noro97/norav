@@ -18,18 +18,30 @@ export function AIChatWidget() {
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fabRef = useRef<HTMLButtonElement>(null)
   const { messages, isLoading, error, sendMessage, clearMessages } = useChat()
 
-  // Scroll to bottom on new messages
   useEffect(() => {
+    if (!isOpen) return
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, isOpen])
 
-  // Focus input when chat opens
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 300)
+      const id = setTimeout(() => inputRef.current?.focus(), 300)
+      return () => clearTimeout(id)
+    } else {
+      fabRef.current?.focus()
     }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [isOpen])
 
   const handleSend = () => {
@@ -51,56 +63,68 @@ export function AIChatWidget() {
 
   return (
     <>
-      {/* FAB Button */}
       <button
+        ref={fabRef}
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-[background-color,transform,border-color] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a1a] ${
           isOpen
             ? 'bg-white/10 backdrop-blur-xl border border-white/10 rotate-0'
             : 'bg-crimson-600 hover:bg-crimson-500 hover:scale-105'
         }`}
         aria-label={isOpen ? t('close') : t('open')}
+        aria-expanded={isOpen}
+        aria-controls="ai-chat-panel"
       >
         {isOpen ? (
-          <X className="w-5 h-5 text-white/70" />
+          <X className="w-5 h-5 text-white/70" aria-hidden="true" />
         ) : (
-          <MessageSquare className="w-5 h-5 text-white" />
+          <MessageSquare className="w-5 h-5 text-white" aria-hidden="true" />
         )}
       </button>
 
-      {/* Chat Panel */}
       <div
-        className={`fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-300 origin-bottom-right ${
+        id="ai-chat-panel"
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby="ai-chat-title"
+        aria-hidden={!isOpen}
+        className={`fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] transition-[opacity,transform] duration-300 origin-bottom-right ${
           isOpen
             ? 'opacity-100 scale-100 translate-y-0'
             : 'opacity-0 scale-95 translate-y-4 pointer-events-none'
         }`}
       >
         <div className="rounded-2xl border border-white/[0.08] bg-[#0d0d1f]/95 backdrop-blur-2xl shadow-2xl shadow-black/50 overflow-hidden flex flex-col max-h-[70vh]">
-          {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-crimson-600/20 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-crimson-400" />
+                <Sparkles className="w-4 h-4 text-crimson-400" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-white">{t('title')}</h3>
+                <h3 id="ai-chat-title" className="text-sm font-semibold text-white">{t('title')}</h3>
                 <p className="text-xs font-mono text-white/45">{t('subtitle')}</p>
               </div>
             </div>
             {messages.length > 0 && (
               <button
                 onClick={clearMessages}
-                className="p-1.5 rounded-lg hover:bg-white/5 transition-colors"
-                title="Clear chat"
+                className="p-1.5 rounded-lg hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-400"
+                aria-label={t('clear')}
+                title={t('clear')}
               >
-                <RotateCcw className="w-3.5 h-3.5 text-white/45" />
+                <RotateCcw className="w-3.5 h-3.5 text-white/45" aria-hidden="true" />
               </button>
             )}
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 min-h-[200px] max-h-[45vh] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10" data-lenis-prevent>
+          <div
+            className="flex-1 overflow-y-auto px-4 py-4 min-h-[200px] max-h-[45vh] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
+            data-lenis-prevent
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+            aria-label={t('title')}
+          >
             {messages.length === 0 ? (
               <div className="space-y-4">
                 {/* Welcome message */}
@@ -115,7 +139,7 @@ export function AIChatWidget() {
                       key={q.labelKey}
                       onClick={() => handleSuggestion(q.query)}
                       disabled={isLoading}
-                      className="w-full text-left px-3 py-2 rounded-xl text-xs text-white/50 border border-white/[0.06] hover:border-crimson-500/20 hover:text-white/70 hover:bg-white/[0.02] transition-all disabled:opacity-50"
+                      className="w-full text-left px-3 py-2 rounded-xl text-xs text-white/50 border border-white/[0.06] hover:border-crimson-500/20 hover:text-white/70 hover:bg-white/[0.02] transition-[color,background-color,border-color] disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-400"
                     >
                       {t(q.labelKey)}
                     </button>
@@ -145,7 +169,6 @@ export function AIChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
           <div className="px-4 py-3 border-t border-white/[0.06]">
             <div className="flex items-center gap-2 bg-white/[0.04] rounded-xl px-3 py-2 border border-white/[0.06] focus-within:border-crimson-500/30 transition-colors">
               <input
@@ -156,15 +179,18 @@ export function AIChatWidget() {
                 onKeyDown={handleKeyDown}
                 placeholder={t('placeholder')}
                 disabled={isLoading}
+                aria-label={t('placeholder')}
+                autoComplete="off"
+                spellCheck={false}
                 className="flex-1 bg-transparent text-sm text-white/80 placeholder:text-white/35 outline-none disabled:opacity-50"
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="p-1.5 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-30"
+                className="p-1.5 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-400"
                 aria-label={t('send')}
               >
-                <Send className="w-4 h-4 text-crimson-400" />
+                <Send className="w-4 h-4 text-crimson-400" aria-hidden="true" />
               </button>
             </div>
           </div>

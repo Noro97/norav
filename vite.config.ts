@@ -24,6 +24,8 @@ export default defineConfig(({ mode }) => {
           three: ['three', '@react-three/fiber', '@react-three/drei'],
           gsap: ['gsap'],
           gmaps: ['@googlemaps/js-api-loader'],
+          spline: ['@splinetool/react-spline', '@splinetool/runtime'],
+          motion: ['framer-motion'],
         },
       },
     },

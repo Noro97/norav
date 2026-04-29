@@ -3,6 +3,7 @@
   "subtitle": "Powered by Claude",
   "placeholder": "Ask about Norayr's experience...",
   "send": "Send",
+  "clear": "Clear chat",
   "close": "Close chat",
   "open": "Chat with AI",
   "suggested.skills": "What are his strongest skills?",

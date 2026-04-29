@@ -4,6 +4,34 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
 import { useTerminal } from '@/hooks/useTerminal'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+
+const FALLBACK_LINK_BASE =
+  'inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a0a1a]'
+
+function ContactFallback() {
+  return (
+    <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a
+        href="mailto:noroavetisyan@gmail.com"
+        className={`${FALLBACK_LINK_BASE} bg-crimson-600 hover:bg-crimson-500 text-white focus:ring-crimson-400`}
+        data-cursor="link"
+      >
+        <span aria-hidden="true">✉</span>
+        <span>noroavetisyan@gmail.com</span>
+      </a>
+      <a
+        href="https://t.me/antarber"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${FALLBACK_LINK_BASE} border border-white/10 hover:border-white/25 text-white/70 hover:text-white focus:ring-white/30`}
+        data-cursor="link"
+      >
+        <span>Telegram →</span>
+      </a>
+    </div>
+  )
+}
 
 export function TerminalFooter() {
   const { t } = useTranslation(['terminal', 'common'])
@@ -12,9 +40,10 @@ export function TerminalFooter() {
   const outputRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { lines, input, setInput, handleKeyDown } = useTerminal()
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
-  // GSAP entrance
   useGSAP(() => {
+    if (prefersReducedMotion) return
     const terminal = sectionRef.current!.querySelector('.terminal-window')
     if (terminal) {
       gsap.fromTo(terminal,
@@ -23,7 +52,7 @@ export function TerminalFooter() {
           scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
       )
     }
-  }, { scope: sectionRef })
+  }, { scope: sectionRef, dependencies: [prefersReducedMotion] })
 
   // Auto-scroll output
   useEffect(() => {
@@ -52,7 +81,7 @@ export function TerminalFooter() {
         {/* Terminal window */}
         <div className="terminal-window rounded-xl overflow-hidden border border-white/10 bg-[#08080f] shadow-2xl shadow-black/50">
           {/* Title bar */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/5">
+          <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/5" aria-hidden="true">
             <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
@@ -96,7 +125,8 @@ export function TerminalFooter() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full bg-transparent text-white/80 outline-none caret-crimson-500 font-mono text-sm"
+                  aria-label={t('terminal:title')}
+                  className="w-full bg-transparent text-white/80 outline-none caret-crimson-500 font-mono text-sm focus:ring-1 focus:ring-crimson-500/40 focus:rounded-sm"
                   spellCheck={false}
                   autoComplete="off"
                   placeholder={t('terminal:placeholder')}
@@ -116,7 +146,8 @@ export function TerminalFooter() {
           </div>
         </div>
 
-        {/* Footer credit */}
+        <ContactFallback />
+
         <div className="mt-8 text-center">
           <p className="font-mono text-xs text-white/35">
             {t('common:footer.builtWith')}
