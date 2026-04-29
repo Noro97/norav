@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useMagneticEffect } from '@/hooks/useMagneticEffect'
 
 const SOCIAL_LINKS = [
   {
@@ -59,6 +60,8 @@ export function AboutHero() {
   const { t } = useTranslation(['about', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('about', sectionRef)
+  const cvLinkRef = useRef<HTMLAnchorElement>(null)
+  useMagneticEffect(cvLinkRef, 60, 0.35)
 
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 })
@@ -175,6 +178,7 @@ export function AboutHero() {
                           href={isMail ? undefined : link.href}
                           target={isMail ? undefined : '_blank'}
                           rel={isMail ? undefined : 'noopener noreferrer'}
+                          data-cursor="link"
                           title={t(`about:${link.key}`)}
                           onClick={isMail ? (e) => {
                             e.preventDefault()
@@ -202,9 +206,11 @@ export function AboutHero() {
 
                   {/* Download CV */}
                   <a
+                    ref={cvLinkRef}
                     href="/Norayr_Avetisyan_CV.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor="link"
                     className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_rgba(181,26,43,0.3)] transition-all duration-300"
                   >
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -222,6 +228,7 @@ export function AboutHero() {
             {/* Visually the name, but not a heading — the hero <h1> already owns that role, and repeating it confuses screen readers. */}
             <p
               className="text-3xl md:text-5xl font-bold text-white leading-tight"
+              data-cursor="text"
               aria-hidden="true"
             >
               {t('about:name')}
@@ -230,7 +237,7 @@ export function AboutHero() {
               {t('about:role')}
             </p>
 
-            <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl">
+            <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl" data-cursor="text">
               <p>
                 {t('about:bio.paragraph1.before')}
                 <span className="text-white/80">{t('about:bio.paragraph1.highlight1')}</span>

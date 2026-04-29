@@ -142,10 +142,10 @@ export function ExperienceTimeline() {
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <span className="label-mono">{t('sectionLabel')}</span>
-        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4" data-cursor="text">
           {t('title')}
         </h2>
-        <p className="text-white/40 text-base max-w-xl mb-16">
+        <p className="text-white/40 text-base max-w-xl mb-16" data-cursor="text">
           {t('description')}
         </p>
 
@@ -205,7 +205,7 @@ export function ExperienceTimeline() {
                       </div>
 
                       {/* Description */}
-                      <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
+                      <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`} data-cursor="text">
                         {t(`entries.${exp.index}.description`)}
                       </p>
 
