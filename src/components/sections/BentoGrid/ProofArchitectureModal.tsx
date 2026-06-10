@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useModalChrome } from '@/hooks/useModalChrome'
 
 interface Props {
   onClose: () => void
@@ -18,17 +18,7 @@ const NODES = [
 function ArchitectureModalContent({ onClose }: Props) {
   const { t } = useTranslation('bento')
 
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', handleKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = ''
-    }
-  }, [onClose])
+  useModalChrome(onClose)
 
   return (
     <AnimatePresence>

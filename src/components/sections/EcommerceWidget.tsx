@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import type { FilterState, Product } from '@/types'
 import { ProductDetailModal } from './ProductDetailModal'
 

@@ -76,7 +76,7 @@ export const GHOST_CODE_LINES: string[] = [
 // Boring CRUD code for slider left state
 export const BORING_CODE = `async function getUser(id: string) {
   const res = await fetch(
-    \'/api/users/\' + id
+    '/api/users/' + id
   );
   if (!res.ok) {
     throw new Error('Not found');
@@ -89,7 +89,7 @@ async function updateUser(
   data: Partial<User>
 ) {
   const res = await fetch(
-    \'/api/users/\' + id,
+    '/api/users/' + id,
     {
       method: 'PATCH',
       headers: {

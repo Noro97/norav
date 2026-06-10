@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -109,6 +109,7 @@ export function LogisticsWidget() {
   const handleMapLoaded = useCallback(() => setMapLoaded(true), [])
 
   const handleStressTest = useCallback(() => {
+    cancelAnimationFrame(stressRafRef.current)
     setIsStressTesting(true)
     setMarkerCount(0)
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { TechOrbit, type TechNode } from '@/components/sections/TechOrbit'
 
 interface Skill {

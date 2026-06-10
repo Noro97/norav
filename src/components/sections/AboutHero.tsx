@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useMagneticEffect } from '@/hooks/useMagneticEffect'
 
 const SOCIAL_LINKS = [

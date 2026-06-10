@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -11,7 +11,7 @@ import {
   flexRender,
   type SortingState,
 } from '@tanstack/react-table'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useShipments } from './useShipments'
 import { OMNIGRID_COLUMNS, STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
 import type { ShipmentRecord, ShipmentStatus, ShipmentPriority } from './omnigrid.data'
@@ -20,6 +20,14 @@ import { ShipmentDetailModal } from './ShipmentDetailModal'
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 30_000, gcTime: 5 * 60_000 } },
 })
+
+const CACHE_COLORS: Record<string, string> = {
+  FRESH: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  STALE: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+  FETCHING: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+}
+
+const TECH_STACK = ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll']
 
 function OmniGridContent() {
   const { t } = useTranslation(['projects', 'common'])
@@ -32,15 +40,6 @@ function OmniGridContent() {
   const [showLightning, setShowLightning] = useState(false)
 
   const { data: shipments = [], cacheStatus, dataUpdatedAt } = useShipments()
-
-  // Flash lightning when data comes from cache
-  const lastFetchRef = useRef(0)
-  if (dataUpdatedAt && dataUpdatedAt === lastFetchRef.current && !showLightning) {
-    // Same timestamp = cache hit
-  }
-  if (dataUpdatedAt && dataUpdatedAt !== lastFetchRef.current) {
-    lastFetchRef.current = dataUpdatedAt
-  }
 
   // GSAP entrance
   useGSAP(() => {
@@ -75,26 +74,25 @@ function OmniGridContent() {
 
   const { rows } = table.getRowModel()
 
+  const lightningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => {
+    if (lightningTimerRef.current) clearTimeout(lightningTimerRef.current)
+  }, [])
+
   const handleRowClick = useCallback((record: ShipmentRecord) => {
     setSelectedRow(record)
     setShowLightning(true)
-    setTimeout(() => setShowLightning(false), 600)
+    if (lightningTimerRef.current) clearTimeout(lightningTimerRef.current)
+    lightningTimerRef.current = setTimeout(() => setShowLightning(false), 600)
   }, [])
 
-  const renderTime = useMemo(() => {
-    const start = performance.now()
-    // Force row access to measure
-    rows.length
-    return Math.round((performance.now() - start) * 100) / 100
+  // Measure actual render → commit duration for the rows currently displayed
+  const renderStartRef = useRef(performance.now())
+  renderStartRef.current = performance.now()
+  const [renderTime, setRenderTime] = useState(0)
+  useLayoutEffect(() => {
+    setRenderTime(Math.round((performance.now() - renderStartRef.current) * 100) / 100)
   }, [rows])
-
-  const CACHE_COLORS: Record<string, string> = {
-    FRESH: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    STALE: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    FETCHING: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-  }
-
-  const techStack = ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll']
 
   return (
     <section
@@ -116,7 +114,7 @@ function OmniGridContent() {
             {t('projects:omnigrid.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
-            {techStack.map((tech) => (
+            {TECH_STACK.map((tech) => (
               <span key={tech} className="px-3 py-1.5 text-xs font-mono text-cyan-400/70 bg-cyan-500/[0.06] border border-cyan-500/15 rounded-lg tracking-wide">
                 {tech}
               </span>

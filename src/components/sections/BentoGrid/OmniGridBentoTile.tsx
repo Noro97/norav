@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
@@ -38,6 +38,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [cacheIdx, setCacheIdx] = useState(0)
+  const cacheIdxRef = useRef(0)
   const [showLightning, setShowLightning] = useState(false)
 
   const { scrollYProgress } = useScroll({
@@ -46,21 +47,27 @@ export function OmniGridBentoTile({ className = '' }: Props) {
   })
   const y = useTransform(scrollYProgress, [0, 1], [20, -20])
 
-  // Cache status cycling
+  // Cache status cycling — the transition check runs outside the setState
+  // updater (updaters must be side-effect free), and the flash timeout is
+  // cleared on unhover/unmount.
   useEffect(() => {
     if (!isHovered) return
+    let flashTimer: ReturnType<typeof setTimeout> | null = null
     const interval = setInterval(() => {
-      setCacheIdx((prev) => {
-        const next = (prev + 1) % CACHE_CYCLE.length
-        // Flash lightning on FRESH after FETCHING
-        if (CACHE_CYCLE[next] === 'FRESH' && CACHE_CYCLE[prev] === 'FETCHING') {
-          setShowLightning(true)
-          setTimeout(() => setShowLightning(false), 600)
-        }
-        return next
-      })
+      const prev = cacheIdxRef.current
+      const next = (prev + 1) % CACHE_CYCLE.length
+      cacheIdxRef.current = next
+      setCacheIdx(next)
+      if (CACHE_CYCLE[next] === 'FRESH' && CACHE_CYCLE[prev] === 'FETCHING') {
+        setShowLightning(true)
+        if (flashTimer) clearTimeout(flashTimer)
+        flashTimer = setTimeout(() => setShowLightning(false), 600)
+      }
     }, 2000)
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      if (flashTimer) clearTimeout(flashTimer)
+    }
   }, [isHovered])
 
   const cacheStatus = CACHE_CYCLE[cacheIdx]!
@@ -76,7 +83,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
     getFilteredRowModel: getFilteredRowModel(),
   })
 
-  const visibleRows = useMemo(() => table.getRowModel().rows.slice(0, 8), [table.getRowModel().rows])
+  const visibleRows = table.getRowModel().rows.slice(0, 8)
 
   const handleScrollTo = useCallback(() => {
     document.getElementById('omnigrid')?.scrollIntoView({ behavior: 'smooth' })

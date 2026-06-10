@@ -1,9 +1,9 @@
-import { useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Package, Warehouse, Truck, ShieldCheck, MapPin, CircleCheckBig, X } from 'lucide-react'
 import type { ShipmentRecord } from './omnigrid.data'
 import { STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
+import { useModalChrome } from '@/hooks/useModalChrome'
 
 const TRACKING_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   package: Package, warehouse: Warehouse, truck: Truck,
@@ -35,18 +35,7 @@ function getTrackingProgress(status: string): number {
 }
 
 export function ShipmentDetailModal({ shipment, onClose }: Props) {
-  const handleEsc = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose()
-  }, [onClose])
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleEsc)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', handleEsc)
-      document.body.style.overflow = ''
-    }
-  }, [handleEsc])
+  useModalChrome(onClose)
 
   const progress = getTrackingProgress(shipment.status)
 

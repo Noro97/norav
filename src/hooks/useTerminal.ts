@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import type { TerminalLine } from '@/types'
 import { executeCommand, shouldTriggerBurst } from '@/lib/terminal-commands'
+import { readSSEText } from '@/lib/sse'
 import { useAppStore } from '@/store/useAppStore'
 import i18n from '@/i18n'
 
@@ -38,33 +39,8 @@ async function streamAskResponse(
       return
     }
 
-    const decoder = new TextDecoder()
-    let accumulated = ''
-    let buffer = ''
+    const accumulated = await readSSEText(reader)
 
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-
-      buffer += decoder.decode(value, { stream: true })
-      const lines = buffer.split('\n')
-      buffer = lines.pop() || '' // keep incomplete line in buffer
-
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6)
-          if (data === '[DONE]') continue
-          try {
-            const parsed = JSON.parse(data)
-            if (parsed.text) accumulated += parsed.text
-          } catch {
-            // Skip malformed chunk
-          }
-        }
-      }
-    }
-
-    // Format the response as terminal lines
     if (accumulated) {
       const responseLines = accumulated.split('\n')
       for (const rl of responseLines) {

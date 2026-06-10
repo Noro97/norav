@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useInView } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { TerminalGhosting } from './TerminalGhosting'
 import { VibeSlider } from './VibeSlider'
 

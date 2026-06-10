@@ -2,11 +2,11 @@ import { lazy, Suspense, useEffect, useRef } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useLenisScroll } from '@/hooks/useLenisScroll'
+import { useScrollTracking } from '@/hooks/useScrollTracking'
 import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { HeroSection } from '@/components/sections/HeroSection'
-// Lazy-load overlay components
+
 const CursorManager = lazy(() =>
   import('@/components/cursor/CursorManager').then((m) => ({ default: m.CursorManager }))
 )
@@ -19,11 +19,7 @@ const DynamicGrid = lazy(() =>
 const FloatingArtifacts = lazy(() =>
   import('@/components/ui/FloatingArtifacts').then((m) => ({ default: m.FloatingArtifacts }))
 )
-// const AIChatWidget = lazy(() =>
-//   import('@/components/ai/AIChatWidget').then((m) => ({ default: m.AIChatWidget }))
-// )
 
-// Lazy-load heavy sections
 const SceneController = lazy(() =>
   import('@/components/canvas/SceneController').then((m) => ({
     default: m.SceneController,
@@ -109,7 +105,7 @@ function App() {
     setIsMobile(isMobile)
   }, [isMobile, setIsMobile])
 
-  useLenisScroll()
+  useScrollTracking()
 
   const mainRef = useRef<HTMLElement>(null)
 
@@ -227,10 +223,9 @@ function App() {
         </Suspense>
       </main>
 
-      {/* AI Chat Widget */}
-      {/* <Suspense fallback={null}>
-        <AIChatWidget />
-      </Suspense> */}
+      {/* TODO: AI chat is disabled — re-enable by lazy-importing
+          @/components/ai/AIChatWidget and rendering it here, or delete
+          src/components/ai/ + src/hooks/useChat.ts if it's not coming back. */}
     </>
   )
 }

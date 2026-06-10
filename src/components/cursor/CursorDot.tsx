@@ -95,7 +95,6 @@ function applyDotConfig(dot: HTMLDivElement, cursorState: CursorState) {
   dot.style.border = cfg.border
   dot.style.mixBlendMode = cfg.blendMode
   dot.style.backdropFilter = cfg.backdropBlur
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ;(dot.style as unknown as Record<string, string>)['webkitBackdropFilter'] = cfg.backdropBlur
   dot.style.color = cfg.color
 

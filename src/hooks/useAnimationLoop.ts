@@ -30,7 +30,10 @@ function stop() {
 
 export function useAnimationLoop(callback: (dt: number) => void) {
   const cbRef = useRef(callback)
-  cbRef.current = callback
+
+  useEffect(() => {
+    cbRef.current = callback
+  }, [callback])
 
   useEffect(() => {
     const wrapper = (dt: number) => cbRef.current(dt)

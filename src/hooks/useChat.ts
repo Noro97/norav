@@ -1,5 +1,6 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import type { ChatMessage } from '@/components/ai/chat.types'
+import { readSSEText } from '@/lib/sse'
 
 let messageId = 0
 const nextId = () => `msg-${++messageId}-${Date.now()}`
@@ -12,9 +13,15 @@ export function useChat() {
   const messagesRef = useRef<ChatMessage[]>([])
   const loadingRef = useRef(false)
 
-  // Render-phase ref sync — cheaper than running an effect after every commit
-  messagesRef.current = messages
-  loadingRef.current = isLoading
+  // Keep refs in sync so sendMessage (an event handler) reads fresh values
+  // without re-creating its callback identity.
+  useEffect(() => {
+    messagesRef.current = messages
+    loadingRef.current = isLoading
+  }, [messages, isLoading])
+
+  // Abort any in-flight stream when the consumer unmounts
+  useEffect(() => () => abortRef.current?.abort(), [])
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || loadingRef.current) return
@@ -57,7 +64,6 @@ export function useChat() {
         return
       }
 
-      // Handle streaming response
       const reader = res.body?.getReader()
       if (!reader) {
         setError('generic')
@@ -75,40 +81,15 @@ export function useChat() {
 
       setMessages((prev) => [...prev, assistantMessage])
 
-      const decoder = new TextDecoder()
-      let accumulated = ''
-      let buffer = ''
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() || '' // keep incomplete line in buffer
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6)
-            if (data === '[DONE]') continue
-            try {
-              const parsed = JSON.parse(data)
-              if (parsed.text) {
-                accumulated += parsed.text
-                setMessages((prev) => {
-                  const last = prev[prev.length - 1]
-                  if (!last || last.id !== assistantId) return prev
-                  const next = prev.slice(0, -1)
-                  next.push({ ...last, content: accumulated })
-                  return next
-                })
-              }
-            } catch {
-              // Skip malformed chunk — likely a partial line
-            }
-          }
-        }
-      }
+      await readSSEText(reader, (accumulated) => {
+        setMessages((prev) => {
+          const last = prev[prev.length - 1]
+          if (!last || last.id !== assistantId) return prev
+          const next = prev.slice(0, -1)
+          next.push({ ...last, content: accumulated })
+          return next
+        })
+      })
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return
       setError('generic')

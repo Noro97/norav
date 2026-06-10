@@ -50,7 +50,13 @@ export function ProofVerificationTile({ className = '' }: Props) {
     }
 
     abortRef.current = false
-    setLogLines([])
+
+    // Reset happens inside a scheduled timer so the effect body itself
+    // doesn't call setState synchronously.
+    const resetTimer = setTimeout(() => {
+      if (!abortRef.current) setLogLines([])
+    }, 0)
+    timersRef.current.push(resetTimer)
 
     const translatedLines = LOG_KEYS.map((key) => t(key))
     let totalDelay = 0

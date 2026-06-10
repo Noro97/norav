@@ -34,11 +34,16 @@ export function ProofEconomyTile() {
   const tileRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(tileRef, { once: true, margin: '-50px' })
   const [walletState, setWalletState] = useState<WalletState>('idle')
+  const connectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (connectTimerRef.current) clearTimeout(connectTimerRef.current)
+  }, [])
 
   const handleConnect = () => {
     if (walletState !== 'idle') return
     setWalletState('connecting')
-    setTimeout(() => setWalletState('connected'), 1200)
+    connectTimerRef.current = setTimeout(() => setWalletState('connected'), 1200)
   }
 
   const isConnected = walletState === 'connected'

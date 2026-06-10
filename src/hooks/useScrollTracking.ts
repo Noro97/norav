@@ -5,7 +5,7 @@ import { useAppStore } from '@/store/useAppStore'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function useLenisScroll() {
+export function useScrollTracking() {
   useEffect(() => {
     const setScrollProgress = useAppStore.getState().setScrollProgress
 

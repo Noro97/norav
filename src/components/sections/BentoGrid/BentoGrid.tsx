@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useTranslation } from 'react-i18next'
 import { BENTO_PROJECTS, BENTO_METRICS, MICRO_TILES } from './bento.data'
 import { BentoProjectTile } from './BentoProjectTile'

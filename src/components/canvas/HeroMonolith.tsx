@@ -66,10 +66,14 @@ function useSVGGeometries(url: string, depth: number) {
   const [geometries, setGeometries] = useState<THREE.BufferGeometry[]>([])
 
   useEffect(() => {
+    let cancelled = false
+    let created: THREE.BufferGeometry[] = []
+
     const loader = new SVGLoader()
     loader.load(url, (data) => {
-      const geos: THREE.BufferGeometry[] = []
+      if (cancelled) return
 
+      const geos: THREE.BufferGeometry[] = []
       for (const path of data.paths) {
         const shapes = SVGLoader.createShapes(path)
         for (const shape of shapes) {
@@ -84,14 +88,14 @@ function useSVGGeometries(url: string, depth: number) {
         }
       }
 
+      created = geos
       setGeometries(geos)
     })
 
     return () => {
-      // Dispose on unmount
-      geometries.forEach((g) => g.dispose())
+      cancelled = true
+      created.forEach((g) => g.dispose())
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, depth])
 
   return geometries
@@ -102,7 +106,6 @@ export function HeroMonolith() {
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null)
   const logoGroupRef = useRef<THREE.Group>(null)
   const instancedRef = useRef<THREE.InstancedMesh>(null)
-  const shardGeoRef = useRef<THREE.BoxGeometry | null>(null)
 
   const rotX = useRef(0)
   const rotY = useRef(0)
@@ -115,17 +118,12 @@ export function HeroMonolith() {
 
   const svgGeometries = useSVGGeometries('/assets/img/logo-new.svg', 0.3 / SVG_SCALE)
 
-  const shardGeometry = useMemo(() => {
-    const geo = new THREE.BoxGeometry(SHARD_SIZE, SHARD_SIZE, SHARD_SIZE)
-    shardGeoRef.current = geo
-    return geo
-  }, [])
+  const shardGeometry = useMemo(
+    () => new THREE.BoxGeometry(SHARD_SIZE, SHARD_SIZE, SHARD_SIZE),
+    []
+  )
 
-  useEffect(() => {
-    return () => {
-      shardGeoRef.current?.dispose()
-    }
-  }, [])
+  useEffect(() => () => shardGeometry.dispose(), [shardGeometry])
 
   useFrame((_state, delta) => {
     const group = groupRef.current

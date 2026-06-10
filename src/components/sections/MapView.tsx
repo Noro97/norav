@@ -140,7 +140,6 @@ type BezierOverlayInstance = ReturnType<typeof createBezierOverlay>
 export default function MapView({ markers, connections, onLoad }: MapViewProps) {
   const mapDivRef = useRef<HTMLDivElement>(null)
   const onLoadRef = useRef(onLoad)
-  onLoadRef.current = onLoad
   const mapRef = useRef<google.maps.Map | null>(null)
   const overlayRef = useRef<BezierOverlayInstance | null>(null)
   const markersRef = useRef<google.maps.Marker[]>([])
@@ -148,6 +147,10 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   const lastUpdateRef = useRef(0)
   const pendingRafRef = useRef(0)
   const [authFailed, setAuthFailed] = useState(false)
+
+  useEffect(() => {
+    onLoadRef.current = onLoad
+  }, [onLoad])
 
   // Initialize map once
   useEffect(() => {
@@ -223,26 +226,6 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
       cancelAnimationFrame(pendingRafRef.current)
       mapRef.current = null
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // Throttled marker/data update
-  const scheduleUpdate = useCallback((
-    newMarkers: GeoJSON.FeatureCollection | null,
-    newConnections: GeoJSON.FeatureCollection | null,
-  ) => {
-    cancelAnimationFrame(pendingRafRef.current)
-    pendingRafRef.current = requestAnimationFrame((timestamp) => {
-      if (timestamp - lastUpdateRef.current < FRAME_INTERVAL) {
-        pendingRafRef.current = requestAnimationFrame(() =>
-          scheduleUpdate(newMarkers, newConnections)
-        )
-        return
-      }
-      lastUpdateRef.current = timestamp
-      applyMarkers(newMarkers)
-      applyConnections(newConnections)
-    })
   }, [])
 
   const applyMarkers = useCallback((data: GeoJSON.FeatureCollection | null) => {
@@ -304,6 +287,25 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   const applyConnections = useCallback((data: GeoJSON.FeatureCollection | null) => {
     overlayRef.current?.setConnections(data)
   }, [])
+
+  // Throttled marker/data update — retries on the next frame until the
+  // FRAME_INTERVAL throttle window has elapsed.
+  const scheduleUpdate = useCallback((
+    newMarkers: GeoJSON.FeatureCollection | null,
+    newConnections: GeoJSON.FeatureCollection | null,
+  ) => {
+    cancelAnimationFrame(pendingRafRef.current)
+    const attempt = (timestamp: number) => {
+      if (timestamp - lastUpdateRef.current < FRAME_INTERVAL) {
+        pendingRafRef.current = requestAnimationFrame(attempt)
+        return
+      }
+      lastUpdateRef.current = timestamp
+      applyMarkers(newMarkers)
+      applyConnections(newConnections)
+    }
+    pendingRafRef.current = requestAnimationFrame(attempt)
+  }, [applyMarkers, applyConnections])
 
   // React to markers/connections changes
   useEffect(() => {

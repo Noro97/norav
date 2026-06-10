@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import type { Product } from '@/types'
 import { CATEGORY_COLORS } from './EcommerceWidget'
+import { useModalChrome } from '@/hooks/useModalChrome'
 
 type Step = 'detail' | 'checkout' | 'confirmation'
 
@@ -169,20 +170,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
   const description = getMockDescription(product)
   const total = (product.price * quantity).toFixed(2)
 
-  // ESC key handler
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', handleKey)
-    return () => document.removeEventListener('keydown', handleKey)
-  }, [onClose])
-
-  // Body scroll lock
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
+  useModalChrome(onClose)
 
   const goTo = useCallback((target: Step) => {
     const currentIdx = STEP_LIST.indexOf(step)

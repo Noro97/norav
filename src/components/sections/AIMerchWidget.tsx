@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useScrollProgress'
+import { useSectionObserver } from '@/hooks/useSectionObserver'
 import type { MerchConfig } from '@/types'
 
 const PRODUCT_TYPE_KEYS = [
@@ -77,7 +77,6 @@ export function AIMerchWidget() {
   const jsonRef = useRef<HTMLPreElement>(null)
   const [config, setConfig] = useState<MerchConfig>(DEFAULT_CONFIG)
   const [displayedJson, setDisplayedJson] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
   const [changeCount, setChangeCount] = useState(0)
 
   // Computed output with derived fields
@@ -131,24 +130,21 @@ export function AIMerchWidget() {
     }
   }, { scope: sectionRef })
 
-  // Typing animation
-  useEffect(() => {
-    const fullJson = JSON.stringify(fullOutput, null, 2)
-    setIsTyping(true)
+  // Typing animation — isTyping is derived from the typed length instead of
+  // being set synchronously inside the effect.
+  const fullJson = useMemo(() => JSON.stringify(fullOutput, null, 2), [fullOutput])
+  const isTyping = displayedJson !== fullJson
 
+  useEffect(() => {
     let idx = 0
     const interval = setInterval(() => {
-      idx += 4
-      if (idx >= fullJson.length) {
-        idx = fullJson.length
-        clearInterval(interval)
-        setIsTyping(false)
-      }
+      idx = Math.min(idx + 4, fullJson.length)
+      if (idx >= fullJson.length) clearInterval(interval)
       setDisplayedJson(fullJson.slice(0, idx))
     }, 6)
 
     return () => clearInterval(interval)
-  }, [fullOutput])
+  }, [fullJson])
 
   const updateConfig = useCallback(
     <K extends keyof MerchConfig>(key: K, value: MerchConfig[K]) => {
