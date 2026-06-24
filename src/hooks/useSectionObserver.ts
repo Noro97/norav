@@ -16,16 +16,18 @@ export function useSectionObserver(sectionId: string, ref: React.RefObject<HTMLE
     const { setActiveSection, setParticlesCollapsed } = useAppStore.getState()
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(sectionId)
-            setParticlesCollapsed(WIDGET_SECTIONS.has(sectionId))
-          }
-        })
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setActiveSection(sectionId)
+          setParticlesCollapsed(WIDGET_SECTIONS.has(sectionId))
+        }
       },
       {
-        rootMargin: '-35% 0px -35% 0px',
+        // Collapse the root to the viewport's horizontal center line. A section
+        // intersects only while it crosses that line, so exactly one section is
+        // active at a time — adjacent sections can't fight over "last observer
+        // wins" (each section has its own observer seeing only its own element).
+        rootMargin: '-50% 0px -50% 0px',
         threshold: 0,
       }
     )

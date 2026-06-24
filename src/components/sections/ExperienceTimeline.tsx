@@ -55,19 +55,32 @@ function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
   const [transform, setTransform] = useState('perspective(800px) rotateX(0deg) rotateY(0deg)')
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 })
 
+  const frameRef = useRef(0)
+  const latest = useRef({ x: 0.5, y: 0.5 })
+
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current
     if (!card) return
     const rect = card.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width
-    const y = (e.clientY - rect.top) / rect.height
-    const rotateX = (y - 0.5) * -16
-    const rotateY = (x - 0.5) * 16
-    setTransform(`perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`)
-    setGlare({ x: x * 100, y: y * 100, opacity: 0.15 })
+    latest.current = {
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    }
+    // One re-render per frame instead of one per mousemove event.
+    if (frameRef.current) return
+    frameRef.current = requestAnimationFrame(() => {
+      frameRef.current = 0
+      const { x, y } = latest.current
+      setTransform(`perspective(800px) rotateX(${(y - 0.5) * -16}deg) rotateY(${(x - 0.5) * 16}deg) scale3d(1.03,1.03,1.03)`)
+      setGlare({ x: x * 100, y: y * 100, opacity: 0.15 })
+    })
   }, [])
 
   const handleMouseLeave = useCallback(() => {
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current)
+      frameRef.current = 0
+    }
     setTransform('perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)')
     setGlare({ x: 50, y: 50, opacity: 0 })
   }, [])

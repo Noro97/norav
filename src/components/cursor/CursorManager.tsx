@@ -52,16 +52,14 @@ function CursorEventBridge() {
       }
     }
 
-    const main = document.querySelector('main')
-    if (main) {
-      main.addEventListener('mouseover', onMouseOver, { passive: true })
-    }
+    // Delegate on window rather than <main>: the handler already resolves the
+    // target via closest('[data-cursor]'), so window-level delegation is
+    // equivalent and removes the dependency on <main> existing at mount time.
+    window.addEventListener('mouseover', onMouseOver, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
-      if (main) {
-        main.removeEventListener('mouseover', onMouseOver)
-      }
+      window.removeEventListener('mouseover', onMouseOver)
     }
   }, [setCursorPosition, setCursorState])
 

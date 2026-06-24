@@ -14,14 +14,32 @@ import { ProofGamificationTile } from './ProofGamificationTile'
 import { OmniGridBentoTile } from './OmniGridBentoTile'
 
 function BentoIllustration({ src, alt }: { src: string; alt: string }) {
+  // Coalesce the tilt write to one per frame instead of per mousemove event.
+  const frameRef = useRef(0)
+  const pending = useRef<{ el: HTMLDivElement; x: number; y: number } | null>(null)
+
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width
-    const y = (e.clientY - rect.top) / rect.height
-    e.currentTarget.style.transform = `perspective(600px) rotateX(${(y - 0.5) * -14}deg) rotateY(${(x - 0.5) * 14}deg) scale3d(1.04,1.04,1.04)`
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    pending.current = {
+      el,
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    }
+    if (frameRef.current) return
+    frameRef.current = requestAnimationFrame(() => {
+      frameRef.current = 0
+      const p = pending.current
+      if (!p) return
+      p.el.style.transform = `perspective(600px) rotateX(${(p.y - 0.5) * -14}deg) rotateY(${(p.x - 0.5) * 14}deg) scale3d(1.04,1.04,1.04)`
+    })
   }, [])
 
   const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current)
+      frameRef.current = 0
+    }
     e.currentTarget.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
   }, [])
 
