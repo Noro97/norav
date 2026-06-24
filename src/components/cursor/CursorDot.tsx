@@ -110,9 +110,11 @@ export function CursorDot() {
   const smoothRef = useRef({ x: 0, y: 0 })
   const sizeRef = useRef(12) // cached size to avoid parseFloat every frame
 
-  // Subscribe to cursorState to apply style changes imperatively
+  // Subscribe to cursorState to apply style changes imperatively (bypassing
+  // React render to avoid re-rendering the dot on every cursor move).
   useEffect(() => {
-    // Zustand 5: subscribe(listener) — one arg only
+    // NOTE: Zustand's subscribe(listener) RETURNS its unsubscribe function, so
+    // returning it directly wires the unsubscribe up as the effect cleanup.
     return useAppStore.subscribe((state) => {
       const dot = dotRef.current
       if (!dot) return

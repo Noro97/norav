@@ -91,7 +91,14 @@ export function HeroSection() {
     { text: t('lastName.rest'), crimson: false },
   ]
 
-  let charIndex = 0
+  // Stable global char index per name part (running cumulative length), so the
+  // render doesn't mutate a shared counter while emitting spans — unsafe under
+  // concurrent rendering.
+  const charBaseOffsets: number[] = []
+  nameParts.reduce((offset, part, i) => {
+    charBaseOffsets[i] = offset
+    return offset + part.text.length
+  }, 0)
 
   return (
     <section
@@ -110,9 +117,9 @@ export function HeroSection() {
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" data-cursor="text" style={{ fontFamily: 'var(--font-family-display)' }}>
-          {nameParts.map((part) => {
-            const elements = part.text.split('').map((char) => {
-              const idx = charIndex++
+          {nameParts.map((part, partIdx) => {
+            const elements = part.text.split('').map((char, i) => {
+              const idx = (charBaseOffsets[partIdx] ?? 0) + i
               return (
                 <span
                   key={idx}

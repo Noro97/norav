@@ -117,7 +117,7 @@ export function TechOrbit({ technologies, radius = 200 }: Props) {
 
           return (
             <div
-              key={tech.name}
+              key={idx}
               ref={(el) => { nodeRefs.current[idx] = el }}
               tabIndex={0}
               role="button"
