@@ -1,7 +1,7 @@
 {
   "sectionLabel": "Обо мне",
   "name": "Норайр Аветисян",
-  "role": "Senior Frontend Engineer / UI Architect",
+  "role": "Frontend-focused fullstack-инженер",
   "bio.paragraph1.before": "Я создаю интерфейсы, которые оживают — и думают. Моя работа находится на пересечении",
   "bio.paragraph1.highlight1": " инженерной строгости",
   "bio.paragraph1.conjunction": ",",
@@ -14,7 +14,7 @@
   "facts.experience.label": "Опыт",
   "facts.experience.value": "7+ лет",
   "facts.focus.label": "Фокус",
-  "facts.focus.value": "Frontend и UI-архитектура",
+  "facts.focus.value": "Frontend, AI и архитектура",
   "facts.status.label": "Статус",
   "facts.status.value": "Открыт к предложениям",
   "social.github": "GitHub",

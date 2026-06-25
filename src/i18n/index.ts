@@ -13,6 +13,7 @@ import terminalEn from './locales/en/terminal.json'
 import vibecodingEn from './locales/en/vibecoding.json'
 import chatEn from './locales/en/chat.json'
 import workflowEn from './locales/en/workflow.json'
+import extraEn from './locales/en/extra.json'
 
 import commonRu from './locales/ru/common.json'
 import heroRu from './locales/ru/hero.json'
@@ -25,6 +26,7 @@ import terminalRu from './locales/ru/terminal.json'
 import vibecodingRu from './locales/ru/vibecoding.json'
 import chatRu from './locales/ru/chat.json'
 import workflowRu from './locales/ru/workflow.json'
+import extraRu from './locales/ru/extra.json'
 
 i18n
   .use(LanguageDetector)
@@ -43,6 +45,7 @@ i18n
         vibecoding: vibecodingEn,
         chat: chatEn,
         workflow: workflowEn,
+        extra: extraEn,
       },
       ru: {
         common: commonRu,
@@ -56,6 +59,7 @@ i18n
         vibecoding: vibecodingRu,
         chat: chatRu,
         workflow: workflowRu,
+        extra: extraRu,
       },
     },
     lng: 'en',

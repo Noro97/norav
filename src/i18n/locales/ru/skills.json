@@ -9,8 +9,5 @@
   "categories.4.name": "Платформа и AI",
   "proficiencyOverview": "Обзор компетенций",
   "skillsTracked": "{{count}} навыков отслеживается",
-  "viewToggle.label": "Вид навыков",
-  "viewToggle.matrix": "Матрица",
-  "viewToggle.sphere": "Сфера",
-  "viewToggle.sphereHint": "Наведите для паузы · нажмите на узел для деталей"
+  "marqueeLabel": "Инструменты и технологии"
 }

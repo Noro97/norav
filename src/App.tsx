@@ -40,6 +40,30 @@ const SkillsMatrix = lazy(() =>
     default: m.SkillsMatrix,
   }))
 )
+const TechMarquee = lazy(() =>
+  import('@/components/sections/TechMarquee').then((m) => ({
+    default: m.TechMarquee,
+  }))
+)
+
+const ImpactStrip = lazy(() =>
+  import('@/components/sections/ImpactStrip').then((m) => ({
+    default: m.ImpactStrip,
+  }))
+)
+
+const Capabilities = lazy(() =>
+  import('@/components/sections/Capabilities').then((m) => ({
+    default: m.Capabilities,
+  }))
+)
+
+const ContactCTA = lazy(() =>
+  import('@/components/sections/ContactCTA').then((m) => ({
+    default: m.ContactCTA,
+  }))
+)
+
 const BentoGrid = lazy(() =>
   import('@/components/sections/BentoGrid/BentoGrid').then((m) => ({
     default: m.BentoGrid,
@@ -155,8 +179,11 @@ function App() {
 
         <Suspense fallback={<SectionLoader />}>
           <AboutHero />
+          <ImpactStrip />
+          <Capabilities />
           <ExperienceTimeline />
           <SkillsMatrix />
+          <TechMarquee />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
@@ -219,6 +246,7 @@ function App() {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
+          <ContactCTA />
           <TerminalFooter />
         </Suspense>
       </main>

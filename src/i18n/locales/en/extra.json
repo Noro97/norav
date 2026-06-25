@@ -1,0 +1,23 @@
+{
+  "cap.label": "Capabilities",
+  "cap.title": "What I Do",
+  "cap.description": "Four ways I turn complex product requirements into fast, durable software.",
+  "cap.0.title": "Frontend Architecture",
+  "cap.0.body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms.",
+  "cap.1.title": "AI & Automation",
+  "cap.1.body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work.",
+  "cap.2.title": "Design Systems",
+  "cap.2.body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent.",
+  "cap.3.title": "Performance & DX",
+  "cap.3.body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them.",
+  "impact.label": "By the numbers",
+  "impact.0.label": "Years shipping",
+  "impact.1.label": "MAU reached",
+  "impact.2.label": "Companies",
+  "impact.3.label": "Concurrent sessions",
+  "contact.label": "Get in touch",
+  "contact.title": "Let's build something that ships.",
+  "contact.body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
+  "contact.email": "Email me",
+  "contact.availability": "Available for new work"
+}
