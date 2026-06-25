@@ -4,7 +4,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
-import { TechOrbit, type TechNode } from '@/components/sections/TechOrbit'
 
 interface Skill {
   name: string
@@ -17,35 +16,6 @@ interface SkillCategory {
   color: string
   skills: Skill[]
 }
-
-// Tech nodes for 3D orbit sphere — covers the same domain as SKILL_DATA
-const TECH_ORBIT_NODES: TechNode[] = [
-  { name: 'React.js',        icon: <span className="text-[8px] font-black leading-none">Rx</span>,  experience: '7 years' },
-  { name: 'TypeScript',      icon: <span className="text-[8px] font-black leading-none">TS</span>,  experience: '6 years' },
-  { name: 'Next.js',         icon: <span className="text-[8px] font-black leading-none">Nx</span>,  experience: '5 years' },
-  { name: 'Vue.js / Nuxt',   icon: <span className="text-[8px] font-black leading-none">Vu</span>,  experience: '4 years' },
-  { name: 'HTML5 / CSS3',    icon: <span className="text-[8px] font-black leading-none">HC</span>,  experience: '7 years' },
-  { name: 'Micro-frontends', icon: <span className="text-[8px] font-black leading-none">MF</span>,  experience: '2 years' },
-  { name: 'Redux Toolkit',   icon: <span className="text-[8px] font-black leading-none">Rx</span>,  experience: '5 years' },
-  { name: 'Zustand',         icon: <span className="text-[8px] font-black leading-none">Zu</span>,  experience: '3 years' },
-  { name: 'TanStack',        icon: <span className="text-[8px] font-black leading-none">Tn</span>,  experience: '3 years' },
-  { name: 'GraphQL',         icon: <span className="text-[8px] font-black leading-none">GQ</span>,  experience: '6 years' },
-  { name: 'Tailwind CSS',    icon: <span className="text-[8px] font-black leading-none">TW</span>,  experience: '5 years' },
-  { name: 'Styled Comp.',    icon: <span className="text-[8px] font-black leading-none">SC</span>,  experience: '4 years' },
-  { name: 'Material UI',     icon: <span className="text-[8px] font-black leading-none">MU</span>,  experience: '3 years' },
-  { name: 'Sass',            icon: <span className="text-[8px] font-black leading-none">Ss</span>,  experience: '6 years' },
-  { name: 'Design Systems',  icon: <span className="text-[8px] font-black leading-none">DS</span>,  experience: '3 years' },
-  { name: 'Vite / Webpack',  icon: <span className="text-[8px] font-black leading-none">Vt</span>,  experience: '5 years' },
-  { name: 'Storybook',       icon: <span className="text-[8px] font-black leading-none">Sb</span>,  experience: '3 years' },
-  { name: 'Vitest / Jest',   icon: <span className="text-[8px] font-black leading-none">Vi</span>,  experience: '4 years' },
-  { name: 'Git / GitHub',    icon: <span className="text-[8px] font-black leading-none">Gt</span>,  experience: '7 years' },
-  { name: 'Docker / CI/CD',  icon: <span className="text-[8px] font-black leading-none">Dk</span>,  experience: '3 years' },
-  { name: 'Telegram TMA',    icon: <span className="text-[8px] font-black leading-none">TG</span>,  experience: '2 years' },
-  { name: 'Supabase',        icon: <span className="text-[8px] font-black leading-none">Su</span>,  experience: '3 years' },
-  { name: 'Three.js / R3F',  icon: <span className="text-[8px] font-black leading-none">3J</span>,  experience: '2 years' },
-  { name: 'GSAP',            icon: <span className="text-[8px] font-black leading-none">Gp</span>,  experience: '3 years' },
-  { name: 'Claude Code',     icon: <span className="text-[8px] font-black leading-none">AI</span>,  experience: '1 year' },
-]
 
 const SKILL_DATA: SkillCategory[] = [
   {
@@ -232,7 +202,6 @@ export function SkillsMatrix() {
   useSectionObserver('skills', sectionRef)
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
-  const [view, setView] = useState<'matrix' | 'sphere'>('matrix')
 
   useGSAP(() => {
     const section = sectionRef.current!
@@ -272,59 +241,16 @@ export function SkillsMatrix() {
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="skills-header">
           <span className="label-mono">{t('sectionLabel')}</span>
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mt-3 mb-4">
+          <div className="mt-3 mb-4">
             <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
               {t('title')}
             </h2>
-            {/* View toggle */}
-            <div
-              role="group"
-              aria-label={t('viewToggle.label')}
-              className="flex items-center gap-1 p-1 rounded-xl border border-white/[0.06] bg-white/[0.02] self-start sm:self-auto shrink-0"
-            >
-              {(['matrix', 'sphere'] as const).map((v) => (
-                <button
-                  key={v}
-                  onClick={() => setView(v)}
-                  aria-pressed={view === v}
-                  className={[
-                    'px-3 py-1.5 rounded-lg font-mono text-xs tracking-wide uppercase transition-all duration-200',
-                    view === v
-                      ? 'bg-crimson-500/20 border border-crimson-500/30 text-crimson-400'
-                      : 'text-white/35 hover:text-white/60',
-                  ].join(' ')}
-                >
-                  {v === 'matrix' ? t('viewToggle.matrix') : t('viewToggle.sphere')}
-                </button>
-              ))}
-            </div>
           </div>
           <p className="text-white/40 text-base max-w-xl mb-12">
             {t('description')}
           </p>
         </div>
 
-        {/* Sphere view */}
-        {view === 'sphere' && (
-          <div className="flex flex-col items-center gap-6 py-8">
-            <TechOrbit technologies={TECH_ORBIT_NODES} radius={160} />
-            <p className="font-mono text-xs text-white/30 tracking-[0.2em] uppercase text-center">
-              {t('viewToggle.sphereHint')}
-            </p>
-            {/* Category legend under the sphere */}
-            <div className="flex flex-wrap justify-center gap-3 mt-2">
-              {SKILL_DATA.map((cat) => (
-                <div key={cat.nameKey} className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.color }} />
-                  <span className="font-mono text-xs text-white/40">{t(cat.nameKey)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Matrix view */}
-        {view === 'matrix' && (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
           {/* Skill category cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
@@ -413,7 +339,6 @@ export function SkillsMatrix() {
             </div>
           </div>
         </div>
-        )}
       </div>
     </section>
   )

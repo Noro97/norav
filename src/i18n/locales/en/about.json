@@ -1,7 +1,7 @@
 {
   "sectionLabel": "About Me",
   "name": "Norayr Avetisyan",
-  "role": "Senior Frontend Engineer / UI Architect",
+  "role": "Frontend-Focused Fullstack Engineer",
   "bio.paragraph1.before": "I build interfaces that feel alive — and think. My work sits at the crossroads of",
   "bio.paragraph1.highlight1": " engineering rigor",
   "bio.paragraph1.conjunction": ",",
@@ -14,7 +14,7 @@
   "facts.experience.label": "Experience",
   "facts.experience.value": "7+ years",
   "facts.focus.label": "Focus",
-  "facts.focus.value": "Frontend & UI Architecture",
+  "facts.focus.value": "Frontend, AI & Architecture",
   "facts.status.label": "Status",
   "facts.status.value": "Open to offers",
   "social.github": "GitHub",

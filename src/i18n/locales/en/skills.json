@@ -9,8 +9,5 @@
   "categories.4.name": "Platform & AI",
   "proficiencyOverview": "Proficiency Overview",
   "skillsTracked": "{{count}} skills tracked",
-  "viewToggle.label": "Skills view",
-  "viewToggle.matrix": "Matrix",
-  "viewToggle.sphere": "Sphere",
-  "viewToggle.sphereHint": "Hover to pause · hover a node to inspect"
+  "marqueeLabel": "Tools & Technologies"
 }
