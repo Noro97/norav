@@ -6,33 +6,6 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useTerminal } from '@/hooks/useTerminal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
-const FALLBACK_LINK_BASE =
-  'inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a0a1a]'
-
-function ContactFallback() {
-  return (
-    <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-      <a
-        href="mailto:noroavetisyan@gmail.com"
-        className={`${FALLBACK_LINK_BASE} bg-crimson-600 hover:bg-crimson-500 text-white focus:ring-crimson-400`}
-        data-cursor="link"
-      >
-        <span aria-hidden="true">✉</span>
-        <span>noroavetisyan@gmail.com</span>
-      </a>
-      <a
-        href="https://t.me/antarber"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${FALLBACK_LINK_BASE} border border-white/10 hover:border-white/25 text-white/70 hover:text-white focus:ring-white/30`}
-        data-cursor="link"
-      >
-        <span>Telegram →</span>
-      </a>
-    </div>
-  )
-}
-
 export function TerminalFooter() {
   const { t } = useTranslation(['terminal', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -145,8 +118,6 @@ export function TerminalFooter() {
             </span>
           </div>
         </div>
-
-        <ContactFallback />
 
         <div className="mt-8 text-center">
           <p className="font-mono text-xs text-white/35">
