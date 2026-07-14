@@ -58,7 +58,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-lg rounded-2xl border border-white/[0.08] bg-[#0a0a14]/95 backdrop-blur-xl shadow-2xl overflow-hidden"
+          className="case-study-card relative w-full max-w-lg bg-[#0a0a14]/95 shadow-2xl overflow-hidden"
         >
           {/* Top accent */}
           <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
@@ -67,10 +67,10 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
-                <div className="font-mono text-xs text-cyan-400/60 tracking-[0.25em] uppercase mb-2">
+                <div className="label-mono-gold mb-2">
                   Shipment Details
                 </div>
-                <h3 className="text-xl font-bold text-white tracking-tight">
+                <h3 className="text-display-sm font-bold text-white tracking-tight">
                   {shipment.id}
                   <span className="text-white/45 text-sm font-normal ml-2">({shipment.code})</span>
                 </h3>
@@ -91,7 +91,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
               <DetailField label="Carrier" value={shipment.carrier} />
               <DetailField label="ETD" value={shipment.etd} />
               <DetailField label="Weight" value={`${shipment.weight.toLocaleString()} kg`} />
-              <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} />
+              <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} valueClass="text-gold-400 font-semibold" />
               <DetailField
                 label="Status"
                 value={shipment.status}
@@ -159,7 +159,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
 
 function DetailField({ label, value, valueClass = 'text-white/70' }: { label: string; value: string; valueClass?: string }) {
   return (
-    <div className="rounded-lg bg-white/[0.02] border border-white/[0.06] p-3">
+    <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-3">
       <div className="text-xs font-mono text-white/40 uppercase tracking-wider mb-1">{label}</div>
       <div className={`text-sm font-mono ${valueClass}`}>{value}</div>
     </div>

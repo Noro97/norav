@@ -142,17 +142,17 @@ export function LogisticsWidget() {
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
           <span className="label-mono">{t('logistics.sectionLabel')}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+          <h2 className="text-display-lg font-bold text-white leading-tight">
             {t('logistics.title')}
           </h2>
-          <p className="text-white/70 text-xl leading-relaxed max-w-lg">
+          <p className="text-white/70 text-body-lg leading-relaxed max-w-lg">
             {t('logistics.description')}
           </p>
 
           {/* Tech stack tags */}
           <div className="flex flex-wrap gap-2">
             {['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'].map((tag) => (
-              <span key={tag} className="px-3 py-1.5 text-xs font-mono text-white/50 border border-white/10 rounded">
+              <span key={tag} className="case-study-pill text-xs font-mono text-white/50">
                 {tag}
               </span>
             ))}
@@ -160,21 +160,21 @@ export function LogisticsWidget() {
 
           {/* Live metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
-            <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold text-crimson-400 font-mono">{markerCount}</div>
+            <div className="case-study-card p-4 text-center">
+              <div className="text-2xl font-bold text-gold-400 font-mono">{markerCount}</div>
               <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
             </div>
-            <div className="glass-card p-4 text-center">
+            <div className="case-study-card p-4 text-center">
               <div className="text-2xl font-bold text-crimson-400 font-mono">{latency}ms</div>
               <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.latency')}</div>
             </div>
-            <div className="glass-card p-4 text-center">
+            <div className="case-study-card p-4 text-center">
               <div className="text-2xl font-bold text-crimson-400 font-mono">
                 {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
               </div>
               <div className="text-xs text-white/60 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
             </div>
-            <div className="glass-card p-4 text-center">
+            <div className="case-study-card p-4 text-center">
               <div className="text-2xl font-bold text-crimson-400 font-mono">
                 {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
               </div>
@@ -203,7 +203,7 @@ export function LogisticsWidget() {
         </div>
 
         {/* Right — Map */}
-        <div className="logistics-map relative aspect-[4/3] rounded-xl overflow-hidden border border-white/8 bg-[#0d0d1f]" data-cursor="target">
+        <div className="logistics-map case-study-card relative aspect-[4/3] overflow-hidden bg-[#0d0d1f]" data-cursor="target">
           <Suspense
             fallback={
               <div className="absolute inset-0 flex items-center justify-center">
@@ -218,7 +218,7 @@ export function LogisticsWidget() {
             />
           </Suspense>
           {/* Overlay label */}
-          <div className="absolute top-3 left-3 font-mono text-xs text-white/40 bg-black/50 px-2.5 py-1.5 rounded">
+          <div className="case-study-pill absolute top-3 left-3 font-mono text-xs text-white/40 bg-black/50">
             {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>

@@ -125,7 +125,7 @@ export function Navigation() {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-lg border border-white/10 bg-background/90 backdrop-blur-md py-1.5 shadow-xl">
+            <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-white/10 bg-background/90 backdrop-blur-md py-1.5 shadow-xl">
               {SECTIONS.map((section) => {
                 const isActive = activeSection === section.id
                 return (

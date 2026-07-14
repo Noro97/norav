@@ -259,22 +259,22 @@ export function ProofWidget() {
         {/* Header */}
         <div className="mb-10">
           <span className="label-mono">{t('projects:proof.sectionLabel')}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3">
+          <h2 className="text-display-lg font-bold text-white mt-3">
             {t('projects:proof.title')}
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mt-4">
+          <p className="text-body-lg text-white/50 max-w-2xl mt-4">
             {t('projects:proof.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {TECH_TAGS.map(tag => (
-              <span key={tag} className="px-2 py-1 text-xs font-mono text-white/45 border border-white/8 rounded">
+              <span key={tag} className="case-study-pill text-xs font-mono text-white/45">
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-xl overflow-hidden border border-white/8">
+        <div className="case-study-card grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
           {/* LEFT — Controls */}
           <div className="proof-left bg-white/[0.02] p-6 md:p-8 space-y-5">
             {/* Window chrome */}
@@ -309,7 +309,7 @@ export function ProofWidget() {
             </div>
 
             {/* Liveness challenge */}
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-white/8 bg-white/[0.02]">
+            <div className="case-study-card flex items-center gap-3 px-4 py-3">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
               <div>
                 <span className="font-mono text-xs text-white/40 block">{t('projects:proof.liveness.title')}</span>
@@ -343,19 +343,19 @@ export function ProofWidget() {
 
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="glass-card p-3 text-center">
+              <div className="case-study-card p-3 text-center">
                 <div className="text-xl font-bold text-crimson-400 font-mono">{confidence}%</div>
                 <div className="text-xs text-white/50 font-mono mt-1">{t('projects:proof.metrics.confidence')}</div>
               </div>
-              <div className="glass-card p-3 text-center">
+              <div className="case-study-card p-3 text-center">
                 <div className="text-xl font-bold text-crimson-400 font-mono">{processingTime}s</div>
                 <div className="text-xs text-white/50 font-mono mt-1">{t('projects:proof.metrics.processingTime')}</div>
               </div>
-              <div className="glass-card p-3 text-center">
-                <div className="text-xl font-bold text-crimson-400 font-mono">+{points}</div>
+              <div className="case-study-card p-3 text-center border-gold-500/30">
+                <div className="text-xl font-bold text-gold-400 font-mono">+{points}</div>
                 <div className="text-xs text-white/50 font-mono mt-1">{t('projects:proof.metrics.points')}</div>
               </div>
-              <div className="glass-card p-3 text-center">
+              <div className="case-study-card p-3 text-center">
                 <div className="text-xl font-bold text-crimson-400 font-mono">{streak}d</div>
                 <div className="text-xs text-white/50 font-mono mt-1">{t('projects:proof.metrics.streak')}</div>
               </div>
@@ -459,10 +459,10 @@ export function ProofWidget() {
             </div>
 
             {/* Result card */}
-            <div className={`mt-6 rounded-xl border p-5 transition-all duration-600 ${
+            <div className={`case-study-card mt-6 p-5 transition-all duration-600 ${
               showResult
-                ? 'border-crimson-500/30 bg-crimson-500/5 opacity-100 translate-y-0'
-                : 'border-transparent bg-transparent opacity-0 translate-y-4 pointer-events-none'
+                ? 'border-crimson-500/30 opacity-100 translate-y-0'
+                : 'border-transparent opacity-0 translate-y-4 pointer-events-none'
             }`}>
               <div className="flex items-center gap-2 mb-3">
                 <svg viewBox="0 0 16 16" className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" strokeWidth="2">
@@ -483,10 +483,10 @@ export function ProofWidget() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-crimson-400 font-bold">
+                  <span className="font-mono text-xs text-gold-400 font-bold">
                     {t('projects:proof.result.physioPoints', { count: activity.basePoints })}
                   </span>
-                  <span className="font-mono text-xs text-crimson-400/60 px-2 py-0.5 border border-crimson-500/20 rounded">
+                  <span className="case-study-pill font-mono text-xs text-gold-400/80 border-gold-500/30 py-0.5">
                     {t('projects:proof.result.premium')}
                   </span>
                 </div>

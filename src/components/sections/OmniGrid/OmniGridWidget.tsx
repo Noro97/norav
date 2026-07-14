@@ -107,15 +107,15 @@ function OmniGridContent() {
         {/* Header */}
         <div className="mb-12">
           <span className="label-mono">{t('projects:omnigrid.sectionLabel')}</span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
+          <h2 className="text-display-lg font-bold text-white tracking-tight mt-4 mb-5">
             {t('projects:omnigrid.title')}
           </h2>
-          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-white/45 text-body-md md:text-body-lg max-w-xl leading-relaxed">
             {t('projects:omnigrid.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
             {TECH_STACK.map((tech) => (
-              <span key={tech} className="px-3 py-1.5 text-xs font-mono text-cyan-400/70 bg-cyan-500/[0.06] border border-cyan-500/15 rounded-lg tracking-wide">
+              <span key={tech} className="case-study-pill text-xs font-mono text-cyan-400/70 tracking-wide">
                 {tech}
               </span>
             ))}
@@ -128,12 +128,12 @@ function OmniGridContent() {
           {/* Sidebar */}
           <div className="omnigrid-sidebar flex flex-col gap-4">
             {/* Cache Status */}
-            <div className="glass-card p-5">
+            <div className="case-study-card p-5">
               <h4 className="text-xs font-mono text-white/40 uppercase tracking-wider mb-4">
                 {t('projects:omnigrid.cache.status')}
               </h4>
               <div className="flex items-center gap-3 mb-4">
-                <span className={`px-3 py-1 text-xs font-mono border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}>
+                <span className={`case-study-pill text-xs font-mono transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}>
                   {t(`projects:omnigrid.cache.${cacheStatus.toLowerCase()}`)}
                 </span>
                 {showLightning && (
@@ -145,7 +145,7 @@ function OmniGridContent() {
               <div className="space-y-2 text-xs font-mono text-white/45">
                 <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.hitRate')}</span>
-                  <span className="text-emerald-400">98.7%</span>
+                  <span className="text-gold-400 font-semibold">98.7%</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.lastFetch')}</span>
@@ -157,7 +157,7 @@ function OmniGridContent() {
             </div>
 
             {/* Cache-Hit visualization */}
-            <div className="glass-card p-5">
+            <div className="case-study-card p-5">
               <h4 className="text-xs font-mono text-white/40 uppercase tracking-wider mb-3">
                 Cache-Hit Flow
               </h4>
@@ -196,7 +196,7 @@ function OmniGridContent() {
             </div>
 
             {/* Engineering Log */}
-            <div className="glass-card p-5">
+            <div className="case-study-card p-5">
               <h4 className="text-xs font-mono text-white/40 uppercase tracking-wider mb-3">
                 {t('projects:omnigrid.engineering.title')}
               </h4>
@@ -250,14 +250,14 @@ function OmniGridContent() {
                 <span className="text-white/10">|</span>
                 <span>{renderTime < 1 ? '<1' : renderTime}ms render</span>
                 <span className="text-white/10">|</span>
-                <span className={`px-1.5 py-0.5 border rounded-full text-xs ${CACHE_COLORS[cacheStatus]}`}>
+                <span className={`case-study-pill py-0.5 text-xs ${CACHE_COLORS[cacheStatus]}`}>
                   {cacheStatus}
                 </span>
               </div>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden" data-lenis-prevent>
+            <div className="case-study-card max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden" data-lenis-prevent>
               {/* Table header */}
               <div className="flex items-center border-b border-white/[0.06] sticky top-0 z-10 bg-[#0d0d1f] min-w-[1060px]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (

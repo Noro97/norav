@@ -212,15 +212,15 @@ export function EcommerceWidget() {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="label-mono">{t('projects:ecommerce.sectionLabel')}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3">
+          <h2 className="text-display-lg font-bold text-white mt-3">
             {t('projects:ecommerce.title')}
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mt-4">
+          <p className="text-body-lg text-white/50 max-w-2xl mt-4">
             {t('projects:ecommerce.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo', 'Modal', 'Multi-step Form', 'Confetti'].map((tag) => (
-              <span key={tag} className="px-2 py-1 text-xs font-mono text-white/45 border border-white/8 rounded">
+              <span key={tag} className="case-study-pill text-xs font-mono text-white/45">
                 {tag}
               </span>
             ))}
@@ -231,7 +231,7 @@ export function EcommerceWidget() {
           {/* Sidebar */}
           <div className="ecom-sidebar flex flex-col gap-5">
             {/* Dependency Graph */}
-            <div className="glass-card p-4">
+            <div className="case-study-card p-4">
               <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.filterDependencyGraph')}
               </h4>
@@ -239,7 +239,7 @@ export function EcommerceWidget() {
             </div>
 
             {/* Category filter */}
-            <div className="glass-card p-4">
+            <div className="case-study-card p-4">
               <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.categories')}
               </h4>
@@ -278,7 +278,7 @@ export function EcommerceWidget() {
                 <div className="mt-3 pt-3 border-t border-white/5">
                   <div className="flex flex-wrap gap-1">
                     {availableSubcategories.map((sub) => (
-                      <span key={sub} className="px-1.5 py-0.5 text-xs font-mono text-crimson-400/60 bg-crimson-500/5 rounded">
+                      <span key={sub} className="case-study-pill py-0.5 text-xs font-mono text-crimson-400/60 bg-crimson-500/5">
                         {sub}
                       </span>
                     ))}
@@ -288,7 +288,7 @@ export function EcommerceWidget() {
             </div>
 
             {/* Price range */}
-            <div className="glass-card p-4">
+            <div className="case-study-card p-4">
               <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.priceRange')}
               </h4>
@@ -315,7 +315,7 @@ export function EcommerceWidget() {
             </div>
 
             {/* Sort */}
-            <div className="glass-card p-4">
+            <div className="case-study-card p-4">
               <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
                 {t('projects:ecommerce.sortBy')}
               </h4>
@@ -337,7 +337,7 @@ export function EcommerceWidget() {
             </div>
 
             {/* URL params display */}
-            <div className="glass-card p-4 flex-1">
+            <div className="case-study-card p-4 flex-1">
               <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
@@ -370,7 +370,7 @@ export function EcommerceWidget() {
                   <div
                     key={product.id}
                     onClick={() => setSelectedProduct(product)}
-                    className="glass-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
+                    className="case-study-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
                   >
                     <div
                       className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}
@@ -386,7 +386,7 @@ export function EcommerceWidget() {
                       {product.name}
                     </h5>
                     <div className="flex items-center justify-between mt-1.5">
-                      <span className="font-mono text-sm font-medium text-crimson-400">
+                      <span className="font-mono text-sm font-medium text-gold-400">
                         ${product.price.toFixed(2)}
                       </span>
                       <span className="font-mono text-xs text-white/40 uppercase">

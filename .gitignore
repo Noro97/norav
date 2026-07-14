@@ -34,3 +34,6 @@ lerna-debug.log*
 .agents/
 .claude/skills/
 skills-lock.json
+
+# code-quality skill artifacts
+.code-quality/

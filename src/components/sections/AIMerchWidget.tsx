@@ -166,22 +166,22 @@ export function AIMerchWidget() {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="label-mono">{t('projects:merch.sectionLabel')}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3">
+          <h2 className="text-display-lg font-bold text-white mt-3">
             {t('projects:merch.title')}
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mt-4">
+          <p className="text-white/50 text-body-lg max-w-2xl mt-4">
             {t('projects:merch.description')}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'].map((tag) => (
-              <span key={tag} className="px-2 py-1 text-xs font-mono text-white/45 border border-white/8 rounded">
+              <span key={tag} className="case-study-pill text-xs font-mono text-white/45">
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-xl overflow-hidden border border-white/8">
+        <div className="case-study-card grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
           {/* Left — UI Constructor */}
           <div className="merch-left bg-white/[0.02] p-6 md:p-8 space-y-5">
             <div className="flex items-center gap-2 mb-2">
@@ -320,8 +320,8 @@ export function AIMerchWidget() {
 
               {/* Price preview */}
               <div className="ml-auto text-right">
-                <span className="font-mono text-xs text-white/45 block">{t('common:labels.total')}</span>
-                <span className="font-mono text-xl text-crimson-400 font-bold">
+                <span className="label-mono-gold block">{t('common:labels.total')}</span>
+                <span className="font-mono text-xl text-gold-400 font-bold">
                   ${(fullOutput.pricing.total).toFixed(2)}
                 </span>
               </div>
