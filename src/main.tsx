@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './i18n'
 import App from './App'
+import { reportWebVitals } from '@/lib/webVitals'
 import './index.css'
 import '@warmbros/warmbros-components/styles.css'
 
@@ -16,3 +17,6 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+
+// Core Web Vitals: logs to the console in dev, no-op in prod unless configured.
+reportWebVitals()

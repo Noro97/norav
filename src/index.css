@@ -252,6 +252,13 @@
   animation: cursor-blink 0.8s step-end infinite;
 }
 
+/* ===== SCROLL CONTAINER =====
+   Framer Motion's useScroll({ target }) measures the target against
+   document.scrollingElement (<html>), and warns when that element is
+   position: static because relative offsets can't be measured reliably.
+   Used by the BentoGrid parallax tiles. */
+html { position: relative; }
+
 /* ===== CUSTOM CURSOR — hide native cursor on fine-pointer devices ===== */
 html, body { cursor: none; }
 a, button, [role="button"], input, select, textarea { cursor: none; }
