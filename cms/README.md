@@ -80,6 +80,36 @@ dependencies underneath itself — which leaves react-three-fiber with two copie
 of its store and throws *"R3F: Hooks can only be used within the Canvas
 component!"*, blanking the page.
 
+## Trying a change safely
+
+`cms/.env` holds the production connection string, so a plain `npm run dev`
+edits the live site. Anything that should not is forced onto the embedded
+database instead:
+
+```bash
+npm --prefix cms run dev:local     # the CMS on :3300, embedded database
+npm run dev                        # the site on :5173, which finds it by default
+```
+
+`DATABASE_URL=` in front of any script does the same thing — Node's `--env-file`
+does not overwrite a variable that is already set, even to nothing:
+
+```bash
+DATABASE_URL= npm --prefix cms run user:add -- --email you@example.com
+```
+
+A clean slate — wipes the embedded database and rebuilds it from the seed and
+the frozen migration inputs — never touches production, whatever `.env` says:
+
+```bash
+npm --prefix cms run db:reset
+```
+
+To try something against real Postgres without touching live content, branch
+the database in Neon and point `cms/.env` at the branch. The same applies to
+preview deployments: give `norav-cms` a Preview-scoped `DATABASE_URL` on a Neon
+branch, and every pull request gets its own content to break.
+
 ## Media
 
 Uploads follow the same two-driver shape as the database. Without
