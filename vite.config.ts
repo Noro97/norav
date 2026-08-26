@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Workspace package consumed as source: Vite transpiles it like app code,
+      // so the shared schema needs no build step of its own.
+      '@norav/content-schema': path.resolve(__dirname, './packages/content-schema/src'),
     },
   },
   assetsInclude: ['**/*.glsl', '**/*.vert', '**/*.frag'],
