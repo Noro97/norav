@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "bd1f5797-91d5-4f45-8757-29c41f29880a",
+          "id": "b19fd1a4-3ae1-49d8-8e6a-8af7b0f121a0",
           "type": "hero",
           "content": {
             "name": {
@@ -57,13 +57,458 @@
             "showScrollHint": true,
             "enableParticleBurst": true
           }
+        },
+        {
+          "id": "909373f4-755f-4d15-b0ff-560ba769e03e",
+          "type": "about",
+          "content": {
+            "bio": {
+              "lead": [
+                {
+                  "text": "I build interfaces that feel alive — and think. My work sits at the crossroads of",
+                  "accent": "none"
+                },
+                {
+                  "text": "engineering rigor",
+                  "accent": "crimson"
+                },
+                {
+                  "text": ",",
+                  "accent": "none"
+                },
+                {
+                  "text": "visual craft",
+                  "accent": "bright"
+                },
+                {
+                  "text": ", and scalable architecture — from enterprise UI systems and generative AI platforms to high-load fintech portals and Telegram Mini Apps.",
+                  "accent": "none"
+                }
+              ],
+              "paragraphs": [
+                {
+                  "text": "With 7+ years of experience shipping production code at scale, I've led frontend architecture at companies where performance budgets and pixel-perfect design aren't trade-offs — they're requirements. From building global component infrastructures for multi-million MAU ecosystems to architecting hybrid rendering strategies that dramatically boost retention."
+                },
+                {
+                  "text": "Currently seeking senior or staff-level roles at companies pushing the boundaries of modern web experiences."
+                }
+              ]
+            },
+            "name": "Norayr Avetisyan",
+            "role": "Frontend-Focused Fullstack Engineer",
+            "facts": [
+              {
+                "label": "Location",
+                "value": "Yerevan, Armenia"
+              },
+              {
+                "label": "Experience",
+                "value": "7+ years"
+              },
+              {
+                "label": "Focus",
+                "value": "Frontend, AI & Architecture"
+              },
+              {
+                "label": "Status",
+                "value": "Open to offers"
+              }
+            ],
+            "cvLabel": "Download CV",
+            "socials": [
+              {
+                "href": "https://github.com/Noro97",
+                "icon": "github",
+                "label": "GitHub"
+              },
+              {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
+                "icon": "linkedin",
+                "label": "LinkedIn"
+              },
+              {
+                "href": "https://t.me/antarber",
+                "icon": "telegram",
+                "label": "Telegram"
+              },
+              {
+                "href": "mailto:noroavetisyan@gmail.com",
+                "icon": "email",
+                "label": "Email"
+              }
+            ],
+            "statusLabel": "Available",
+            "sectionLabel": "About Me"
+          },
+          "anchorId": "about",
+          "settings": {
+            "photo": "/assets/img/my-photo.jpg",
+            "cvHref": "/Norayr_Avetisyan_CV.pdf",
+            "showStatusBadge": true
+          }
+        },
+        {
+          "id": "eb17cc77-b2b0-4fb8-866e-514d32b81c50",
+          "type": "impact_strip",
+          "content": {
+            "label": "By the numbers",
+            "stats": [
+              {
+                "label": "Years shipping",
+                "value": 7,
+                "prefix": "",
+                "suffix": "+"
+              },
+              {
+                "label": "MAU reached",
+                "value": 10,
+                "prefix": "",
+                "suffix": "M+"
+              },
+              {
+                "label": "Companies",
+                "value": 6,
+                "prefix": "",
+                "suffix": ""
+              },
+              {
+                "label": "Concurrent sessions",
+                "value": 50,
+                "prefix": "",
+                "suffix": "K+"
+              }
+            ]
+          },
+          "anchorId": null,
+          "settings": {
+            "animateCounters": true
+          }
+        },
+        {
+          "id": "3cc524ee-e11d-46ca-9d4b-a43eb01ba803",
+          "type": "capabilities",
+          "content": {
+            "cards": [
+              {
+                "body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms.",
+                "icon": "Layers",
+                "title": "Frontend Architecture"
+              },
+              {
+                "body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work.",
+                "icon": "Bot",
+                "title": "AI & Automation"
+              },
+              {
+                "body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent.",
+                "icon": "Component",
+                "title": "Design Systems"
+              },
+              {
+                "body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them.",
+                "icon": "Gauge",
+                "title": "Performance & DX"
+              }
+            ],
+            "title": "What I Do",
+            "description": "Four ways I turn complex product requirements into fast, durable software.",
+            "sectionLabel": "Capabilities"
+          },
+          "anchorId": null,
+          "settings": {}
+        },
+        {
+          "id": "7958e55e-4a9d-43b0-9f82-9fb295af4bf3",
+          "type": "experience",
+          "content": {
+            "title": "Experience",
+            "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale.",
+            "sectionLabel": "Career"
+          },
+          "anchorId": "experience",
+          "settings": {
+            "showImages": true
+          }
+        },
+        {
+          "id": "79f96e27-200c-4571-8a98-d9506c8267d7",
+          "type": "skills",
+          "content": {
+            "title": "Skills & Tools",
+            "categories": [
+              {
+                "name": "Frontend Core",
+                "color": "#B51A2B",
+                "skills": [
+                  {
+                    "name": "React.js",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "TypeScript",
+                    "level": 95,
+                    "years": 6
+                  },
+                  {
+                    "name": "Next.js (SSR/ISR)",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Vue.js / Nuxt.js",
+                    "level": 85,
+                    "years": 4
+                  },
+                  {
+                    "name": "HTML5 / CSS3",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "Micro-frontends",
+                    "level": 75,
+                    "years": 2
+                  }
+                ]
+              },
+              {
+                "name": "State & Data",
+                "color": "#d63040",
+                "skills": [
+                  {
+                    "name": "Redux Toolkit",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Zustand / Pinia",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "TanStack Query/Table",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Context API / MobX",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "GraphQL / REST API",
+                    "level": 90,
+                    "years": 6
+                  }
+                ]
+              },
+              {
+                "name": "Styling & Design",
+                "color": "#8c1523",
+                "skills": [
+                  {
+                    "name": "Tailwind CSS",
+                    "level": 95,
+                    "years": 5
+                  },
+                  {
+                    "name": "Styled Components",
+                    "level": 90,
+                    "years": 4
+                  },
+                  {
+                    "name": "Material UI",
+                    "level": 80,
+                    "years": 3
+                  },
+                  {
+                    "name": "Sass / Bootstrap",
+                    "level": 85,
+                    "years": 6
+                  },
+                  {
+                    "name": "Design Systems",
+                    "level": 85,
+                    "years": 3
+                  }
+                ]
+              },
+              {
+                "name": "Tooling & Infra",
+                "color": "#541A2E",
+                "skills": [
+                  {
+                    "name": "Vite / Webpack",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Storybook",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Vitest / Jest",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "Docker / CI/CD",
+                    "level": 70,
+                    "years": 3
+                  },
+                  {
+                    "name": "Git / GitHub",
+                    "level": 90,
+                    "years": 7
+                  }
+                ]
+              },
+              {
+                "name": "Platform & AI",
+                "color": "#6C3AED",
+                "skills": [
+                  {
+                    "name": "Telegram Mini Apps",
+                    "level": 85,
+                    "years": 2
+                  },
+                  {
+                    "name": "Supabase / PostgreSQL",
+                    "level": 75,
+                    "years": 3
+                  },
+                  {
+                    "name": "Node.js / Vercel",
+                    "level": 80,
+                    "years": 5
+                  },
+                  {
+                    "name": "Claude Code",
+                    "level": 70,
+                    "years": 1
+                  },
+                  {
+                    "name": "Feature-Sliced Design",
+                    "level": 80,
+                    "years": 3
+                  }
+                ]
+              }
+            ],
+            "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
+            "sectionLabel": "Expertise",
+            "skillsTracked": "{{count}} skills tracked",
+            "proficiencyOverview": "Proficiency Overview"
+          },
+          "anchorId": "skills",
+          "settings": {}
+        },
+        {
+          "id": "49670b5c-4e23-4a94-a28a-69e37ddc73d9",
+          "type": "tech_marquee",
+          "content": {
+            "items": [
+              {
+                "name": "React"
+              },
+              {
+                "name": "TypeScript"
+              },
+              {
+                "name": "Next.js"
+              },
+              {
+                "name": "Node.js"
+              },
+              {
+                "name": "Tailwind CSS"
+              },
+              {
+                "name": "GraphQL"
+              },
+              {
+                "name": "Supabase"
+              },
+              {
+                "name": "PostgreSQL"
+              },
+              {
+                "name": "Zustand"
+              },
+              {
+                "name": "GSAP"
+              },
+              {
+                "name": "Three.js"
+              },
+              {
+                "name": "Vite"
+              },
+              {
+                "name": "Module Federation"
+              },
+              {
+                "name": "Design Systems"
+              },
+              {
+                "name": "Docker"
+              },
+              {
+                "name": "AI Agents"
+              },
+              {
+                "name": "MCP"
+              },
+              {
+                "name": "Claude Code"
+              }
+            ],
+            "label": "Tools & Technologies"
+          },
+          "anchorId": null,
+          "settings": {}
+        },
+        {
+          "id": "aca24d53-53af-4ad0-8df6-c499d3651b6e",
+          "type": "contact_cta",
+          "content": {
+            "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
+            "label": "Get in touch",
+            "title": "Let's build something that ships.",
+            "socials": [
+              {
+                "href": "https://github.com/Noro97",
+                "icon": "github",
+                "label": "GitHub"
+              },
+              {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
+                "icon": "linkedin",
+                "label": "LinkedIn"
+              },
+              {
+                "href": "https://t.me/antarber",
+                "icon": "telegram",
+                "label": "Telegram"
+              }
+            ],
+            "emailLabel": "Email me",
+            "availability": "Available for new work"
+          },
+          "anchorId": "contact",
+          "settings": {
+            "email": "noroavetisyan@gmail.com",
+            "showAvailability": true
+          }
         }
       ]
     }
   ],
   "locale": "en",
-  "version": 37,
-  "checksum": "000684a4af785cac6737d9af135ab3f0d2c6690d1573381d6f5e9de852774b94",
+  "version": 1,
+  "checksum": "7a324e72774a1bd4bf2a52b8324d52963896377e34276bece940ac33bfa80472",
   "settings": {
     "site": {
       "grain": true,
@@ -71,6 +516,228 @@
       "dynamicGrid": true
     }
   },
-  "collections": {},
-  "publishedAt": "2026-08-26T10:50:11.932Z"
+  "collections": {
+    "experience": [
+      {
+        "id": "e4c4e221-ef30-43d0-85e9-624f2466aa9e",
+        "data": {
+          "role": "Founder & Technical Architect",
+          "type": "Founder",
+          "image": "/assets/img/exp-startup.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "Vite"
+            },
+            {
+              "name": "Supabase"
+            },
+            {
+              "name": "Telegram TMA"
+            },
+            {
+              "name": "AI Agents"
+            }
+          ],
+          "period": "Feb 2026 — Present",
+          "company": "Proof App",
+          "description": "Founded and built a Telegram-native fitness platform end to end — a mobile-first Mini App and bot backed by an automated, AI-driven backend.",
+          "achievements": [
+            {
+              "text": "Shipped a complete multi-tenant product solo — frontend, backend, and infrastructure"
+            },
+            {
+              "text": "Designed an AI-augmented build pipeline with custom agents, MCP servers, and Claude Code"
+            },
+            {
+              "text": "Engineered a secure Supabase / PostgreSQL backend with realtime, server-authoritative logic"
+            }
+          ]
+        },
+        "slug": "proof-app"
+      },
+      {
+        "id": "f5ce2762-f233-43ea-82a9-c0448a7bd00e",
+        "data": {
+          "role": "Lead Frontend Engineer",
+          "type": "Remote",
+          "image": "/assets/img/exp-dataviz.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Generative AI"
+            },
+            {
+              "name": "SSE"
+            },
+            {
+              "name": "Vercel"
+            }
+          ],
+          "period": "Sep 2025 — Feb 2026",
+          "company": "Vizogen",
+          "description": "Led frontend for a multi-tenant AI SaaS platform, orchestrating the UI around asynchronous generative-AI pipelines.",
+          "achievements": [
+            {
+              "text": "Unified complex payloads across multiple AI microservices behind a typed API"
+            },
+            {
+              "text": "Sharpened Core Web Vitals and perceived AI latency with edge caching and SSE streaming"
+            },
+            {
+              "text": "Rolled out team-wide AI-augmented workflows using Cursor and custom MCP servers"
+            }
+          ]
+        },
+        "slug": "vizogen"
+      },
+      {
+        "id": "0ab22fb7-6ea1-4004-bef5-8c0ae8f3a50a",
+        "data": {
+          "role": "Core Frontend Engineer / UI Architect",
+          "type": "Remote",
+          "image": "/assets/img/exp-logistics.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Design Systems"
+            },
+            {
+              "name": "Module Federation"
+            }
+          ],
+          "period": "Feb 2024 — Jun 2025",
+          "company": "MTS Web Services",
+          "description": "Architected a global design system and micro-frontend platform powering a multi-million-MAU product ecosystem.",
+          "achievements": [
+            {
+              "text": "Built a React / TypeScript design system adopted across many product teams"
+            },
+            {
+              "text": "Enabled fully independent deployments with a Module Federation micro-frontend architecture"
+            },
+            {
+              "text": "Established a Figma-synced token pipeline with automated visual-regression testing"
+            }
+          ]
+        },
+        "slug": "mts-web-services"
+      },
+      {
+        "id": "fea0af01-69c7-4d79-8fb8-6c579a5ff8d8",
+        "data": {
+          "role": "Senior Frontend Engineer",
+          "type": "Remote",
+          "image": "/assets/img/exp-merch.png",
+          "stack": [
+            {
+              "name": "Next.js"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Fintech"
+            },
+            {
+              "name": "iGaming"
+            }
+          ],
+          "period": "Sep 2023 — Jan 2024",
+          "company": "Appfox",
+          "description": "Built a high-load iGaming portal handling real-time financial flows under heavy concurrency.",
+          "achievements": [
+            {
+              "text": "Unified third-party payment and KYC providers behind a single typed API layer"
+            },
+            {
+              "text": "Tuned performance and observability with dynamic imports, Sentry, and PostHog"
+            }
+          ]
+        },
+        "slug": "appfox"
+      },
+      {
+        "id": "db03ca10-458f-4c89-b2a6-3d4e964371fa",
+        "data": {
+          "role": "Lead Frontend Developer",
+          "type": "On-site",
+          "image": "/assets/img/exp-startup.png",
+          "stack": [
+            {
+              "name": "Next.js"
+            },
+            {
+              "name": "React"
+            },
+            {
+              "name": "GraphQL"
+            },
+            {
+              "name": "Node.js"
+            }
+          ],
+          "period": "May 2020 — Sep 2023",
+          "company": "TIRSoft LLC",
+          "description": "Led frontend across a portfolio of SaaS products, modernizing rendering and tooling at scale.",
+          "achievements": [
+            {
+              "text": "Migrated platforms to Next.js SSR + ISR for major performance and latency gains"
+            },
+            {
+              "text": "Built a centralized design system and CLI tooling that sped up new-project bootstrap"
+            }
+          ]
+        },
+        "slug": "tirsoft-lead"
+      },
+      {
+        "id": "afc851e5-e29e-41b0-8893-12a16d39d5e6",
+        "data": {
+          "role": "Frontend Developer",
+          "type": "On-site",
+          "image": "/assets/img/exp-dataviz.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "Redux"
+            },
+            {
+              "name": "Sass"
+            },
+            {
+              "name": "REST API"
+            }
+          ],
+          "period": "Aug 2018 — May 2020",
+          "company": "TIRSoft LLC",
+          "description": "Translated complex product requirements into responsive, reusable React interfaces.",
+          "achievements": [
+            {
+              "text": "Built a shared React / Redux form abstraction reused across many client projects"
+            },
+            {
+              "text": "Partnered with backend engineers to define structured, predictable API contracts"
+            }
+          ]
+        },
+        "slug": "tirsoft-frontend"
+      }
+    ]
+  },
+  "publishedAt": "2026-08-26T12:03:02.826Z"
 }

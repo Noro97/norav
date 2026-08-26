@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import {
   LOCALES,
+  mergeLocale,
   SOURCE_LOCALE,
   validateBlockContent,
   validateBlockSettings,
@@ -51,8 +52,19 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const result = validateBlockSettings(block.type, patch.settings)
     if (!result.ok) return invalid(result.issues.map((i) => ({ ...i, path: `settings.${i.path}` })))
   }
+  // A non-source translation is a partial document by design — the fields it
+  // does not own live on the source locale. What has to be valid is the result
+  // the site will render, so the check runs on the merge, not on the fragment.
+  const sourceRow = await queryOne<{ content: unknown }>(
+    `select content from block_translations where block_id = $1 and locale = $2`,
+    [id, SOURCE_LOCALE],
+  )
   for (const translation of patch.translations ?? []) {
-    const result = validateBlockContent(block.type, translation.content)
+    const candidate =
+      translation.locale === SOURCE_LOCALE
+        ? translation.content
+        : mergeLocale(sourceRow?.content ?? {}, translation.content)
+    const result = validateBlockContent(block.type, candidate)
     if (!result.ok) {
       return invalid(
         result.issues.map((i) => ({ ...i, path: `translations.${translation.locale}.${i.path}` })),

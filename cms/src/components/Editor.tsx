@@ -3,7 +3,8 @@
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Locale, SerializedBlockDefinition } from '@norav/content-schema'
-import { BlockForm, setPath, type FieldSource } from './BlockForm'
+import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
+import { BlockForm, type FieldSource } from './BlockForm'
 
 export interface EditorBlock {
   id: string
@@ -74,9 +75,13 @@ export function Editor({
       const source = block.translations[sourceLocale]?.content ?? fallback
       const content = {} as Record<Locale, Record<string, unknown>>
       for (const locale of locales) {
-        // An untranslated locale opens on the source copy, so the editor
-        // translates in place instead of facing empty fields.
-        content[locale] = block.translations[locale]?.content ?? source
+        // The editor works on the resolved document — the translation overlaid
+        // on its source — so inherited values are visible (read-only) instead
+        // of showing as blanks. `pickLocalized` strips them again on save.
+        content[locale] =
+          locale === sourceLocale
+            ? source
+            : (mergeLocale(source, block.translations[locale]?.content) as Record<string, unknown>)
       }
       initial[block.id] = {
         version: block.version,
@@ -106,12 +111,12 @@ export function Editor({
       if (!existing) return current
       const next: Draft =
         source === 'settings'
-          ? { ...existing, settings: setPath(existing.settings, path, value) }
+          ? { ...existing, settings: setAtPath(existing.settings, path, value) }
           : {
               ...existing,
               content: {
                 ...existing.content,
-                [locale]: setPath(existing.content[locale] ?? {}, path, value),
+                [locale]: setAtPath(existing.content[locale] ?? {}, path, value),
               },
             }
       return { ...current, [selectedId]: next }
@@ -134,6 +139,15 @@ export function Editor({
     setFeedback(null)
     setFieldErrors({})
 
+    // A translation stores only what a translator owns. Numbers, URLs and
+    // product names stay on the source locale, so changing one there updates
+    // every language instead of leaving copies behind to drift.
+    const definitionForSave = definitionsByType.get(selected?.type ?? '')
+    const payload =
+      locale === sourceLocale || !definitionForSave
+        ? draft.content[locale]
+        : pickLocalized(definitionForSave.form, draft.content[locale])
+
     const response = await fetch(`/api/admin/blocks/${selectedId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -141,7 +155,7 @@ export function Editor({
         version: draft.version,
         isVisible: draft.isVisible,
         settings: draft.settings,
-        translations: [{ locale, content: draft.content[locale] }],
+        translations: [{ locale, content: payload }],
       }),
     })
     const body = await response.json().catch(() => null)
@@ -322,6 +336,8 @@ export function Editor({
               settings={draft.settings}
               errors={fieldErrors}
               disabled={busy !== null}
+              locale={locale}
+              sourceLocale={sourceLocale}
               onChange={handleChange}
             />
           </>

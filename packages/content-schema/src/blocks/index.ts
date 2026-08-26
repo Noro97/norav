@@ -2,6 +2,13 @@ import type { z } from 'zod'
 import type { BlockDefinition, SerializedBlockDefinition } from '../define-block'
 import { serializeBlockDefinition } from '../define-block'
 import { heroBlock } from './hero'
+import { aboutBlock } from './about'
+import { impactStripBlock } from './impact-strip'
+import { capabilitiesBlock } from './capabilities'
+import { experienceBlock } from './experience'
+import { skillsBlock } from './skills'
+import { techMarqueeBlock } from './tech-marquee'
+import { contactCtaBlock } from './contact-cta'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -10,6 +17,13 @@ import { heroBlock } from './hero'
  */
 export const BLOCK_REGISTRY = {
   hero: heroBlock,
+  about: aboutBlock,
+  impact_strip: impactStripBlock,
+  capabilities: capabilitiesBlock,
+  experience: experienceBlock,
+  skills: skillsBlock,
+  tech_marquee: techMarqueeBlock,
+  contact_cta: contactCtaBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -32,30 +46,49 @@ export type ValidationResult<T> =
   | { ok: true; data: T }
   | { ok: false; issues: { path: string; message: string }[] }
 
-function toIssues(error: z.ZodError): { path: string; message: string }[] {
+export function toIssues(error: z.ZodError): { path: string; message: string }[] {
   return error.issues.map((issue) => ({
     path: issue.path.join('.'),
     message: issue.message,
   }))
 }
 
-function validate(schema: z.ZodType, value: unknown): ValidationResult<unknown> {
+export function validateWith(schema: z.ZodType, value: unknown): ValidationResult<unknown> {
   const result = schema.safeParse(value)
   return result.success ? { ok: true, data: result.data } : { ok: false, issues: toIssues(result.error) }
 }
 
+const unknownType = (type: string): ValidationResult<unknown> => ({
+  ok: false,
+  issues: [{ path: 'type', message: `Unknown block type "${type}"` }],
+})
+
 /** Guards every write: invalid JSONB can never reach the database. */
 export function validateBlockContent(type: string, value: unknown): ValidationResult<unknown> {
   const definition = getBlockDefinition(type)
-  if (!definition) return { ok: false, issues: [{ path: 'type', message: `Unknown block type "${type}"` }] }
-  return validate(definition.content, value)
+  return definition ? validateWith(definition.content, value) : unknownType(type)
 }
 
 export function validateBlockSettings(type: string, value: unknown): ValidationResult<unknown> {
   const definition = getBlockDefinition(type)
-  if (!definition) return { ok: false, issues: [{ path: 'type', message: `Unknown block type "${type}"` }] }
-  return validate(definition.settings, value)
+  return definition ? validateWith(definition.settings, value) : unknownType(type)
 }
 
-export { heroBlock }
+export {
+  heroBlock,
+  aboutBlock,
+  impactStripBlock,
+  capabilitiesBlock,
+  experienceBlock,
+  skillsBlock,
+  techMarqueeBlock,
+  contactCtaBlock,
+}
 export type { HeroContent, HeroSettings } from './hero'
+export type { AboutContent, AboutSettings } from './about'
+export type { ImpactStripContent, ImpactStripSettings } from './impact-strip'
+export type { CapabilitiesContent } from './capabilities'
+export type { ExperienceBlockContent } from './experience'
+export type { SkillsContent } from './skills'
+export type { TechMarqueeContent } from './tech-marquee'
+export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'

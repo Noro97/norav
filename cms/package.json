@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "user:add": "tsx scripts/create-user.mts",
     "seed": "tsx scripts/seed.mts",
+    "import": "tsx scripts/import-content.mts",
     "db:reset": "rm -rf .pglite && npm run seed"
   },
   "dependencies": {

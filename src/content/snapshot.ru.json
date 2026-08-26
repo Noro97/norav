@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "bd1f5797-91d5-4f45-8757-29c41f29880a",
+          "id": "b19fd1a4-3ae1-49d8-8e6a-8af7b0f121a0",
           "type": "hero",
           "content": {
             "name": {
@@ -57,13 +57,458 @@
             "showScrollHint": true,
             "enableParticleBurst": true
           }
+        },
+        {
+          "id": "909373f4-755f-4d15-b0ff-560ba769e03e",
+          "type": "about",
+          "content": {
+            "bio": {
+              "lead": [
+                {
+                  "text": "Я создаю интерфейсы, которые оживают — и думают. Моя работа находится на пересечении",
+                  "accent": "none"
+                },
+                {
+                  "text": "инженерной строгости",
+                  "accent": "crimson"
+                },
+                {
+                  "text": ",",
+                  "accent": "none"
+                },
+                {
+                  "text": "визуального мастерства",
+                  "accent": "bright"
+                },
+                {
+                  "text": "и масштабируемой архитектуры — от enterprise UI-систем и генеративных AI-платформ до высоконагруженных финтех-порталов и Telegram Mini Apps.",
+                  "accent": "none"
+                }
+              ],
+              "paragraphs": [
+                {
+                  "text": "Более 7 лет опыта разработки продуктовых решений на масштабе. Руководил фронтенд-архитектурой в компаниях, где бюджеты производительности и пиксельная точность дизайна — не компромисс, а требование. От создания глобальных компонентных инфраструктур для экосистем с миллионами MAU до архитектуры гибридного рендеринга, значительно повышающего ретеншн."
+                },
+                {
+                  "text": "В настоящее время ищу позиции уровня Senior или Staff в компаниях, расширяющих границы современных веб-приложений."
+                }
+              ]
+            },
+            "name": "Норайр Аветисян",
+            "role": "Frontend-focused fullstack-инженер",
+            "facts": [
+              {
+                "label": "Локация",
+                "value": "Ереван, Армения"
+              },
+              {
+                "label": "Опыт",
+                "value": "7+ лет"
+              },
+              {
+                "label": "Фокус",
+                "value": "Frontend, AI и архитектура"
+              },
+              {
+                "label": "Статус",
+                "value": "Открыт к предложениям"
+              }
+            ],
+            "cvLabel": "Скачать резюме",
+            "socials": [
+              {
+                "href": "https://github.com/Noro97",
+                "icon": "github",
+                "label": "GitHub"
+              },
+              {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
+                "icon": "linkedin",
+                "label": "LinkedIn"
+              },
+              {
+                "href": "https://t.me/antarber",
+                "icon": "telegram",
+                "label": "Telegram"
+              },
+              {
+                "href": "mailto:noroavetisyan@gmail.com",
+                "icon": "email",
+                "label": "Почта"
+              }
+            ],
+            "statusLabel": "Доступен",
+            "sectionLabel": "Обо мне"
+          },
+          "anchorId": "about",
+          "settings": {
+            "photo": "/assets/img/my-photo.jpg",
+            "cvHref": "/Norayr_Avetisyan_CV.pdf",
+            "showStatusBadge": true
+          }
+        },
+        {
+          "id": "eb17cc77-b2b0-4fb8-866e-514d32b81c50",
+          "type": "impact_strip",
+          "content": {
+            "label": "В цифрах",
+            "stats": [
+              {
+                "label": "Лет в продакшене",
+                "value": 7,
+                "prefix": "",
+                "suffix": "+"
+              },
+              {
+                "label": "MAU охвачено",
+                "value": 10,
+                "prefix": "",
+                "suffix": "M+"
+              },
+              {
+                "label": "Компаний",
+                "value": 6,
+                "prefix": "",
+                "suffix": ""
+              },
+              {
+                "label": "Одновременных сессий",
+                "value": 50,
+                "prefix": "",
+                "suffix": "K+"
+              }
+            ]
+          },
+          "anchorId": null,
+          "settings": {
+            "animateCounters": true
+          }
+        },
+        {
+          "id": "3cc524ee-e11d-46ca-9d4b-a43eb01ba803",
+          "type": "capabilities",
+          "content": {
+            "cards": [
+              {
+                "body": "Масштабируемые архитектуры на React и TypeScript, микрофронтенды и стратегии рендеринга для высоконагруженных платформ.",
+                "icon": "Layers",
+                "title": "Фронтенд-архитектура"
+              },
+              {
+                "body": "Кастомные AI-агенты, LLM-конвейеры и воркфлоу на MCP, автоматизирующие реальную продуктовую и инженерную работу.",
+                "icon": "Bot",
+                "title": "AI и автоматизация"
+              },
+              {
+                "body": "Единые библиотеки компонентов и пайплайны токенов с синхронизацией Figma, удерживающие большие команды в едином стиле.",
+                "icon": "Component",
+                "title": "Дизайн-системы"
+              },
+              {
+                "body": "Core Web Vitals, бюджеты бандлов и инструменты, которые делают продукты быстрее — и команды тоже.",
+                "icon": "Gauge",
+                "title": "Производительность и DX"
+              }
+            ],
+            "title": "Чем я занимаюсь",
+            "description": "Четыре способа превращать сложные продуктовые требования в быстрый и надёжный софт.",
+            "sectionLabel": "Компетенции"
+          },
+          "anchorId": null,
+          "settings": {}
+        },
+        {
+          "id": "7958e55e-4a9d-43b0-9f82-9fb295af4bf3",
+          "type": "experience",
+          "content": {
+            "title": "Опыт работы",
+            "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе.",
+            "sectionLabel": "Карьера"
+          },
+          "anchorId": "experience",
+          "settings": {
+            "showImages": true
+          }
+        },
+        {
+          "id": "79f96e27-200c-4571-8a98-d9506c8267d7",
+          "type": "skills",
+          "content": {
+            "title": "Навыки и инструменты",
+            "categories": [
+              {
+                "name": "Фронтенд-ядро",
+                "color": "#B51A2B",
+                "skills": [
+                  {
+                    "name": "React.js",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "TypeScript",
+                    "level": 95,
+                    "years": 6
+                  },
+                  {
+                    "name": "Next.js (SSR/ISR)",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Vue.js / Nuxt.js",
+                    "level": 85,
+                    "years": 4
+                  },
+                  {
+                    "name": "HTML5 / CSS3",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "Micro-frontends",
+                    "level": 75,
+                    "years": 2
+                  }
+                ]
+              },
+              {
+                "name": "Стейт и данные",
+                "color": "#d63040",
+                "skills": [
+                  {
+                    "name": "Redux Toolkit",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Zustand / Pinia",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "TanStack Query/Table",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Context API / MobX",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "GraphQL / REST API",
+                    "level": 90,
+                    "years": 6
+                  }
+                ]
+              },
+              {
+                "name": "Стили и дизайн",
+                "color": "#8c1523",
+                "skills": [
+                  {
+                    "name": "Tailwind CSS",
+                    "level": 95,
+                    "years": 5
+                  },
+                  {
+                    "name": "Styled Components",
+                    "level": 90,
+                    "years": 4
+                  },
+                  {
+                    "name": "Material UI",
+                    "level": 80,
+                    "years": 3
+                  },
+                  {
+                    "name": "Sass / Bootstrap",
+                    "level": 85,
+                    "years": 6
+                  },
+                  {
+                    "name": "Design Systems",
+                    "level": 85,
+                    "years": 3
+                  }
+                ]
+              },
+              {
+                "name": "Инструменты и инфра",
+                "color": "#541A2E",
+                "skills": [
+                  {
+                    "name": "Vite / Webpack",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Storybook",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Vitest / Jest",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "Docker / CI/CD",
+                    "level": 70,
+                    "years": 3
+                  },
+                  {
+                    "name": "Git / GitHub",
+                    "level": 90,
+                    "years": 7
+                  }
+                ]
+              },
+              {
+                "name": "Платформа и AI",
+                "color": "#6C3AED",
+                "skills": [
+                  {
+                    "name": "Telegram Mini Apps",
+                    "level": 85,
+                    "years": 2
+                  },
+                  {
+                    "name": "Supabase / PostgreSQL",
+                    "level": 75,
+                    "years": 3
+                  },
+                  {
+                    "name": "Node.js / Vercel",
+                    "level": 80,
+                    "years": 5
+                  },
+                  {
+                    "name": "Claude Code",
+                    "level": 70,
+                    "years": 1
+                  },
+                  {
+                    "name": "Feature-Sliced Design",
+                    "level": 80,
+                    "years": 3
+                  }
+                ]
+              }
+            ],
+            "description": "Техническая компетенция во всём спектре фронтенда — от базовых фреймворков и управления состоянием до дизайн-систем, инфраструктуры и платформенной инженерии.",
+            "sectionLabel": "Экспертиза",
+            "skillsTracked": "{{count}} навыков отслеживается",
+            "proficiencyOverview": "Обзор компетенций"
+          },
+          "anchorId": "skills",
+          "settings": {}
+        },
+        {
+          "id": "49670b5c-4e23-4a94-a28a-69e37ddc73d9",
+          "type": "tech_marquee",
+          "content": {
+            "items": [
+              {
+                "name": "React"
+              },
+              {
+                "name": "TypeScript"
+              },
+              {
+                "name": "Next.js"
+              },
+              {
+                "name": "Node.js"
+              },
+              {
+                "name": "Tailwind CSS"
+              },
+              {
+                "name": "GraphQL"
+              },
+              {
+                "name": "Supabase"
+              },
+              {
+                "name": "PostgreSQL"
+              },
+              {
+                "name": "Zustand"
+              },
+              {
+                "name": "GSAP"
+              },
+              {
+                "name": "Three.js"
+              },
+              {
+                "name": "Vite"
+              },
+              {
+                "name": "Module Federation"
+              },
+              {
+                "name": "Design Systems"
+              },
+              {
+                "name": "Docker"
+              },
+              {
+                "name": "AI Agents"
+              },
+              {
+                "name": "MCP"
+              },
+              {
+                "name": "Claude Code"
+              }
+            ],
+            "label": "Инструменты и технологии"
+          },
+          "anchorId": null,
+          "settings": {}
+        },
+        {
+          "id": "aca24d53-53af-4ad0-8df6-c499d3651b6e",
+          "type": "contact_cta",
+          "content": {
+            "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
+            "label": "Связаться",
+            "title": "Давайте создадим то, что дойдёт до релиза.",
+            "socials": [
+              {
+                "href": "https://github.com/Noro97",
+                "icon": "github",
+                "label": "GitHub"
+              },
+              {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
+                "icon": "linkedin",
+                "label": "LinkedIn"
+              },
+              {
+                "href": "https://t.me/antarber",
+                "icon": "telegram",
+                "label": "Telegram"
+              }
+            ],
+            "emailLabel": "Написать на почту",
+            "availability": "Доступен для новых проектов"
+          },
+          "anchorId": "contact",
+          "settings": {
+            "email": "noroavetisyan@gmail.com",
+            "showAvailability": true
+          }
         }
       ]
     }
   ],
   "locale": "ru",
-  "version": 37,
-  "checksum": "000684a4af785cac6737d9af135ab3f0d2c6690d1573381d6f5e9de852774b94",
+  "version": 1,
+  "checksum": "7a324e72774a1bd4bf2a52b8324d52963896377e34276bece940ac33bfa80472",
   "settings": {
     "site": {
       "grain": true,
@@ -71,6 +516,228 @@
       "dynamicGrid": true
     }
   },
-  "collections": {},
-  "publishedAt": "2026-08-26T10:50:11.932Z"
+  "collections": {
+    "experience": [
+      {
+        "id": "e4c4e221-ef30-43d0-85e9-624f2466aa9e",
+        "data": {
+          "role": "Основатель и технический архитектор",
+          "type": "Founder",
+          "image": "/assets/img/exp-startup.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "Vite"
+            },
+            {
+              "name": "Supabase"
+            },
+            {
+              "name": "Telegram TMA"
+            },
+            {
+              "name": "AI Agents"
+            }
+          ],
+          "period": "Feb 2026 — Present",
+          "company": "Proof App",
+          "description": "Основал и построил с нуля фитнес-платформу внутри Telegram — мобильный Mini App и бота с автоматизированным AI-бэкендом.",
+          "achievements": [
+            {
+              "text": "В одиночку довёл до релиза цельный мультитенант-продукт — фронтенд, бэкенд и инфраструктуру"
+            },
+            {
+              "text": "Выстроил AI-конвейер разработки на кастомных агентах, MCP-серверах и Claude Code"
+            },
+            {
+              "text": "Спроектировал защищённый бэкенд на Supabase / PostgreSQL с realtime и серверной логикой"
+            }
+          ]
+        },
+        "slug": "proof-app"
+      },
+      {
+        "id": "f5ce2762-f233-43ea-82a9-c0448a7bd00e",
+        "data": {
+          "role": "Ведущий фронтенд-инженер",
+          "type": "Удалённо",
+          "image": "/assets/img/exp-dataviz.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Generative AI"
+            },
+            {
+              "name": "SSE"
+            },
+            {
+              "name": "Vercel"
+            }
+          ],
+          "period": "Sep 2025 — Feb 2026",
+          "company": "Vizogen",
+          "description": "Руководил фронтендом мультитенант AI SaaS-платформы, выстраивая UI вокруг асинхронных генеративных AI-конвейеров.",
+          "achievements": [
+            {
+              "text": "Объединил сложные данные нескольких AI-микросервисов за типизированным API"
+            },
+            {
+              "text": "Улучшил Core Web Vitals и ощущаемую задержку AI с помощью edge-кэширования и SSE-стриминга"
+            },
+            {
+              "text": "Внедрил командные AI-воркфлоу на Cursor и кастомных MCP-серверах"
+            }
+          ]
+        },
+        "slug": "vizogen"
+      },
+      {
+        "id": "0ab22fb7-6ea1-4004-bef5-8c0ae8f3a50a",
+        "data": {
+          "role": "Core-фронтенд-инженер / UI-архитектор",
+          "type": "Удалённо",
+          "image": "/assets/img/exp-logistics.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Design Systems"
+            },
+            {
+              "name": "Module Federation"
+            }
+          ],
+          "period": "Feb 2024 — Jun 2025",
+          "company": "MTS Web Services",
+          "description": "Спроектировал глобальную дизайн-систему и микрофронтенд-платформу для экосистемы с миллионами MAU.",
+          "achievements": [
+            {
+              "text": "Построил дизайн-систему на React / TypeScript, принятую множеством продуктовых команд"
+            },
+            {
+              "text": "Обеспечил независимые деплои через микрофронтенд-архитектуру на Module Federation"
+            },
+            {
+              "text": "Выстроил пайплайн токенов с синхронизацией Figma и автоматическим визуальным тестированием"
+            }
+          ]
+        },
+        "slug": "mts-web-services"
+      },
+      {
+        "id": "fea0af01-69c7-4d79-8fb8-6c579a5ff8d8",
+        "data": {
+          "role": "Senior фронтенд-инженер",
+          "type": "Удалённо",
+          "image": "/assets/img/exp-merch.png",
+          "stack": [
+            {
+              "name": "Next.js"
+            },
+            {
+              "name": "TypeScript"
+            },
+            {
+              "name": "Fintech"
+            },
+            {
+              "name": "iGaming"
+            }
+          ],
+          "period": "Sep 2023 — Jan 2024",
+          "company": "Appfox",
+          "description": "Разработал высоконагруженный iGaming-портал с реальными финансовыми потоками под высокой конкуренцией запросов.",
+          "achievements": [
+            {
+              "text": "Объединил сторонних провайдеров платежей и KYC за единым типизированным API"
+            },
+            {
+              "text": "Настроил производительность и наблюдаемость через dynamic imports, Sentry и PostHog"
+            }
+          ]
+        },
+        "slug": "appfox"
+      },
+      {
+        "id": "db03ca10-458f-4c89-b2a6-3d4e964371fa",
+        "data": {
+          "role": "Ведущий фронтенд-разработчик",
+          "type": "В офисе",
+          "image": "/assets/img/exp-startup.png",
+          "stack": [
+            {
+              "name": "Next.js"
+            },
+            {
+              "name": "React"
+            },
+            {
+              "name": "GraphQL"
+            },
+            {
+              "name": "Node.js"
+            }
+          ],
+          "period": "May 2020 — Sep 2023",
+          "company": "TIRSoft LLC",
+          "description": "Руководил фронтендом портфеля SaaS-продуктов, модернизируя рендеринг и инструментарий в масштабе.",
+          "achievements": [
+            {
+              "text": "Перевёл платформы на Next.js SSR + ISR с заметным ростом производительности"
+            },
+            {
+              "text": "Построил централизованную дизайн-систему и CLI-инструменты, ускорив старт новых проектов"
+            }
+          ]
+        },
+        "slug": "tirsoft-lead"
+      },
+      {
+        "id": "afc851e5-e29e-41b0-8893-12a16d39d5e6",
+        "data": {
+          "role": "Фронтенд-разработчик",
+          "type": "В офисе",
+          "image": "/assets/img/exp-dataviz.png",
+          "stack": [
+            {
+              "name": "React"
+            },
+            {
+              "name": "Redux"
+            },
+            {
+              "name": "Sass"
+            },
+            {
+              "name": "REST API"
+            }
+          ],
+          "period": "Aug 2018 — May 2020",
+          "company": "TIRSoft LLC",
+          "description": "Превращал сложные требования в отзывчивые, переиспользуемые React-интерфейсы.",
+          "achievements": [
+            {
+              "text": "Создал общую абстракцию форм на React / Redux, переиспользуемую во многих проектах"
+            },
+            {
+              "text": "Совместно с бэкенд-инженерами определял структурированные, предсказуемые API-контракты"
+            }
+          ]
+        },
+        "slug": "tirsoft-frontend"
+      }
+    ]
+  },
+  "publishedAt": "2026-08-26T12:03:02.826Z"
 }

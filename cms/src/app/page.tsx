@@ -1,45 +1,96 @@
-import { redirect } from 'next/navigation'
-import { listBlockDefinitions, LOCALES, SOURCE_LOCALE } from '@norav/content-schema'
-import { getSessionUser } from '@/lib/session'
-import { query, queryOne } from '@/lib/db'
-import { Editor, type EditorBlock } from '@/components/Editor'
+'use client'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import type { Locale, SerializedBlockDefinition } from '@norav/content-schema'
+import { Editor, type EditorBlock } from '@/components/Editor'
 
 const PAGE_SLUG = 'home'
 
-export default async function AdminPage() {
-  const user = await getSessionUser()
-  if (!user) redirect('/login')
+interface Loaded {
+  user: { email: string }
+  blocks: EditorBlock[]
+  definitions: SerializedBlockDefinition[]
+  locales: Locale[]
+  sourceLocale: Locale
+}
 
-  const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [PAGE_SLUG])
+/**
+ * The admin is an API client, not a server-rendered page.
+ *
+ * Keeping every database call inside the route handlers means one process owns
+ * the connection — which is what makes the embedded PGlite setup work in
+ * development, where Next renders server components in a separate worker.
+ */
+export default function AdminPage() {
+  const router = useRouter()
+  const [loaded, setLoaded] = useState<Loaded | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const blocks = page
-    ? await query<EditorBlock>(
-        `select b.id, b.type, b.anchor_id, b.is_visible, b.settings, b.version,
-                coalesce(
-                  jsonb_object_agg(t.locale, jsonb_build_object('content', t.content, 'status', t.status))
-                    filter (where t.locale is not null),
-                  '{}'::jsonb
-                ) as translations
-           from blocks b
-           left join block_translations t on t.block_id = b.id
-          where b.page_id = $1 and b.deleted_at is null
-          group by b.id
-          order by b.position`,
-        [page.id],
-      )
-    : []
+  useEffect(() => {
+    let cancelled = false
+
+    async function load() {
+      const [me, schema, page] = await Promise.all([
+        fetch('/api/auth/me'),
+        fetch('/api/admin/schema'),
+        fetch(`/api/admin/pages/${PAGE_SLUG}`),
+      ])
+
+      if (me.status === 401) {
+        router.replace('/login')
+        return
+      }
+      if (!me.ok || !schema.ok || !page.ok) {
+        if (!cancelled) setError('Could not load the editor. Check the server logs.')
+        return
+      }
+
+      const [meBody, schemaBody, pageBody] = await Promise.all([me.json(), schema.json(), page.json()])
+      if (cancelled) return
+
+      setLoaded({
+        user: meBody.data,
+        definitions: schemaBody.data.blocks,
+        locales: schemaBody.data.locales,
+        sourceLocale: schemaBody.data.sourceLocale,
+        blocks: pageBody.data.blocks,
+      })
+    }
+
+    void load().catch(() => {
+      if (!cancelled) setError('Could not reach the API.')
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [router])
+
+  if (error) {
+    return (
+      <main className="main">
+        <div className="status err">{error}</div>
+      </main>
+    )
+  }
+
+  if (!loaded) {
+    return (
+      <main className="main">
+        <p className="subtle">Loading…</p>
+      </main>
+    )
+  }
 
   return (
     <Editor
       pageSlug={PAGE_SLUG}
-      blocks={blocks}
-      definitions={listBlockDefinitions()}
-      locales={LOCALES}
-      sourceLocale={SOURCE_LOCALE}
-      userEmail={user.email}
+      blocks={loaded.blocks}
+      definitions={loaded.definitions}
+      locales={loaded.locales}
+      sourceLocale={loaded.sourceLocale}
+      userEmail={loaded.user.email}
     />
   )
 }

@@ -1,4 +1,7 @@
 export * from './locales'
+export * from './paths'
 export * from './define-block'
 export * from './snapshot'
+export * from './define-collection'
 export * from './blocks'
+export * from './collections'

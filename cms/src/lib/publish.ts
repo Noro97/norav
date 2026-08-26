@@ -116,7 +116,11 @@ export async function buildPublication(): Promise<PublishResult> {
         }
 
         // The source locale owns structure; other locales only overlay leaves.
-        const source = mergeLocale(definition.defaults.content, block.translations[SOURCE_LOCALE])
+        //
+        // The defaults are a starting point for a *new* block, never a merge
+        // base: merging onto them would clamp every array to the length the
+        // default happens to have, quietly dropping rows the editor added.
+        const source = block.translations[SOURCE_LOCALE] ?? definition.defaults.content
         const content =
           locale === SOURCE_LOCALE ? source : mergeLocale(source, block.translations[locale])
 
@@ -142,10 +146,17 @@ export async function buildPublication(): Promise<PublishResult> {
 
     const collections: Record<string, SnapshotEntry[]> = {}
     for (const entry of entries) {
-      const source = mergeLocale(entry.data, entry.translations[SOURCE_LOCALE])
-      const data =
+      // `entry.data` and the translations hold disjoint keys — the
+      // non-localized columns and the translated ones — so they compose rather
+      // than merge. Only the translations overlay each other.
+      const source = entry.translations[SOURCE_LOCALE] ?? {}
+      const localized =
         locale === SOURCE_LOCALE ? source : mergeLocale(source, entry.translations[locale])
-      ;(collections[entry.collection] ??= []).push({ id: entry.id, slug: entry.slug, data })
+      ;(collections[entry.collection] ??= []).push({
+        id: entry.id,
+        slug: entry.slug,
+        data: { ...entry.data, ...localized },
+      })
     }
 
     locales[locale] = {

@@ -7,7 +7,7 @@
  *   npm run seed
  */
 import { heroBlock } from '@norav/content-schema'
-import { query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
 
 /**
  * The Russian copy lifted from src/i18n/locales/ru/hero.json. It lives here
@@ -29,6 +29,8 @@ const HERO_RU = {
   ],
   scrollHint: 'Прокрутите для навигации',
 }
+
+await assertExclusiveLocalDb()
 
 const page = await queryOne<{ id: string }>(
   `insert into pages (slug, status, seo)
@@ -87,4 +89,4 @@ await query(
 )
 
 console.log('Seeded: page "home" with the hero block (en, ru).')
-process.exit(0)
+await closeDb()

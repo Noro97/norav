@@ -1,4 +1,5 @@
 import type { z } from 'zod'
+import { getAtPath, setAtPath } from './paths'
 
 /**
  * How much of a section the CMS actually owns.
@@ -30,7 +31,16 @@ export interface FormField {
   field: string
   label: string
   control: FormControl
-  source?: 'content' | 'settings'
+  source?: 'content' | 'settings' | 'data'
+  /**
+   * Whether this value differs per language. Defaults to true.
+   *
+   * A number, a URL, a proficiency level or a product name is the same in every
+   * locale, and duplicating it into each translation means it drifts. Fields
+   * marked `localized: false` are edited only in the source locale; other
+   * locales inherit them through the merge, so changing one updates all.
+   */
+  localized?: boolean
   help?: string
   placeholder?: string
   /** `select` only. */
@@ -93,6 +103,54 @@ export interface SerializedBlockDefinition {
   singleton: boolean
   form: FormField[]
   defaults: { content: unknown; settings: unknown }
+}
+
+/**
+ * Every leaf path a translator owns, expanded over the actual content so that
+ * repeater rows are addressed individually.
+ */
+function localizedLeafPaths(fields: FormField[], content: unknown, prefix = ''): string[] {
+  const paths: string[] = []
+
+  for (const field of fields) {
+    if ((field.source ?? 'content') !== 'content') continue
+    if (field.localized === false) continue
+
+    const path = prefix ? `${prefix}.${field.field}` : field.field
+
+    if (field.control === 'group') {
+      paths.push(...localizedLeafPaths(field.fields ?? [], content, path))
+      continue
+    }
+
+    if (field.control === 'repeater') {
+      const rows = getAtPath(content, path)
+      if (!Array.isArray(rows)) continue
+      rows.forEach((_row, index) => {
+        paths.push(...localizedLeafPaths(field.fields ?? [], content, `${path}.${index}`))
+      })
+      continue
+    }
+
+    paths.push(path)
+  }
+
+  return paths
+}
+
+/**
+ * The part of `content` a translator owns: everything except the fields marked
+ * `localized: false`. Storing only this keeps a number, a URL or a product name
+ * in one place — the source locale — instead of copying it into every language,
+ * where it would quietly drift.
+ */
+export function pickLocalized(fields: FormField[], content: unknown): unknown {
+  let result: unknown = {}
+  for (const path of localizedLeafPaths(fields, content)) {
+    const value = getAtPath(content, path)
+    if (value !== undefined) result = setAtPath(result, path, value)
+  }
+  return result
 }
 
 export function serializeBlockDefinition(definition: BlockDefinition): SerializedBlockDefinition {

@@ -6,13 +6,15 @@
  * Omit --password to be prompted for it.
  */
 import { createInterface } from 'node:readline/promises'
-import { query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
 import { hashPassword } from '../src/lib/password'
 
 function arg(name: string): string | undefined {
   const index = process.argv.indexOf(`--${name}`)
   return index === -1 ? undefined : process.argv[index + 1]
 }
+
+await assertExclusiveLocalDb()
 
 const email = arg('email')
 if (!email) {
@@ -58,4 +60,4 @@ if (existing) {
   console.log(`Created ${role} ${email}.`)
 }
 
-process.exit(0)
+await closeDb()

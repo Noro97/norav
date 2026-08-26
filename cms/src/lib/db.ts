@@ -15,6 +15,12 @@ export interface QueryResult<T> {
 
 export interface Db {
   query<T = Record<string, unknown>>(sql: string, params?: unknown[]): Promise<QueryResult<T>>
+  /**
+   * Flush and release the connection. PGlite writes its data directory here —
+   * a process that exits without calling this can leave the directory in a
+   * state that aborts on the next open, so every script must close.
+   */
+  close(): Promise<void>
 }
 
 const MIGRATIONS_DIR = join(process.cwd(), '..', 'db', 'migrations')
@@ -26,6 +32,9 @@ async function createPgClient(connectionString: string): Promise<Db> {
     async query(sql, params) {
       const result = await pool.query(sql, params as unknown[])
       return { rows: result.rows }
+    },
+    async close() {
+      await pool.end()
     },
   }
 }
@@ -61,6 +70,9 @@ async function createPgliteClient(): Promise<Db> {
       const result = await db.query(sql, params as unknown[])
       return { rows: result.rows as never[] }
     },
+    async close() {
+      await db.close()
+    },
   }
 }
 
@@ -87,10 +99,49 @@ export async function query<T = Record<string, unknown>>(
   return result.rows
 }
 
+/**
+ * Closes the connection and forgets it, so the next getDb() opens a fresh one.
+ * Scripts call this instead of exiting outright; the server never does.
+ */
+export async function closeDb(): Promise<void> {
+  const pending = globalForDb.__noravDb
+  if (!pending) return
+  globalForDb.__noravDb = undefined
+  const db = await pending
+  await db.close()
+}
+
 export async function queryOne<T = Record<string, unknown>>(
   sql: string,
   params?: unknown[],
 ): Promise<T | undefined> {
   const rows = await query<T>(sql, params)
   return rows[0]
+}
+
+/**
+ * PGlite is a single-writer embedded database: a CLI script and a running dev
+ * server cannot both hold `cms/.pglite`. Whichever opens it second sees a stale
+ * view of the data — and an unclean exit can leave the directory unopenable.
+ *
+ * Scripts call this first, so the failure is a sentence instead of a mystery.
+ * Irrelevant once DATABASE_URL points at a real server, which handles
+ * concurrency itself.
+ */
+export async function assertExclusiveLocalDb(port = 3300): Promise<void> {
+  if (process.env.DATABASE_URL) return
+
+  try {
+    const response = await fetch(`http://localhost:${port}/api/public/manifest`, {
+      signal: AbortSignal.timeout(700),
+    })
+    if (!response.ok) return
+  } catch {
+    return // nothing listening — the directory is ours
+  }
+
+  throw new Error(
+    `The CMS is running on port ${port} and holds cms/.pglite.\n` +
+      'Stop it (Ctrl-C) before running this script, then start it again afterwards.',
+  )
 }
