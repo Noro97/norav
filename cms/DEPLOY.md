@@ -33,6 +33,10 @@ npm --prefix cms run user:add -- --email you@example.com
 The password is prompted for. There is no public sign-up, and no default
 account exists.
 
+These scripts read `cms/.env`, so the connection string goes in that file — not
+only in Vercel. Without it they fall back to the embedded database and appear to
+succeed while writing nowhere useful.
+
 ## 2. The CMS project
 
 New Vercel project, same repository, **Root Directory `cms`**.
