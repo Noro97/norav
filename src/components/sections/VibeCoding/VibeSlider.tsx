@@ -1,6 +1,5 @@
 import { useRef, useCallback } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import { BORING_CODE, ARCHITECTURE_NODES } from './vibecoding.data'
 
 // Token-based syntax highlighting — avoids regex cascade corruption
@@ -60,8 +59,16 @@ const HIGHLIGHTED_CODE = BORING_CODE.split('\n').map(highlightLine).join('\n')
 
 const NODE_HEIGHT = 48
 
-export function VibeSlider() {
-  const { t } = useTranslation('vibecoding')
+export interface VibeSliderCopy {
+  lowVibe: string
+  highVibe: string
+  boringLabel: string
+  archLabel: string
+  /** Label per architecture node id; a node without one renders untitled. */
+  nodeLabels: Record<string, string>
+}
+
+export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
   const vibeValue = useMotionValue(0) // 0–100
@@ -129,13 +136,13 @@ export function VibeSlider() {
               className="font-mono text-xs text-white/40 absolute left-0 whitespace-nowrap"
               style={{ opacity: filenameOpacity }}
             >
-              {t('slider.boringLabel')}
+              {copy.boringLabel}
             </motion.span>
             <motion.span
               className="font-mono text-xs text-white/40 whitespace-nowrap"
               style={{ opacity: archFilenameOpacity }}
             >
-              {t('slider.archLabel')}
+              {copy.archLabel}
             </motion.span>
           </div>
         </div>
@@ -177,7 +184,7 @@ export function VibeSlider() {
               className="absolute inset-0 p-4"
               style={{ opacity: archOpacity }}
             >
-              <ArchitectureDiagram t={t} />
+              <ArchitectureDiagram nodeLabels={copy.nodeLabels} />
             </motion.div>
           </motion.div>
         </div>
@@ -187,10 +194,10 @@ export function VibeSlider() {
       <div className="px-1">
         <div className="flex items-center justify-between mb-2.5">
           <span className="font-mono text-xs text-white/45 uppercase tracking-wider">
-            {t('slider.lowVibe')}
+            {copy.lowVibe}
           </span>
           <span className="font-mono text-xs text-crimson-500/60 uppercase tracking-wider">
-            {t('slider.highVibe')}
+            {copy.highVibe}
           </span>
         </div>
 
@@ -225,7 +232,7 @@ export function VibeSlider() {
 }
 
 // Architecture diagram component — vertical tree layout
-function ArchitectureDiagram({ t }: { t: (key: string) => string }) {
+function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string> }) {
   return (
     <svg
       viewBox="0 0 400 480"
@@ -291,7 +298,7 @@ function ArchitectureDiagram({ t }: { t: (key: string) => string }) {
             fontSize={14}
             fontFamily="'JetBrains Mono', monospace"
           >
-            {t(node.labelKey)}
+            {nodeLabels[node.id] ?? ''}
           </text>
         </g>
       ))}

@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "cce7c534-765c-41bb-a489-98ee4e72c137",
+          "id": "0e5bc6e1-6bf1-4f15-87de-458ad5d16874",
           "type": "hero",
           "content": {
             "name": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "05ccdda6-68fa-45c2-8b0e-9da36503e78f",
+          "id": "3addc6b7-e678-491c-b9e0-cc3692722126",
           "type": "about",
           "content": {
             "bio": {
@@ -148,7 +148,7 @@
           }
         },
         {
-          "id": "560d550c-9180-4eb6-be4a-a6cd47cb139c",
+          "id": "bb38ddb5-14d3-4a22-9f69-d7320cb518de",
           "type": "impact_strip",
           "content": {
             "label": "В цифрах",
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "26fbcb5f-5008-42ea-868e-5f86f5a04c5a",
+          "id": "e097cfb5-e2b7-4a55-adb4-c070b14977c0",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "093c146c-9e7f-451a-8120-e4b6344e560b",
+          "id": "fc2fc1d5-1db6-4583-9f87-0e09b2545ad0",
           "type": "experience",
           "content": {
             "title": "Опыт работы",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "cd13d7bc-c159-4274-8e05-8455a3bad789",
+          "id": "3486663e-d5d7-436a-81e5-554078cc0ae6",
           "type": "skills",
           "content": {
             "title": "Навыки и инструменты",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "c57edf0f-3b60-4898-a03d-a1b5e11937b1",
+          "id": "e8632da8-808e-43a6-8d65-0bb9cfe48af1",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,21 +471,91 @@
           "settings": {}
         },
         {
-          "id": "65608a5b-d36c-4188-a690-34ea6784950a",
+          "id": "5bcf44f3-f2c4-4052-af5b-a6d75705dc49",
           "type": "bento_grid",
           "content": {},
           "anchorId": "overview",
           "settings": {}
         },
         {
-          "id": "935a116a-46ab-4331-a1a3-e595a32ba725",
+          "id": "4fe9462b-f52b-415c-a535-306f73d9e0f3",
           "type": "vibecoding",
-          "content": {},
+          "content": {
+            "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
+            "stats": [
+              {
+                "label": "Покрытие тестами",
+                "value": "92%"
+              },
+              {
+                "label": "Миграции БД",
+                "value": "27"
+              },
+              {
+                "label": "Системы",
+                "value": "3"
+              }
+            ],
+            "title": "Vibe Coding: Высокоскоростная оркестровка",
+            "slider": {
+              "lowVibe": "Low Vibe",
+              "highVibe": "High Vibe",
+              "archLabel": "proof-architecture.svg",
+              "boringLabel": "basic-crud.ts"
+            },
+            "systems": [
+              {
+                "name": "TON / Web3",
+                "tone": "sky"
+              },
+              {
+                "name": "Gemini AI",
+                "tone": "violet"
+              },
+              {
+                "name": "Supabase",
+                "tone": "emerald"
+              }
+            ],
+            "archNodes": [
+              {
+                "node": "tma",
+                "label": "TMA (React)"
+              },
+              {
+                "node": "auth",
+                "label": "Auth"
+              },
+              {
+                "node": "storage",
+                "label": "Supabase Storage"
+              },
+              {
+                "node": "edge",
+                "label": "Edge Functions"
+              },
+              {
+                "node": "gemini",
+                "label": "Gemini AI"
+              },
+              {
+                "node": "db",
+                "label": "Обновление БД"
+              },
+              {
+                "node": "feed",
+                "label": "Лента активности"
+              }
+            ],
+            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+            "sectionLabel": "Философия",
+            "systemsSyncedLabel": "Синхронизировано"
+          },
           "anchorId": "vibecoding",
           "settings": {}
         },
         {
-          "id": "feb0bbc1-2dc1-43ab-8d14-1b94278794b4",
+          "id": "afe4202e-a4c0-4052-a983-605b2459c649",
           "type": "projects_intro",
           "content": {
             "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
@@ -515,49 +585,90 @@
           }
         },
         {
-          "id": "266b89a5-1865-4407-bde5-40a43dac8994",
+          "id": "96902566-9821-407c-bc8b-ee3f51217f64",
           "type": "logistics",
           "content": {},
           "anchorId": "logistics",
           "settings": {}
         },
         {
-          "id": "cc1d98a5-8d61-4ebe-a59f-1f6052962fe2",
+          "id": "21855946-d2c3-460b-a5d6-9e9820705fb6",
           "type": "merch",
           "content": {},
           "anchorId": "merch",
           "settings": {}
         },
         {
-          "id": "2a221abf-f8bb-4b9d-9a8b-9f936a1b647f",
+          "id": "29996cfa-0663-4915-b3fd-2b993531bf64",
           "type": "ecommerce",
           "content": {},
           "anchorId": "ecommerce",
           "settings": {}
         },
         {
-          "id": "8ea5e7f8-a0fa-4688-811e-f310ccc286cd",
+          "id": "c52df7fa-b58f-463b-9de8-ba4d3a5f74d4",
           "type": "omnigrid",
           "content": {},
           "anchorId": "omnigrid",
           "settings": {}
         },
         {
-          "id": "d0f4ef90-9118-4675-8c88-a6fc5644d7a3",
+          "id": "e581ac97-2859-459c-8df7-13284faabfa6",
           "type": "proof",
           "content": {},
           "anchorId": "proof",
           "settings": {}
         },
         {
-          "id": "87fc3550-a6a6-450b-99d2-078a16e3af31",
+          "id": "78060bd1-3a4f-4d9f-8d8f-fc90406f8d45",
           "type": "workflow",
-          "content": {},
+          "content": {
+            "title": "AI-автоматизация процессов",
+            "techStack": [
+              {
+                "name": "n8n"
+              },
+              {
+                "name": "Claude API"
+              },
+              {
+                "name": "Webhooks"
+              },
+              {
+                "name": "SSE Streaming"
+              },
+              {
+                "name": "Slack API"
+              },
+              {
+                "name": "GitHub Actions"
+              }
+            ],
+            "workflows": [
+              {
+                "title": "Анализ лидов",
+                "diagram": "lead-pipeline",
+                "description": "Входящие лиды анализируются Claude AI на предмет интента и квалификации, затем направляются в Slack для уведомления команды и CRM для отслеживания."
+              },
+              {
+                "title": "Генерация контента",
+                "diagram": "content-gen",
+                "description": "Генерация контента по расписанию через Claude API с human-in-the-loop ревью перед публикацией в блог, соцсети или документацию."
+              },
+              {
+                "title": "CI/CD пайплайн",
+                "diagram": "ci-cd",
+                "description": "Автоматизированный пайплайн сборки по GitHub-пушу — запускает тесты, собирает артефакты и деплоит на Cloudflare Pages с уведомлениями о статусе."
+              }
+            ],
+            "description": "Продакшн-готовые n8n-воркфлоу с интеграцией Claude AI для интеллектуальной автоматизации — от анализа лидов до генерации контента и CI/CD-пайплайнов.",
+            "sectionLabel": "Автоматизация"
+          },
           "anchorId": "workflows",
           "settings": {}
         },
         {
-          "id": "d030ce4b-ed26-4e0d-8621-8ceb669e5c03",
+          "id": "373a707e-5d77-4096-acd0-ad8b190c834f",
           "type": "contact_cta",
           "content": {
             "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
@@ -590,7 +701,7 @@
           }
         },
         {
-          "id": "b056aae6-221f-442a-a372-690f0e23ab51",
+          "id": "c15fa02b-5bbf-420b-b0b3-40f946115bd8",
           "type": "terminal_footer",
           "content": {},
           "anchorId": "terminal",
@@ -601,7 +712,7 @@
   ],
   "locale": "ru",
   "version": 1,
-  "checksum": "98866e3b31987e36ffa0d4a28c6083f9d3fbe1bf8abb26cd38e857526e31748d",
+  "checksum": "f425d4218b8f9094a31a4007cb2b158bf1021ae4d1ae188f9b8fbf08c3eb6a47",
   "settings": {
     "site": {
       "grain": true,
@@ -612,7 +723,7 @@
   "collections": {
     "experience": [
       {
-        "id": "4670757f-8eaa-418b-91b6-d74bfdc0e419",
+        "id": "65acbd89-1b0c-40a7-a43b-280a2c794f5b",
         "data": {
           "role": "Основатель и технический архитектор",
           "type": "Founder",
@@ -652,7 +763,7 @@
         "slug": "proof-app"
       },
       {
-        "id": "9354c509-db8f-4a0a-9b88-fa36d021f47d",
+        "id": "2d8c0f86-e1d1-4fa1-a413-cf6d4f5878d2",
         "data": {
           "role": "Ведущий фронтенд-инженер",
           "type": "Удалённо",
@@ -692,7 +803,7 @@
         "slug": "vizogen"
       },
       {
-        "id": "09815d78-ca7b-4440-b167-448713412b7c",
+        "id": "3bcc897f-fa20-48b1-ad2b-9dd4aca2acf2",
         "data": {
           "role": "Core-фронтенд-инженер / UI-архитектор",
           "type": "Удалённо",
@@ -729,7 +840,7 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "12611718-fc7d-4d83-a448-e2ba96200234",
+        "id": "e3b28eb1-1b0b-4e38-831e-0a4e73f5a077",
         "data": {
           "role": "Senior фронтенд-инженер",
           "type": "Удалённо",
@@ -763,7 +874,7 @@
         "slug": "appfox"
       },
       {
-        "id": "228caa61-4e49-4bd9-8d71-8fe76bc5d54f",
+        "id": "944bd8c4-59ec-4f26-a54d-9d67a51e8973",
         "data": {
           "role": "Ведущий фронтенд-разработчик",
           "type": "В офисе",
@@ -797,7 +908,7 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "edc63d87-12b3-434b-bb21-24dc892a43fa",
+        "id": "ebf08071-6b83-45a0-8208-2099e7237563",
         "data": {
           "role": "Фронтенд-разработчик",
           "type": "В офисе",
@@ -832,5 +943,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T15:43:22.946Z"
+  "publishedAt": "2026-08-26T20:15:40.902Z"
 }

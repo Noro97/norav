@@ -157,6 +157,16 @@ const TECH = [
   'Module Federation', 'Design Systems', 'Docker', 'AI Agents', 'MCP', 'Claude Code',
 ]
 
+const VIBE_SYSTEMS = [
+  { name: 'TON / Web3', tone: 'sky' },
+  { name: 'Gemini AI', tone: 'violet' },
+  { name: 'Supabase', tone: 'emerald' },
+]
+
+const VIBE_STATS = ['92%', '27', '3']
+
+const WORKFLOW_TECH = ['n8n', 'Claude API', 'Webhooks', 'SSE Streaming', 'Slack API', 'GitHub Actions']
+
 const SOCIAL_HREFS = {
   github: 'https://github.com/Noro97',
   linkedin: 'https://www.linkedin.com/in/norayravetisyan/',
@@ -199,6 +209,8 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
   const skills = namespace(locale, 'skills')
   const experience = namespace(locale, 'experience')
   const common = namespace(locale, 'common')
+  const workflow = namespace(locale, 'workflow')
+  const vibe = namespace(locale, 'vibecoding')
 
   const aboutTree = unflatten(about) as {
     facts: Record<string, { label: string; value: string }>
@@ -287,6 +299,46 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
     tech_marquee: {
       label: skills.marqueeLabel,
       items: TECH.map((name) => ({ name })),
+    },
+
+    vibecoding: {
+      sectionLabel: vibe.sectionLabel,
+      title: vibe.title,
+      body: vibe.body,
+      microCopy: vibe.microCopy,
+      slider: {
+        lowVibe: vibe['slider.lowVibe'],
+        highVibe: vibe['slider.highVibe'],
+        boringLabel: vibe['slider.boringLabel'],
+        archLabel: vibe['slider.archLabel'],
+      },
+      systemsSyncedLabel: vibe.systemsSynced,
+      systems: VIBE_SYSTEMS,
+      stats: [
+        { value: VIBE_STATS[0], label: vibe['stats.coverage'] },
+        { value: VIBE_STATS[1], label: vibe['stats.migrations'] },
+        { value: VIBE_STATS[2], label: vibe['stats.systems'] },
+      ],
+      archNodes: ['tma', 'auth', 'storage', 'edge', 'gemini', 'db', 'feed'].map((node) => ({
+        node,
+        label: vibe[`arch.${node}`],
+      })),
+    },
+
+    workflow: {
+      sectionLabel: workflow.sectionLabel,
+      title: workflow.title,
+      description: workflow.description,
+      workflows: [
+        ['lead-pipeline', 'lead'],
+        ['content-gen', 'content'],
+        ['ci-cd', 'cicd'],
+      ].map(([diagram, key]) => ({
+        diagram,
+        title: workflow[`workflows.${key}.title`],
+        description: workflow[`workflows.${key}.description`],
+      })),
+      techStack: wrap(WORKFLOW_TECH, 'name'),
     },
 
     projects_intro: PROJECTS_INTRO,

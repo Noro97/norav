@@ -1,18 +1,19 @@
 import { useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { WorkflowDiagram } from './WorkflowDiagram'
 import { WORKFLOWS } from './workflow.data'
+import { useBlock } from '@/content/ContentProvider'
+import type { WorkflowContent } from '@norav/content-schema'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function WorkflowAutomation() {
-  const { t } = useTranslation('workflow')
+export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<WorkflowContent>('workflow')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('workflows', sectionRef)
+  useSectionObserver(anchorId ?? 'workflows', sectionRef)
   const [animate, setAnimate] = useState(false)
 
   useGSAP(() => {
@@ -56,27 +57,33 @@ export function WorkflowAutomation() {
     }
   }, { scope: sectionRef })
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="workflows"
+      id={anchorId ?? 'workflows'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="wf-header">
-          <span className="label-mono">{t('sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
-            {t('title')}
+            {content.title}
           </h2>
-          <p className="text-white/40 text-base max-w-xl mb-12">
-            {t('description')}
-          </p>
+          <p className="text-white/40 text-base max-w-xl mb-12">{content.description}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {WORKFLOWS.map((workflow) => (
+          {content.workflows.map((card) => {
+            // The diagram is code; an id the code does not know is skipped
+            // rather than rendering an empty card.
+            const workflow = WORKFLOWS.find((candidate) => candidate.id === card.diagram)
+            if (!workflow) return null
+            return (
             <div
-              key={workflow.id}
+              key={card.diagram}
               className="wf-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-violet-500/20 hover:shadow-[0_0_40px_-12px_rgba(108,58,237,0.15)] flex flex-col"
             >
               {/* n8n badge */}
@@ -85,7 +92,7 @@ export function WorkflowAutomation() {
                   <span className="text-xs font-bold text-violet-400">n8n</span>
                 </div>
                 <h3 className="font-mono text-xs text-white/60 tracking-[0.12em] uppercase">
-                  {t(workflow.titleKey)}
+                  {card.title}
                 </h3>
               </div>
 
@@ -96,24 +103,23 @@ export function WorkflowAutomation() {
 
               {/* Description */}
               <p className="font-mono text-sm text-white/40 leading-relaxed mt-auto pt-4">
-                {t(workflow.descriptionKey)}
+                {card.description}
               </p>
             </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Tech stack badges */}
         <div className="mt-8 flex flex-wrap items-center gap-2 justify-center">
-          {['n8n', 'Claude API', 'Webhooks', 'SSE Streaming', 'Slack API', 'GitHub Actions'].map(
-            (tech) => (
-              <span
-                key={tech}
-                className="px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] font-mono text-xs text-white/30"
-              >
-                {tech}
-              </span>
-            )
-          )}
+          {content.techStack.map((tech) => (
+            <span
+              key={tech.name}
+              className="px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] font-mono text-xs text-white/30"
+            >
+              {tech.name}
+            </span>
+          ))}
         </div>
       </div>
     </section>

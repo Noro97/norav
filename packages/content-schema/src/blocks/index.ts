@@ -18,9 +18,9 @@ import {
   omniGridBlock,
   proofBlock,
   terminalFooterBlock,
-  vibeCodingBlock,
-  workflowBlock,
 } from './widgets'
+import { vibeCodingBlock } from './vibecoding'
+import { workflowBlock } from './workflow'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -125,3 +125,5 @@ export type { SkillsContent } from './skills'
 export type { TechMarqueeContent } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
 export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
+export type { WorkflowContent } from './workflow'
+export type { VibeCodingContent } from './vibecoding'

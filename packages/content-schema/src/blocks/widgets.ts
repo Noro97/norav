@@ -30,12 +30,6 @@ export const bentoGridBlock = defineWidget(
   'Overview mosaic linking to each case study.',
 )
 
-export const vibeCodingBlock = defineWidget(
-  'vibecoding',
-  'Vibe coding',
-  'The philosophy section with the interactive slider.',
-)
-
 export const logisticsBlock = defineWidget(
   'logistics',
   'NexusRoute',
@@ -64,12 +58,6 @@ export const proofBlock = defineWidget(
   'proof',
   'Proof',
   'Telegram-native fitness platform case study.',
-)
-
-export const workflowBlock = defineWidget(
-  'workflow',
-  'Workflow automation',
-  'n8n and Claude automation diagrams.',
 )
 
 export const terminalFooterBlock = defineWidget(
