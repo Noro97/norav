@@ -18,7 +18,10 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // @norav/content-schema is a symlink into ../packages: Node resolution
+      // from its real path walks past this app and never finds zod. Pin it.
+      "zod": ["./node_modules/zod"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

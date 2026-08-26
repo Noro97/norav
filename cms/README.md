@@ -29,6 +29,7 @@ fully resolved.
 No Docker, no cloud account, no `DATABASE_URL`:
 
 ```bash
+npm install --prefix ..              # once: links the shared schema workspace
 npm install
 npm run seed                     # applies db/migrations into cms/.pglite, seeds the home page
 npm run user:add -- --email you@example.com
