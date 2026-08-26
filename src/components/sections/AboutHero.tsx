@@ -1,14 +1,13 @@
-import { useCallback, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Fragment, useCallback, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useMagneticEffect } from '@/hooks/useMagneticEffect'
+import { useBlock } from '@/content/ContentProvider'
+import type { AboutContent, AboutSettings } from '@norav/content-schema'
 
-const SOCIAL_LINKS = [
-  {
-    key: 'social.github',
-    href: 'https://github.com/Noro97',
+const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
+  github: {
     color: '#8b5cf6',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
@@ -16,9 +15,7 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
-  {
-    key: 'social.linkedin',
-    href: 'https://www.linkedin.com/in/norayravetisyan/',
+  linkedin: {
     color: '#0077b5',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
@@ -26,9 +23,7 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
-  {
-    key: 'social.telegram',
-    href: 'https://t.me/antarber',
+  telegram: {
     color: '#26a5e4',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
@@ -36,9 +31,7 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
-  {
-    key: 'social.email',
-    href: 'mailto:noroavetisyan@gmail.com',
+  email: {
     color: '#B51A2B',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -47,17 +40,21 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
-]
+}
 
-const QUICK_FACTS = [
-  { labelKey: 'facts.location.label', valueKey: 'facts.location.value' },
-  { labelKey: 'facts.experience.label', valueKey: 'facts.experience.value' },
-  { labelKey: 'facts.focus.label', valueKey: 'facts.focus.value' },
-  { labelKey: 'facts.status.label', valueKey: 'facts.status.value' },
-]
+/** How an accented run of the biography is painted. */
+const ACCENT_CLASS: Record<string, string> = {
+  none: '',
+  crimson: 'text-crimson-400',
+  bright: 'text-white/80',
+}
 
-export function AboutHero() {
-  const { t } = useTranslation(['about', 'common'])
+function needsLeadingSpace(text: string): boolean {
+  return !/^[.,;:!?)\]]/.test(text)
+}
+
+export function AboutHero({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<AboutContent, AboutSettings>('about')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('about', sectionRef)
   const cvLinkRef = useRef<HTMLAnchorElement>(null)
@@ -110,14 +107,17 @@ export function AboutHero() {
     }
   }, { scope: sectionRef })
 
+  if (!block) return null
+  const { content, settings } = block
+
   return (
     <section
-      id="about"
+      id={anchorId ?? 'about'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
-        <span className="label-mono">{t('about:sectionLabel')}</span>
+        <span className="label-mono">{content.sectionLabel}</span>
 
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 mt-8">
           {/* Left — Interactive Avatar Card */}
@@ -150,7 +150,7 @@ export function AboutHero() {
                 {/* Photo */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden">
                   <img
-                    src="/assets/img/my-photo.jpg"
+                    src={settings.photo}
                     alt="Norayr Avetisyan"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
@@ -161,7 +161,7 @@ export function AboutHero() {
                   {/* Status badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-green-400/20">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="font-mono text-xs text-green-400/80">{t('common:status.available')}</span>
+                    <span className="font-mono text-xs text-green-400/80">{content.statusLabel}</span>
                   </div>
                 </div>
 
@@ -169,17 +169,19 @@ export function AboutHero() {
                 <div className="p-5 space-y-4">
                   {/* Social links */}
                   <div className="flex gap-2 justify-center">
-                    {SOCIAL_LINKS.map((link) => {
+                    {content.socials.map((link) => {
+                      const art = SOCIAL_ART[link.icon]
                       const isMail = link.href.startsWith('mailto')
                       const email = isMail ? link.href.replace('mailto:', '') : ''
+                      if (!art) return null
                       return (
                         <a
-                          key={link.key}
+                          key={link.icon}
                           href={isMail ? undefined : link.href}
                           target={isMail ? undefined : '_blank'}
                           rel={isMail ? undefined : 'noopener noreferrer'}
                           data-cursor="link"
-                          title={t(`about:${link.key}`)}
+                          title={link.label}
                           onClick={isMail ? (e) => {
                             e.preventDefault()
                             navigator.clipboard.writeText(email)
@@ -188,9 +190,9 @@ export function AboutHero() {
                           } : undefined}
                           className={`group relative w-11 h-11 rounded-xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${isMail ? 'cursor-pointer' : ''}`}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = `${link.color}40`
-                            e.currentTarget.style.color = link.color
-                            e.currentTarget.style.boxShadow = `0 4px 20px ${link.color}25, 0 0 40px ${link.color}10`
+                            e.currentTarget.style.borderColor = `${art.color}40`
+                            e.currentTarget.style.color = art.color
+                            e.currentTarget.style.boxShadow = `0 4px 20px ${art.color}25, 0 0 40px ${art.color}10`
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.borderColor = ''
@@ -198,7 +200,7 @@ export function AboutHero() {
                             e.currentTarget.style.boxShadow = ''
                           }}
                         >
-                          {link.icon}
+                          {art.icon}
                         </a>
                       )
                     })}
@@ -207,7 +209,7 @@ export function AboutHero() {
                   {/* Download CV */}
                   <a
                     ref={cvLinkRef}
-                    href="/Norayr_Avetisyan_CV.pdf"
+                    href={settings.cvHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-cursor="link"
@@ -216,7 +218,7 @@ export function AboutHero() {
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M3 13h10" />
                     </svg>
-                    {t('common:buttons.downloadCv')}
+                    {content.cvLabel}
                   </a>
                 </div>
               </div>
@@ -231,38 +233,34 @@ export function AboutHero() {
               data-cursor="text"
               aria-hidden="true"
             >
-              {t('about:name')}
+              {content.name}
             </p>
             <p className="font-mono text-sm text-crimson-400 tracking-wider">
-              {t('about:role')}
+              {content.role}
             </p>
 
             <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl" data-cursor="text">
               <p>
-                {t('about:bio.paragraph1.before')}
-                <span className="text-white/80">{t('about:bio.paragraph1.highlight1')}</span>
-                {t('about:bio.paragraph1.conjunction')}
-                <span className="text-crimson-400">{t('about:bio.paragraph1.highlight2')}</span>
-                {t('about:bio.paragraph1.after')}
+                {content.bio.lead.map((run, index) => (
+                  <Fragment key={index}>
+                    {index > 0 && needsLeadingSpace(run.text) ? ' ' : ''}
+                    <span className={ACCENT_CLASS[run.accent] ?? ''}>{run.text}</span>
+                  </Fragment>
+                ))}
               </p>
-              <p>
-                {t('about:bio.paragraph2')}
-              </p>
-              <p>
-                {t('about:bio.paragraph3')}
-              </p>
+              {content.bio.paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph.text}</p>
+              ))}
             </div>
 
             {/* Quick facts */}
             <div className="about-facts grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
-              {QUICK_FACTS.map((fact) => (
-                <div key={fact.labelKey} className="glass-card p-3">
+              {content.facts.map((fact) => (
+                <div key={fact.label} className="glass-card p-3">
                   <span className="font-mono text-xs text-white/30 tracking-wider uppercase block">
-                    {t(`about:${fact.labelKey}`)}
+                    {fact.label}
                   </span>
-                  <span className="font-mono text-sm text-white/80 mt-1 block">
-                    {t(`about:${fact.valueKey}`)}
-                  </span>
+                  <span className="font-mono text-sm text-white/80 mt-1 block">{fact.value}</span>
                 </div>
               ))}
             </div>

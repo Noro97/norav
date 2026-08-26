@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "2c18194f-7512-4f83-8c1a-a7be00715e73",
+          "id": "cce7c534-765c-41bb-a489-98ee4e72c137",
           "type": "hero",
           "content": {
             "name": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "1a1028da-270d-4cb7-81f2-a3fcc351297d",
+          "id": "05ccdda6-68fa-45c2-8b0e-9da36503e78f",
           "type": "about",
           "content": {
             "bio": {
@@ -70,7 +70,7 @@
                 },
                 {
                   "text": "engineering rigor",
-                  "accent": "crimson"
+                  "accent": "bright"
                 },
                 {
                   "text": ",",
@@ -78,7 +78,7 @@
                 },
                 {
                   "text": "visual craft",
-                  "accent": "bright"
+                  "accent": "crimson"
                 },
                 {
                   "text": ", and scalable architecture — from enterprise UI systems and generative AI platforms to high-load fintech portals and Telegram Mini Apps.",
@@ -148,7 +148,7 @@
           }
         },
         {
-          "id": "6f7bbf0a-4e42-41a1-8d4c-18822ac0d614",
+          "id": "560d550c-9180-4eb6-be4a-a6cd47cb139c",
           "type": "impact_strip",
           "content": {
             "label": "By the numbers",
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "ffb3bb6b-6cd7-4f6d-919f-e863689e2407",
+          "id": "26fbcb5f-5008-42ea-868e-5f86f5a04c5a",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "5fa735fb-4e2e-4fd6-99cc-bcce4666203e",
+          "id": "093c146c-9e7f-451a-8120-e4b6344e560b",
           "type": "experience",
           "content": {
             "title": "Experience",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "980056c3-3279-4b78-88e3-6b04a1ef29a8",
+          "id": "cd13d7bc-c159-4274-8e05-8455a3bad789",
           "type": "skills",
           "content": {
             "title": "Skills & Tools",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "ee70cbed-94fc-4f8a-bcb5-4163201d3aae",
+          "id": "c57edf0f-3b60-4898-a03d-a1b5e11937b1",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,21 +471,21 @@
           "settings": {}
         },
         {
-          "id": "18d67309-7e95-4505-8475-15f902dd2996",
+          "id": "65608a5b-d36c-4188-a690-34ea6784950a",
           "type": "bento_grid",
           "content": {},
           "anchorId": "overview",
           "settings": {}
         },
         {
-          "id": "9c3595bf-9688-4757-8ce9-6d7730a5bc55",
+          "id": "935a116a-46ab-4331-a1a3-e595a32ba725",
           "type": "vibecoding",
           "content": {},
           "anchorId": "vibecoding",
           "settings": {}
         },
         {
-          "id": "496013a7-c8e8-46bc-a77d-49056ceadcda",
+          "id": "feb0bbc1-2dc1-43ab-8d14-1b94278794b4",
           "type": "projects_intro",
           "content": {
             "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
@@ -515,49 +515,49 @@
           }
         },
         {
-          "id": "04e0fcad-8b31-4a5f-ae43-c7ec386cfdfa",
+          "id": "266b89a5-1865-4407-bde5-40a43dac8994",
           "type": "logistics",
           "content": {},
           "anchorId": "logistics",
           "settings": {}
         },
         {
-          "id": "52b0a013-e63b-4406-a3c1-d3cc2928edb1",
+          "id": "cc1d98a5-8d61-4ebe-a59f-1f6052962fe2",
           "type": "merch",
           "content": {},
           "anchorId": "merch",
           "settings": {}
         },
         {
-          "id": "e5de1e91-7ade-4a45-9a70-d1863d39492a",
+          "id": "2a221abf-f8bb-4b9d-9a8b-9f936a1b647f",
           "type": "ecommerce",
           "content": {},
           "anchorId": "ecommerce",
           "settings": {}
         },
         {
-          "id": "deb3a59e-6462-47c4-9bdf-4a3beb293a75",
+          "id": "8ea5e7f8-a0fa-4688-811e-f310ccc286cd",
           "type": "omnigrid",
           "content": {},
           "anchorId": "omnigrid",
           "settings": {}
         },
         {
-          "id": "5900efae-243f-4cb3-afe4-393bd08deedc",
+          "id": "d0f4ef90-9118-4675-8c88-a6fc5644d7a3",
           "type": "proof",
           "content": {},
           "anchorId": "proof",
           "settings": {}
         },
         {
-          "id": "efbc2d08-8dda-4297-9f63-21b42f931391",
+          "id": "87fc3550-a6a6-450b-99d2-078a16e3af31",
           "type": "workflow",
           "content": {},
           "anchorId": "workflows",
           "settings": {}
         },
         {
-          "id": "2c236371-3fa2-4856-8147-27916c999973",
+          "id": "d030ce4b-ed26-4e0d-8621-8ceb669e5c03",
           "type": "contact_cta",
           "content": {
             "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
@@ -590,7 +590,7 @@
           }
         },
         {
-          "id": "604731d9-389a-4832-8897-f2849d47ef46",
+          "id": "b056aae6-221f-442a-a372-690f0e23ab51",
           "type": "terminal_footer",
           "content": {},
           "anchorId": "terminal",
@@ -600,8 +600,8 @@
     }
   ],
   "locale": "en",
-  "version": 4,
-  "checksum": "aad53913283a9b1a8947aa8144c7dba09ef1023ae38cfd62bf178a8d22af5d16",
+  "version": 1,
+  "checksum": "98866e3b31987e36ffa0d4a28c6083f9d3fbe1bf8abb26cd38e857526e31748d",
   "settings": {
     "site": {
       "grain": true,
@@ -612,7 +612,7 @@
   "collections": {
     "experience": [
       {
-        "id": "eba63437-e488-4096-88d8-fd25d3e175b2",
+        "id": "4670757f-8eaa-418b-91b6-d74bfdc0e419",
         "data": {
           "role": "Founder & Technical Architect",
           "type": "Founder",
@@ -652,7 +652,7 @@
         "slug": "proof-app"
       },
       {
-        "id": "5ee29c9a-8646-43d8-b57d-c9d0bc5541e9",
+        "id": "9354c509-db8f-4a0a-9b88-fa36d021f47d",
         "data": {
           "role": "Lead Frontend Engineer",
           "type": "Remote",
@@ -692,7 +692,7 @@
         "slug": "vizogen"
       },
       {
-        "id": "aba8e689-bf77-434e-80b1-1d6d48c792a3",
+        "id": "09815d78-ca7b-4440-b167-448713412b7c",
         "data": {
           "role": "Core Frontend Engineer / UI Architect",
           "type": "Remote",
@@ -729,7 +729,7 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "6bda2281-9a78-4792-b5da-7794b97e45cf",
+        "id": "12611718-fc7d-4d83-a448-e2ba96200234",
         "data": {
           "role": "Senior Frontend Engineer",
           "type": "Remote",
@@ -763,7 +763,7 @@
         "slug": "appfox"
       },
       {
-        "id": "8b46a2e0-bb4d-495d-ad8b-d0743986f174",
+        "id": "228caa61-4e49-4bd9-8d71-8fe76bc5d54f",
         "data": {
           "role": "Lead Frontend Developer",
           "type": "On-site",
@@ -797,7 +797,7 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "84c3e4b1-25f6-4d63-99f1-42d63412e476",
+        "id": "edc63d87-12b3-434b-bb21-24dc892a43fa",
         "data": {
           "role": "Frontend Developer",
           "type": "On-site",
@@ -832,5 +832,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T12:18:08.874Z"
+  "publishedAt": "2026-08-26T15:43:22.946Z"
 }

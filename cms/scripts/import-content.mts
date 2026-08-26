@@ -26,11 +26,19 @@ import {
 } from '@norav/content-schema'
 import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
 
-const SITE = join(process.cwd(), '..', 'src', 'i18n', 'locales')
+/**
+ * Frozen copies of the i18n namespaces this migration reads.
+ *
+ * They live here rather than in the site because the site retires each
+ * namespace as its section moves to the CMS — the inputs to a migration have to
+ * outlive the thing they were migrated out of, or a fresh database (a new Neon
+ * project, say) could never be seeded again.
+ */
+const LEGACY = join(import.meta.dirname, 'legacy-i18n')
 
-/** i18n runs with keySeparator disabled, so every key is flat: "entries.0.role". */
+/** i18n ran with keySeparator disabled, so every key is flat: "entries.0.role". */
 function namespace(locale: Locale, name: string): Record<string, string> {
-  return JSON.parse(readFileSync(join(SITE, locale, `${name}.json`), 'utf8'))
+  return JSON.parse(readFileSync(join(LEGACY, locale, `${name}.json`), 'utf8'))
 }
 
 /**
@@ -216,9 +224,9 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
         // with punctuation attaches to the word before it.
         lead: [
           { text: about['bio.paragraph1.before'], accent: 'none' },
-          { text: about['bio.paragraph1.highlight1'], accent: 'crimson' },
+          { text: about['bio.paragraph1.highlight1'], accent: 'bright' },
           { text: about['bio.paragraph1.conjunction'], accent: 'none' },
-          { text: about['bio.paragraph1.highlight2'], accent: 'bright' },
+          { text: about['bio.paragraph1.highlight2'], accent: 'crimson' },
           { text: about['bio.paragraph1.after'], accent: 'none' },
         ]
           .map((run) => ({ ...run, text: run.text?.trim() }))
