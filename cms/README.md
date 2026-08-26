@@ -40,6 +40,15 @@ With `DATABASE_URL` empty the CMS runs on an embedded PGlite database under
 `cms/.pglite` (real Postgres, compiled to WASM) and applies `db/migrations`
 itself on first boot. Set `DATABASE_URL` and the exact same code talks to Neon.
 
+Stop the dev server with Ctrl-C, not `kill -9`: PGlite writes its data
+directory on shutdown, and a hard kill can leave it unopenable (`RuntimeError:
+Aborted()` on the next boot). It is disposable either way —
+
+```bash
+npm run db:reset                 # wipe .pglite and re-seed
+npm run user:add -- --email you@example.com
+```
+
 ## API
 
 Public (cached, CORS-enabled for `SITE_ORIGIN`):

@@ -9,7 +9,8 @@
     "start": "next start -p 3300",
     "typecheck": "tsc --noEmit",
     "user:add": "tsx scripts/create-user.mts",
-    "seed": "tsx scripts/seed.mts"
+    "seed": "tsx scripts/seed.mts",
+    "db:reset": "rm -rf .pglite && npm run seed"
   },
   "dependencies": {
     "@norav/content-schema": "file:../packages/content-schema",
