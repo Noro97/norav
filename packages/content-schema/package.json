@@ -1,0 +1,15 @@
+{
+  "name": "@norav/content-schema",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Block registry, content schemas and snapshot contract shared by the site and the CMS",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.0"
+  }
+}

@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      '@norav/content-schema': resolve(__dirname, './packages/content-schema/src'),
     },
   },
   test: {
@@ -14,6 +15,6 @@ export default defineConfig({
     setupFiles: './vitest.setup.ts',
     globals: true,
     css: false,
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'packages/*/src/**/*.test.ts'],
   },
 })

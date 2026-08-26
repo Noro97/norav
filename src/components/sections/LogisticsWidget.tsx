@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock } from '@/content/ContentProvider'
+import type { CaseStudyContent } from '@norav/content-schema'
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -56,10 +58,11 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
   return { type: 'FeatureCollection', features }
 }
 
-export function LogisticsWidget() {
+export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<CaseStudyContent>('logistics')
   const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('logistics', sectionRef)
+  useSectionObserver(anchorId ?? 'logistics', sectionRef)
   const [markerCount, setMarkerCount] = useState(0)
   const [isStressTesting, setIsStressTesting] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
@@ -132,28 +135,31 @@ export function LogisticsWidget() {
     stressRafRef.current = requestAnimationFrame(addBatch)
   }, [])
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="logistics"
+      id={anchorId ?? 'logistics'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
-          <span className="label-mono">{t('logistics.sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white leading-tight">
-            {t('logistics.title')}
+            {content.title}
           </h2>
           <p className="text-white/70 text-body-lg leading-relaxed max-w-lg">
-            {t('logistics.description')}
+            {content.description}
           </p>
 
           {/* Tech stack tags */}
           <div className="flex flex-wrap gap-2">
-            {['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'].map((tag) => (
-              <span key={tag} className="case-study-pill text-xs font-mono text-white/50">
-                {tag}
+            {content.techStack.map((tag) => (
+              <span key={tag.name} className="case-study-pill text-xs font-mono text-white/50">
+                {tag.name}
               </span>
             ))}
           </div>

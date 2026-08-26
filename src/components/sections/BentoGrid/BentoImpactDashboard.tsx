@@ -1,12 +1,14 @@
 import { useRef, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
-import type { BentoMetric } from './bento.data'
 
-function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number }) {
+/** A metric row as the CMS publishes it: the numbers alongside their caption. */
+type DashboardMetric = BentoGridContent['dashboard']['metrics'][number]
+
+function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
-  const { t } = useTranslation('bento')
 
   const motionValue = useMotionValue(0)
   const display = useTransform(motionValue, (v) =>
@@ -58,7 +60,7 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
           />
         </span>
         <span className="font-mono text-xs text-white/50 uppercase tracking-[0.15em]">
-          {t(metric.labelKey)}
+          {metric.label}
         </span>
       </div>
 
@@ -75,7 +77,7 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
 
       {/* Detail line */}
       <p className="font-mono text-[11px] text-white/45 mt-2 tracking-wide uppercase">
-        {t(metric.detailKey)}
+        {metric.detail}
       </p>
 
       {/* Bottom accent on hover */}
@@ -87,12 +89,11 @@ function AnimatedMetric({ metric, delay }: { metric: BentoMetric; delay: number 
   )
 }
 
-interface BentoImpactDashboardProps {
-  metrics: BentoMetric[]
-}
-
-export function BentoImpactDashboard({ metrics }: BentoImpactDashboardProps) {
-  const { t } = useTranslation('bento')
+export function BentoImpactDashboard() {
+  const block = useBlock<BentoGridContent>('bento_grid')
+  if (!block) return null
+  const { content } = block
+  const metrics = content.dashboard.metrics
 
   return (
     <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0a0a14] backdrop-blur-xl">
@@ -118,7 +119,7 @@ export function BentoImpactDashboard({ metrics }: BentoImpactDashboardProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
             </span>
             <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
-              {t('dashboard.title')}
+              {content.dashboard.title}
             </h3>
           </div>
           <span className="font-mono text-[11px] text-crimson-500/50 tracking-wider">

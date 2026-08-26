@@ -2,16 +2,25 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useInView } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { TerminalGhosting } from './TerminalGhosting'
 import { VibeSlider } from './VibeSlider'
+import { useBlock } from '@/content/ContentProvider'
+import type { VibeCodingContent } from '@norav/content-schema'
 
-export function VibeCoding() {
-  const { t } = useTranslation('vibecoding')
+/** Tone names the CMS offers, resolved to the palette classes. */
+const TONE_CLASS: Record<string, string> = {
+  sky: 'border-sky-500/30 text-sky-400/70',
+  violet: 'border-violet-500/30 text-violet-400/70',
+  emerald: 'border-emerald-500/30 text-emerald-400/70',
+  crimson: 'border-crimson-500/30 text-crimson-400/70',
+}
+
+export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<VibeCodingContent>('vibecoding')
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('vibecoding', sectionRef)
+  useSectionObserver(anchorId ?? 'vibecoding', sectionRef)
 
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 })
 
@@ -50,9 +59,13 @@ export function VibeCoding() {
     }
   }, { scope: sectionRef })
 
+  if (!block) return null
+  const { content } = block
+  const nodeLabels = Object.fromEntries(content.archNodes.map((n) => [n.node, n.label]))
+
   return (
     <section
-      id="vibecoding"
+      id={anchorId ?? 'vibecoding'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-28 md:py-36 overflow-hidden"
     >
@@ -69,12 +82,12 @@ export function VibeCoding() {
       <div className="relative z-10 max-w-5xl mx-auto">
         {/* Header */}
         <div className="vc-header mb-16">
-          <span className="label-mono">{t('sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
-            {t('title')}
+            {content.title}
           </h2>
           <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
-            {t('body')}
+            {content.body}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
         </div>
@@ -86,26 +99,22 @@ export function VibeCoding() {
             {/* Micro-copy */}
             <blockquote className="pl-5 border-l-2 border-crimson-500/40">
               <p className="font-mono text-sm md:text-base text-white/50 italic leading-relaxed">
-                {t('microCopy')}
+                {content.microCopy}
               </p>
             </blockquote>
 
             {/* Systems synced */}
             <div>
               <span className="font-mono text-xs text-white/40 uppercase tracking-[0.2em] block mb-3">
-                {t('systemsSynced')}
+                {content.systemsSyncedLabel}
               </span>
               <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'TON / Web3', color: 'border-sky-500/30 text-sky-400/70' },
-                  { label: 'Gemini AI', color: 'border-violet-500/30 text-violet-400/70' },
-                  { label: 'Supabase', color: 'border-emerald-500/30 text-emerald-400/70' },
-                ].map((tech) => (
+                {content.systems.map((system) => (
                   <span
-                    key={tech.label}
-                    className={`font-mono text-xs px-3 py-1.5 rounded-lg border bg-white/[0.02] ${tech.color}`}
+                    key={system.name}
+                    className={`font-mono text-xs px-3 py-1.5 rounded-lg border bg-white/[0.02] ${TONE_CLASS[system.tone] ?? ''}`}
                   >
-                    {tech.label}
+                    {system.name}
                   </span>
                 ))}
               </div>
@@ -113,11 +122,7 @@ export function VibeCoding() {
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-4">
-              {[
-                { value: '92%', label: t('stats.coverage') },
-                { value: '27', label: t('stats.migrations') },
-                { value: '3', label: t('stats.systems') },
-              ].map((stat) => (
+              {content.stats.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="font-display text-2xl md:text-3xl font-bold text-white/80 tracking-tight">
                     {stat.value}
@@ -131,7 +136,15 @@ export function VibeCoding() {
           </div>
 
           {/* Right: Vibe Slider */}
-          <VibeSlider />
+          <VibeSlider
+            copy={{
+              lowVibe: content.slider.lowVibe,
+              highVibe: content.slider.highVibe,
+              boringLabel: content.slider.boringLabel,
+              archLabel: content.slider.archLabel,
+              nodeLabels,
+            }}
+          />
         </div>
       </div>
     </section>

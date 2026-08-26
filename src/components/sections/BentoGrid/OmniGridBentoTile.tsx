@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   useReactTable,
@@ -32,7 +33,8 @@ const CACHE_COLORS: Record<CacheStatus, string> = {
 const MINI_DATA = SHIPMENTS.slice(0, 20)
 
 export function OmniGridBentoTile({ className = '' }: Props) {
-  const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
+  const copy = block?.content.projects.find((candidate) => candidate.project === 'omnigrid')
   const tileRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([])
@@ -147,12 +149,12 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
         {/* Title */}
         <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-cyan-50 transition-colors duration-300">
-          {t('projects.omnigrid.title')}
+          {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
         <p className="text-sm text-white/60 leading-relaxed mb-4 max-w-lg">
-          {t('projects.omnigrid.description')}
+          {copy?.description ?? ''}
         </p>
 
         {/* Mini filter bar */}
@@ -225,12 +227,12 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         {/* CTA */}
         <MagneticButton
           onClick={handleScrollTo}
-          aria-label={t('projects.omnigrid.cta')}
+          aria-label={copy?.cta ?? ''}
           className="inline-flex items-center gap-2.5 text-xs font-mono text-cyan-400/80 uppercase tracking-[0.15em] group/btn hover:text-cyan-300 transition-colors duration-300"
           data-cursor="link"
         >
           <span className="relative">
-            {t('projects.omnigrid.cta')}
+            {copy?.cta ?? ''}
             <span className="absolute -bottom-px left-0 w-0 h-px bg-cyan-500/50 group-hover/btn:w-full transition-all duration-300" />
           </span>
           <svg

@@ -1,20 +1,14 @@
 import { useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-
-// Brand/tech names — proper nouns, not translated.
-const TECH = [
-  'React', 'TypeScript', 'Next.js', 'Node.js', 'Tailwind CSS', 'GraphQL',
-  'Supabase', 'PostgreSQL', 'Zustand', 'GSAP', 'Three.js', 'Vite',
-  'Module Federation', 'Design Systems', 'Docker', 'AI Agents', 'MCP', 'Claude Code',
-]
+import { useBlock } from '@/content/ContentProvider'
+import type { TechMarqueeContent } from '@norav/content-schema'
 
 /**
  * Full-width auto-scrolling tech ribbon — a creative transition band between
  * the Skills and case-study sections. Reuses the shared `.marquee-track`
  * animation (paused under prefers-reduced-motion).
  */
-export function TechMarquee() {
-  const { t } = useTranslation('skills')
+export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<TechMarqueeContent>('tech_marquee')
   const trackRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -24,20 +18,28 @@ export function TechMarquee() {
     }
   }, [])
 
+  if (!block) return null
+  const { content } = block
+  const names = content.items.map((item) => item.name)
+
   // Triple for a seamless loop at any viewport width.
-  const items = [...TECH, ...TECH, ...TECH]
+  const items = [...names, ...names, ...names]
 
   return (
-    <section className="relative py-10 overflow-hidden" aria-label={t('marqueeLabel')}>
+    <section
+      {...(anchorId ? { id: anchorId } : {})}
+      className="relative py-10 overflow-hidden"
+      aria-label={content.label}
+    >
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
-      <p className="text-center label-mono mb-6">{t('marqueeLabel')}</p>
+      <p className="text-center label-mono mb-6">{content.label}</p>
 
       {/* Fade edges */}
       <div className="absolute left-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-r from-[#0a0a1a] to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-l from-[#0a0a1a] to-transparent z-10 pointer-events-none" />
 
-      <span className="sr-only">{TECH.join(', ')}</span>
+      <span className="sr-only">{names.join(', ')}</span>
 
       <div
         ref={trackRef}

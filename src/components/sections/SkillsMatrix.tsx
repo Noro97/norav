@@ -1,80 +1,13 @@
 import { useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock } from '@/content/ContentProvider'
+import type { SkillsContent } from '@norav/content-schema'
 
-interface Skill {
-  name: string
-  level: number
-  years: number
-}
-
-interface SkillCategory {
-  nameKey: string
-  color: string
-  skills: Skill[]
-}
-
-const SKILL_DATA: SkillCategory[] = [
-  {
-    nameKey: 'categories.0.name',
-    color: '#B51A2B',
-    skills: [
-      { name: 'React.js', level: 95, years: 7 },
-      { name: 'TypeScript', level: 95, years: 6 },
-      { name: 'Next.js (SSR/ISR)', level: 90, years: 5 },
-      { name: 'Vue.js / Nuxt.js', level: 85, years: 4 },
-      { name: 'HTML5 / CSS3', level: 95, years: 7 },
-      { name: 'Micro-frontends', level: 75, years: 2 },
-    ],
-  },
-  {
-    nameKey: 'categories.1.name',
-    color: '#d63040',
-    skills: [
-      { name: 'Redux Toolkit', level: 90, years: 5 },
-      { name: 'Zustand / Pinia', level: 85, years: 3 },
-      { name: 'TanStack Query/Table', level: 85, years: 3 },
-      { name: 'Context API / MobX', level: 80, years: 4 },
-      { name: 'GraphQL / REST API', level: 90, years: 6 },
-    ],
-  },
-  {
-    nameKey: 'categories.2.name',
-    color: '#8c1523',
-    skills: [
-      { name: 'Tailwind CSS', level: 95, years: 5 },
-      { name: 'Styled Components', level: 90, years: 4 },
-      { name: 'Material UI', level: 80, years: 3 },
-      { name: 'Sass / Bootstrap', level: 85, years: 6 },
-      { name: 'Design Systems', level: 85, years: 3 },
-    ],
-  },
-  {
-    nameKey: 'categories.3.name',
-    color: '#541A2E',
-    skills: [
-      { name: 'Vite / Webpack', level: 90, years: 5 },
-      { name: 'Storybook', level: 85, years: 3 },
-      { name: 'Vitest / Jest', level: 80, years: 4 },
-      { name: 'Docker / CI/CD', level: 70, years: 3 },
-      { name: 'Git / GitHub', level: 90, years: 7 },
-    ],
-  },
-  {
-    nameKey: 'categories.4.name',
-    color: '#6C3AED',
-    skills: [
-      { name: 'Telegram Mini Apps', level: 85, years: 2 },
-      { name: 'Supabase / PostgreSQL', level: 75, years: 3 },
-      { name: 'Node.js / Vercel', level: 80, years: 5 },
-      { name: 'Claude Code', level: 70, years: 1 },
-      { name: 'Feature-Sliced Design', level: 80, years: 3 },
-    ],
-  },
-]
+type SkillCategory = SkillsContent['categories'][number]
+type Skill = SkillCategory['skills'][number]
 
 function SkillBar({ skill, color, animate }: { skill: Skill; color: string; animate: boolean }) {
   return (
@@ -107,7 +40,7 @@ function SkillBar({ skill, color, animate }: { skill: Skill; color: string; anim
   )
 }
 
-function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; animate: boolean; t: (key: string) => string }) {
+function RadarChart({ categories, animate }: { categories: SkillCategory[]; animate: boolean }) {
   const size = 200
   const center = size / 2
   const radius = 80
@@ -188,7 +121,7 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
             fontSize="9"
             fontFamily="JetBrains Mono"
           >
-            {t(cat.nameKey).split(' ')[0]}
+            {cat.name.split(' ')[0]}
           </text>
         )
       })}
@@ -196,10 +129,10 @@ function RadarChart({ categories, animate, t }: { categories: SkillCategory[]; a
   )
 }
 
-export function SkillsMatrix() {
-  const { t } = useTranslation('skills')
+export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<SkillsContent>('skills')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('skills', sectionRef)
+  useSectionObserver(anchorId ?? 'skills', sectionRef)
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
@@ -230,33 +163,36 @@ export function SkillsMatrix() {
     }
   }, { scope: sectionRef })
 
-  const totalSkills = SKILL_DATA.reduce((s, c) => s + c.skills.length, 0)
+  if (!block) return null
+  const { content } = block
+  const categories = content.categories
+  const totalSkills = categories.reduce((sum, category) => sum + category.skills.length, 0)
 
   return (
     <section
-      id="skills"
+      id={anchorId ?? 'skills'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="skills-header">
-          <span className="label-mono">{t('sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <div className="mt-3 mb-4">
             <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-              {t('title')}
+              {content.title}
             </h2>
           </div>
           <p className="text-white/40 text-base max-w-xl mb-12">
-            {t('description')}
+            {content.description}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
           {/* Skill category cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
-            {SKILL_DATA.map((category, catIdx) => (
+            {categories.map((category, catIdx) => (
               <div
-                key={category.nameKey}
+                key={category.name}
                 className={`skill-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_rgba(181,26,43,0.1)] ${
                   activeCategory === catIdx ? 'border-crimson-500/20' : ''
                 }`}
@@ -276,7 +212,7 @@ export function SkillsMatrix() {
                       style={{ backgroundColor: category.color }}
                     />
                     <h3 className="font-mono text-xs text-white/50 tracking-[0.15em] uppercase">
-                      {t(category.nameKey)}
+                      {category.name}
                     </h3>
                     <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
                     <span className="font-mono text-xs text-white/40">
@@ -302,19 +238,19 @@ export function SkillsMatrix() {
           {/* Radar chart sidebar */}
           <div className="sticky top-24 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6">
             <h4 className="font-mono text-xs text-white/45 tracking-wider uppercase mb-4 text-center">
-              {t('proficiencyOverview')}
+              {content.proficiencyOverview}
             </h4>
-            <RadarChart categories={SKILL_DATA} animate={animate} t={t} />
+            <RadarChart categories={categories} animate={animate} />
 
             {/* Legend */}
             <div className="mt-6 space-y-1.5">
-              {SKILL_DATA.map((cat, i) => {
+              {categories.map((cat, i) => {
                 const avg = Math.round(
                   cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length
                 )
                 return (
                   <div
-                    key={cat.nameKey}
+                    key={cat.name}
                     className={`flex items-center gap-2 px-2 py-1 rounded transition-all cursor-default ${
                       activeCategory === i ? 'bg-white/5' : ''
                     }`}
@@ -325,7 +261,7 @@ export function SkillsMatrix() {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <span className="font-mono text-xs text-white/40 flex-1">{t(cat.nameKey)}</span>
+                    <span className="font-mono text-xs text-white/40 flex-1">{cat.name}</span>
                     <span className="font-mono text-xs text-white/40">{avg}%</span>
                   </div>
                 )
@@ -334,7 +270,7 @@ export function SkillsMatrix() {
 
             <div className="mt-4 pt-3 border-t border-white/5 text-center">
               <span className="font-mono text-xs text-white/40">
-                {t('skillsTracked', { count: totalSkills })}
+                {content.skillsTracked.replace('{{count}}', String(totalSkills))}
               </span>
             </div>
           </div>

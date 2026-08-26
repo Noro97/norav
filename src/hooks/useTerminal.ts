@@ -4,12 +4,15 @@ import { executeCommand, shouldTriggerBurst } from '@/lib/terminal-commands'
 import { readSSEText } from '@/lib/sse'
 import { useAppStore } from '@/store/useAppStore'
 import i18n from '@/i18n'
+import { currentBlockContent } from '@/content/current'
+import type { TerminalFooterContent } from '@norav/content-schema'
 
 function getWelcomeLines(): TerminalLine[] {
+  const welcome =
+    currentBlockContent<TerminalFooterContent>('terminal_footer', i18n.language)?.welcome ?? []
   return [
-    { type: 'output', content: i18n.t('terminal:welcome.0') },
-    { type: 'output', content: i18n.t('terminal:welcome.1') },
-    { type: 'output', content: '' },
+    ...welcome.map((line) => ({ type: 'output' as const, content: line.text })),
+    { type: 'output' as const, content: '' },
   ]
 }
 

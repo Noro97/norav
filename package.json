@@ -2,10 +2,14 @@
   "name": "monolite",
   "type": "module",
   "description": "Creative landing page with liquid glass effects and animations",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "vite",
+    "content:pull": "CMS_URL=${CMS_URL:-http://localhost:3300} node scripts/fetch-content.mjs",
     "build": "tsc && vite build",
-    "lint": "eslint src vite-api-plugin.ts vite.config.ts",
+    "lint": "eslint src packages vite-api-plugin.ts vite.config.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -15,6 +19,7 @@
     "@fontsource/inter-tight": "^5.2.7",
     "@googlemaps/js-api-loader": "^2.0.2",
     "@gsap/react": "^2.1.2",
+    "@norav/content-schema": "*",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@splinetool/react-spline": "^4.1.0",
@@ -37,6 +42,7 @@
     "tailwind-merge": "^3.3.1",
     "three": "^0.183.2",
     "typescript": "^5.9.3",
+    "web-vitals": "^5.3.0",
     "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },

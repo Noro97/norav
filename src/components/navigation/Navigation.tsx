@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
+import { useVisibleAnchors } from '@/content/ContentProvider'
 
 // Map widget section IDs to their parent nav section
 const NAV_SECTION_MAP: Record<string, string> = {
@@ -16,6 +17,9 @@ export function Navigation() {
   const rawActiveSection = useAppStore((s) => s.activeSection)
   const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
   const { t, i18n } = useTranslation('common')
+  // A section hidden in the CMS is not on the page, so it must not be in the menu.
+  const visibleAnchors = useVisibleAnchors()
+  const sections = SECTIONS.filter((section) => visibleAnchors.has(section.id))
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -61,7 +65,7 @@ export function Navigation() {
 
       {/* Dot navigation — desktop */}
       <div className="hidden md:flex items-center gap-1">
-        {SECTIONS.map((section) => {
+        {sections.map((section) => {
           const isActive = activeSection === section.id
           return (
             <button
@@ -117,7 +121,7 @@ export function Navigation() {
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-1.5 font-mono text-xs text-white/40 tracking-widest uppercase"
           >
-            {t(SECTIONS.find((s) => s.id === activeSection)?.labelKey ?? '')}
+            {t(sections.find((s) => s.id === activeSection)?.labelKey ?? '')}
             <ChevronDown
               size={14}
               className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
@@ -126,7 +130,7 @@ export function Navigation() {
 
           {dropdownOpen && (
             <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-white/10 bg-background/90 backdrop-blur-md py-1.5 shadow-xl">
-              {SECTIONS.map((section) => {
+              {sections.map((section) => {
                 const isActive = activeSection === section.id
                 return (
                   <button

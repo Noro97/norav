@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Zap, Shield, User, Brain, Database } from 'lucide-react'
 
@@ -17,7 +18,8 @@ interface BentoMicroTileProps {
 }
 
 export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProps) {
-  const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
+  const tile = block?.content.tiles.find((candidate) => candidate.slot === index)
   const tileRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -58,12 +60,12 @@ export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProp
 
       {/* Title */}
       <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wide mb-2">
-        {t(`tiles.${index}.title`)}
+        {tile?.title ?? ''}
       </h3>
 
       {/* Description */}
       <p className="text-xs text-white/50 leading-relaxed mt-auto">
-        {t(`tiles.${index}.description`)}
+        {tile?.description ?? ''}
       </p>
       </motion.div>
 
