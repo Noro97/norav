@@ -83,6 +83,19 @@ const globalForDb = globalThis as unknown as { __noravDb?: Promise<Db> }
 export function getDb(): Promise<Db> {
   if (!globalForDb.__noravDb) {
     const connectionString = process.env.DATABASE_URL
+
+    // The embedded database is a development convenience. On a serverless
+    // filesystem it cannot even be created, and the failure that surfaces —
+    // EROFS on mkdir — says nothing about the actual mistake, which is a
+    // missing environment variable. Say that instead.
+    if (!connectionString && process.env.VERCEL) {
+      throw new Error(
+        'DATABASE_URL is not set. A deployed CMS needs a real database — ' +
+          'the embedded one is for local development only. Set it in the ' +
+          'project settings and redeploy.',
+      )
+    }
+
     globalForDb.__noravDb = connectionString
       ? createPgClient(connectionString)
       : createPgliteClient()
