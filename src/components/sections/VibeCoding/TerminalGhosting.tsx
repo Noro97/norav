@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect , useState } from 'react'
+import { readAccent, withAlpha } from '@/content/theme'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { GHOST_CODE_LINES } from './vibecoding.data'
 
@@ -42,6 +43,10 @@ function buildLines(cols: number, w: number, h: number): CodeLine[] {
 export function TerminalGhosting({ active }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
+  // A 2D context parses colour strings itself and knows nothing of CSS, so
+  // the accent arrives already resolved. Read once: the palette is written
+  // onto :root before the first render and does not change afterwards.
+  const [accent] = useState(() => readAccent())
   const rafRef = useRef(0)
   const linesRef = useRef<CodeLine[]>([])
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -96,7 +101,7 @@ export function TerminalGhosting({ active }: Props) {
 
         for (const line of linesRef.current) {
           if (line.y > 0 && line.y < h) {
-            ctx.fillStyle = `rgba(181, 26, 43, ${line.opacity})`
+            ctx.fillStyle = withAlpha(accent, line.opacity)
             ctx.fillText(line.text, line.x, line.y)
           }
         }
@@ -125,7 +130,7 @@ export function TerminalGhosting({ active }: Props) {
           line.text = GHOST_CODE_LINES[Math.floor(Math.random() * GHOST_CODE_LINES.length)]!
         }
 
-        ctx.fillStyle = `rgba(181, 26, 43, ${line.opacity})`
+        ctx.fillStyle = withAlpha(accent, line.opacity)
         ctx.fillText(line.text, line.x, line.y)
       }
 
@@ -134,7 +139,7 @@ export function TerminalGhosting({ active }: Props) {
 
     rafRef.current = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [active, prefersReducedMotion])
+  }, [active, prefersReducedMotion, accent])
 
   return (
     <canvas

@@ -10,7 +10,7 @@
     {
       "name": "cms",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "cms", "run", "dev"],
+      "runtimeArgs": ["--prefix", "cms", "run", "dev:local"],
       "port": 3300
     }
   ]

@@ -105,7 +105,7 @@ export function BentoImpactDashboard() {
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(181,26,43,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(181,26,43,0.25) 1px, transparent 1px)',
+            'linear-gradient(color-mix(in srgb, var(--color-crimson-500) 25%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-crimson-500) 25%, transparent) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
         }}
       />

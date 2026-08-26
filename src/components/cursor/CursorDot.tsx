@@ -41,8 +41,8 @@ const CONFIG: Record<CursorState, DotConfig> = {
   },
   play: {
     size: 64,
-    bg: 'rgba(181, 26, 43, 0.15)',
-    border: '1.5px solid rgba(181, 26, 43, 0.6)',
+    bg: 'color-mix(in srgb, var(--color-crimson-500) 15%, transparent)',
+    border: '1.5px solid color-mix(in srgb, var(--color-crimson-500) 60%, transparent)',
     label: 'PLAY',
     blendMode: 'normal',
     backdropBlur: 'blur(8px)',
@@ -50,8 +50,8 @@ const CONFIG: Record<CursorState, DotConfig> = {
   },
   target: {
     size: 48,
-    bg: 'rgba(181, 26, 43, 0.1)',
-    border: '1.5px solid rgba(181, 26, 43, 0.5)',
+    bg: 'color-mix(in srgb, var(--color-crimson-500) 10%, transparent)',
+    border: '1.5px solid color-mix(in srgb, var(--color-crimson-500) 50%, transparent)',
     label: '⊕',
     blendMode: 'normal',
     backdropBlur: 'none',

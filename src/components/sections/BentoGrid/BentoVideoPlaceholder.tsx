@@ -1,12 +1,29 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import type { BentoVariant } from './bento.data'
+import { readAccent, readSecondary, withAlpha } from '@/content/theme'
 
-const VARIANT_COLORS: Record<BentoVariant, { primary: string; secondary: string }> = {
-  logistics: { primary: '59, 130, 246', secondary: '30, 64, 175' },   // blue
-  merch: { primary: '181, 26, 43', secondary: '120, 20, 50' },        // crimson
-  ecommerce: { primary: '34, 197, 94', secondary: '22, 101, 52' },    // green
-  proof: { primary: '181, 26, 43', secondary: '140, 21, 35' },        // crimson
-  omnigrid: { primary: '6, 182, 212', secondary: '8, 145, 178' },    // cyan/teal
+/**
+ * Each tile is tinted by the project it stands for. The two that carry the
+ * site's own identity follow the theme; the rest are the products' colours and
+ * stay put — a green e-commerce tile is green because the product is.
+ */
+function variantColors(variant: BentoVariant): { primary: string; secondary: string } {
+  switch (variant) {
+    case 'merch':
+    case 'proof':
+      return { primary: readAccent(), secondary: getToken('--color-crimson-700', '#541A2E') }
+    case 'omnigrid':
+      return { primary: readSecondary(), secondary: getToken('--color-cyan-700', '#0e7490') }
+    case 'logistics':
+      return { primary: '#3b82f6', secondary: '#1e40af' }
+    case 'ecommerce':
+      return { primary: '#22c55e', secondary: '#166534' }
+  }
+}
+
+function getToken(name: string, fallback: string): string {
+  if (typeof document === 'undefined') return fallback
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback
 }
 
 interface Props {
@@ -18,6 +35,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const rafRef = useRef(0)
+  const [palette] = useState(() => variantColors(variant))
   const startTimeRef = useRef(0)
 
   useEffect(() => {
@@ -34,7 +52,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
       return
     }
 
-    const colors = VARIANT_COLORS[variant]
+    const colors = palette
     startTimeRef.current = performance.now()
 
     const animate = () => {
@@ -53,7 +71,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
         const r = 80 + 40 * Math.sin(t * 0.3 + i)
 
         const grad = ctx.createRadialGradient(x, y, 0, x, y, r)
-        grad.addColorStop(0, `rgba(${i === 0 ? colors.primary : colors.secondary}, 0.15)`)
+        grad.addColorStop(0, withAlpha(i === 0 ? colors.primary : colors.secondary, 0.15))
         grad.addColorStop(1, 'transparent')
         ctx.fillStyle = grad
         ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -61,7 +79,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
 
       // Subtle scan line
       const scanY = (t * 40) % canvas.height
-      ctx.fillStyle = `rgba(${colors.primary}, 0.08)`
+      ctx.fillStyle = withAlpha(colors.primary, 0.08)
       ctx.fillRect(0, scanY, canvas.width, 2)
 
       rafRef.current = requestAnimationFrame(animate)
@@ -69,7 +87,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
 
     rafRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [active, variant])
+  }, [active, variant, palette])
 
   return (
     <canvas

@@ -143,8 +143,8 @@ export function ProofEconomyTile() {
                 width={50}
                 height={24}
                 rx={6}
-                fill="rgba(181,26,43,0.08)"
-                stroke={isConnected ? 'rgba(181,26,43,0.3)' : 'rgba(181,26,43,0.1)'}
+                fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
+                stroke={isConnected ? 'color-mix(in srgb, var(--color-crimson-500) 30%, transparent)' : 'color-mix(in srgb, var(--color-crimson-500) 10%, transparent)'}
                 strokeWidth={0.8}
               />
               <text
@@ -167,7 +167,7 @@ export function ProofEconomyTile() {
               y1={20}
               x2={x + 15}
               y2={20}
-              stroke={isConnected ? 'rgba(181,26,43,0.4)' : 'rgba(181,26,43,0.1)'}
+              stroke={isConnected ? 'color-mix(in srgb, var(--color-crimson-500) 40%, transparent)' : 'color-mix(in srgb, var(--color-crimson-500) 10%, transparent)'}
               strokeWidth={1}
               strokeDasharray="4 4"
               className={isConnected ? 'animate-dash-flow' : ''}

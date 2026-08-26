@@ -46,7 +46,7 @@ export function Capabilities({ anchorId }: { anchorId?: string | null }) {
             return (
             <div
               key={index}
-              className="cap-card group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_rgba(181,26,43,0.15)]"
+              className="cap-card group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_color-mix(in_srgb,var(--color-crimson-500)_15%,transparent)]"
             >
               <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-crimson-500/10" />
               <div className="relative">

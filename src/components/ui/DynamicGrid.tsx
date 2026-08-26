@@ -1,4 +1,5 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
+import { readAccent, withAlpha } from '@/content/theme'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -10,6 +11,9 @@ export function DynamicGrid() {
   const offscreenRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const lastDrawnCursor = useRef({ x: -999, y: -999 })
+  // A 2D canvas takes colour strings, not CSS variables — resolve the accent
+  // once so the cursor glow tracks the theme like everything else.
+  const [accent] = useState(() => readAccent())
 
   const buildOffscreen = useCallback((width: number, height: number) => {
     const oc = document.createElement('canvas')
@@ -86,8 +90,8 @@ export function DynamicGrid() {
 
     // Radial gradient glow centered on cursor
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, GRID_GLOW_RADIUS)
-    gradient.addColorStop(0, 'rgba(181,26,43,0.06)')
-    gradient.addColorStop(1, 'rgba(181,26,43,0)')
+    gradient.addColorStop(0, withAlpha(accent, 0.06))
+    gradient.addColorStop(1, withAlpha(accent, 0))
 
     ctx.fillStyle = gradient
     ctx.fillRect(

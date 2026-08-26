@@ -116,12 +116,14 @@ export const MINI_COLUMNS = [
   }),
 ]
 
-// Status colors
+// Status colours carry meaning, so they stay put when the theme changes —
+// "Delayed" has to read as delayed on a green-accented site. In Transit used
+// the same cyan as the widget's accent, which is why it used to move with it.
 export const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  'Pending': 'text-amber-400',
-  'In Transit': 'text-cyan-400',
-  'Delivered': 'text-emerald-400',
-  'Delayed': 'text-red-400',
+  'Pending': 'text-warning',
+  'In Transit': 'text-info',
+  'Delivered': 'text-success',
+  'Delayed': 'text-danger',
 }
 
 export const PRIORITY_COLORS: Record<ShipmentPriority, string> = {

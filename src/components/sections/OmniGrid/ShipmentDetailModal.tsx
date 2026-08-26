@@ -119,7 +119,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                         <div
                           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm border transition-all ${
                             isCurrent
-                              ? 'border-cyan-500/50 bg-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                              ? 'border-cyan-500/50 bg-cyan-500/20 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-cyan-500)_30%,_transparent)]'
                               : isActive
                                 ? 'border-emerald-500/30 bg-emerald-500/10'
                                 : 'border-white/[0.06] bg-white/[0.02]'

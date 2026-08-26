@@ -75,13 +75,13 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       data-cursor={project.videoSrc && inViewport ? 'play' : undefined}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_rgba(181,26,43,0.15)] ${className}`}
+      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)] ${className}`}
     >
       {/* Abstract gradient mesh — unique per tile via hue rotation */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
-          background: `radial-gradient(ellipse at ${index === 0 ? '20% 30%' : index === 1 ? '80% 20%' : '50% 80%'}, rgba(181,26,43,0.6) 0%, transparent 50%), radial-gradient(ellipse at ${index === 0 ? '80% 70%' : index === 1 ? '20% 80%' : '90% 20%'}, rgba(100,20,40,0.3) 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse at ${index === 0 ? '20% 30%' : index === 1 ? '80% 20%' : '50% 80%'}, color-mix(in srgb, var(--color-crimson-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at ${index === 0 ? '80% 70%' : index === 1 ? '20% 80%' : '90% 20%'}, color-mix(in srgb, var(--color-crimson-700) 30%, transparent) 0%, transparent 60%)`,
         }}
       />
 

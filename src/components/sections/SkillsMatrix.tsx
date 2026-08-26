@@ -9,7 +9,12 @@ import type { SkillsContent } from '@norav/content-schema'
 type SkillCategory = SkillsContent['categories'][number]
 type Skill = SkillCategory['skills'][number]
 
-function SkillBar({ skill, color, animate }: { skill: Skill; color: string; animate: boolean }) {
+function SkillBar({ skill, animate }: { skill: Skill; animate: boolean }) {
+  // The gradient spans the whole track, and the fill uncovers the part of it
+  // the skill reaches — so the colour carries the same meaning as the length:
+  // a bar that stops early stops in the red, one that runs on ends green.
+  const level = Math.min(100, Math.max(0, skill.level))
+  const tip = level < 50 ? 'danger' : level < 80 ? 'warning' : 'success'
   return (
     <div className="group">
       <div className="flex items-center justify-between mb-1.5">
@@ -29,10 +34,12 @@ function SkillBar({ skill, color, animate }: { skill: Skill; color: string; anim
         <div
           className="h-full rounded-full transition-all duration-1000 ease-out"
           style={{
-            width: animate ? `${skill.level}%` : '0%',
-            backgroundColor: color,
-            opacity: 0.7,
-            boxShadow: `0 0 8px ${color}40`,
+            width: animate ? `${level}%` : '0%',
+            backgroundImage:
+              'linear-gradient(90deg, var(--color-danger), var(--color-warning) 55%, var(--color-success))',
+            backgroundSize: level > 0 ? `${(100 / level) * 100}% 100%` : '100% 100%',
+            opacity: 0.8,
+            boxShadow: `0 0 8px color-mix(in srgb, var(--color-${tip}) 35%, transparent)`,
           }}
         />
       </div>
@@ -89,7 +96,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
       })}
       <path
         d={dataPath}
-        fill="rgba(181, 26, 43, 0.15)"
+        fill="color-mix(in_srgb,var(--color-crimson-500)_15%,transparent)"
         stroke="var(--color-crimson-500)"
         strokeWidth="1.5"
         className="transition-all duration-1000 ease-out"
@@ -193,7 +200,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
             {categories.map((category, catIdx) => (
               <div
                 key={category.name}
-                className={`skill-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_rgba(181,26,43,0.1)] ${
+                className={`skill-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_color-mix(in_srgb,var(--color-crimson-500)_10%,transparent)] ${
                   activeCategory === catIdx ? 'border-crimson-500/20' : ''
                 }`}
                 onMouseEnter={() => setActiveCategory(catIdx)}
@@ -225,7 +232,6 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                       <SkillBar
                         key={skill.name}
                         skill={skill}
-                        color={category.color}
                         animate={animate}
                       />
                     ))}

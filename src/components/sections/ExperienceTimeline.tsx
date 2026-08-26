@@ -48,7 +48,7 @@ function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_rgba(181,26,43,0.2)] will-change-transform"
+      className="relative rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-crimson-500)_20%,_transparent)] will-change-transform"
       style={{ transform, transition: 'transform 0.15s ease-out' }}
     >
       <img
@@ -146,7 +146,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                   } items-start gap-8 md:gap-0`}
                 >
                   {/* Dot on timeline */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-crimson-500 border-2 border-background z-10 mt-6 shadow-[0_0_8px_rgba(181,26,43,0.5)]" />
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-crimson-500 border-2 border-background z-10 mt-6 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_50%,_transparent)]" />
 
                   {/* Content */}
                   <div

@@ -18,12 +18,20 @@ const hex = z
 
 export const themeSchema = z.object({
   accent: hex,
+  // Defaulted rather than required: a palette saved before the second accent
+  // existed should gain one, not fail validation and lose the accent its owner
+  // already chose.
+  secondary: hex.default('#22d3ee'),
   background: hex,
 })
 
 export type Theme = z.infer<typeof themeSchema>
 
-export const DEFAULT_THEME: Theme = { accent: '#B51A2B', background: '#0a0a1a' }
+export const DEFAULT_THEME: Theme = {
+  accent: '#B51A2B',
+  secondary: '#22d3ee',
+  background: '#0a0a1a',
+}
 
 // ---------------------------------------------------------------------------
 // Colour maths. HSL is enough here: the ramp only moves lightness, and keeping
@@ -102,6 +110,43 @@ const SCALE: { step: number; l: number }[] = [
   { step: 900, l: 0.11 },
 ]
 
+/**
+ * Saturation for a step of lightness `l`.
+ *
+ * Pale steps lose their identity at full saturation and read as pink washes;
+ * deep steps at full saturation read as garish rather than dark. The original
+ * scale eased off at both ends by hand, and this reproduces that shape.
+ */
+function scaleSaturation(base: number, l: number): number {
+  if (l > 0.7) return base * 0.75
+  if (l < 0.3) return base * 0.7
+  return base
+}
+
+/** The status colours, which carry meaning rather than brand. */
+const SEMANTIC = {
+  '--color-success': '#22c55e',
+  '--color-warning': '#eab308',
+  '--color-danger': '#ef4444',
+  '--color-info': '#38bdf8',
+} as const
+
+/**
+ * Bend the ramp so its 500 step lands on the accent's own lightness.
+ *
+ * The ramp is written around an accent near l=0.41. Give it a bright colour —
+ * a cyan at 0.53 — and steps 300 and 400 land above it: the scale stops
+ * darkening and the "light" tones come out darker than the base.
+ * Anchoring keeps the ends at 0 and 1, so the ramp stays monotonic whatever
+ * lightness the accent has.
+ */
+function anchor(l: number, accentL: number): number {
+  const pivot = 0.41
+  return l <= pivot
+    ? (l / pivot) * accentL
+    : accentL + ((l - pivot) / (1 - pivot)) * (1 - accentL)
+}
+
 export type ThemeTokens = Record<string, string>
 
 /**
@@ -122,10 +167,23 @@ export function deriveThemeTokens(theme: Theme): ThemeTokens {
       tokens['--color-crimson-500'] = theme.accent
       continue
     }
-    // Pale steps lose their identity at full saturation; ease it off.
-    const s = l > 0.7 ? accent.s * 0.75 : accent.s
-    tokens[`--color-crimson-${step}`] = hslToHex({ h: accent.h, s, l })
+    const al = anchor(l, accent.l)
+    tokens[`--color-crimson-${step}`] = hslToHex({ h: accent.h, s: scaleSaturation(accent.s, al), l: al })
   }
+
+  // The second accent gets the same ten steps under Tailwind's own `cyan-*`
+  // names, so every existing `text-cyan-400` in the codebase follows the theme
+  // without the component being touched.
+  const secondary = hexToHsl(theme.secondary)
+  for (const { step, l } of SCALE) {
+    const sl = anchor(l, secondary.l)
+    tokens[`--color-cyan-${step}`] =
+      step === 500
+        ? theme.secondary
+        : hslToHex({ h: secondary.h, s: scaleSaturation(secondary.s, sl), l: sl })
+  }
+
+  Object.assign(tokens, SEMANTIC)
 
   const accentBase = theme.accent
 
@@ -134,14 +192,18 @@ export function deriveThemeTokens(theme: Theme): ThemeTokens {
   const lift = (amount: number) =>
     hslToHex({
       h: background.h,
-      s: background.s,
+      // Surfaces also drift toward neutral as they rise. Holding saturation
+      // constant instead keeps every layer the same vivid hue, and the page
+      // reads flat — the panels stop separating from the page behind them.
+      // The rate reproduces the two hand-tuned surfaces of the original theme.
+      s: background.s * Math.max(0, 1 - amount * 5.6),
       l: isDark
         ? Math.min(1, background.l + amount)
         : Math.max(0, background.l - amount),
     })
 
   tokens['--color-background'] = theme.background
-  tokens['--color-card'] = lift(0.02)
+  tokens['--color-card'] = lift(0.008)
   tokens['--color-secondary'] = lift(0.06)
   tokens['--color-muted'] = lift(0.06)
 

@@ -168,11 +168,11 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
               </h4>
               <svg viewBox="0 0 240 80" className="w-full">
                 {/* Request node */}
-                <circle cx="30" cy="40" r="18" fill="rgba(6,182,212,0.15)" stroke="rgba(6,182,212,0.4)" strokeWidth="1.5" />
-                <text x="30" y="44" textAnchor="middle" fill="rgba(6,182,212,0.8)" fontSize="7" fontFamily="JetBrains Mono">REQ</text>
+                <circle cx="30" cy="40" r="18" fill="color-mix(in srgb, var(--color-cyan-500) 15%, transparent)" stroke="color-mix(in srgb, var(--color-cyan-500) 40%, transparent)" strokeWidth="1.5" />
+                <text x="30" y="44" textAnchor="middle" fill="color-mix(in srgb, var(--color-cyan-500) 80%, transparent)" fontSize="7" fontFamily="JetBrains Mono">REQ</text>
 
                 {/* Arrow to cache */}
-                <line x1="50" y1="40" x2="90" y2="40" stroke="rgba(6,182,212,0.4)" strokeWidth="1" strokeDasharray="4 2">
+                <line x1="50" y1="40" x2="90" y2="40" stroke="color-mix(in srgb, var(--color-cyan-500) 40%, transparent)" strokeWidth="1" strokeDasharray="4 2">
                   <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1.5s" repeatCount="indefinite" />
                 </line>
 
@@ -184,17 +184,17 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                 <text x="120" y="47" textAnchor="middle" fill="rgba(16,185,129,0.5)" fontSize="6" fontFamily="JetBrains Mono">HIT</text>
 
                 {/* Lightning bolt */}
-                <polygon points="155 28 148 42 155 42 152 56 162 38 155 38 158 28" fill="rgba(6,182,212,0.6)">
+                <polygon points="155 28 148 42 155 42 152 56 162 38 155 38 158 28" fill="color-mix(in srgb, var(--color-cyan-500) 60%, transparent)">
                   <animate attributeName="opacity" values="0.6;1;0.6" dur="1s" repeatCount="indefinite" />
                 </polygon>
 
                 {/* Response node */}
-                <circle cx="200" cy="40" r="18" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.3)" strokeWidth="1" />
-                <text x="200" y="37" textAnchor="middle" fill="rgba(6,182,212,0.7)" fontSize="6" fontFamily="JetBrains Mono">&lt;1ms</text>
-                <text x="200" y="47" textAnchor="middle" fill="rgba(6,182,212,0.5)" fontSize="6" fontFamily="JetBrains Mono">DATA</text>
+                <circle cx="200" cy="40" r="18" fill="color-mix(in srgb, var(--color-cyan-500) 10%, transparent)" stroke="color-mix(in srgb, var(--color-cyan-500) 30%, transparent)" strokeWidth="1" />
+                <text x="200" y="37" textAnchor="middle" fill="color-mix(in srgb, var(--color-cyan-500) 70%, transparent)" fontSize="6" fontFamily="JetBrains Mono">&lt;1ms</text>
+                <text x="200" y="47" textAnchor="middle" fill="color-mix(in srgb, var(--color-cyan-500) 50%, transparent)" fontSize="6" fontFamily="JetBrains Mono">DATA</text>
 
                 {/* Arrow cache to response */}
-                <line x1="168" y1="40" x2="180" y2="40" stroke="rgba(6,182,212,0.3)" strokeWidth="1" strokeDasharray="4 2">
+                <line x1="168" y1="40" x2="180" y2="40" stroke="color-mix(in srgb, var(--color-cyan-500) 30%, transparent)" strokeWidth="1" strokeDasharray="4 2">
                   <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1s" repeatCount="indefinite" />
                 </line>
               </svg>

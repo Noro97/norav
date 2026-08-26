@@ -395,7 +395,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                     <div
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-500 ${
                         status === 'active'
-                          ? 'border-crimson-500/50 bg-crimson-500/5 shadow-[0_0_20px_rgba(181,26,43,0.15)]'
+                          ? 'border-crimson-500/50 bg-crimson-500/5 shadow-[0_0_20px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)]'
                           : status === 'done'
                           ? 'border-green-500/20 bg-green-500/[0.02]'
                           : 'border-white/8 bg-transparent'
