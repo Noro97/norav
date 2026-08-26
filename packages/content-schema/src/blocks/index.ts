@@ -10,15 +10,14 @@ import { skillsBlock } from './skills'
 import { techMarqueeBlock } from './tech-marquee'
 import { contactCtaBlock } from './contact-cta'
 import { projectsIntroBlock } from './projects-intro'
+import { bentoGridBlock, terminalFooterBlock } from './widgets'
 import {
-  bentoGridBlock,
   ecommerceBlock,
   logisticsBlock,
   merchBlock,
   omniGridBlock,
   proofBlock,
-  terminalFooterBlock,
-} from './widgets'
+} from './case-study'
 import { vibeCodingBlock } from './vibecoding'
 import { workflowBlock } from './workflow'
 
@@ -127,3 +126,4 @@ export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
 export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
 export type { WorkflowContent } from './workflow'
 export type { VibeCodingContent } from './vibecoding'
+export type { CaseStudyContent } from './case-study'

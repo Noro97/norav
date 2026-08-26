@@ -157,6 +157,21 @@ const TECH = [
   'Module Federation', 'Design Systems', 'Docker', 'AI Agents', 'MCP', 'Claude Code',
 ]
 
+/** Chip rows that lived inline in each case-study component. */
+const CASE_STUDY_TECH: Record<string, string[]> = {
+  logistics: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
+  merch: ['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'],
+  ecommerce: [
+    'URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo',
+    'Modal', 'Multi-step Form', 'Confetti',
+  ],
+  omnigrid: ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll'],
+  proof: [
+    'Supabase Edge Functions', 'Google Gemini API', 'pgmq', 'FFmpeg.wasm',
+    'Telegram Mini App SDK',
+  ],
+}
+
 const VIBE_SYSTEMS = [
   { name: 'TON / Web3', tone: 'sky' },
   { name: 'Gemini AI', tone: 'violet' },
@@ -211,6 +226,20 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
   const common = namespace(locale, 'common')
   const workflow = namespace(locale, 'workflow')
   const vibe = namespace(locale, 'vibecoding')
+  const projects = namespace(locale, 'projects')
+
+  /** Each case study contributes its header; the demo's own labels stay in i18n. */
+  const caseStudies = Object.fromEntries(
+    Object.entries(CASE_STUDY_TECH).map(([key, tech]) => [
+      key,
+      {
+        sectionLabel: projects[`${key}.sectionLabel`],
+        title: projects[`${key}.title`],
+        description: projects[`${key}.description`],
+        techStack: wrap(tech, 'name'),
+      },
+    ]),
+  )
 
   const aboutTree = unflatten(about) as {
     facts: Record<string, { label: string; value: string }>
@@ -300,6 +329,8 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
       label: skills.marqueeLabel,
       items: TECH.map((name) => ({ name })),
     },
+
+    ...caseStudies,
 
     vibecoding: {
       sectionLabel: vibe.sectionLabel,

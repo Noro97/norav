@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock } from '@/content/ContentProvider'
+import type { CaseStudyContent } from '@norav/content-schema'
 
 interface Activity {
   key: string
@@ -34,10 +36,6 @@ const PIPELINE_NODES = [
   { key: 'db', nodeKey: 'proof.nodes.db' },
 ]
 
-const TECH_TAGS = [
-  'Supabase Edge Functions', 'Google Gemini API', 'pgmq',
-  'FFmpeg.wasm', 'Telegram Mini App SDK',
-]
 
 type NodeStatus = 'idle' | 'active' | 'done'
 type PipelineStatus = 'idle' | 'running' | 'done'
@@ -46,10 +44,11 @@ type PipelineStatus = 'idle' | 'running' | 'done'
 const STEP_DURATION = 800
 const REP_INTERVAL = 250
 
-export function ProofWidget() {
+export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<CaseStudyContent>('proof')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('proof', sectionRef)
+  useSectionObserver(anchorId ?? 'proof', sectionRef)
 
   const [selectedActivity, setSelectedActivity] = useState(0)
   const [livenessChallenge, setLivenessChallenge] = useState(
@@ -249,26 +248,29 @@ export function ProofWidget() {
 
   const activity = ACTIVITIES[selectedActivity]!
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="proof"
+      id={anchorId ?? 'proof'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <span className="label-mono">{t('projects:proof.sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white mt-3">
-            {t('projects:proof.title')}
+            {content.title}
           </h2>
           <p className="text-body-lg text-white/50 max-w-2xl mt-4">
-            {t('projects:proof.description')}
+            {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
-            {TECH_TAGS.map(tag => (
-              <span key={tag} className="case-study-pill text-xs font-mono text-white/45">
-                {tag}
+            {content.techStack.map((tag) => (
+              <span key={tag.name} className="case-study-pill text-xs font-mono text-white/45">
+                {tag.name}
               </span>
             ))}
           </div>

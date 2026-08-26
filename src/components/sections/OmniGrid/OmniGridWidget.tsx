@@ -12,6 +12,8 @@ import {
   type SortingState,
 } from '@tanstack/react-table'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock } from '@/content/ContentProvider'
+import type { CaseStudyContent } from '@norav/content-schema'
 import { useShipments } from './useShipments'
 import { OMNIGRID_COLUMNS, STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
 import type { ShipmentRecord, ShipmentStatus, ShipmentPriority } from './omnigrid.data'
@@ -27,12 +29,12 @@ const CACHE_COLORS: Record<string, string> = {
   FETCHING: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
 }
 
-const TECH_STACK = ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll']
 
-function OmniGridContent() {
+function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<CaseStudyContent>('omnigrid')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('omnigrid', sectionRef)
+  useSectionObserver(anchorId ?? 'omnigrid', sectionRef)
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -94,9 +96,12 @@ function OmniGridContent() {
     setRenderTime(Math.round((performance.now() - renderStartRef.current) * 100) / 100)
   }, [rows])
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="omnigrid"
+      id={anchorId ?? 'omnigrid'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-28 md:py-36"
     >
@@ -106,17 +111,17 @@ function OmniGridContent() {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <span className="label-mono">{t('projects:omnigrid.sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white tracking-tight mt-4 mb-5">
-            {t('projects:omnigrid.title')}
+            {content.title}
           </h2>
           <p className="text-white/45 text-body-md md:text-body-lg max-w-xl leading-relaxed">
-            {t('projects:omnigrid.description')}
+            {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
-            {TECH_STACK.map((tech) => (
-              <span key={tech} className="case-study-pill text-xs font-mono text-cyan-400/70 tracking-wide">
-                {tech}
+            {content.techStack.map((tech) => (
+              <span key={tech.name} className="case-study-pill text-xs font-mono text-cyan-400/70 tracking-wide">
+                {tech.name}
               </span>
             ))}
           </div>
@@ -319,10 +324,10 @@ function OmniGridContent() {
   )
 }
 
-export function OmniGridWidget() {
+export function OmniGridWidget({ anchorId }: { anchorId?: string | null }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <OmniGridContent />
+      <OmniGridContent anchorId={anchorId} />
     </QueryClientProvider>
   )
 }

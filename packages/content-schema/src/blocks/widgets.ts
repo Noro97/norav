@@ -30,36 +30,6 @@ export const bentoGridBlock = defineWidget(
   'Overview mosaic linking to each case study.',
 )
 
-export const logisticsBlock = defineWidget(
-  'logistics',
-  'NexusRoute',
-  'Live logistics map case study.',
-)
-
-export const merchBlock = defineWidget(
-  'merch',
-  'MerchForge',
-  'AI merch configurator case study.',
-)
-
-export const ecommerceBlock = defineWidget(
-  'ecommerce',
-  'FilterGraph',
-  'Faceted commerce search case study.',
-)
-
-export const omniGridBlock = defineWidget(
-  'omnigrid',
-  'OmniGrid',
-  'Operations console case study — virtualised data grid.',
-)
-
-export const proofBlock = defineWidget(
-  'proof',
-  'Proof',
-  'Telegram-native fitness platform case study.',
-)
-
 export const terminalFooterBlock = defineWidget(
   'terminal_footer',
   'Terminal footer',
