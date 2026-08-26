@@ -1,15 +1,28 @@
-import { useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Fragment, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useAppStore } from '@/store/useAppStore'
+import { useBlock } from '@/content/ContentProvider'
+import type { HeroContent, HeroSettings } from '@norav/content-schema'
+
+/** How a tagline segment is painted. Unknown accents fall back to the base tone. */
+const ACCENT_CLASS: Record<string, string> = {
+  none: '',
+  crimson: 'text-crimson-400',
+  bright: 'text-white/80',
+}
+
+/** Segments are space-joined, except one that opens with punctuation. */
+function needsLeadingSpace(text: string): boolean {
+  return !/^[.,;:!?)\]]/.test(text)
+}
 
 export function HeroSection() {
-  const { t } = useTranslation('hero')
+  const hero = useBlock<HeroContent, HeroSettings>('hero')
   const containerRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('hero', containerRef)
+  useSectionObserver(hero?.anchorId ?? 'hero', containerRef)
   const charsRef = useRef<HTMLSpanElement[]>([])
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
@@ -76,6 +89,7 @@ export function HeroSection() {
   }, { scope: containerRef })
 
   const handleClick = () => {
+    if (!hero?.settings.enableParticleBurst) return
     const store = useAppStore.getState()
     if (!store.heroExploded) {
       store.setHeroExploded(true)
@@ -83,12 +97,17 @@ export function HeroSection() {
     }
   }
 
+  // Every hook has run by here, so the block being absent — hidden in the CMS —
+  // can short-circuit the render.
+  if (!hero) return null
+  const { content, settings } = hero
+
   const nameParts = [
-    { text: t('firstName.highlight'), crimson: true },
-    { text: t('firstName.rest'), crimson: false },
+    { text: content.name.first.highlight, crimson: true },
+    { text: content.name.first.rest, crimson: false },
     { text: ' ', crimson: false, lineBreak: true },
-    { text: t('lastName.highlight'), crimson: true },
-    { text: t('lastName.rest'), crimson: false },
+    { text: content.name.last.highlight, crimson: true },
+    { text: content.name.last.rest, crimson: false },
   ]
 
   // Stable global char index per name part (running cumulative length), so the
@@ -102,18 +121,18 @@ export function HeroSection() {
 
   return (
     <section
-      id="hero"
+      id={hero.anchorId ?? 'hero'}
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center"
       onClick={handleClick}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: settings.enableParticleBurst ? 'pointer' : 'default' }}
     >
       <div className="relative z-10 max-w-4xl mx-auto pt-[28vh]">
         <p
           ref={subtitleRef}
           className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-crimson-500 mb-6"
         >
-          {t('subtitle')}
+          {content.subtitle}
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" data-cursor="text" style={{ fontFamily: 'var(--font-family-display)' }}>
@@ -141,22 +160,27 @@ export function HeroSection() {
           ref={taglineRef}
           className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-light"
         >
-          {t('tagline.before')}{' '}
-          <span className="text-crimson-400">{t('tagline.highlight1')}</span> {t('tagline.conjunction')}{' '}
-          <span className="text-white/80">{t('tagline.highlight2')}</span>{t('tagline.after')}
+          {content.tagline.map((segment, index) => (
+            <Fragment key={index}>
+              {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
+              <span className={ACCENT_CLASS[segment.accent] ?? ''}>{segment.text}</span>
+            </Fragment>
+          ))}
         </p>
       </div>
 
       {/* Scroll hint */}
-      <div
-        ref={scrollHintRef}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span className="font-mono text-xs tracking-[0.3em] uppercase text-white/20">
-          {t('scrollHint')}
-        </span>
-        <div className="w-px h-8 bg-gradient-to-b from-crimson-500/50 to-transparent animate-pulse" />
-      </div>
+      {settings.showScrollHint && (
+        <div
+          ref={scrollHintRef}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        >
+          <span className="font-mono text-xs tracking-[0.3em] uppercase text-white/20">
+            {content.scrollHint}
+          </span>
+          <div className="w-px h-8 bg-gradient-to-b from-crimson-500/50 to-transparent animate-pulse" />
+        </div>
+      )}
     </section>
   )
 }

@@ -1,0 +1,76 @@
+{
+  "pages": [
+    {
+      "seo": {
+        "en": {
+          "title": "Norayr Avetisyan — Frontend-Focused Fullstack Engineer",
+          "description": "Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+        },
+        "ru": {
+          "title": "Норайр Аветисян — Frontend-focused fullstack-инженер",
+          "description": "Создаю высокопроизводительные интерфейсы на стыке инженерной точности и визуального повествования."
+        }
+      },
+      "slug": "home",
+      "blocks": [
+        {
+          "id": "bd1f5797-91d5-4f45-8757-29c41f29880a",
+          "type": "hero",
+          "content": {
+            "name": {
+              "last": {
+                "rest": "etisyan",
+                "highlight": "Av"
+              },
+              "first": {
+                "rest": "ayr",
+                "highlight": "Nor"
+              }
+            },
+            "tagline": [
+              {
+                "text": "Building high-performance interfaces at the intersection of",
+                "accent": "none"
+              },
+              {
+                "text": "engineering precision",
+                "accent": "crimson"
+              },
+              {
+                "text": "and",
+                "accent": "none"
+              },
+              {
+                "text": "visual storytelling",
+                "accent": "bright"
+              },
+              {
+                "text": ".",
+                "accent": "none"
+              }
+            ],
+            "subtitle": "Frontend-Focused Fullstack Engineer",
+            "scrollHint": "Scroll to explore"
+          },
+          "anchorId": "hero",
+          "settings": {
+            "showScrollHint": true,
+            "enableParticleBurst": true
+          }
+        }
+      ]
+    }
+  ],
+  "locale": "en",
+  "version": 37,
+  "checksum": "000684a4af785cac6737d9af135ab3f0d2c6690d1573381d6f5e9de852774b94",
+  "settings": {
+    "site": {
+      "grain": true,
+      "cursor": true,
+      "dynamicGrid": true
+    }
+  },
+  "collections": {},
+  "publishedAt": "2026-08-26T10:50:11.932Z"
+}

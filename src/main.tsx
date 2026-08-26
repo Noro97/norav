@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './i18n'
 import App from './App'
+import { ContentProvider } from '@/content/ContentProvider'
 import { reportWebVitals } from '@/lib/webVitals'
 import './index.css'
 import '@warmbros/warmbros-components/styles.css'
@@ -14,7 +15,9 @@ gsap.registerPlugin(ScrollTrigger)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ContentProvider>
+      <App />
+    </ContentProvider>
   </StrictMode>,
 )
 
