@@ -49,6 +49,37 @@ npm run db:reset                 # wipe .pglite and re-seed
 npm run user:add -- --email you@example.com
 ```
 
+## Working on the site against the CMS
+
+```bash
+npm --prefix cms run dev     # the CMS on :3300
+npm run dev                  # the site on :5173
+```
+
+In development the site assumes the CMS is on `http://localhost:3300`, so a
+publish shows up on the next page load — no env var to remember. Set
+`VITE_CMS_URL` to point somewhere else; in production it must be set explicitly,
+because a build that silently talked to localhost would ship a site that never
+updates. The browser console says which snapshot won:
+
+```
+[content] swapped in version 6 from http://localhost:3300 (bundle was built with 4)
+[content] could not reach http://localhost:3300 — rendering the snapshot baked at build time
+```
+
+To bake the current published content into the repo (what the site falls back to
+when no CMS is reachable at build time):
+
+```bash
+npm run content:pull
+```
+
+**Restart `npm run dev` after pulling this branch.** The site gained a workspace
+dependency, and a Vite dev server that was already running re-optimises its
+dependencies underneath itself — which leaves react-three-fiber with two copies
+of its store and throws *"R3F: Hooks can only be used within the Canvas
+component!"*, blanking the page.
+
 ## API
 
 Public (cached, CORS-enabled for `SITE_ORIGIN`):

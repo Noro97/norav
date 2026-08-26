@@ -24,6 +24,22 @@ function toLocale(language: string): Locale {
   return language.startsWith('ru') ? 'ru' : 'en'
 }
 
+/**
+ * Where the published content comes from.
+ *
+ * In development the local CMS is assumed, so `npm run dev` picks up whatever
+ * was published a moment ago without anyone having to remember an env var. In
+ * production the origin must be set explicitly — a build that silently talked
+ * to localhost would ship a site that never updates.
+ */
+const DEV_CMS_URL = 'http://localhost:3300'
+
+function cmsOrigin(): string | undefined {
+  const configured = import.meta.env.VITE_CMS_URL
+  const origin = configured ?? (import.meta.env.DEV ? DEV_CMS_URL : undefined)
+  return origin?.replace(/\/$/, '')
+}
+
 async function fetchLocale(baseUrl: string, locale: Locale, version: number): Promise<Snapshot> {
   const response = await fetch(`${baseUrl}/api/public/content?locale=${locale}&v=${version}`)
   if (!response.ok) throw new Error(`content ${locale}: HTTP ${response.status}`)
@@ -45,8 +61,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
-    const baseUrl = import.meta.env.VITE_CMS_URL?.replace(/\/$/, '')
-    if (!baseUrl) return
+    const configured = cmsOrigin()
+    if (!configured) return
+    // Narrowed once, so the closures below see a plain string.
+    const baseUrl: string = configured
 
     let cancelled = false
     const controller = new AbortController()
@@ -58,14 +76,36 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         const manifest = (await response.json()) as { version: number; checksum: string }
         // Checksum, not version: a rollback republishes older copy under a new
         // version, and identical copy must not trigger a pointless fetch.
-        if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) return
+        if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) {
+          if (import.meta.env.DEV) {
+            console.info(
+              `[content] up to date with ${baseUrl} (version ${BAKED_SNAPSHOTS.en.version}).`,
+            )
+          }
+          return
+        }
 
         setIsRefreshing(true)
-        const latest = await fetchLatest(baseUrl!, manifest.version)
-        if (!cancelled) setSnapshots(latest)
-      } catch {
+        const latest = await fetchLatest(baseUrl, manifest.version)
+        if (cancelled) return
+        setSnapshots(latest)
+        if (import.meta.env.DEV) {
+          console.info(
+            `[content] swapped in version ${manifest.version} from ${baseUrl} ` +
+              `(bundle was built with ${BAKED_SNAPSHOTS.en.version}).`,
+          )
+        }
+      } catch (error) {
         // The bundle already holds a complete, valid snapshot — staying on it is
-        // the correct outcome of any failure here.
+        // the correct outcome of any failure here. In development, say so: a
+        // silent no-op is indistinguishable from "my edit did not show up".
+        if (import.meta.env.DEV && (error as Error)?.name !== 'AbortError') {
+          console.warn(
+            `[content] could not reach ${baseUrl} — rendering the snapshot baked at build time. ` +
+              'Start the CMS with `npm --prefix cms run dev`.',
+            error,
+          )
+        }
       } finally {
         if (!cancelled) setIsRefreshing(false)
       }
