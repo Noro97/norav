@@ -1,9 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { Locale, SerializedBlockDefinition } from '@norav/content-schema'
+import type {
+  Locale,
+  SerializedBlockDefinition,
+  SerializedCollectionDefinition,
+} from '@norav/content-schema'
 import { Editor, type EditorBlock } from '@/components/Editor'
+import { CollectionEditor } from '@/components/CollectionEditor'
+import type { WorkspaceView } from '@/components/ViewSwitcher'
 
 const PAGE_SLUG = 'home'
 
@@ -11,6 +17,7 @@ interface Loaded {
   user: { email: string }
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
+  collections: SerializedCollectionDefinition[]
   locales: Locale[]
   sourceLocale: Locale
 }
@@ -26,6 +33,7 @@ export default function AdminPage() {
   const router = useRouter()
   const [loaded, setLoaded] = useState<Loaded | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [view, setView] = useState<WorkspaceView>({ kind: 'page' })
 
   useEffect(() => {
     let cancelled = false
@@ -52,6 +60,7 @@ export default function AdminPage() {
       setLoaded({
         user: meBody.data,
         definitions: schemaBody.data.blocks,
+        collections: schemaBody.data.collections,
         locales: schemaBody.data.locales,
         sourceLocale: schemaBody.data.sourceLocale,
         blocks: pageBody.data.blocks,
@@ -65,6 +74,11 @@ export default function AdminPage() {
     return () => {
       cancelled = true
     }
+  }, [router])
+
+  const signOut = useCallback(async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    router.replace('/login')
   }, [router])
 
   if (error) {
@@ -83,14 +97,36 @@ export default function AdminPage() {
     )
   }
 
+  if (view.kind === 'collection') {
+    const definition = loaded.collections.find((candidate) => candidate.key === view.key)
+    if (definition) {
+      return (
+        <CollectionEditor
+          definition={definition}
+          collections={loaded.collections}
+          locales={loaded.locales}
+          sourceLocale={loaded.sourceLocale}
+          userEmail={loaded.user.email}
+          view={view}
+          onViewChange={setView}
+          onSignOut={signOut}
+        />
+      )
+    }
+  }
+
   return (
     <Editor
       pageSlug={PAGE_SLUG}
       blocks={loaded.blocks}
       definitions={loaded.definitions}
+      collections={loaded.collections}
       locales={loaded.locales}
       sourceLocale={loaded.sourceLocale}
       userEmail={loaded.user.email}
+      view={{ kind: 'page' }}
+      onViewChange={setView}
+      onSignOut={signOut}
     />
   )
 }

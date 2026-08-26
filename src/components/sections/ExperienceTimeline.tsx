@@ -1,61 +1,12 @@
 import { useRef, useState, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock, useCollection } from '@/content/ContentProvider'
+import type { ExperienceBlockContent, ExperienceContent, ExperienceData } from '@norav/content-schema'
 
-interface Experience {
-  index: number
-  period: string
-  achievementCount: number
-  stack: string[]
-  image: string
-}
-
-const EXPERIENCES: Experience[] = [
-  {
-    index: 0,
-    period: 'Feb 2026 — Present',
-    achievementCount: 3,
-    stack: ['React', 'Vite', 'Supabase', 'Telegram TMA', 'AI Agents'],
-    image: '/assets/img/exp-startup.png',
-  },
-  {
-    index: 1,
-    period: 'Sep 2025 — Feb 2026',
-    achievementCount: 3,
-    stack: ['React', 'TypeScript', 'Generative AI', 'SSE', 'Vercel'],
-    image: '/assets/img/exp-dataviz.png',
-  },
-  {
-    index: 2,
-    period: 'Feb 2024 — Jun 2025',
-    achievementCount: 3,
-    stack: ['React', 'TypeScript', 'Design Systems', 'Module Federation'],
-    image: '/assets/img/exp-logistics.png',
-  },
-  {
-    index: 3,
-    period: 'Sep 2023 — Jan 2024',
-    achievementCount: 2,
-    stack: ['Next.js', 'TypeScript', 'Fintech', 'iGaming'],
-    image: '/assets/img/exp-merch.png',
-  },
-  {
-    index: 4,
-    period: 'May 2020 — Sep 2023',
-    achievementCount: 2,
-    stack: ['Next.js', 'React', 'GraphQL', 'Node.js'],
-    image: '/assets/img/exp-startup.png',
-  },
-  {
-    index: 5,
-    period: 'Aug 2018 — May 2020',
-    achievementCount: 2,
-    stack: ['React', 'Redux', 'Sass', 'REST API'],
-    image: '/assets/img/exp-dataviz.png',
-  },
-]
+/** A published row: the non-localized columns composed with the translated ones. */
+type ExperienceRow = ExperienceData & ExperienceContent
 
 function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
@@ -119,10 +70,11 @@ function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-export function ExperienceTimeline() {
-  const { t } = useTranslation('experience')
+export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<ExperienceBlockContent, { showImages: boolean }>('experience')
+  const roles = useCollection<ExperienceRow>('experience')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('experience', sectionRef)
+  useSectionObserver(anchorId ?? 'experience', sectionRef)
 
   useGSAP(() => {
     const section = sectionRef.current!
@@ -154,19 +106,22 @@ export function ExperienceTimeline() {
     })
   }, { scope: sectionRef })
 
+  if (!block) return null
+  const { content, settings } = block
+
   return (
     <section
-      id="experience"
+      id={anchorId ?? 'experience'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
-        <span className="label-mono">{t('sectionLabel')}</span>
+        <span className="label-mono">{content.sectionLabel}</span>
         <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4" data-cursor="text">
-          {t('title')}
+          {content.title}
         </h2>
         <p className="text-white/40 text-base max-w-xl mb-16" data-cursor="text">
-          {t('description')}
+          {content.description}
         </p>
 
         {/* Timeline */}
@@ -178,13 +133,14 @@ export function ExperienceTimeline() {
 
           {/* Cards */}
           <div className="space-y-12 md:space-y-16">
-            {EXPERIENCES.map((exp, i) => {
+            {roles.map((role, i) => {
+              const exp = role.data
               const isLeft = i % 2 === 0
-              const company = t(`entries.${exp.index}.company`)
+              const company = exp.company
 
               return (
                 <div
-                  key={`${exp.index}-${i}`}
+                  key={role.id}
                   className={`exp-card relative flex flex-col md:flex-row ${
                     isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
                   } items-start gap-8 md:gap-0`}
@@ -208,11 +164,11 @@ export function ExperienceTimeline() {
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-base">{t(`entries.${exp.index}.role`)}</h3>
+                          <h3 className="text-white font-semibold text-base">{exp.role}</h3>
                           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                             <span className="font-mono text-xs text-crimson-400">{company}</span>
                             <span className="text-white/35">·</span>
-                            <span className="font-mono text-xs text-white/45">{t(`entries.${exp.index}.type`)}</span>
+                            <span className="font-mono text-xs text-white/45">{exp.type}</span>
                           </div>
                         </div>
                       </div>
@@ -226,15 +182,15 @@ export function ExperienceTimeline() {
 
                       {/* Description */}
                       <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`} data-cursor="text">
-                        {t(`entries.${exp.index}.description`)}
+                        {exp.description}
                       </p>
 
                       {/* Achievements */}
                       <ul className="space-y-1.5 mb-4">
-                        {Array.from({ length: exp.achievementCount }, (_, j) => (
+                        {exp.achievements.map((achievement, j) => (
                           <li key={j} className={`flex gap-2 text-xs text-white/50 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
                             <span className="text-crimson-500 shrink-0 mt-0.5">▸</span>
-                            <span>{t(`entries.${exp.index}.achievements.${j}`)}</span>
+                            <span>{achievement.text}</span>
                           </li>
                         ))}
                       </ul>
@@ -243,10 +199,10 @@ export function ExperienceTimeline() {
                       <div className={`flex flex-wrap gap-1.5 ${isLeft ? 'md:justify-end' : ''}`}>
                         {exp.stack.map((tech) => (
                           <span
-                            key={tech}
+                            key={tech.name}
                             className="px-2 py-0.5 text-xs font-mono text-white/45 bg-white/3 border border-white/5 rounded"
                           >
-                            {tech}
+                            {tech.name}
                           </span>
                         ))}
                       </div>
@@ -254,16 +210,15 @@ export function ExperienceTimeline() {
                   </div>
 
                   {/* Interactive illustration */}
-                  <div
-                    className={`exp-illustration hidden md:flex md:w-1/2 items-center ${
-                      isLeft ? 'md:pl-12' : 'md:pr-12'
-                    }`}
-                  >
-                    <InteractiveImageCard
-                      src={exp.image}
-                      alt={`${company} illustration`}
-                    />
-                  </div>
+                  {settings.showImages && exp.image && (
+                    <div
+                      className={`exp-illustration hidden md:flex md:w-1/2 items-center ${
+                        isLeft ? 'md:pl-12' : 'md:pr-12'
+                      }`}
+                    >
+                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} />
+                    </div>
+                  )}
                 </div>
               )
             })}

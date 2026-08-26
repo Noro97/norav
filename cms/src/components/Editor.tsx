@@ -1,10 +1,14 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import type { Locale, SerializedBlockDefinition } from '@norav/content-schema'
+import type {
+  Locale,
+  SerializedBlockDefinition,
+  SerializedCollectionDefinition,
+} from '@norav/content-schema'
 import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
+import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
 
 export interface EditorBlock {
   id: string
@@ -20,9 +24,13 @@ interface EditorProps {
   pageSlug: string
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
+  collections: SerializedCollectionDefinition[]
   locales: readonly Locale[]
   sourceLocale: Locale
   userEmail: string
+  view: WorkspaceView
+  onViewChange: (next: WorkspaceView) => void
+  onSignOut: () => void
 }
 
 interface Draft {
@@ -92,11 +100,14 @@ export function Editor({
   pageSlug,
   blocks: initialBlocks,
   definitions,
+  collections,
   locales,
   sourceLocale,
   userEmail,
+  view,
+  onViewChange,
+  onSignOut,
 }: EditorProps) {
-  const router = useRouter()
   const definitionsByType = useMemo(
     () => new Map(definitions.map((definition) => [definition.type, definition])),
     [definitions],
@@ -303,7 +314,6 @@ export function Editor({
         ? { kind: 'warn', message: `Nothing changed since version ${body.data.version}.` }
         : { kind: 'ok', message: `Published version ${body.data.version}.` },
     )
-    router.refresh()
   }
 
   const hasUnsaved = Object.values(dirty).some(Boolean)
@@ -315,6 +325,13 @@ export function Editor({
           norav<span>.</span>cms
         </p>
         <p className="brand-sub">/{pageSlug}</p>
+
+        <ViewSwitcher
+          view={view}
+          collections={collections}
+          disabled={busy !== null}
+          onChange={onViewChange}
+        />
 
         <ul className="block-list">
           {blocks.map((block, index) => {
@@ -401,16 +418,9 @@ export function Editor({
         <p className="brand-sub" style={{ marginTop: 28, marginBottom: 8 }}>
           {userEmail}
         </p>
-        <form action="/api/auth/logout" method="post" onSubmit={async (event) => {
-          event.preventDefault()
-          await fetch('/api/auth/logout', { method: 'POST' })
-          router.replace('/login')
-          router.refresh()
-        }}>
-          <button className="ghost" type="submit" style={{ width: '100%' }}>
-            Sign out
-          </button>
-        </form>
+        <button className="ghost" type="button" onClick={onSignOut} style={{ width: '100%' }}>
+          Sign out
+        </button>
       </aside>
 
       <main className="main">

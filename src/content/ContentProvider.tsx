@@ -179,3 +179,23 @@ export function useVisibleAnchors(): Set<string> {
     return anchors
   }, [snapshot])
 }
+
+/**
+ * One collection's rows, already ordered, locale-resolved and filtered to the
+ * visible ones by the publish step. Returns an empty list when the collection
+ * has never been published, so a section renders nothing rather than throwing.
+ */
+export function useCollection<TRow = Record<string, unknown>>(
+  key: string,
+): { id: string; slug: string; data: TRow }[] {
+  const { snapshot } = useContent()
+  return useMemo(
+    () =>
+      (snapshot.collections[key] ?? []).map((entry) => ({
+        id: entry.id,
+        slug: entry.slug,
+        data: entry.data as TRow,
+      })),
+    [snapshot, key],
+  )
+}

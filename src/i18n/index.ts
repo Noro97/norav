@@ -4,7 +4,6 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import commonEn from './locales/en/common.json'
 import aboutEn from './locales/en/about.json'
-import experienceEn from './locales/en/experience.json'
 import skillsEn from './locales/en/skills.json'
 import bentoEn from './locales/en/bento.json'
 import projectsEn from './locales/en/projects.json'
@@ -16,7 +15,6 @@ import extraEn from './locales/en/extra.json'
 
 import commonRu from './locales/ru/common.json'
 import aboutRu from './locales/ru/about.json'
-import experienceRu from './locales/ru/experience.json'
 import skillsRu from './locales/ru/skills.json'
 import bentoRu from './locales/ru/bento.json'
 import projectsRu from './locales/ru/projects.json'
@@ -34,7 +32,6 @@ i18n
       en: {
         common: commonEn,
         about: aboutEn,
-        experience: experienceEn,
         skills: skillsEn,
         bento: bentoEn,
         projects: projectsEn,
@@ -47,7 +44,6 @@ i18n
       ru: {
         common: commonRu,
         about: aboutRu,
-        experience: experienceRu,
         skills: skillsRu,
         bento: bentoRu,
         projects: projectsRu,

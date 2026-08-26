@@ -1,4 +1,9 @@
-import { listBlockDefinitions, LOCALES, SOURCE_LOCALE } from '@norav/content-schema'
+import {
+  listBlockDefinitions,
+  listCollectionDefinitions,
+  LOCALES,
+  SOURCE_LOCALE,
+} from '@norav/content-schema'
 import { requireUser } from '@/lib/auth'
 import { ok } from '@/lib/http'
 
@@ -17,5 +22,6 @@ export async function GET(request: Request) {
     locales: LOCALES,
     sourceLocale: SOURCE_LOCALE,
     blocks: listBlockDefinitions(),
+    collections: listCollectionDefinitions(),
   })
 }
