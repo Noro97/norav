@@ -1,0 +1,31 @@
+{
+  "name": "@norav/cms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "norav CMS \u2014 admin UI and content API for the norav.dev portfolio",
+  "scripts": {
+    "dev": "next dev -p 3300",
+    "build": "next build",
+    "start": "next start -p 3300",
+    "typecheck": "tsc --noEmit",
+    "user:add": "tsx scripts/create-user.mts",
+    "seed": "tsx scripts/seed.mts"
+  },
+  "dependencies": {
+    "@norav/content-schema": "file:../packages/content-schema",
+    "next": "^15.5.24",
+    "pg": "^8.13.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.7",
+    "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
+  }
+}

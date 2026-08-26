@@ -13,6 +13,15 @@ dist/
 
 # deps
 node_modules/
+
+# next.js (cms)
+.next/
+next-env.d.ts
+
+# embedded local database used by the CMS in development
+.pglite/
+*.tsbuildinfo
+
 # env
 .env
 .env.production
