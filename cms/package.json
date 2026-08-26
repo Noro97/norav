@@ -2,7 +2,7 @@
   "name": "@norav/cms",
   "version": "0.1.0",
   "private": true,
-  "description": "norav CMS \u2014 admin UI and content API for the norav.dev portfolio",
+  "description": "norav CMS — admin UI and content API for the norav.dev portfolio",
   "scripts": {
     "dev": "next dev -p 3300",
     "build": "next build",
@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@norav/content-schema": "file:../packages/content-schema",
+    "@vercel/blob": "^2.8.0",
     "next": "^15.5.24",
     "pg": "^8.13.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "sharp": "^0.35.4",
     "zod": "^4.3.6"
   },
   "devDependencies": {

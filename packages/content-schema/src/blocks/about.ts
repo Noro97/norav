@@ -114,7 +114,7 @@ export const aboutBlock = defineBlock({
     },
     { field: 'statusLabel', control: 'text', label: 'Availability badge' },
     { field: 'cvLabel', control: 'text', label: 'CV button' },
-    { field: 'photo', control: 'text', label: 'Photo', source: 'settings' },
+    { field: 'photo', control: 'media', label: 'Photo', source: 'settings' },
     { field: 'cvHref', control: 'text', label: 'CV file', source: 'settings' },
     { field: 'showStatusBadge', control: 'boolean', label: 'Show availability badge', source: 'settings' },
   ],
