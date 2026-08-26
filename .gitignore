@@ -18,8 +18,9 @@ node_modules/
 .next/
 next-env.d.ts
 
-# embedded local database used by the CMS in development
+# embedded local database and uploads used by the CMS in development
 .pglite/
+.media/
 *.tsbuildinfo
 
 # env

@@ -80,6 +80,24 @@ dependencies underneath itself — which leaves react-three-fiber with two copie
 of its store and throws *"R3F: Hooks can only be used within the Canvas
 component!"*, blanking the page.
 
+## Media
+
+Uploads follow the same two-driver shape as the database. Without
+`BLOB_READ_WRITE_TOKEN` they are written to `cms/.media` and served back by this
+app at `/api/public/media/<key>`, which is what local development wants. With
+the token set they go to Vercel Blob and are served from its CDN. Either way the
+media row stores an absolute URL, so the site never learns which driver produced
+it.
+
+Images are accepted up to 12 MB (jpeg, png, webp, avif, gif, svg); anything else
+is refused before it is stored. Dimensions are read on upload so the site can
+reserve layout space. Deleting removes the bytes and soft-deletes the row —
+nothing here knows which pages point at a file, so the history stays.
+
+Images that predate the library still live in the site's `public/` folder and
+are referenced by path. Image fields keep their text input for exactly that
+reason: a path typed by hand is as valid as one chosen from the library.
+
 ## API
 
 Public (cached, CORS-enabled for `SITE_ORIGIN`):
@@ -99,6 +117,8 @@ Admin (session cookie, same-origin only):
 | GET | `/api/admin/pages/:slug` | page with blocks and every translation |
 | PATCH | `/api/admin/blocks/:id` | save settings / visibility / one locale |
 | POST | `/api/admin/publish` | validate everything and cut a new version |
+| GET/POST | `/api/admin/media` | list the library / upload a file |
+| DELETE | `/api/admin/media/:id` | remove a file |
 
 Responses are `{ data }` or `{ error: { code, message, fields } }`, where
 `fields` carries zod paths so the editor can highlight the input that failed.

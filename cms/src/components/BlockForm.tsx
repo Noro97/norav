@@ -1,7 +1,9 @@
 'use client'
 
 import type { FormField, Locale } from '@norav/content-schema'
+import { useState } from 'react'
 import { getAtPath } from '@norav/content-schema'
+import { MediaPicker } from './MediaPicker'
 
 /**
  * Renders the editor for one block from its form descriptor.
@@ -65,6 +67,20 @@ function Field({ field, prefix, ...form }: FieldProps) {
   const inherited = field.localized === false && form.locale !== form.sourceLocale
   const disabled = form.disabled || inherited
   const help = inherited ? `Edited in ${form.sourceLocale.toUpperCase()}` : field.help
+
+  if (field.control === 'media') {
+    return (
+      <MediaField
+        id={id}
+        label={field.label}
+        help={help}
+        value={typeof value === 'string' ? value : ''}
+        disabled={disabled}
+        error={error}
+        onChange={(next) => form.onChange(source, path, next)}
+      />
+    )
+  }
 
   if (field.control === 'collection') {
     return (
@@ -210,6 +226,65 @@ function Field({ field, prefix, ...form }: FieldProps) {
 
       {help && <p className="help">{help}</p>}
       {error && <p className="error">{error}</p>}
+    </div>
+  )
+}
+
+/**
+ * An image field: a thumbnail, the path it points at, and the library behind a
+ * button. The path stays editable by hand — the images that predate the media
+ * library live in the site's public folder and are referenced by path.
+ */
+function MediaField({
+  id,
+  label,
+  help,
+  value,
+  disabled,
+  error,
+  onChange,
+}: {
+  id: string
+  label: string
+  help?: string
+  value: string
+  disabled?: boolean
+  error?: string
+  onChange: (next: string) => void
+}) {
+  const [picking, setPicking] = useState(false)
+
+  return (
+    <div className="field">
+      <label htmlFor={id}>{label}</label>
+
+      <div className="media-field">
+        {value ? <img src={value} alt="" /> : null}
+        <input
+          id={id}
+          type="text"
+          className="path"
+          value={value}
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.value)}
+        />
+        <button type="button" className="ghost" disabled={disabled} onClick={() => setPicking(true)}>
+          Choose
+        </button>
+      </div>
+
+      {help && <p className="help">{help}</p>}
+      {error && <p className="error">{error}</p>}
+
+      {picking && (
+        <MediaPicker
+          onClose={() => setPicking(false)}
+          onSelect={(item) => {
+            onChange(item.url)
+            setPicking(false)
+          }}
+        />
+      )}
     </div>
   )
 }
