@@ -10,8 +10,8 @@ import { skillsBlock } from './skills'
 import { techMarqueeBlock } from './tech-marquee'
 import { contactCtaBlock } from './contact-cta'
 import { projectsIntroBlock } from './projects-intro'
-import { terminalFooterBlock } from './widgets'
 import { bentoGridBlock } from './bento-grid'
+import { terminalFooterBlock } from './terminal-footer'
 import {
   ecommerceBlock,
   logisticsBlock,
@@ -129,3 +129,4 @@ export type { WorkflowContent } from './workflow'
 export type { VibeCodingContent } from './vibecoding'
 export type { CaseStudyContent } from './case-study'
 export type { BentoGridContent } from './bento-grid'
+export type { TerminalFooterContent } from './terminal-footer'

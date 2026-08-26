@@ -239,6 +239,7 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
   const vibe = namespace(locale, 'vibecoding')
   const projects = namespace(locale, 'projects')
   const bento = namespace(locale, 'bento')
+  const terminal = namespace(locale, 'terminal')
 
   /** Each case study contributes its header; the demo's own labels stay in i18n. */
   const caseStudies = Object.fromEntries(
@@ -343,6 +344,32 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
     },
 
     ...caseStudies,
+
+    terminal_footer: {
+      sectionLabel: terminal.sectionLabel,
+      title: terminal.title,
+      subtitle: terminal.subtitle,
+      titleBar: terminal.titleBar,
+      prompt: terminal.prompt,
+      placeholder: terminal.placeholder,
+      welcome: wrap([terminal['welcome.0'], terminal['welcome.1']], 'text'),
+      whoami: {
+        visitor: terminal['whoami.visitor'],
+        exploring: terminal['whoami.exploring'],
+        welcome: terminal['whoami.welcome'],
+        hint: terminal['whoami.hint'],
+      },
+      hire: {
+        message: terminal['sudo.hire.message'],
+        openTo: terminal['sudo.hire.openTo'],
+        location: terminal['sudo.hire.location'],
+        burst: terminal['sudo.hire.burst'],
+        niceTry: terminal['sudo.niceTry'],
+      },
+      // i18next interpolation syntax survives the move; the terminal does the
+      // substitution itself now.
+      commandNotFound: terminal.commandNotFound,
+    },
 
     bento_grid: {
       sectionLabel: bento.sectionLabel,

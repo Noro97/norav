@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "7cf85654-4856-487c-8066-ae50e995669b",
+          "id": "3d8a0032-2f0c-4496-a0f2-8ac13db5fa44",
           "type": "hero",
           "content": {
             "name": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "4d7f72e5-04e0-47a2-ab7d-0ad0de21f945",
+          "id": "68ba1088-35bb-4ea0-8947-63055746e161",
           "type": "about",
           "content": {
             "bio": {
@@ -148,7 +148,7 @@
           }
         },
         {
-          "id": "cbd66829-9eb2-45a4-9382-6cd02942c4ba",
+          "id": "1b58fdf6-3b65-4b56-bf26-dd2a8e1a3425",
           "type": "impact_strip",
           "content": {
             "label": "В цифрах",
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "266f38ba-7ab3-4425-9a2a-499cf71dd7ac",
+          "id": "bfd4101b-b49e-4f6e-9d23-14e8c0d64deb",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "5f602e99-6471-4bf0-adf9-312d7e1813c8",
+          "id": "819791ea-27f7-4b5d-80ae-f57cc9f6372f",
           "type": "experience",
           "content": {
             "title": "Опыт работы",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "8456252d-f064-4615-bba4-9fce8e38cbd4",
+          "id": "58f715b7-e8c5-4145-92b3-4f147914483d",
           "type": "skills",
           "content": {
             "title": "Навыки и инструменты",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "1d24d13d-c703-4d55-bd88-fc4cc46d24bc",
+          "id": "60b5d47e-456c-4575-8195-19d382cc7ee1",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,7 +471,7 @@
           "settings": {}
         },
         {
-          "id": "3b78f949-f891-4b05-926b-d15199a975cd",
+          "id": "cd7c1d59-6165-432f-bb65-5f0d1d734cc1",
           "type": "bento_grid",
           "content": {
             "tiles": [
@@ -596,7 +596,7 @@
           "settings": {}
         },
         {
-          "id": "31715a41-28a0-4e61-8b87-f029b36a958e",
+          "id": "1e09b59f-ac27-4666-b05f-0f4ac5a1fa35",
           "type": "vibecoding",
           "content": {
             "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
@@ -673,7 +673,7 @@
           "settings": {}
         },
         {
-          "id": "2675c842-09d2-42c1-a692-6f6f80b9e36f",
+          "id": "65ff83f3-92e1-4549-9056-5885fe6ab75b",
           "type": "projects_intro",
           "content": {
             "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
@@ -703,7 +703,7 @@
           }
         },
         {
-          "id": "bc6bd805-8efd-4975-92d5-bdee3341e3dc",
+          "id": "5405b1de-238e-4765-9bd4-1d1675ee5eb9",
           "type": "logistics",
           "content": {
             "title": "NexusRoute",
@@ -731,7 +731,7 @@
           "settings": {}
         },
         {
-          "id": "5366633b-999c-4c23-ab07-be6deb201b13",
+          "id": "01639fe2-f27b-4cb9-bf2e-3548cca878e4",
           "type": "merch",
           "content": {
             "title": "MerchForge",
@@ -756,7 +756,7 @@
           "settings": {}
         },
         {
-          "id": "89b7bba3-4880-4067-baab-93b5e03155e6",
+          "id": "80a1ee61-f7a9-444f-b3d5-7c15060ad5bb",
           "type": "ecommerce",
           "content": {
             "title": "FilterGraph",
@@ -790,7 +790,7 @@
           "settings": {}
         },
         {
-          "id": "1ef1c16d-10aa-4101-a15a-acf0cf19ce05",
+          "id": "52620a4a-3ae0-4ec7-9e70-66bca4379f03",
           "type": "omnigrid",
           "content": {
             "title": "OmniGrid: Система управления данными",
@@ -815,7 +815,7 @@
           "settings": {}
         },
         {
-          "id": "06631486-04e4-4f55-9ea0-8e9188ea9800",
+          "id": "8a597e0d-8356-412f-956c-9e2c9c2a47b0",
           "type": "proof",
           "content": {
             "title": "Proof: ИИ-верификация фитнеса",
@@ -843,7 +843,7 @@
           "settings": {}
         },
         {
-          "id": "64ae7b5c-b737-4227-b72e-1fe7375d204b",
+          "id": "fee69ee8-ae1d-4af2-814e-07357c8c4869",
           "type": "workflow",
           "content": {
             "title": "AI-автоматизация процессов",
@@ -891,7 +891,7 @@
           "settings": {}
         },
         {
-          "id": "3f697400-344d-4e58-8e88-0279790c57f5",
+          "id": "9f74d469-e5e5-42d3-919d-572d0de33832",
           "type": "contact_cta",
           "content": {
             "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
@@ -924,9 +924,38 @@
           }
         },
         {
-          "id": "42ce3f13-904d-4f3d-b398-6159fb577528",
+          "id": "c843a20a-b11d-4ca7-b5e7-6d1ce7581cb7",
           "type": "terminal_footer",
-          "content": {},
+          "content": {
+            "hire": {
+              "burst": "  ✦ ВЗРЫВ ЧАСТИЦ АКТИВИРОВАН ✦",
+              "openTo": "  Открыт к: Senior / Staff позициям",
+              "message": "  Давайте создадим что-то великое.",
+              "niceTry": "Хорошая попытка. ;)",
+              "location": "  Локация: Ереван, Армения / Удалённо"
+            },
+            "title": "Терминал",
+            "prompt": "visitor@portfolio:~$",
+            "whoami": {
+              "hint": "  Попробуйте: cat about.txt, neofetch, sudo hire",
+              "visitor": "  visitor",
+              "welcome": "  Любознательные умы здесь всегда приветствуются.",
+              "exploring": "  Вы исследуете портфолио Норайра Аветисяна."
+            },
+            "welcome": [
+              {
+                "text": "Добро пожаловать в терминал портфолио Норайра Аветисяна."
+              },
+              {
+                "text": "Введите 'help' для списка доступных команд."
+              }
+            ],
+            "subtitle": "$ взаимодействуйте с этим портфолио",
+            "titleBar": "visitor@portfolio ~ zsh",
+            "placeholder": "введите команду...",
+            "sectionLabel": "Контакт",
+            "commandNotFound": "команда не найдена: {{cmd}}. Введите 'help' для списка доступных команд."
+          },
           "anchorId": "terminal",
           "settings": {}
         }
@@ -935,7 +964,7 @@
   ],
   "locale": "ru",
   "version": 1,
-  "checksum": "b680a2cd0813925f60c176eb87499602af69c9c0296c33d6d2d7dbab3c6d35c6",
+  "checksum": "a4d0250d3f9c503698ebfeaa7f93da765b962472a8e593126a75fb644f34299c",
   "settings": {
     "site": {
       "grain": true,
@@ -946,7 +975,7 @@
   "collections": {
     "experience": [
       {
-        "id": "b8fabfda-8881-4144-9bf5-c799f172af16",
+        "id": "d02eb8cd-cd9b-4a74-92d8-fd4f6d4d8efd",
         "data": {
           "role": "Основатель и технический архитектор",
           "type": "Founder",
@@ -986,7 +1015,7 @@
         "slug": "proof-app"
       },
       {
-        "id": "576afd82-ed38-4602-958f-e2a5db477a64",
+        "id": "20a28b32-52e7-4606-9226-0e6331382d6b",
         "data": {
           "role": "Ведущий фронтенд-инженер",
           "type": "Удалённо",
@@ -1026,7 +1055,7 @@
         "slug": "vizogen"
       },
       {
-        "id": "15b5ef5a-af80-4090-81f7-655a54309018",
+        "id": "1f36ca8d-bbc6-4361-8fae-5ed0095a5aa5",
         "data": {
           "role": "Core-фронтенд-инженер / UI-архитектор",
           "type": "Удалённо",
@@ -1063,7 +1092,7 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "c25c4fbe-7994-4811-b9c6-1b7f5fdc8329",
+        "id": "1f67f713-e302-474b-9e1b-af65aa407f48",
         "data": {
           "role": "Senior фронтенд-инженер",
           "type": "Удалённо",
@@ -1097,7 +1126,7 @@
         "slug": "appfox"
       },
       {
-        "id": "db77d447-455f-4dd6-b551-8c991cb3ae69",
+        "id": "2d3b4cd4-0ec8-453b-80ff-e7bb888dc3ff",
         "data": {
           "role": "Ведущий фронтенд-разработчик",
           "type": "В офисе",
@@ -1131,7 +1160,7 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "afb793a9-34e0-473d-ad00-5326f0c41765",
+        "id": "da35ea18-ad04-40b3-a148-337362d24b9c",
         "data": {
           "role": "Фронтенд-разработчик",
           "type": "В офисе",
@@ -1166,5 +1195,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T20:48:16.349Z"
+  "publishedAt": "2026-08-26T20:55:37.193Z"
 }

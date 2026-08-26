@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Locale, Snapshot } from '@norav/content-schema'
 import { BAKED_SNAPSHOTS, findBlock } from './index'
+import { setCurrentSnapshots } from './current'
 
 /**
  * Serves the published content to the tree, and quietly catches up with the CMS.
@@ -89,6 +90,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         const latest = await fetchLatest(baseUrl, manifest.version)
         if (cancelled) return
         setSnapshots(latest)
+        // Keep the non-React readers (the terminal) on the same content.
+        setCurrentSnapshots(latest)
         if (import.meta.env.DEV) {
           console.info(
             `[content] swapped in version ${manifest.version} from ${baseUrl} ` +

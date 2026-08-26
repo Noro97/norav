@@ -3,13 +3,16 @@ import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useBlock } from '@/content/ContentProvider'
+import type { TerminalFooterContent } from '@norav/content-schema'
 import { useTerminal } from '@/hooks/useTerminal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
-export function TerminalFooter() {
+export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<TerminalFooterContent>('terminal_footer')
   const { t } = useTranslation(['terminal', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('terminal', sectionRef)
+  useSectionObserver(anchorId ?? 'terminal', sectionRef)
   const outputRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { lines, input, setInput, handleKeyDown } = useTerminal()
@@ -34,20 +37,23 @@ export function TerminalFooter() {
     }
   }, [lines])
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="terminal"
+      id={anchorId ?? 'terminal'}
       ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-16 py-24"
     >
       <div className="relative z-10 w-full max-w-3xl mx-auto">
         <div className="mb-8 text-center">
-          <span className="label-mono">{t('terminal:sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-            {t('terminal:title')}
+            {content.title}
           </h2>
           <p className="text-white/40 text-sm mt-2 font-mono">
-            {t('terminal:subtitle')}
+            {content.subtitle}
           </p>
         </div>
 
@@ -59,7 +65,7 @@ export function TerminalFooter() {
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
             <span className="ml-3 font-mono text-xs text-white/40">
-              {t('terminal:titleBar')}
+              {content.titleBar}
             </span>
           </div>
 
@@ -74,7 +80,7 @@ export function TerminalFooter() {
                 {line.type === 'input' ? (
                   <div className="flex gap-2">
                     <span className="text-crimson-500 shrink-0">
-                      {t('terminal:prompt')}
+                      {content.prompt}
                     </span>
                     <span className="text-white/80">{line.content}</span>
                   </div>
@@ -89,7 +95,7 @@ export function TerminalFooter() {
             {/* Current input line */}
             <div className="flex gap-2 font-mono text-sm items-center mt-1">
               <span className="text-crimson-500 shrink-0">
-                {t('terminal:prompt')}
+                {content.prompt}
               </span>
               <div className="relative flex-1">
                 <input
@@ -98,11 +104,11 @@ export function TerminalFooter() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  aria-label={t('terminal:title')}
+                  aria-label={content.title}
                   className="w-full bg-transparent text-white/80 outline-none caret-crimson-500 font-mono text-sm focus:ring-1 focus:ring-crimson-500/40 focus:rounded-sm"
                   spellCheck={false}
                   autoComplete="off"
-                  placeholder={t('terminal:placeholder')}
+                  placeholder={content.placeholder}
                 />
               </div>
             </div>

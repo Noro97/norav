@@ -1,9 +1,18 @@
 import type { TerminalLine } from '@/types'
 import i18n from '@/i18n'
+import { currentBlockContent } from '@/content/current'
+import type { TerminalFooterContent } from '@norav/content-schema'
 
 type CommandHandler = (args: string[]) => string[]
 
 const t = (key: string) => i18n.t(key, { ns: 'terminal' })
+
+/**
+ * The terminal's narrative comes from the CMS; its per-command output stays in
+ * the i18n namespace beside the commands themselves. Reached without a hook —
+ * these are plain functions called from an event handler.
+ */
+const copy = () => currentBlockContent<TerminalFooterContent>('terminal_footer', i18n.language)
 
 const COMMANDS: Record<string, CommandHandler> = {
   help: () => [
@@ -144,12 +153,12 @@ const COMMANDS: Record<string, CommandHandler> = {
 
   whoami: () => [
     '',
-    t('whoami.visitor'),
+    copy()?.whoami.visitor ?? '',
     '',
-    t('whoami.exploring'),
-    t('whoami.welcome'),
+    copy()?.whoami.exploring ?? '',
+    copy()?.whoami.welcome ?? '',
     '',
-    t('whoami.hint'),
+    copy()?.whoami.hint ?? '',
     '',
   ],
 
@@ -199,15 +208,15 @@ const COMMANDS: Record<string, CommandHandler> = {
     if (args[0] === 'hire') {
       const rows = [
         '',
-        '   ' + t('sudo.hire.message'),
+        '   ' + (copy()?.hire.message ?? ''),
         '',
         '   ✉  noroavetisyan@gmail.com',
         '   ◆  github.com/Noro97',
         '   ●  linkedin.com/in/norayravetisyan',
         '   ✈  t.me/antarber',
         '',
-        '   ' + t('sudo.hire.openTo'),
-        '   ' + t('sudo.hire.location'),
+        '   ' + (copy()?.hire.openTo ?? ''),
+        '   ' + (copy()?.hire.location ?? ''),
         '',
       ]
       const w = Math.max(...rows.map((r) => r.length)) + 2
@@ -215,10 +224,10 @@ const COMMANDS: Record<string, CommandHandler> = {
       const bot = '  └' + '─'.repeat(w) + '┘'
       const boxed = rows.map((r) => '  │' + r + ' '.repeat(w - r.length) + '│')
 
-      return ['', top, ...boxed, bot, '', '  ' + t('sudo.hire.burst'), '']
+      return ['', top, ...boxed, bot, '', '  ' + (copy()?.hire.burst ?? ''), '']
     }
     if (args[0] === 'rm' || args[0] === 'su') {
-      return [t('sudo.niceTry')]
+      return [copy()?.hire.niceTry ?? '']
     }
     return [`sudo: ${args.join(' ')}: command not found`]
   },
@@ -257,7 +266,7 @@ export function executeCommand(input: string): TerminalLine[] {
   } else {
     result.push({
       type: 'output',
-      content: i18n.t('terminal:commandNotFound', { cmd }),
+      content: (copy()?.commandNotFound ?? 'command not found: {{cmd}}').replace('{{cmd}}', cmd),
     })
   }
 
