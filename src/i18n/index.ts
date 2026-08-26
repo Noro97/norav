@@ -9,7 +9,6 @@ import bentoEn from './locales/en/bento.json'
 import projectsEn from './locales/en/projects.json'
 import terminalEn from './locales/en/terminal.json'
 import vibecodingEn from './locales/en/vibecoding.json'
-import chatEn from './locales/en/chat.json'
 import workflowEn from './locales/en/workflow.json'
 import extraEn from './locales/en/extra.json'
 
@@ -20,7 +19,6 @@ import bentoRu from './locales/ru/bento.json'
 import projectsRu from './locales/ru/projects.json'
 import terminalRu from './locales/ru/terminal.json'
 import vibecodingRu from './locales/ru/vibecoding.json'
-import chatRu from './locales/ru/chat.json'
 import workflowRu from './locales/ru/workflow.json'
 import extraRu from './locales/ru/extra.json'
 
@@ -37,7 +35,6 @@ i18n
         projects: projectsEn,
         terminal: terminalEn,
         vibecoding: vibecodingEn,
-        chat: chatEn,
         workflow: workflowEn,
         extra: extraEn,
       },
@@ -49,7 +46,6 @@ i18n
         projects: projectsRu,
         terminal: terminalRu,
         vibecoding: vibecodingRu,
-        chat: chatRu,
         workflow: workflowRu,
         extra: extraRu,
       },

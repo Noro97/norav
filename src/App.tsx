@@ -83,10 +83,6 @@ function App() {
       <main ref={mainRef} className="relative z-10">
         <BlockRenderer />
       </main>
-
-      {/* TODO: AI chat is disabled — re-enable by lazy-importing
-          @/components/ai/AIChatWidget and rendering it here, or delete
-          src/components/ai/ + src/hooks/useChat.ts if it's not coming back. */}
     </>
   )
 }

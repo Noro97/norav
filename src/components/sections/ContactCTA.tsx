@@ -28,7 +28,9 @@ export function ContactCTA() {
               </span>
             </div>
 
-            <span className="label-mono">{t('contact.label')}</span>
+            {/* block: the availability badge above is inline-flex, and an inline
+                eyebrow would share its line. */}
+            <span className="label-mono block">{t('contact.label')}</span>
             <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-5">
               {t('contact.title')}
             </h2>
