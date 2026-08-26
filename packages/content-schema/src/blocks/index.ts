@@ -9,6 +9,18 @@ import { experienceBlock } from './experience'
 import { skillsBlock } from './skills'
 import { techMarqueeBlock } from './tech-marquee'
 import { contactCtaBlock } from './contact-cta'
+import { projectsIntroBlock } from './projects-intro'
+import {
+  bentoGridBlock,
+  ecommerceBlock,
+  logisticsBlock,
+  merchBlock,
+  omniGridBlock,
+  proofBlock,
+  terminalFooterBlock,
+  vibeCodingBlock,
+  workflowBlock,
+} from './widgets'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -23,7 +35,17 @@ export const BLOCK_REGISTRY = {
   experience: experienceBlock,
   skills: skillsBlock,
   tech_marquee: techMarqueeBlock,
+  bento_grid: bentoGridBlock,
+  vibecoding: vibeCodingBlock,
+  projects_intro: projectsIntroBlock,
+  logistics: logisticsBlock,
+  merch: merchBlock,
+  ecommerce: ecommerceBlock,
+  omnigrid: omniGridBlock,
+  proof: proofBlock,
+  workflow: workflowBlock,
   contact_cta: contactCtaBlock,
+  terminal_footer: terminalFooterBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -75,6 +97,16 @@ export function validateBlockSettings(type: string, value: unknown): ValidationR
 }
 
 export {
+  bentoGridBlock,
+  ecommerceBlock,
+  logisticsBlock,
+  merchBlock,
+  omniGridBlock,
+  proofBlock,
+  projectsIntroBlock,
+  terminalFooterBlock,
+  vibeCodingBlock,
+  workflowBlock,
   heroBlock,
   aboutBlock,
   impactStripBlock,
@@ -92,3 +124,4 @@ export type { ExperienceBlockContent } from './experience'
 export type { SkillsContent } from './skills'
 export type { TechMarqueeContent } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
+export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'

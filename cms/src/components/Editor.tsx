@@ -53,9 +53,44 @@ function toFormErrors(
   return errors
 }
 
+function buildDrafts(
+  blocks: EditorBlock[],
+  definitionsByType: Map<string, SerializedBlockDefinition>,
+  locales: readonly Locale[],
+  sourceLocale: Locale,
+): Record<string, Draft> {
+  const drafts: Record<string, Draft> = {}
+
+  for (const block of blocks) {
+    const definition = definitionsByType.get(block.type)
+    const fallback = (definition?.defaults.content ?? {}) as Record<string, unknown>
+    const source = block.translations[sourceLocale]?.content ?? fallback
+    const content = {} as Record<Locale, Record<string, unknown>>
+
+    for (const locale of locales) {
+      // The editor works on the resolved document — the translation overlaid on
+      // its source — so inherited values are visible (read-only) instead of
+      // showing as blanks. `pickLocalized` strips them again on save.
+      content[locale] =
+        locale === sourceLocale
+          ? source
+          : (mergeLocale(source, block.translations[locale]?.content) as Record<string, unknown>)
+    }
+
+    drafts[block.id] = {
+      version: block.version,
+      isVisible: block.is_visible,
+      settings: { ...(definition?.defaults.settings as object), ...block.settings },
+      content,
+    }
+  }
+
+  return drafts
+}
+
 export function Editor({
   pageSlug,
-  blocks,
+  blocks: initialBlocks,
   definitions,
   locales,
   sourceLocale,
@@ -67,38 +102,24 @@ export function Editor({
     [definitions],
   )
 
-  const [drafts, setDrafts] = useState<Record<string, Draft>>(() => {
-    const initial: Record<string, Draft> = {}
-    for (const block of blocks) {
-      const definition = definitionsByType.get(block.type)
-      const fallback = (definition?.defaults.content ?? {}) as Record<string, unknown>
-      const source = block.translations[sourceLocale]?.content ?? fallback
-      const content = {} as Record<Locale, Record<string, unknown>>
-      for (const locale of locales) {
-        // The editor works on the resolved document — the translation overlaid
-        // on its source — so inherited values are visible (read-only) instead
-        // of showing as blanks. `pickLocalized` strips them again on save.
-        content[locale] =
-          locale === sourceLocale
-            ? source
-            : (mergeLocale(source, block.translations[locale]?.content) as Record<string, unknown>)
-      }
-      initial[block.id] = {
-        version: block.version,
-        isVisible: block.is_visible,
-        settings: { ...(definition?.defaults.settings as object), ...block.settings },
-        content,
-      }
-    }
-    return initial
-  })
+  const [blocks, setBlocks] = useState(initialBlocks)
+  const [drafts, setDrafts] = useState<Record<string, Draft>>(() =>
+    buildDrafts(initialBlocks, definitionsByType, locales, sourceLocale),
+  )
 
-  const [selectedId, setSelectedId] = useState(blocks[0]?.id ?? '')
+  const [selectedId, setSelectedId] = useState(initialBlocks[0]?.id ?? '')
   const [locale, setLocale] = useState<Locale>(sourceLocale)
   const [dirty, setDirty] = useState<Record<string, boolean>>({})
-  const [busy, setBusy] = useState<'save' | 'publish' | null>(null)
+  const [busy, setBusy] = useState<'save' | 'publish' | 'add' | 'remove' | 'move' | null>(null)
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const [pendingType, setPendingType] = useState('')
+
+  // A singleton already on the page cannot be added twice.
+  const available = useMemo(() => {
+    const present = new Set(blocks.map((block) => block.type))
+    return definitions.filter((definition) => !definition.singleton || !present.has(definition.type))
+  }, [definitions, blocks])
 
   const selected = blocks.find((block) => block.id === selectedId)
   const draft = selectedId ? drafts[selectedId] : undefined
@@ -131,6 +152,81 @@ export function Editor({
       return existing ? { ...current, [selectedId]: { ...existing, isVisible: next } } : current
     })
     setDirty((current) => ({ ...current, [selectedId]: true }))
+  }
+
+  /** Structural changes touch several rows, so the page is re-read afterwards. */
+  async function refresh(selectId?: string) {
+    const response = await fetch(`/api/admin/pages/${pageSlug}`)
+    if (!response.ok) return
+    const body = await response.json()
+    const next = body.data.blocks as EditorBlock[]
+
+    setBlocks(next)
+    setDrafts(buildDrafts(next, definitionsByType, locales, sourceLocale))
+    setDirty({})
+    setSelectedId(
+      selectId ?? (next.some((block) => block.id === selectedId) ? selectedId : (next[0]?.id ?? '')),
+    )
+  }
+
+  async function structural(
+    action: 'add' | 'remove' | 'move',
+    request: () => Promise<Response>,
+    selectAfter?: (body: unknown) => string | undefined,
+  ) {
+    setBusy(action)
+    setFeedback(null)
+
+    const response = await request()
+    const body = await response.json().catch(() => null)
+    setBusy(null)
+
+    if (!response.ok) {
+      setFeedback({ kind: 'err', message: body?.error?.message ?? 'That did not work.' })
+      return
+    }
+
+    await refresh(selectAfter?.(body))
+    setFeedback({ kind: 'ok', message: 'Structure updated. Publish to put it live.' })
+  }
+
+  const move = (id: string, delta: number) => {
+    const index = blocks.findIndex((block) => block.id === id)
+    const target = index + delta
+    if (index === -1 || target < 0 || target >= blocks.length) return
+
+    const order = blocks.map((block) => block.id)
+    const [moved] = order.splice(index, 1)
+    if (moved) order.splice(target, 0, moved)
+
+    void structural('move', () =>
+      fetch('/api/admin/blocks/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pageSlug, order }),
+      }),
+    )
+  }
+
+  const remove = (id: string) => {
+    const definition = definitionsByType.get(blocks.find((block) => block.id === id)?.type ?? '')
+    if (!window.confirm(`Remove "${definition?.label ?? 'this section'}" from the page?`)) return
+
+    void structural('remove', () => fetch(`/api/admin/blocks/${id}`, { method: 'DELETE' }))
+  }
+
+  const add = (type: string) => {
+    if (!type) return
+    void structural(
+      'add',
+      () =>
+        fetch('/api/admin/blocks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pageSlug, type, afterId: selectedId || null }),
+        }),
+      (body) => (body as { data?: { id?: string } })?.data?.id,
+    )
   }
 
   async function save() {
@@ -221,10 +317,10 @@ export function Editor({
         <p className="brand-sub">/{pageSlug}</p>
 
         <ul className="block-list">
-          {blocks.map((block) => {
+          {blocks.map((block, index) => {
             const blockDraft = drafts[block.id]
             return (
-              <li key={block.id}>
+              <li key={block.id} className="block-row">
                 <button
                   type="button"
                   className="block-item"
@@ -240,10 +336,67 @@ export function Editor({
                   {dirty[block.id] && <em style={{ color: 'var(--warn)' }}>•</em>}
                   <span className="type">{block.type}</span>
                 </button>
+
+                <span className="block-actions">
+                  <button
+                    type="button"
+                    onClick={() => move(block.id, -1)}
+                    disabled={busy !== null || index === 0}
+                    aria-label="Move up"
+                    title="Move up"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => move(block.id, 1)}
+                    disabled={busy !== null || index === blocks.length - 1}
+                    aria-label="Move down"
+                    title="Move down"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => remove(block.id)}
+                    disabled={busy !== null}
+                    aria-label="Remove section"
+                    title="Remove from the page"
+                  >
+                    ✕
+                  </button>
+                </span>
               </li>
             )
           })}
         </ul>
+
+        <div className="palette">
+          <select
+            value={pendingType}
+            disabled={busy !== null}
+            onChange={(event) => setPendingType(event.target.value)}
+            aria-label="Section to add"
+          >
+            <option value="">Add a section…</option>
+            {available.map((definition) => (
+              <option key={definition.type} value={definition.type}>
+                {definition.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className="ghost"
+            disabled={!pendingType || busy !== null}
+            onClick={() => {
+              add(pendingType)
+              setPendingType('')
+            }}
+          >
+            Add
+          </button>
+        </div>
 
         <p className="brand-sub" style={{ marginTop: 28, marginBottom: 8 }}>
           {userEmail}

@@ -14,34 +14,34 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "b19fd1a4-3ae1-49d8-8e6a-8af7b0f121a0",
+          "id": "2c18194f-7512-4f83-8c1a-a7be00715e73",
           "type": "hero",
           "content": {
             "name": {
               "last": {
-                "rest": "етисян",
-                "highlight": "Ав"
+                "rest": "etisyan",
+                "highlight": "Av"
               },
               "first": {
-                "rest": "айр",
-                "highlight": "Нор"
+                "rest": "ayr",
+                "highlight": "Nor"
               }
             },
             "tagline": [
               {
-                "text": "Создаю высокопроизводительные интерфейсы на стыке",
+                "text": "Building high-performance interfaces at the intersection of",
                 "accent": "none"
               },
               {
-                "text": "инженерной точности",
+                "text": "engineering precision",
                 "accent": "crimson"
               },
               {
-                "text": "и",
+                "text": "and",
                 "accent": "none"
               },
               {
-                "text": "визуального повествования",
+                "text": "visual storytelling",
                 "accent": "bright"
               },
               {
@@ -49,8 +49,8 @@
                 "accent": "none"
               }
             ],
-            "subtitle": "Frontend-focused fullstack-инженер",
-            "scrollHint": "Прокрутите для навигации"
+            "subtitle": "Frontend-Focused Fullstack Engineer",
+            "scrollHint": "Scroll to explore"
           },
           "anchorId": "hero",
           "settings": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "909373f4-755f-4d15-b0ff-560ba769e03e",
+          "id": "1a1028da-270d-4cb7-81f2-a3fcc351297d",
           "type": "about",
           "content": {
             "bio": {
@@ -148,7 +148,7 @@
           }
         },
         {
-          "id": "eb17cc77-b2b0-4fb8-866e-514d32b81c50",
+          "id": "6f7bbf0a-4e42-41a1-8d4c-18822ac0d614",
           "type": "impact_strip",
           "content": {
             "label": "В цифрах",
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "3cc524ee-e11d-46ca-9d4b-a43eb01ba803",
+          "id": "ffb3bb6b-6cd7-4f6d-919f-e863689e2407",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "7958e55e-4a9d-43b0-9f82-9fb295af4bf3",
+          "id": "5fa735fb-4e2e-4fd6-99cc-bcce4666203e",
           "type": "experience",
           "content": {
             "title": "Опыт работы",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "79f96e27-200c-4571-8a98-d9506c8267d7",
+          "id": "980056c3-3279-4b78-88e3-6b04a1ef29a8",
           "type": "skills",
           "content": {
             "title": "Навыки и инструменты",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "49670b5c-4e23-4a94-a28a-69e37ddc73d9",
+          "id": "ee70cbed-94fc-4f8a-bcb5-4163201d3aae",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,7 +471,93 @@
           "settings": {}
         },
         {
-          "id": "aca24d53-53af-4ad0-8df6-c499d3651b6e",
+          "id": "18d67309-7e95-4505-8475-15f902dd2996",
+          "type": "bento_grid",
+          "content": {},
+          "anchorId": "overview",
+          "settings": {}
+        },
+        {
+          "id": "9c3595bf-9688-4757-8ce9-6d7730a5bc55",
+          "type": "vibecoding",
+          "content": {},
+          "anchorId": "vibecoding",
+          "settings": {}
+        },
+        {
+          "id": "496013a7-c8e8-46bc-a77d-49056ceadcda",
+          "type": "projects_intro",
+          "content": {
+            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
+            "label": "Selected Work · 2024 — 2026",
+            "heading": [
+              {
+                "text": "From zero to",
+                "accent": "none",
+                "lineBreakAfter": false
+              },
+              {
+                "text": "production",
+                "accent": "crimson",
+                "lineBreakAfter": true
+              },
+              {
+                "text": "in every frame.",
+                "accent": "none",
+                "lineBreakAfter": false
+              }
+            ],
+            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+          },
+          "anchorId": "projects-intro",
+          "settings": {
+            "image": "/assets/img/case-studies-hero.webp"
+          }
+        },
+        {
+          "id": "04e0fcad-8b31-4a5f-ae43-c7ec386cfdfa",
+          "type": "logistics",
+          "content": {},
+          "anchorId": "logistics",
+          "settings": {}
+        },
+        {
+          "id": "52b0a013-e63b-4406-a3c1-d3cc2928edb1",
+          "type": "merch",
+          "content": {},
+          "anchorId": "merch",
+          "settings": {}
+        },
+        {
+          "id": "e5de1e91-7ade-4a45-9a70-d1863d39492a",
+          "type": "ecommerce",
+          "content": {},
+          "anchorId": "ecommerce",
+          "settings": {}
+        },
+        {
+          "id": "deb3a59e-6462-47c4-9bdf-4a3beb293a75",
+          "type": "omnigrid",
+          "content": {},
+          "anchorId": "omnigrid",
+          "settings": {}
+        },
+        {
+          "id": "5900efae-243f-4cb3-afe4-393bd08deedc",
+          "type": "proof",
+          "content": {},
+          "anchorId": "proof",
+          "settings": {}
+        },
+        {
+          "id": "efbc2d08-8dda-4297-9f63-21b42f931391",
+          "type": "workflow",
+          "content": {},
+          "anchorId": "workflows",
+          "settings": {}
+        },
+        {
+          "id": "2c236371-3fa2-4856-8147-27916c999973",
           "type": "contact_cta",
           "content": {
             "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
@@ -497,18 +583,25 @@
             "emailLabel": "Написать на почту",
             "availability": "Доступен для новых проектов"
           },
-          "anchorId": "contact",
+          "anchorId": null,
           "settings": {
             "email": "noroavetisyan@gmail.com",
             "showAvailability": true
           }
+        },
+        {
+          "id": "604731d9-389a-4832-8897-f2849d47ef46",
+          "type": "terminal_footer",
+          "content": {},
+          "anchorId": "terminal",
+          "settings": {}
         }
       ]
     }
   ],
   "locale": "ru",
-  "version": 1,
-  "checksum": "7a324e72774a1bd4bf2a52b8324d52963896377e34276bece940ac33bfa80472",
+  "version": 4,
+  "checksum": "aad53913283a9b1a8947aa8144c7dba09ef1023ae38cfd62bf178a8d22af5d16",
   "settings": {
     "site": {
       "grain": true,
@@ -519,7 +612,7 @@
   "collections": {
     "experience": [
       {
-        "id": "e4c4e221-ef30-43d0-85e9-624f2466aa9e",
+        "id": "eba63437-e488-4096-88d8-fd25d3e175b2",
         "data": {
           "role": "Основатель и технический архитектор",
           "type": "Founder",
@@ -559,7 +652,7 @@
         "slug": "proof-app"
       },
       {
-        "id": "f5ce2762-f233-43ea-82a9-c0448a7bd00e",
+        "id": "5ee29c9a-8646-43d8-b57d-c9d0bc5541e9",
         "data": {
           "role": "Ведущий фронтенд-инженер",
           "type": "Удалённо",
@@ -599,7 +692,7 @@
         "slug": "vizogen"
       },
       {
-        "id": "0ab22fb7-6ea1-4004-bef5-8c0ae8f3a50a",
+        "id": "aba8e689-bf77-434e-80b1-1d6d48c792a3",
         "data": {
           "role": "Core-фронтенд-инженер / UI-архитектор",
           "type": "Удалённо",
@@ -636,7 +729,7 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "fea0af01-69c7-4d79-8fb8-6c579a5ff8d8",
+        "id": "6bda2281-9a78-4792-b5da-7794b97e45cf",
         "data": {
           "role": "Senior фронтенд-инженер",
           "type": "Удалённо",
@@ -670,7 +763,7 @@
         "slug": "appfox"
       },
       {
-        "id": "db03ca10-458f-4c89-b2a6-3d4e964371fa",
+        "id": "8b46a2e0-bb4d-495d-ad8b-d0743986f174",
         "data": {
           "role": "Ведущий фронтенд-разработчик",
           "type": "В офисе",
@@ -704,7 +797,7 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "afc851e5-e29e-41b0-8893-12a16d39d5e6",
+        "id": "84c3e4b1-25f6-4d63-99f1-42d63412e476",
         "data": {
           "role": "Фронтенд-разработчик",
           "type": "В офисе",
@@ -739,5 +832,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T12:03:02.826Z"
+  "publishedAt": "2026-08-26T12:18:08.874Z"
 }

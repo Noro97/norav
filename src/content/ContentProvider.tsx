@@ -121,3 +121,21 @@ export function useBlock<TContent, TSettings = Record<string, unknown>>(
     }
   }, [snapshot, type])
 }
+
+/**
+ * The anchors present on the published page. Navigation intersects its own list
+ * with this, so hiding a section in the CMS also removes it from the menu
+ * instead of leaving a link that scrolls nowhere.
+ */
+export function useVisibleAnchors(): Set<string> {
+  const { snapshot } = useContent()
+  return useMemo(() => {
+    const anchors = new Set<string>()
+    for (const page of snapshot.pages) {
+      for (const block of page.blocks) {
+        if (block.anchorId) anchors.add(block.anchorId)
+      }
+    }
+    return anchors
+  }, [snapshot])
+}

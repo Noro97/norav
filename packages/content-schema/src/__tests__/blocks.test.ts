@@ -16,7 +16,14 @@ describe('block registry', () => {
     expect(serialized.length).toBeGreaterThan(0)
     // The admin builds forms from this payload, so it must survive a round trip.
     expect(JSON.parse(JSON.stringify(serialized))).toEqual(serialized)
-    expect(serialized.every((definition) => definition.form.length > 0)).toBe(true)
+    // Tier 1 is edited in the CMS, so it must offer controls. Tier 2 blocks are
+    // the interactive case studies: the CMS owns their placement, not their
+    // insides, so an empty form is the correct answer for them.
+    const withoutForm = serialized.filter((definition) => definition.form.length === 0)
+    expect(withoutForm.every((definition) => definition.tier === 2)).toBe(true)
+    expect(serialized.filter((definition) => definition.tier === 1).every((d) => d.form.length > 0)).toBe(
+      true,
+    )
   })
 
   it('rejects unknown types instead of throwing', () => {

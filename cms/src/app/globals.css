@@ -111,3 +111,24 @@ fieldset > .help { margin-bottom: 14px; }
 
 .login { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
 .login form { width: 320px; }
+
+.block-row { display: flex; align-items: center; gap: 2px; }
+.block-row .block-item { flex: 1; min-width: 0; }
+.block-row .block-item > :nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.block-actions { display: flex; gap: 0; opacity: 0; transition: opacity 0.15s; }
+.block-row:hover .block-actions,
+.block-row:focus-within .block-actions { opacity: 1; }
+.block-actions button {
+  background: transparent; border: 0; color: var(--muted);
+  cursor: pointer; font-size: 11px; padding: 4px 5px; border-radius: 6px;
+}
+.block-actions button:hover:not(:disabled) { color: var(--text); background: var(--panel-2); }
+.block-actions button:disabled { opacity: 0.25; cursor: not-allowed; }
+
+.palette { display: flex; gap: 6px; margin-top: 14px; }
+.palette select {
+  flex: 1; min-width: 0; background: var(--panel); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 7px 9px; font: inherit; font-size: 12px;
+}
+.palette button { padding: 7px 12px; font-size: 12px; }

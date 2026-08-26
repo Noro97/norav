@@ -130,3 +130,32 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
 
   return ok({ id, version: updated?.version, updatedAt: updated?.updated_at })
 }
+
+/**
+ * Soft delete. The row keeps its content and its revisions, and the partial
+ * indexes only cover live rows, so the anchor becomes free again immediately.
+ */
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
+  const auth = await requireUser(request)
+  if ('response' in auth) return auth.response
+
+  const { id } = await context.params
+  const block = await queryOne<{ id: string; type: string }>(
+    `select id, type from blocks where id = $1 and deleted_at is null`,
+    [id],
+  )
+  if (!block) return notFound('Block')
+
+  await query(`update blocks set deleted_at = now() where id = $1`, [id])
+
+  await audit({
+    actorId: auth.user.id,
+    action: 'block.delete',
+    entityType: 'block',
+    entityId: id,
+    ip: clientIp(request),
+    diff: { type: block.type },
+  })
+
+  return ok({ id, deleted: true })
+}

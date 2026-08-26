@@ -165,6 +165,23 @@ const EXPERIENCE_SHAPES = [
   { slug: 'tirsoft-frontend', period: 'Aug 2018 — May 2020', image: '/assets/img/exp-dataviz.png', stack: ['React', 'Redux', 'Sass', 'REST API'] },
 ]
 
+/**
+ * The case-studies intro was hard-coded English in App.tsx and never reached
+ * i18n, so there is nothing to import for Russian — the block inherits the
+ * English copy until someone translates it in the CMS.
+ */
+const PROJECTS_INTRO = {
+  label: 'Selected Work · 2024 — 2026',
+  heading: [
+    { text: 'From zero to', accent: 'none', lineBreakAfter: false },
+    { text: 'production', accent: 'crimson', lineBreakAfter: true },
+    { text: 'in every frame.', accent: 'none', lineBreakAfter: false },
+  ],
+  body: 'Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.',
+  imageAlt:
+    'A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows',
+}
+
 // ---------------------------------------------------------------------------
 // Build one locale's content for every block
 // ---------------------------------------------------------------------------
@@ -264,6 +281,8 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
       items: TECH.map((name) => ({ name })),
     },
 
+    projects_intro: PROJECTS_INTRO,
+
     contact_cta: {
       availability: extraTree.contact.availability,
       label: extraTree.contact.label,
@@ -302,14 +321,34 @@ function buildEntries(locale: Locale) {
 // ---------------------------------------------------------------------------
 // Write
 // ---------------------------------------------------------------------------
+/**
+ * The page, in the order App.tsx renders it today. Anchors match the ids the
+ * components already put in the DOM — the CMS does not invent new ones, so
+ * existing links and the scroll-spy keep working.
+ *
+ * Widgets carry no content here: they are listed so the CMS owns where they sit
+ * and whether they appear, which is what takes the page structure out of the
+ * code.
+ */
 const BLOCK_ORDER: { type: string; anchor: string | null }[] = [
+  { type: 'hero', anchor: 'hero' },
   { type: 'about', anchor: 'about' },
   { type: 'impact_strip', anchor: null },
   { type: 'capabilities', anchor: null },
   { type: 'experience', anchor: 'experience' },
   { type: 'skills', anchor: 'skills' },
   { type: 'tech_marquee', anchor: null },
-  { type: 'contact_cta', anchor: 'contact' },
+  { type: 'bento_grid', anchor: 'overview' },
+  { type: 'vibecoding', anchor: 'vibecoding' },
+  { type: 'projects_intro', anchor: 'projects-intro' },
+  { type: 'logistics', anchor: 'logistics' },
+  { type: 'merch', anchor: 'merch' },
+  { type: 'ecommerce', anchor: 'ecommerce' },
+  { type: 'omnigrid', anchor: 'omnigrid' },
+  { type: 'proof', anchor: 'proof' },
+  { type: 'workflow', anchor: 'workflows' },
+  { type: 'contact_cta', anchor: null },
+  { type: 'terminal_footer', anchor: 'terminal' },
 ]
 
 await assertExclusiveLocalDb()
@@ -325,7 +364,7 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
   const definition = getBlockDefinition(type)
   if (!definition) throw new Error(`No registry entry for "${type}"`)
 
-  const source = en[type]
+  const source = en[type] ?? definition.defaults.content
   const sourceCheck = validateBlockContent(type, source)
   if (!sourceCheck.ok) {
     problems.push(...sourceCheck.issues.map((i) => `${type} en: ${i.path} — ${i.message}`))
@@ -334,7 +373,7 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
 
   // Only the translatable leaves are stored for Russian; everything else is
   // inherited from English at publish time.
-  const translation = pickLocalized(definition.form, ru[type])
+  const translation = pickLocalized(definition.form, ru[type] ?? sourceCheck.data)
   const mergedCheck = validateBlockContent(type, mergeLocale(sourceCheck.data, translation))
   if (!mergedCheck.ok) {
     problems.push(...mergedCheck.issues.map((i) => `${type} ru: ${i.path} — ${i.message}`))
@@ -346,17 +385,25 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
     [page.id, type],
   )
 
+  const position = (index + 1) * 1000
   const blockId =
     existing?.id ??
     (
       await queryOne<{ id: string }>(
         `insert into blocks (page_id, type, position, anchor_id, settings)
          values ($1, $2, $3, $4, $5) returning id`,
-        [page.id, type, (index + 2) * 1000, anchor, JSON.stringify(definition.defaults.settings)],
+        [page.id, type, position, anchor, JSON.stringify(definition.defaults.settings)],
       )
     )?.id
 
   if (!blockId) throw new Error(`Could not create block "${type}"`)
+
+  // Rerunning the import restores the canonical order and anchors.
+  await query(`update blocks set position = $2, anchor_id = $3 where id = $1`, [
+    blockId,
+    position,
+    anchor,
+  ])
 
   for (const [locale, content] of [
     ['en', sourceCheck.data],
