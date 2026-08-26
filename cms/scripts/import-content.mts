@@ -509,6 +509,40 @@ const BLOCK_ORDER: { type: string; anchor: string | null }[] = [
 
 await assertExclusiveLocalDb()
 
+/**
+ * Creates the block if it is missing and puts it where the page order says it
+ * belongs. Rerunning the import therefore restores the canonical arrangement
+ * without touching any copy.
+ */
+async function ensurePlacement(
+  pageId: string,
+  type: string,
+  index: number,
+  anchor: string | null,
+  definition: { defaults: { settings: unknown } },
+): Promise<string> {
+  const position = (index + 1) * 1000
+  const existing = await queryOne<{ id: string }>(
+    `select id from blocks where page_id = $1 and type = $2 and deleted_at is null`,
+    [pageId, type],
+  )
+
+  const id =
+    existing?.id ??
+    (
+      await queryOne<{ id: string }>(
+        `insert into blocks (page_id, type, position, anchor_id, settings)
+         values ($1, $2, $3, $4, $5) returning id`,
+        [pageId, type, position, anchor, JSON.stringify(definition.defaults.settings)],
+      )
+    )?.id
+
+  if (!id) throw new Error(`Could not create block "${type}"`)
+
+  await query(`update blocks set position = $2, anchor_id = $3 where id = $1`, [id, position, anchor])
+  return id
+}
+
 const page = await queryOne<{ id: string }>(`select id from pages where slug = 'home'`)
 if (!page) throw new Error('Run `npm run seed` first — the home page does not exist.')
 
@@ -520,7 +554,16 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
   const definition = getBlockDefinition(type)
   if (!definition) throw new Error(`No registry entry for "${type}"`)
 
-  const source = en[type] ?? definition.defaults.content
+  // A block this migration has no copy for — the hero, whose content the seed
+  // owns — must be left alone. Falling back to the registry defaults here would
+  // overwrite what the seed wrote, in English, and did.
+  const source = en[type]
+  if (!source) {
+    await ensurePlacement(page.id, type, index, anchor, definition)
+    console.log(`  block  ${type} (placement only)`)
+    continue
+  }
+
   const sourceCheck = validateBlockContent(type, source)
   if (!sourceCheck.ok) {
     problems.push(...sourceCheck.issues.map((i) => `${type} en: ${i.path} — ${i.message}`))
@@ -536,30 +579,12 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
     continue
   }
 
-  const existing = await queryOne<{ id: string }>(
+  const existed = await queryOne<{ id: string }>(
     `select id from blocks where page_id = $1 and type = $2 and deleted_at is null`,
     [page.id, type],
   )
 
-  const position = (index + 1) * 1000
-  const blockId =
-    existing?.id ??
-    (
-      await queryOne<{ id: string }>(
-        `insert into blocks (page_id, type, position, anchor_id, settings)
-         values ($1, $2, $3, $4, $5) returning id`,
-        [page.id, type, position, anchor, JSON.stringify(definition.defaults.settings)],
-      )
-    )?.id
-
-  if (!blockId) throw new Error(`Could not create block "${type}"`)
-
-  // Rerunning the import restores the canonical order and anchors.
-  await query(`update blocks set position = $2, anchor_id = $3 where id = $1`, [
-    blockId,
-    position,
-    anchor,
-  ])
+  const blockId = await ensurePlacement(page.id, type, index, anchor, definition)
 
   for (const [locale, content] of [
     ['en', sourceCheck.data],
@@ -573,7 +598,7 @@ for (const [index, { type, anchor }] of BLOCK_ORDER.entries()) {
     )
   }
 
-  console.log(`  block  ${type}${existing ? ' (updated)' : ''}`)
+  console.log(`  block  ${type}${existed ? ' (updated)' : ''}`)
 }
 
 const entriesEn = buildEntries('en')
