@@ -9,6 +9,7 @@ import type {
 } from '@norav/content-schema'
 import { Editor, type EditorBlock } from '@/components/Editor'
 import { CollectionEditor } from '@/components/CollectionEditor'
+import { ThemeEditor } from '@/components/ThemeEditor'
 import type { WorkspaceView } from '@/components/ViewSwitcher'
 
 const PAGE_SLUG = 'home'
@@ -94,6 +95,18 @@ export default function AdminPage() {
       <main className="main">
         <p className="subtle">Loading…</p>
       </main>
+    )
+  }
+
+  if (view.kind === 'theme') {
+    return (
+      <ThemeEditor
+        collections={loaded.collections}
+        userEmail={loaded.user.email}
+        view={view}
+        onViewChange={setView}
+        onSignOut={signOut}
+      />
     )
   }
 

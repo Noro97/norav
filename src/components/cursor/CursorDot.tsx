@@ -32,7 +32,7 @@ interface DotConfig {
 const CONFIG: Record<CursorState, DotConfig> = {
   default: {
     size: 12,
-    bg: '#B51A2B',
+    bg: 'var(--color-crimson-500)',
     border: 'none',
     label: '',
     blendMode: 'normal',
@@ -46,7 +46,7 @@ const CONFIG: Record<CursorState, DotConfig> = {
     label: 'PLAY',
     blendMode: 'normal',
     backdropBlur: 'blur(8px)',
-    color: '#B51A2B',
+    color: 'var(--color-crimson-500)',
   },
   target: {
     size: 48,
@@ -55,7 +55,7 @@ const CONFIG: Record<CursorState, DotConfig> = {
     label: '⊕',
     blendMode: 'normal',
     backdropBlur: 'none',
-    color: '#B51A2B',
+    color: 'var(--color-crimson-500)',
   },
   text: {
     size: 32,
@@ -68,7 +68,7 @@ const CONFIG: Record<CursorState, DotConfig> = {
   },
   link: {
     size: 24,
-    bg: '#B51A2B',
+    bg: 'var(--color-crimson-500)',
     border: 'none',
     label: '',
     blendMode: 'normal',
@@ -77,7 +77,7 @@ const CONFIG: Record<CursorState, DotConfig> = {
   },
   drag: {
     size: 12,
-    bg: '#B51A2B',
+    bg: 'var(--color-crimson-500)',
     border: 'none',
     label: '',
     blendMode: 'normal',

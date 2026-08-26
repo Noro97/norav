@@ -60,14 +60,14 @@ function StarRating({ rating }: { rating: number }) {
           <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="none">
             <defs>
               <linearGradient id={`star-fill-${i}`}>
-                <stop offset={`${fill * 100}%`} stopColor="#B51A2B" />
+                <stop offset={`${fill * 100}%`} stopColor="var(--color-crimson-500)" />
                 <stop offset={`${fill * 100}%`} stopColor="rgba(255,255,255,0.1)" />
               </linearGradient>
             </defs>
             <path
               d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
               fill={`url(#star-fill-${i})`}
-              stroke="#B51A2B"
+              stroke="var(--color-crimson-500)"
               strokeWidth="1"
               strokeOpacity="0.4"
             />
@@ -184,7 +184,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
       particleCount: 30,
       spread: 50,
       origin: { x: 0.5, y: 0.6 },
-      colors: ['#B51A2B', '#d63040', '#541A2E', '#f7a0a6'],
+      colors: ['var(--color-crimson-500)', 'var(--color-crimson-400)', 'var(--color-crimson-700)', '#f7a0a6'],
       ticks: 150,
       gravity: 1.2,
       decay: 0.94,
@@ -224,7 +224,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
 
         {/* Content */}
         <motion.div
-          className="relative max-w-lg w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[#0d0d1f] to-[#0a0a14] backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
+          className="relative max-w-lg w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-[#0a0a14] backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
@@ -498,7 +498,7 @@ function ConfirmationStep({
       particleCount: 80,
       spread: 70,
       origin: { x: 0.5, y: 0.4 },
-      colors: ['#B51A2B', '#d63040', '#541A2E', '#f7a0a6'],
+      colors: ['var(--color-crimson-500)', 'var(--color-crimson-400)', 'var(--color-crimson-700)', '#f7a0a6'],
       ticks: 200,
       gravity: 1.2,
       decay: 0.94,

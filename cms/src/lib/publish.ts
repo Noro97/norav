@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto'
 import {
+  DEFAULT_THEME,
+  deriveThemeTokens,
   getBlockDefinition,
   LOCALES,
   mergeLocale,
@@ -9,6 +11,7 @@ import {
   type Snapshot,
   type SnapshotBlock,
   type SnapshotEntry,
+  themeSchema,
   type SnapshotPage,
 } from '@norav/content-schema'
 import { query } from './db'
@@ -92,6 +95,14 @@ export async function buildPublication(): Promise<PublishResult> {
 
   const settingsRows = await query<{ key: string; value: unknown }>(`select key, value from settings`)
   const settings = Object.fromEntries(settingsRows.map((row) => [row.key, row.value]))
+
+  // The palette is two decisions in the database and a full set of CSS
+  // variables on the page. Deriving here means the site writes what it is told
+  // and never computes a colour — and a malformed theme falls back to the
+  // shipped one rather than publishing a page nobody can read.
+  const parsedTheme = themeSchema.safeParse(settings.theme)
+  const theme = parsedTheme.success ? parsedTheme.data : DEFAULT_THEME
+  settings.theme = { ...theme, tokens: deriveThemeTokens(theme) }
 
   const problems: PublishProblem[] = []
   const publishedAt = new Date().toISOString()

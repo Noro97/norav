@@ -146,7 +146,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                   } items-start gap-8 md:gap-0`}
                 >
                   {/* Dot on timeline */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-crimson-500 border-2 border-[#0a0a1a] z-10 mt-6 shadow-[0_0_8px_rgba(181,26,43,0.5)]" />
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-crimson-500 border-2 border-background z-10 mt-6 shadow-[0_0_8px_rgba(181,26,43,0.5)]" />
 
                   {/* Content */}
                   <div

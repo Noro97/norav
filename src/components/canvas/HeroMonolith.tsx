@@ -261,7 +261,7 @@ export function HeroMonolith() {
     <group ref={groupRef} position={[0, 1.2, 0]}>
       <Environment preset="city" />
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
-      <pointLight position={[-2, -1, 3]} intensity={0.4} color="#B51A2B" />
+      <pointLight position={[-2, -1, 3]} intensity={0.4} color="var(--color-crimson-500)" />
 
       {/* SVG logo extruded into 3D with glass material */}
       {/* SVG viewBox: x=213 y=341 w=454 h=544 → center at (440, 613) */}
@@ -281,7 +281,7 @@ export function HeroMonolith() {
                 thickness={1.5}
                 ior={1.3}
                 envMapIntensity={0.4}
-                color="#B51A2B"
+                color="var(--color-crimson-500)"
                 clearcoat={0.15}
                 clearcoatRoughness={0.4}
                 transparent={true}
@@ -305,7 +305,7 @@ export function HeroMonolith() {
           thickness={1.5}
           ior={1.3}
           envMapIntensity={0.4}
-          color="#B51A2B"
+          color="var(--color-crimson-500)"
           clearcoat={0.15}
           clearcoatRoughness={0.6}
           transparent={true}

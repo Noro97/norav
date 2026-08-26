@@ -26,7 +26,7 @@ const COLOR_KEYS = [
 ] as const
 
 const COLOR_VALUES = ['Midnight Black', 'Arctic White', 'Crimson Red', 'Navy Blue', 'Forest Green']
-const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', '#B51A2B', '#1e3a5f', '#2d5a3d']
+const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', 'var(--color-crimson-500)', '#1e3a5f', '#2d5a3d']
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 

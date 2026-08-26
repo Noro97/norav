@@ -98,31 +98,31 @@ function FilterGraph({ filters }: { filters: FilterState }) {
 
   return (
     <svg viewBox="0 0 300 120" className="w-full">
-      <line x1="68" y1="30" x2="132" y2="30" stroke="#B51A2B" strokeWidth="1" opacity={hasCat ? 0.6 : 0.08} strokeDasharray={hasCat ? 'none' : '4 2'} />
-      <line x1="168" y1="30" x2="228" y2="30" stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.5 : 0.08} strokeDasharray={hasSort ? 'none' : '4 2'} />
-      <line x1="55" y1="48" x2="88" y2="80" stroke="#B51A2B" strokeWidth="1" opacity={hasPrice ? 0.4 : 0.06} />
-      <line x1="115" y1="82" x2="178" y2="95" stroke="#B51A2B" strokeWidth="1" opacity={0.3} />
-      <line x1="155" y1="48" x2="188" y2="78" stroke="#B51A2B" strokeWidth="1" opacity={0.25} />
-      <line x1="238" y1="45" x2="212" y2="78" stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.4 : 0.08} />
+      <line x1="68" y1="30" x2="132" y2="30" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasCat ? 0.6 : 0.08} strokeDasharray={hasCat ? 'none' : '4 2'} />
+      <line x1="168" y1="30" x2="228" y2="30" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.5 : 0.08} strokeDasharray={hasSort ? 'none' : '4 2'} />
+      <line x1="55" y1="48" x2="88" y2="80" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasPrice ? 0.4 : 0.06} />
+      <line x1="115" y1="82" x2="178" y2="95" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={0.3} />
+      <line x1="155" y1="48" x2="188" y2="78" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={0.25} />
+      <line x1="238" y1="45" x2="212" y2="78" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.4 : 0.08} />
 
-      <circle cx="50" cy="30" r="18" fill={hasCat ? '#B51A2B' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1.5" opacity={hasCat ? 1 : 0.3}>
+      <circle cx="50" cy="30" r="18" fill={hasCat ? 'var(--color-crimson-500)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1.5" opacity={hasCat ? 1 : 0.3}>
         {hasCat && <animate attributeName="r" values="18;19;18" dur="2s" repeatCount="indefinite" />}
       </circle>
       <text x="50" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">CAT</text>
 
-      <circle cx="150" cy="30" r="18" fill={hasCat ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasCat ? 0.8 : 0.2} />
+      <circle cx="150" cy="30" r="18" fill={hasCat ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasCat ? 0.8 : 0.2} />
       <text x="150" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SUB</text>
 
-      <circle cx="250" cy="30" r="18" fill={hasSort ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasSort ? 0.8 : 0.25} />
+      <circle cx="250" cy="30" r="18" fill={hasSort ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.8 : 0.25} />
       <text x="250" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SORT</text>
 
-      <circle cx="100" cy="95" r="18" fill={hasPrice ? '#541A2E' : '#1a1a2e'} stroke="#B51A2B" strokeWidth="1" opacity={hasPrice ? 0.8 : 0.2} />
+      <circle cx="100" cy="95" r="18" fill={hasPrice ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasPrice ? 0.8 : 0.2} />
       <text x="100" y="99" textAnchor="middle" fill="white" fontSize="7" fontFamily="JetBrains Mono">PRICE</text>
 
-      <circle cx="200" cy="95" r="22" fill="#B51A2B" fillOpacity="0.15" stroke="#B51A2B" strokeWidth="1.5" opacity={0.9}>
+      <circle cx="200" cy="95" r="22" fill="var(--color-crimson-500)" fillOpacity="0.15" stroke="var(--color-crimson-500)" strokeWidth="1.5" opacity={0.9}>
         <animate attributeName="r" values="22;23;22" dur="3s" repeatCount="indefinite" />
       </circle>
-      <text x="200" y="99" textAnchor="middle" fill="#B51A2B" fontSize="7" fontFamily="JetBrains Mono">RESULT</text>
+      <text x="200" y="99" textAnchor="middle" fill="var(--color-crimson-500)" fontSize="7" fontFamily="JetBrains Mono">RESULT</text>
     </svg>
   )
 }

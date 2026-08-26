@@ -2,7 +2,10 @@
 
 import type { SerializedCollectionDefinition } from '@norav/content-schema'
 
-export type WorkspaceView = { kind: 'page' } | { kind: 'collection'; key: string }
+export type WorkspaceView =
+  | { kind: 'page' }
+  | { kind: 'collection'; key: string }
+  | { kind: 'theme' }
 
 /**
  * Moves between the page and the collections. Collections hold the rows that a
@@ -30,6 +33,15 @@ export function ViewSwitcher({
         onClick={() => onChange({ kind: 'page' })}
       >
         Page
+      </button>
+      <button
+        type="button"
+        className="view-item"
+        aria-current={view.kind === 'theme'}
+        disabled={disabled}
+        onClick={() => onChange({ kind: 'theme' })}
+      >
+        Palette
       </button>
       {collections.map((collection) => (
         <button
