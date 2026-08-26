@@ -36,8 +36,8 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
       <p className="text-center label-mono mb-6">{content.label}</p>
 
       {/* Fade edges */}
-      <div className="absolute left-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-r from-[#0a0a1a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-l from-[#0a0a1a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
       <span className="sr-only">{names.join(', ')}</span>
 

@@ -6,7 +6,7 @@
  *
  *   npm run seed
  */
-import { heroBlock } from '@norav/content-schema'
+import { DEFAULT_THEME, heroBlock } from '@norav/content-schema'
 import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
 
 /**
@@ -86,6 +86,13 @@ await query(
   `insert into settings (key, value) values ('site', $1)
    on conflict (key) do nothing`,
   [JSON.stringify({ cursor: true, grain: true, dynamicGrid: true })],
+)
+
+// The palette the site shipped with, so a fresh database looks like the site.
+await query(
+  `insert into settings (key, value) values ('theme', $1)
+   on conflict (key) do nothing`,
+  [JSON.stringify(DEFAULT_THEME)],
 )
 
 console.log('Seeded: page "home" with the hero block (en, ru).')

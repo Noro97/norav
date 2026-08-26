@@ -15,8 +15,8 @@ html, body {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #0a0a1a;
-  color: #e0e0e0;
+  background: var(--color-background);
+  color: var(--color-foreground);
   min-height: 100vh;
 }
 
@@ -26,16 +26,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 10, 26, 0.8);
+  background: color-mix(in srgb, var(--color-background) 80%, transparent);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(181, 26, 43, 0.4);
+  background: color-mix(in srgb, var(--color-crimson-500) 40%, transparent);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(181, 26, 43, 0.6);
+  background: color-mix(in srgb, var(--color-crimson-500) 60%, transparent);
 }
 
 /* Glass card utility */
@@ -49,8 +49,8 @@ body {
 }
 
 .glass-card:hover {
-  border-color: rgba(181, 26, 43, 0.15);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(181, 26, 43, 0.05);
+  border-color: color-mix(in srgb, var(--color-crimson-500) 15%, transparent);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px color-mix(in srgb, var(--color-crimson-500) 5%, transparent);
 }
 
 /* Hide scrollbar but keep scrolling */

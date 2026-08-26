@@ -90,7 +90,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
       <path
         d={dataPath}
         fill="rgba(181, 26, 43, 0.15)"
-        stroke="#B51A2B"
+        stroke="var(--color-crimson-500)"
         strokeWidth="1.5"
         className="transition-all duration-1000 ease-out"
       />
@@ -103,7 +103,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
             cx={p.x}
             cy={p.y}
             r="3"
-            fill="#B51A2B"
+            fill="var(--color-crimson-500)"
             className="transition-all duration-1000 ease-out"
           />
         )

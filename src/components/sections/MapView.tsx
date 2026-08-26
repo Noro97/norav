@@ -48,7 +48,7 @@ function createMarkerIcon(intensity: number): google.maps.Symbol {
   return {
     path: google.maps.SymbolPath.CIRCLE,
     scale: 4 + intensity * 6,
-    fillColor: '#b51a2b',
+    fillColor: 'var(--color-crimson-500)',
     fillOpacity: 0.7 + intensity * 0.3,
     strokeColor: '#ff3050',
     strokeWeight: 1,
@@ -197,7 +197,7 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 2 + intensity * 3,
-            fillColor: '#b51a2b',
+            fillColor: 'var(--color-crimson-500)',
             fillOpacity: 0.6,
             strokeWeight: 0,
           },

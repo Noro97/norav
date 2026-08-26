@@ -5,7 +5,7 @@ import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content
 
 const ACCENT_CLASS: Record<string, string> = {
   none: '',
-  crimson: 'italic text-[#B51A2B]',
+  crimson: 'italic text-crimson-500',
   bright: 'text-white',
 }
 

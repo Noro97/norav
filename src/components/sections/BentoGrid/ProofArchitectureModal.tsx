@@ -37,7 +37,7 @@ function ArchitectureModalContent({ onClose }: Props) {
 
         {/* Content */}
         <motion.div
-          className="relative max-w-3xl w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[#0d0d1f] to-[#0a0a14] backdrop-blur-xl overflow-hidden"
+          className="relative max-w-3xl w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-[#0a0a14] backdrop-blur-xl overflow-hidden"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}

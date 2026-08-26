@@ -32,7 +32,7 @@ const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
     ),
   },
   email: {
-    color: '#B51A2B',
+    color: 'var(--color-crimson-500)',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -156,7 +156,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                     loading="lazy"
                   />
                   {/* Gradient overlay at bottom */}
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0a0a1a] via-[#0a0a1a]/60 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
                   {/* Status badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-green-400/20">

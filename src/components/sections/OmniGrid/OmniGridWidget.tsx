@@ -264,7 +264,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
             {/* Table */}
             <div className="case-study-card max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden" data-lenis-prevent>
               {/* Table header */}
-              <div className="flex items-center border-b border-white/[0.06] sticky top-0 z-10 bg-[#0d0d1f] min-w-[1060px]">
+              <div className="flex items-center border-b border-white/[0.06] sticky top-0 z-10 bg-card min-w-[1060px]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
                   <div
                     key={header.id}

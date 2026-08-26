@@ -8,6 +8,7 @@ import particleVert from './shaders/particle.vert?raw'
 import particleFrag from './shaders/particle.frag?raw'
 import connectionVert from './shaders/connection.vert?raw'
 import connectionFrag from './shaders/connection.frag?raw'
+import { readAccent } from '@/content/theme'
 
 interface ParticleFieldProps {
   count: number
@@ -120,6 +121,15 @@ export function ParticleField({ count, maxNeighbors }: ParticleFieldProps) {
     uColorAccent: { value: new THREE.Color(0.71, 0.1, 0.17) },
     uLineWidth:   { value: 0.015 },
   }), [])
+
+  // The published accent, applied after mount. Uniforms are mutable, so this
+  // needs no re-render — and reading computed style during render is what a
+  // shader must never make the React tree do.
+  useEffect(() => {
+    const accent = new THREE.Color(readAccent())
+    nodeUniforms.uColorAccent.value.copy(accent)
+    connectionUniforms.uColorAccent.value.copy(accent)
+  }, [nodeUniforms, connectionUniforms])
 
   // Neighbor count tracker reused each frame (avoids allocation)
   const neighborCounts = useMemo(() => new Int32Array(count), [count])

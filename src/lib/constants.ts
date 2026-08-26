@@ -12,13 +12,13 @@ export const SECTIONS: SectionConfig[] = [
 ]
 
 export const COLORS = {
-  background: '#0a0a1a',
-  foreground: '#e0e0e0',
+  background: 'var(--color-background)',
+  foreground: 'var(--color-foreground)',
   muted: '#888888',
-  crimson: '#B51A2B',
-  crimsonLight: '#d63040',
-  crimsonDark: '#8c1523',
-  card: '#0d0d1f',
+  crimson: 'var(--color-crimson-500)',
+  crimsonLight: 'var(--color-crimson-400)',
+  crimsonDark: 'var(--color-crimson-600)',
+  card: 'var(--color-card)',
   border: 'rgba(255, 255, 255, 0.08)',
 } as const
 
