@@ -137,5 +137,6 @@ Responses are `{ data }` or `{ error: { code, message, fields } }`, where
 ## Deploying
 
 A second Vercel project with **Root Directory = `cms`**, so publishing content
-never touches the portfolio's deployment. Environment: `DATABASE_URL` (Neon),
-`SITE_ORIGIN` (`https://norav.dev`), `CMS_SECRET`.
+never touches the portfolio's deployment. See [DEPLOY.md](./DEPLOY.md) for the
+full runbook: database, environment variables, and how to tell whether it
+worked.

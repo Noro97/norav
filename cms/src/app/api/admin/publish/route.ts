@@ -72,5 +72,39 @@ export async function POST(request: Request) {
     diff: { version, checksum: built.checksum, note },
   })
 
-  return ok({ version, checksum: built.checksum, publishedAt: row?.published_at, unchanged: false })
+  const rebuild = await triggerSiteRebuild()
+
+  return ok({
+    version,
+    checksum: built.checksum,
+    publishedAt: row?.published_at,
+    unchanged: false,
+    rebuild,
+  })
+}
+
+/**
+ * Asks the site to rebuild, so the snapshot baked into its bundle catches up
+ * with what was just published.
+ *
+ * The site does not depend on this: it notices a new version on its own, at
+ * runtime, from the manifest. What a rebuild buys is the *first* paint being
+ * current too, rather than showing the previous copy for a moment. So a failure
+ * here is reported, not raised — the publish itself already succeeded.
+ */
+async function triggerSiteRebuild(): Promise<'triggered' | 'not_configured' | 'failed'> {
+  const hook = process.env.SITE_DEPLOY_HOOK_URL
+  if (!hook) return 'not_configured'
+
+  try {
+    const response = await fetch(hook, { method: 'POST', signal: AbortSignal.timeout(5000) })
+    if (!response.ok) {
+      console.error(`[publish] deploy hook returned ${response.status}`)
+      return 'failed'
+    }
+    return 'triggered'
+  } catch (error) {
+    console.error('[publish] deploy hook unreachable', error)
+    return 'failed'
+  }
 }

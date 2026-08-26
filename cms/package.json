@@ -2,15 +2,15 @@
   "name": "@norav/cms",
   "version": "0.1.0",
   "private": true,
-  "description": "norav CMS — admin UI and content API for the norav.dev portfolio",
+  "description": "norav CMS \u2014 admin UI and content API for the norav.dev portfolio",
   "scripts": {
     "dev": "next dev -p 3300",
     "build": "next build",
     "start": "next start -p 3300",
     "typecheck": "tsc --noEmit",
-    "user:add": "tsx scripts/create-user.mts",
-    "seed": "tsx scripts/seed.mts",
-    "import": "tsx scripts/import-content.mts",
+    "user:add": "tsx --env-file-if-exists=.env scripts/create-user.mts",
+    "seed": "tsx --env-file-if-exists=.env scripts/seed.mts",
+    "import": "tsx --env-file-if-exists=.env scripts/import-content.mts",
     "db:reset": "rm -rf .pglite && npm run seed"
   },
   "dependencies": {
