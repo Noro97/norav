@@ -24,12 +24,6 @@ function defineWidget(type: string, label: string, description: string): BlockDe
   }) as BlockDefinition
 }
 
-export const bentoGridBlock = defineWidget(
-  'bento_grid',
-  'Bento grid',
-  'Overview mosaic linking to each case study.',
-)
-
 export const terminalFooterBlock = defineWidget(
   'terminal_footer',
   'Terminal footer',

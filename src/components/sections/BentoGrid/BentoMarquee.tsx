@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 
 export function BentoMarquee() {
-  const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
   const trackRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -12,9 +13,7 @@ export function BentoMarquee() {
     }
   }, [])
 
-  const principles = Array.from({ length: 4 }, (_, i) =>
-    t(`marquee.principles.${i}`)
-  )
+  const principles = (block?.content.principles ?? []).map((principle) => principle.text)
 
   // Triple for seamless loop at any viewport width
   const items = [...principles, ...principles, ...principles]

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { MagneticButton } from '@/components/ui/MagneticButton'
@@ -20,7 +21,10 @@ interface BentoProjectTileProps {
 }
 
 export function BentoProjectTile({ project, className = '', index }: BentoProjectTileProps) {
-  const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
+  // Copy is addressed by project id, so the mosaic's layout and its words
+  // can move independently.
+  const copy = block?.content.projects.find((candidate) => candidate.project === project.id)
   const tileRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [inViewport, setInViewport] = useState(false)
@@ -128,12 +132,12 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
         {/* Title */}
         <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-3 group-hover:text-crimson-50 transition-colors duration-300">
-          {t(project.titleKey)}
+          {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
         <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-lg">
-          {t(project.descriptionKey)}
+          {copy?.description ?? ''}
         </p>
 
         {/* Tech stack */}
@@ -151,12 +155,12 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         {/* CTA */}
         <MagneticButton
           onClick={handleScrollTo}
-          aria-label={`${t(project.ctaKey)} — ${t(project.titleKey)}`}
+          aria-label={`${copy?.cta ?? ''} — ${copy?.title ?? ''}`}
           className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
           data-cursor="link"
         >
           <span className="relative">
-            {t(project.ctaKey)}
+            {copy?.cta ?? ''}
             <span className="absolute -bottom-px left-0 w-0 h-px bg-crimson-500/50 group-hover/btn:w-full transition-all duration-300" />
           </span>
           <ArrowUpRight

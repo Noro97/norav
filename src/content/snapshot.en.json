@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "fb08c499-4b70-49d1-8cc2-a7d5a6a4b2ea",
+          "id": "7cf85654-4856-487c-8066-ae50e995669b",
           "type": "hero",
           "content": {
             "name": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "5ccb794f-76e9-46b2-8a0c-2ea21e3ad022",
+          "id": "4d7f72e5-04e0-47a2-ab7d-0ad0de21f945",
           "type": "about",
           "content": {
             "bio": {
@@ -148,7 +148,7 @@
           }
         },
         {
-          "id": "2a046adf-1058-418a-92f0-264fc8e39a05",
+          "id": "cbd66829-9eb2-45a4-9382-6cd02942c4ba",
           "type": "impact_strip",
           "content": {
             "label": "By the numbers",
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "5498677d-078c-4c7f-94d2-ab072339b929",
+          "id": "266f38ba-7ab3-4425-9a2a-499cf71dd7ac",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "0de860d7-18b0-4117-8570-14031c2cf255",
+          "id": "5f602e99-6471-4bf0-adf9-312d7e1813c8",
           "type": "experience",
           "content": {
             "title": "Experience",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "77413b36-f3e2-4ae5-be77-9445b3502218",
+          "id": "8456252d-f064-4615-bba4-9fce8e38cbd4",
           "type": "skills",
           "content": {
             "title": "Skills & Tools",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "136a8b03-ec55-4304-a256-be0bf26d633e",
+          "id": "1d24d13d-c703-4d55-bd88-fc4cc46d24bc",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,14 +471,132 @@
           "settings": {}
         },
         {
-          "id": "f5532127-baae-4ad0-8a84-30997455718a",
+          "id": "3b78f949-f891-4b05-926b-d15199a975cd",
           "type": "bento_grid",
-          "content": {},
+          "content": {
+            "tiles": [
+              {
+                "slot": 0,
+                "title": "Performance Audit",
+                "description": "Standard Google Maps markers caused main-thread jank with 500+ real-time updates. Migrated to Advanced Markers with a rAF buffer — 70% scripting reduction, stable 60 FPS."
+              },
+              {
+                "slot": 1,
+                "title": "Type-Safe Architecture",
+                "description": "End-to-end type system between Node.js backend and React frontend, eliminating 99% of runtime API errors"
+              },
+              {
+                "slot": 2,
+                "title": "User Experience",
+                "description": "Predictive input system for complex forms, reducing shipment creation time by 15 seconds"
+              },
+              {
+                "slot": 3,
+                "title": "AI Liveness",
+                "description": "Multi-modal AI verification pipeline achieving 98.4% confidence through Gemini vision analysis of user-submitted video proofs."
+              },
+              {
+                "slot": 4,
+                "title": "Cache Hit-Rate",
+                "description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy."
+              }
+            ],
+            "title": "Engineering Impact",
+            "projects": [
+              {
+                "cta": "View Case Study",
+                "title": "NexusRoute",
+                "project": "nexusroute",
+                "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs."
+              },
+              {
+                "cta": "View Case Study",
+                "title": "MerchForge",
+                "project": "merchforge",
+                "description": "AI-powered merchandise designer with real-time state synchronization and live configuration output."
+              },
+              {
+                "cta": "View Case Study",
+                "title": "FilterGraph",
+                "project": "filtergraph",
+                "description": "Faceted search with dependency-aware filtering and URL-as-state architecture."
+              },
+              {
+                "cta": "View Case Study",
+                "title": "OmniGrid",
+                "project": "omnigrid",
+                "description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management."
+              },
+              {
+                "cta": "View Architecture",
+                "title": "Proof",
+                "project": "proof",
+                "description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, dual-economy reward system, and blockchain-integrated premium unlocks."
+              }
+            ],
+            "dashboard": {
+              "title": "Impact Dashboard",
+              "metrics": [
+                {
+                  "key": "lcp",
+                  "color": "#22c55e",
+                  "label": "LCP",
+                  "value": 1.2,
+                  "detail": "Real-time tracking",
+                  "prefix": "<",
+                  "suffix": "s"
+                },
+                {
+                  "key": "bundle",
+                  "color": "#22c55e",
+                  "label": "Bundle Size",
+                  "value": 42,
+                  "detail": "Gzipped (Main thread)",
+                  "prefix": "",
+                  "suffix": "kb"
+                },
+                {
+                  "key": "gpsNodes",
+                  "color": "#eab308",
+                  "label": "GPS Nodes",
+                  "value": 50,
+                  "detail": "Active per view",
+                  "prefix": "",
+                  "suffix": "+"
+                },
+                {
+                  "key": "testCoverage",
+                  "color": "#22c55e",
+                  "label": "Test Coverage",
+                  "value": 92,
+                  "detail": "Unit / E2E",
+                  "prefix": "",
+                  "suffix": "%"
+                }
+              ]
+            },
+            "principles": [
+              {
+                "text": "Composition over Inheritance"
+              },
+              {
+                "text": "DRY but not die"
+              },
+              {
+                "text": "Performance is a Feature"
+              },
+              {
+                "text": "Accessibility is Mandatory"
+              }
+            ],
+            "description": "Micro case studies and measurable outcomes from real-world projects.",
+            "sectionLabel": "Deep Dive"
+          },
           "anchorId": "overview",
           "settings": {}
         },
         {
-          "id": "e9cfe104-bf68-440d-8225-5037ff37b9aa",
+          "id": "31715a41-28a0-4e61-8b87-f029b36a958e",
           "type": "vibecoding",
           "content": {
             "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
@@ -555,7 +673,7 @@
           "settings": {}
         },
         {
-          "id": "7132f3c4-d83b-4460-8e25-5e810df5b5ed",
+          "id": "2675c842-09d2-42c1-a692-6f6f80b9e36f",
           "type": "projects_intro",
           "content": {
             "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
@@ -585,7 +703,7 @@
           }
         },
         {
-          "id": "e731e902-9304-48e4-b71e-03379561a6fb",
+          "id": "bc6bd805-8efd-4975-92d5-bdee3341e3dc",
           "type": "logistics",
           "content": {
             "title": "NexusRoute",
@@ -613,7 +731,7 @@
           "settings": {}
         },
         {
-          "id": "9710b285-c209-49e4-8541-286c1dc1ae0e",
+          "id": "5366633b-999c-4c23-ab07-be6deb201b13",
           "type": "merch",
           "content": {
             "title": "MerchForge",
@@ -638,7 +756,7 @@
           "settings": {}
         },
         {
-          "id": "03faea8c-b04c-4663-9f71-b12eefa903c6",
+          "id": "89b7bba3-4880-4067-baab-93b5e03155e6",
           "type": "ecommerce",
           "content": {
             "title": "FilterGraph",
@@ -672,7 +790,7 @@
           "settings": {}
         },
         {
-          "id": "45f3aa2b-e654-4810-a194-d80b735172ac",
+          "id": "1ef1c16d-10aa-4101-a15a-acf0cf19ce05",
           "type": "omnigrid",
           "content": {
             "title": "OmniGrid: Advanced Data Management System",
@@ -697,7 +815,7 @@
           "settings": {}
         },
         {
-          "id": "91cdb347-42c5-4231-8e68-478ef49fae77",
+          "id": "06631486-04e4-4f55-9ea0-8e9188ea9800",
           "type": "proof",
           "content": {
             "title": "Proof: AI Fitness Verification",
@@ -725,7 +843,7 @@
           "settings": {}
         },
         {
-          "id": "78892be8-ac4b-456a-b68b-b748a88bb05b",
+          "id": "64ae7b5c-b737-4227-b72e-1fe7375d204b",
           "type": "workflow",
           "content": {
             "title": "AI Workflow Automation",
@@ -773,7 +891,7 @@
           "settings": {}
         },
         {
-          "id": "f0b6d052-1219-49ae-9d06-94a310546931",
+          "id": "3f697400-344d-4e58-8e88-0279790c57f5",
           "type": "contact_cta",
           "content": {
             "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
@@ -806,7 +924,7 @@
           }
         },
         {
-          "id": "12190a48-c717-4a66-bd0e-e1f737fdcea2",
+          "id": "42ce3f13-904d-4f3d-b398-6159fb577528",
           "type": "terminal_footer",
           "content": {},
           "anchorId": "terminal",
@@ -817,7 +935,7 @@
   ],
   "locale": "en",
   "version": 1,
-  "checksum": "a655e64bf9b4a52f1831c2b856dea08d24aa70d401670efbf7e01ac684f732a3",
+  "checksum": "b680a2cd0813925f60c176eb87499602af69c9c0296c33d6d2d7dbab3c6d35c6",
   "settings": {
     "site": {
       "grain": true,
@@ -828,7 +946,7 @@
   "collections": {
     "experience": [
       {
-        "id": "a2773a63-977d-4338-bb69-75a5a4dc5e1e",
+        "id": "b8fabfda-8881-4144-9bf5-c799f172af16",
         "data": {
           "role": "Founder & Technical Architect",
           "type": "Founder",
@@ -868,7 +986,7 @@
         "slug": "proof-app"
       },
       {
-        "id": "53ed9d94-7976-4346-914f-b35587466d5a",
+        "id": "576afd82-ed38-4602-958f-e2a5db477a64",
         "data": {
           "role": "Lead Frontend Engineer",
           "type": "Remote",
@@ -908,7 +1026,7 @@
         "slug": "vizogen"
       },
       {
-        "id": "11d33871-7b52-459f-a5cf-e67f5eba57ee",
+        "id": "15b5ef5a-af80-4090-81f7-655a54309018",
         "data": {
           "role": "Core Frontend Engineer / UI Architect",
           "type": "Remote",
@@ -945,7 +1063,7 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "78ce66ed-bd8e-4e0c-8a36-6e546330f784",
+        "id": "c25c4fbe-7994-4811-b9c6-1b7f5fdc8329",
         "data": {
           "role": "Senior Frontend Engineer",
           "type": "Remote",
@@ -979,7 +1097,7 @@
         "slug": "appfox"
       },
       {
-        "id": "a97cbcf3-2566-4adc-9664-0870e7ab62e5",
+        "id": "db77d447-455f-4dd6-b551-8c991cb3ae69",
         "data": {
           "role": "Lead Frontend Developer",
           "type": "On-site",
@@ -1013,7 +1131,7 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "d9b70ea7-90db-4576-81dc-5238bd6c42c6",
+        "id": "afb793a9-34e0-473d-ad00-5326f0c41765",
         "data": {
           "role": "Frontend Developer",
           "type": "On-site",
@@ -1048,5 +1166,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T20:22:00.368Z"
+  "publishedAt": "2026-08-26T20:48:16.349Z"
 }

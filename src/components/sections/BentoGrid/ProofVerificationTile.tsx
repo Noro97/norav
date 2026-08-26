@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { MagneticButton } from '@/components/ui/MagneticButton'
 import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
@@ -23,6 +25,8 @@ const TYPING_SPEED = 30
 
 export function ProofVerificationTile({ className = '' }: Props) {
   const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
+  const copy = block?.content.projects.find((candidate) => candidate.project === 'proof')
   const tileRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [showArchModal, setShowArchModal] = useState(false)
@@ -136,7 +140,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
 
           {/* Title */}
           <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-crimson-50 transition-colors duration-300">
-            {t('projects.proof.title')}
+            {copy?.title ?? ''}
             <span className="text-crimson-400/60 text-base font-normal ml-2">
               — {t('proof.verification.subtitle')}
             </span>
@@ -144,7 +148,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
 
           {/* Description */}
           <p className="text-sm text-white/60 leading-relaxed mb-2 max-w-lg">
-            {t('projects.proof.description')}
+            {copy?.description ?? ''}
           </p>
 
           {/* Challenge & Complexity */}
@@ -185,12 +189,12 @@ export function ProofVerificationTile({ className = '' }: Props) {
           {/* CTA */}
           <MagneticButton
             onClick={() => setShowArchModal(true)}
-            aria-label={t('projects.proof.cta')}
+            aria-label={copy?.cta ?? ''}
             className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
             data-cursor="link"
           >
             <span className="relative">
-              {t('projects.proof.cta')}
+              {copy?.cta ?? ''}
               <span className="absolute -bottom-px left-0 w-0 h-px bg-crimson-500/50 group-hover/btn:w-full transition-all duration-300" />
             </span>
             <svg

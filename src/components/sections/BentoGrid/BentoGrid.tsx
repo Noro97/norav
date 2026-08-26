@@ -2,8 +2,9 @@ import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
-import { useTranslation } from 'react-i18next'
-import { BENTO_PROJECTS, BENTO_METRICS, MICRO_TILES } from './bento.data'
+import { BENTO_PROJECTS, MICRO_TILES } from './bento.data'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 import { BentoProjectTile } from './BentoProjectTile'
 import { BentoMicroTile } from './BentoMicroTile'
 import { BentoImpactDashboard } from './BentoImpactDashboard'
@@ -62,11 +63,11 @@ function BentoIllustration({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-export function BentoGrid() {
-  const { t } = useTranslation('bento')
+export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
+  const block = useBlock<BentoGridContent>('bento_grid')
   const sectionRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('overview', sectionRef)
+  useSectionObserver(anchorId ?? 'overview', sectionRef)
 
   useGSAP(() => {
     const headerEl = sectionRef.current!.querySelector('.bento-header')
@@ -88,9 +89,12 @@ export function BentoGrid() {
     }
   }, { scope: sectionRef })
 
+  if (!block) return null
+  const { content } = block
+
   return (
     <section
-      id="overview"
+      id={anchorId ?? 'overview'}
       ref={sectionRef}
       className="relative px-6 md:px-16 py-28 md:py-36"
     >
@@ -100,12 +104,12 @@ export function BentoGrid() {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="bento-header mb-16">
-          <span className="label-mono">{t('sectionLabel')}</span>
+          <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
-            {t('title')}
+            {content.title}
           </h2>
           <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
-            {t('description')}
+            {content.description}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
         </div>
@@ -121,7 +125,7 @@ export function BentoGrid() {
           <BentoProjectTile project={BENTO_PROJECTS[1]!} index={1} className="md:col-span-2" />
 
           {/* Row 3: Impact Dashboard (2col) + UX Predict (1col) */}
-          <BentoImpactDashboard metrics={BENTO_METRICS} />
+          <BentoImpactDashboard />
           <BentoMicroTile index={MICRO_TILES[2]!.index} icon={MICRO_TILES[2]!.icon} illustration="/assets/img/bento-ux.png" />
 
           {/* Row 4: FilterGraph (full width) */}

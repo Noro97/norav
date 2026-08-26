@@ -157,6 +157,17 @@ const TECH = [
   'Module Federation', 'Design Systems', 'Docker', 'AI Agents', 'MCP', 'Claude Code',
 ]
 
+/** The mosaic's metric table, which lived in bento.data.ts. */
+const BENTO_METRICS = [
+  { key: 'lcp', value: 1.2, prefix: '<', suffix: 's', color: '#22c55e' },
+  { key: 'bundle', value: 42, prefix: '', suffix: 'kb', color: '#22c55e' },
+  { key: 'gpsNodes', value: 50, prefix: '', suffix: '+', color: '#eab308' },
+  { key: 'testCoverage', value: 92, prefix: '', suffix: '%', color: '#22c55e' },
+]
+
+/** Which slot of the designed layout each micro tile occupies. */
+const BENTO_TILE_SLOTS = [0, 1, 2, 3, 4]
+
 /** Chip rows that lived inline in each case-study component. */
 const CASE_STUDY_TECH: Record<string, string[]> = {
   logistics: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
@@ -227,6 +238,7 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
   const workflow = namespace(locale, 'workflow')
   const vibe = namespace(locale, 'vibecoding')
   const projects = namespace(locale, 'projects')
+  const bento = namespace(locale, 'bento')
 
   /** Each case study contributes its header; the demo's own labels stay in i18n. */
   const caseStudies = Object.fromEntries(
@@ -331,6 +343,32 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
     },
 
     ...caseStudies,
+
+    bento_grid: {
+      sectionLabel: bento.sectionLabel,
+      title: bento.title,
+      description: bento.description,
+      projects: ['nexusroute', 'merchforge', 'filtergraph', 'omnigrid', 'proof'].map((project) => ({
+        project,
+        title: bento[`projects.${project}.title`],
+        description: bento[`projects.${project}.description`],
+        cta: bento[`projects.${project}.cta`],
+      })),
+      tiles: BENTO_TILE_SLOTS.map((slot) => ({
+        slot,
+        title: bento[`tiles.${slot}.title`],
+        description: bento[`tiles.${slot}.description`],
+      })),
+      dashboard: {
+        title: bento['dashboard.title'],
+        metrics: BENTO_METRICS.map((metric) => ({
+          ...metric,
+          label: bento[`dashboard.metrics.${metric.key}`],
+          detail: bento[`dashboard.metrics.${metric.key}Detail`],
+        })),
+      },
+      principles: [0, 1, 2, 3].map((i) => ({ text: bento[`marquee.principles.${i}`] })),
+    },
 
     vibecoding: {
       sectionLabel: vibe.sectionLabel,
