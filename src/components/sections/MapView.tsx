@@ -6,6 +6,8 @@ interface MapViewProps {
   markers: GeoJSON.FeatureCollection | null
   connections: GeoJSON.FeatureCollection | null
   onLoad: () => void
+  /** Drawn instead of the map if the Maps API key is rejected. */
+  fallbackImage?: string
 }
 
 // Configure API loader once — safe with React 19 StrictMode (idempotent)
@@ -140,7 +142,7 @@ const FRAME_INTERVAL = 1000 / 30
 
 type BezierOverlayInstance = ReturnType<typeof createBezierOverlay>
 
-export default function MapView({ markers, connections, onLoad }: MapViewProps) {
+export default function MapView({ markers, connections, onLoad, fallbackImage }: MapViewProps) {
   const mapDivRef = useRef<HTMLDivElement>(null)
   const onLoadRef = useRef(onLoad)
   const mapRef = useRef<google.maps.Map | null>(null)
@@ -318,11 +320,13 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   if (authFailed) {
     return (
       <div className="absolute inset-0 bg-[#1d2c4d]" data-cursor="target">
-        <img
-          src="/assets/img/world-map.webp"
-          alt="Map"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
+        {fallbackImage && (
+          <img
+            src={fallbackImage}
+            alt="Map"
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#1d2c4d] via-transparent to-[#1d2c4d]/80" />
       </div>
     )

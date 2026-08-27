@@ -81,6 +81,11 @@ async function main() {
     throw new Error('--production was passed but DATABASE_URL is empty. Nothing to write to.')
   }
 
+  // Local runs get local storage too. Guarding only the database left a gap I
+  // walked straight into: the embedded database recorded rows while the files
+  // went to the production blob store, because the token was still in .env.
+  if (!toProduction) delete process.env.BLOB_READ_WRITE_TOKEN
+
   const storage = getStorage()
 
   // The failure this prevents: rows written to the shared database pointing at
