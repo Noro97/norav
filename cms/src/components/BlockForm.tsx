@@ -4,6 +4,7 @@ import type { FormField, Locale } from '@norav/content-schema'
 import { useState } from 'react'
 import { getAtPath } from '@norav/content-schema'
 import { MediaPicker } from './MediaPicker'
+import { Modal } from './Modal'
 
 /**
  * Renders the editor for one block from its form descriptor.
@@ -120,45 +121,23 @@ function Field({ field, prefix, ...form }: FieldProps) {
     }
 
     return (
-      <fieldset>
-        <legend>{field.label}</legend>
-        {help && <p className="help" style={{ marginTop: 0 }}>{help}</p>}
-
-        {rows.map((row, index) => (
-          <div className="row" key={index}>
-            <div className="row-head">
-              <span className="index">{String(index + 1).padStart(2, '0')}</span>
-              <span style={{ fontSize: 12, color: 'var(--muted)' }}>
-                {field.itemLabel ? String(getAtPath(row, field.itemLabel) ?? '') : ''}
-              </span>
-              <span className="spacer" />
-              <button type="button" onClick={() => move(index, index - 1)} disabled={disabled || index === 0} aria-label="Move up">↑</button>
-              <button type="button" onClick={() => move(index, index + 1)} disabled={disabled || index === rows.length - 1} aria-label="Move down">↓</button>
-              <button
-                type="button"
-                onClick={() => form.onChange(source, path, rows.filter((_, i) => i !== index))}
-                disabled={disabled || !canRemove}
-                aria-label="Remove"
-              >
-                ✕
-              </button>
-            </div>
-            {children.map((child) => (
-              <Field key={child.field} field={{ ...child, source }} prefix={`${path}.${index}`} {...form} />
-            ))}
-          </div>
-        ))}
-
-        <button
-          type="button"
-          className="ghost"
-          style={{ marginBottom: 16 }}
-          disabled={disabled || !canAdd}
-          onClick={() => form.onChange(source, path, [...rows, blankRow(children)])}
-        >
-          + Add
-        </button>
-      </fieldset>
+      <RepeaterField
+        legend={field.label}
+        help={help}
+        rows={rows}
+        itemLabel={field.itemLabel}
+        disabled={disabled}
+        canAdd={canAdd}
+        canRemove={canRemove}
+        onMove={move}
+        onRemove={(index) => form.onChange(source, path, rows.filter((_, i) => i !== index))}
+        onAdd={() => form.onChange(source, path, [...rows, blankRow(children)])}
+        renderFields={(index) =>
+          children.map((child) => (
+            <Field key={child.field} field={{ ...child, source }} prefix={`${path}.${index}`} {...form} />
+          ))
+        }
+      />
     )
   }
 
@@ -286,5 +265,135 @@ function MediaField({
         />
       )}
     </div>
+  )
+}
+
+/**
+ * A repeater as a list of rows, opened one at a time.
+ *
+ * Every row used to be expanded at once. That was fine for four principles and
+ * unreadable for the bento grid, which is now five projects and five tiles each
+ * carrying an illustration — a single column hundreds of pixels long where
+ * finding one tile means scrolling past the others.
+ *
+ * Collapsed, a row shows what identifies it and what it looks like. Editing
+ * happens in a dialog, so the list stays where it was when you close it.
+ */
+function RepeaterField({
+  legend,
+  help,
+  rows,
+  itemLabel,
+  disabled,
+  canAdd,
+  canRemove,
+  onMove,
+  onRemove,
+  onAdd,
+  renderFields,
+}: {
+  legend: string
+  help?: string
+  rows: Record<string, unknown>[]
+  itemLabel?: string
+  disabled?: boolean
+  canAdd: boolean
+  canRemove: boolean
+  onMove: (from: number, to: number) => void
+  onRemove: (index: number) => void
+  onAdd: () => void
+  renderFields: (index: number) => React.ReactNode
+}) {
+  const [editing, setEditing] = useState<number | null>(null)
+
+  /** The first image in a row, if it has one — what the row looks like. */
+  const thumbnail = (row: Record<string, unknown>): string | null => {
+    for (const value of Object.values(row)) {
+      if (typeof value === 'string' && /^https?:\/\//.test(value) && !/\.pdf$/i.test(value)) {
+        return value
+      }
+    }
+    return null
+  }
+
+  const label = (row: Record<string, unknown>, index: number) =>
+    (itemLabel ? String(getAtPath(row, itemLabel) ?? '') : '') || `Item ${index + 1}`
+
+  return (
+    <fieldset>
+      <legend>{legend}</legend>
+      {help && (
+        <p className="help" style={{ marginTop: 0 }}>
+          {help}
+        </p>
+      )}
+
+      <div className="repeat-rows">
+        {rows.map((row, index) => {
+          const image = thumbnail(row)
+          return (
+            <div className="repeat-row" key={index}>
+              <span className="index">{String(index + 1).padStart(2, '0')}</span>
+              {image ? (
+                <img className="repeat-thumb" src={image} alt="" loading="lazy" />
+              ) : (
+                <span className="repeat-thumb repeat-thumb-empty" aria-hidden="true" />
+              )}
+              <button
+                type="button"
+                className="repeat-open"
+                disabled={disabled}
+                onClick={() => setEditing(index)}
+              >
+                {label(row, index)}
+              </button>
+              <button
+                type="button"
+                onClick={() => onMove(index, index - 1)}
+                disabled={disabled || index === 0}
+                aria-label="Move up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                onClick={() => onMove(index, index + 1)}
+                disabled={disabled || index === rows.length - 1}
+                aria-label="Move down"
+              >
+                ↓
+              </button>
+              <button
+                type="button"
+                onClick={() => onRemove(index)}
+                disabled={disabled || !canRemove}
+                aria-label="Remove"
+              >
+                ✕
+              </button>
+            </div>
+          )
+        })}
+      </div>
+
+      <button
+        type="button"
+        className="ghost"
+        style={{ marginBottom: 16 }}
+        disabled={disabled || !canAdd}
+        onClick={() => {
+          onAdd()
+          setEditing(rows.length)
+        }}
+      >
+        + Add
+      </button>
+
+      {editing !== null && rows[editing] && (
+        <Modal title={`${legend} — ${label(rows[editing], editing)}`} onClose={() => setEditing(null)}>
+          {renderFields(editing)}
+        </Modal>
+      )}
+    </fieldset>
   )
 }
