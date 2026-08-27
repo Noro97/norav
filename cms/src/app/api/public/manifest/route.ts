@@ -10,8 +10,13 @@ export const dynamic = 'force-dynamic'
  * bundle is out of date. Small and short-lived on purpose.
  */
 export async function GET() {
+  // `publications.version` is qualified deliberately. Unqualified, it resolves
+  // to the `version::text` output column and sorts the rows as strings, where
+  // '9' lands above '12' — which is why this endpoint reported version 9 for
+  // three consecutive publishes while the site kept serving stale copy.
   const row = await queryOne<{ version: string; published_at: string; checksum: string }>(
-    `select version::text, published_at, checksum from publications order by version desc limit 1`,
+    `select version::text, published_at, checksum from publications
+       order by publications.version desc limit 1`,
   )
 
   const body = row

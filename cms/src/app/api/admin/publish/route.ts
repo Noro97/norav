@@ -33,7 +33,8 @@ export async function POST(request: Request) {
   }
 
   const previous = await queryOne<{ checksum: string; version: string }>(
-    `select checksum, version::text from publications order by version desc limit 1`,
+    `select checksum, version::text from publications
+     order by publications.version desc limit 1`,
   )
   if (previous?.checksum === built.checksum) {
     return ok({
