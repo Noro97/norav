@@ -15,19 +15,11 @@
 import { randomUUID } from 'node:crypto'
 import { readFile, readdir } from 'node:fs/promises'
 import { extname, join, relative } from 'node:path'
-import { closeDb, query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
 import { getStorage } from '../src/lib/storage'
-import { assertExclusiveLocalDb } from '../src/lib/db'
+import { repointReferences } from '../src/lib/content-references'
 
 const PUBLIC_DIR = join(process.cwd(), '..', 'public')
-
-/** Every place a file path can be stored, as [table, jsonb column, id column]. */
-const PLACES: [string, string, string][] = [
-  ['blocks', 'settings', 'id'],
-  ['block_translations', 'content', 'block_id'],
-  ['entries', 'data', 'id'],
-  ['entry_translations', 'data', 'entry_id'],
-]
 
 const MIME: Record<string, string> = {
   '.jpg': 'image/jpeg',
@@ -54,18 +46,6 @@ async function collect(dir: string, out: string[] = []): Promise<string[]> {
     }
   }
   return out
-}
-
-/** Replace every occurrence of a path anywhere in a JSON value. */
-function rewrite(value: unknown, from: string, to: string): unknown {
-  if (typeof value === 'string') return value === from ? to : value
-  if (Array.isArray(value)) return value.map((v) => rewrite(v, from, to))
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, rewrite(v, from, to)]),
-    )
-  }
-  return value
 }
 
 async function main() {
@@ -144,27 +124,7 @@ async function main() {
     )
     imported++
 
-    // Point the content at the stored copy. A path can sit in a block's
-    // settings, an entry's data, or inside either one's translated copy.
-    for (const [table, column, key] of PLACES) {
-      const rows = await query<{ key: string; value: unknown; locale?: string }>(
-        `select ${key} as key, ${column} as value${table.endsWith('translations') ? ', locale' : ''}
-           from ${table}
-          where ${column}::text like $1${table.endsWith('translations') ? '' : ' and deleted_at is null'}`,
-        [`%${publicPath}%`],
-      )
-      for (const row of rows) {
-        const next = rewrite(row.value, publicPath, stored.url)
-        await query(
-          `update ${table} set ${column} = $1 where ${key} = $2` +
-            (table.endsWith('translations') ? ' and locale = $3' : ''),
-          table.endsWith('translations')
-            ? [JSON.stringify(next), row.key, row.locale]
-            : [JSON.stringify(next), row.key],
-        )
-        rewritten++
-      }
-    }
+    rewritten += await repointReferences(publicPath, stored.url)
 
     console.log(`  + ${publicPath}  →  ${stored.url}`)
   }

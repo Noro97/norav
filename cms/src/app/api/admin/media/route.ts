@@ -5,6 +5,7 @@ import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, invalid, ok } from '@/lib/http'
 import { getStorage } from '@/lib/storage'
+import { findUsage } from '@/lib/content-references'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -52,7 +53,16 @@ export async function GET(request: Request) {
     `select id, url, mime, width, height, size_bytes::text, alt, created_at
        from media where deleted_at is null order by created_at desc limit 200`,
   )
-  return ok({ media, storage: getStorage().kind })
+
+  // Carried on the list rather than fetched per file: the whole reason to show
+  // it is the moment before a delete, and a count that arrives after the click
+  // is too late to be worth anything.
+  const usage = await findUsage(media.map((item) => item.url))
+
+  return ok({
+    media: media.map((item) => ({ ...item, usedBy: usage.get(item.url) ?? [] })),
+    storage: getStorage().kind,
+  })
 }
 
 export async function POST(request: Request) {

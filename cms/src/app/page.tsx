@@ -10,6 +10,7 @@ import type {
 import { Editor, type EditorBlock } from '@/components/Editor'
 import { CollectionEditor } from '@/components/CollectionEditor'
 import { ThemeEditor } from '@/components/ThemeEditor'
+import { MediaLibrary } from '@/components/MediaLibrary'
 import type { WorkspaceView } from '@/components/ViewSwitcher'
 import type { EnvironmentInfo } from '@/lib/environment'
 
@@ -102,6 +103,19 @@ export default function AdminPage() {
   if (view.kind === 'theme') {
     return (
       <ThemeEditor
+        collections={loaded.collections}
+        userEmail={loaded.user.email}
+        environment={loaded.user.environment}
+        view={view}
+        onViewChange={setView}
+        onSignOut={signOut}
+      />
+    )
+  }
+
+  if (view.kind === 'media') {
+    return (
+      <MediaLibrary
         collections={loaded.collections}
         userEmail={loaded.user.email}
         environment={loaded.user.environment}

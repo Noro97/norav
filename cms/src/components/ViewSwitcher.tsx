@@ -6,6 +6,7 @@ export type WorkspaceView =
   | { kind: 'page' }
   | { kind: 'collection'; key: string }
   | { kind: 'theme' }
+  | { kind: 'media' }
 
 /**
  * Moves between the page and the collections. Collections hold the rows that a
@@ -42,6 +43,15 @@ export function ViewSwitcher({
         onClick={() => onChange({ kind: 'theme' })}
       >
         Palette
+      </button>
+      <button
+        type="button"
+        className="view-item"
+        aria-current={view.kind === 'media'}
+        disabled={disabled}
+        onClick={() => onChange({ kind: 'media' })}
+      >
+        Media
       </button>
       {collections.map((collection) => (
         <button
