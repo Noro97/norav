@@ -93,9 +93,20 @@ npm --prefix cms run import:media
 It forces the embedded database, like `db:reset`. Re-running is safe — a file
 already imported is recognised by the original path kept in its alt text.
 
-Publish afterwards to put the new URLs on the site. In production this needs
-`BLOB_READ_WRITE_TOKEN`: the container's own filesystem is read-only, so the
-local driver cannot store anything there.
+Publish afterwards to put the new URLs on the site.
+
+Doing the same to the live site is a separate command, because it rewrites
+content everyone can see:
+
+```bash
+npm --prefix cms run import:media:production
+```
+
+It needs both halves of production in `cms/.env` — the Neon `DATABASE_URL`,
+which is already there, and `BLOB_READ_WRITE_TOKEN` from the Blob store
+connected to `norav-cms`. It refuses to run without the token rather than
+writing files to your laptop and recording them as live, which is a failure
+whose only symptom is an image that loads for you and nobody else.
 
 ## Trying a change safely
 
