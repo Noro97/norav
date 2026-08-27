@@ -1,5 +1,5 @@
-import { useEffect, useRef , useState } from 'react'
-import { readAccent, withAlpha } from '@/content/theme'
+import { useEffect, useRef  } from 'react'
+import { useThemeColor, withAlpha } from '@/content/theme'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
 import { useAppStore } from '@/store/useAppStore'
 import {
@@ -22,9 +22,9 @@ export function CursorTrail() {
     Array.from({ length: CURSOR_TRAIL_BUFFER_SIZE }, () => ({ x: 0, y: 0 }))
   )
   // A 2D context parses colour strings itself and knows nothing of CSS, so
-  // the accent arrives already resolved. Read once: the palette is written
-  // onto :root before the first render and does not change afterwards.
-  const [accent] = useState(() => readAccent())
+  // the accent arrives already resolved — and re-arrives if the published
+  // theme lands after the first paint.
+  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
   const bufferHeadRef = useRef(0)
   const bufferFilledRef = useRef(0)
 

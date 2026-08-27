@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 /**
  * Paints the published palette onto the document.
  *
@@ -8,6 +10,27 @@
  * Applied synchronously before the first render, so the page never flashes the
  * shipped palette before showing the published one.
  */
+/**
+ * Fired whenever the palette on :root changes.
+ *
+ * CSS needs no such thing — utilities repaint on their own. Canvas and WebGL
+ * do: they copy a colour string when they mount, and a theme that arrives
+ * afterwards would leave them painted in the one they happened to catch.
+ */
+const THEME_EVENT = 'norav:themechange'
+
+/** Cleared on every theme change, so non-React readers stay current cheaply. */
+let cached: Record<string, string> = {}
+
+// Invalidated by the event rather than by whoever fired it: a cache that only
+// one caller knows to clear is a cache that goes stale the moment a second
+// caller appears.
+if (typeof window !== 'undefined') {
+  window.addEventListener(THEME_EVENT, () => {
+    cached = {}
+  })
+}
+
 export function applyTheme(settings: Record<string, unknown> | undefined): void {
   if (typeof document === 'undefined') return
 
@@ -26,24 +49,50 @@ export function applyTheme(settings: Record<string, unknown> | undefined): void 
   const background = tokens['--color-background']
   const meta = document.querySelector('meta[name="theme-color"]')
   if (background && meta) meta.setAttribute('content', background)
+
+  window.dispatchEvent(new Event(THEME_EVENT))
+}
+
+/**
+ * A token's current value, for the parts that cannot use CSS.
+ *
+ * Cached until the next theme change: canvas code reads these inside draw
+ * loops, and `getComputedStyle` forces a style resolve every call.
+ */
+export function readToken(name: string, fallback: string): string {
+  if (typeof document === 'undefined') return fallback
+  const hit = cached[name]
+  if (hit) return hit
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return (cached[name] = value || fallback)
+}
+
+/**
+ * A token's value, re-read when the palette changes.
+ *
+ * The published theme can land after the first paint — the snapshot baked into
+ * the bundle is only a starting point, and the live one arrives over the
+ * network — so reading once on mount is not enough.
+ */
+export function useThemeColor(name: string, fallback: string): string {
+  const [value, setValue] = useState(() => readToken(name, fallback))
+  useEffect(() => {
+    const update = () => setValue(readToken(name, fallback))
+    update()
+    window.addEventListener(THEME_EVENT, update)
+    return () => window.removeEventListener(THEME_EVENT, update)
+  }, [name, fallback])
+  return value
 }
 
 /** The accent, read back from the page, for the parts that cannot use CSS. */
 export function readAccent(fallback = '#B51A2B'): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-crimson-500')
-    .trim()
-  return value || fallback
+  return readToken('--color-crimson-500', fallback)
 }
 
 /** The second accent, for the same purpose. */
 export function readSecondary(fallback = '#22d3ee'): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-cyan-500')
-    .trim()
-  return value || fallback
+  return readToken('--color-cyan-500', fallback)
 }
 
 /**
