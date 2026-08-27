@@ -10,15 +10,15 @@ export interface MediaItem {
   height: number | null
   size_bytes: string | null
   alt: Record<string, string>
+  /** Blocks and entries whose content names this file. */
+  usedBy?: string[]
 }
 
 /**
  * The library, as an overlay. Opened from an image field, it lists what has
  * been uploaded, takes new files, and hands back a URL.
  *
- * Deleting is deliberately quiet about consequences: nothing here knows which
- * pages point at a file, so the button asks first and the row is soft-deleted
- * on the server.
+ * The standalone Media view is the same list without the choosing.
  */
 export function MediaPicker({
   onSelect,

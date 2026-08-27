@@ -243,3 +243,49 @@ fieldset > .help { margin-bottom: 14px; }
   display: block;
   font-weight: 600;
 }
+
+/* ===== MEDIA LIBRARY ===== */
+/* A list rather than a grid: what matters about a file here is what uses it,
+   and that is a sentence, not a thumbnail. */
+.media-rows { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+
+.media-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.media-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.media-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.media-doc { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+.media-facts { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.media-facts strong { font-size: 13px; font-weight: 500; }
+.media-facts .subtle { font-family: var(--mono); font-size: 11px; }
+
+.media-used,
+.media-unused { font-family: var(--mono); font-size: 11px; }
+.media-used { color: var(--ok); }
+.media-unused { color: var(--muted); }
+
+.media-actions { display: flex; gap: 6px; }
+.media-actions .ghost { font-size: 12px; padding: 5px 10px; }
+
+@media (max-width: 700px) {
+  .media-row { grid-template-columns: 44px 1fr; }
+  .media-actions { grid-column: 1 / -1; }
+}
