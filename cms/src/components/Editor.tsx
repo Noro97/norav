@@ -9,7 +9,7 @@ import type {
 import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
 import { type WorkspaceView } from './ViewSwitcher'
-import { Workspace, FeedbackBanner, LocaleTabs, type Feedback } from './Workspace'
+import { Workspace, FeedbackBanner, LocaleTabs, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 export interface EditorBlock {
@@ -470,7 +470,8 @@ export function Editor({
               <button className="ghost" type="button" onClick={save} disabled={busy !== null || !dirty[selected.id]}>
                 {busy === 'save' ? 'Saving…' : 'Save'}
               </button>
-              <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
+              <PreviewButton disabled={busy !== null} />
+          <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
                 {busy === 'publish' ? 'Publishing…' : 'Publish'}
               </button>
             </div>
