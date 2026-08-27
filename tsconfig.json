@@ -28,6 +28,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src", "packages/content-schema/src"],
+  "include": ["src", "packages/content-schema/src", "server", "api", "vite-api-plugin.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

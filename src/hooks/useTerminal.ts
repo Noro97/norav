@@ -16,6 +16,20 @@ function getWelcomeLines(): TerminalLine[] {
   ]
 }
 
+function askError(reason: unknown): string {
+  switch (reason) {
+    case 'unconfigured':
+      return 'This command is switched off on this deployment.'
+    case 'rate_limited':
+      return 'Too many questions at once — give it a minute.'
+    case 'messages_required':
+    case 'invalid_json':
+      return 'Ask a question after the command, e.g. `ask what does he build?`'
+    default:
+      return 'Error: could not reach the AI service.'
+  }
+}
+
 async function streamAskResponse(
   question: string,
   pushLine: (line: TerminalLine) => void
@@ -32,7 +46,10 @@ async function streamAskResponse(
     })
 
     if (!res.ok) {
-      pushLine({ type: 'output', content: '  [AI] Error: Could not reach AI service.' })
+      // The handler names its refusals, so the terminal can say which one
+      // happened instead of blaming a service the visitor cannot see.
+      const reason = await res.json().then((b) => b?.error).catch(() => null)
+      pushLine({ type: 'output', content: '  [AI] ' + askError(reason) })
       return
     }
 
