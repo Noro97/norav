@@ -225,6 +225,36 @@ await expectError(
     `select version::text, checksum from publications order by publications.version desc limit 1`,
   )
   const { rows: [{ m: actualMax }] } = await db.query(`select max(version) as m from publications`)
+  // The same shape guards placement. A new block lands halfway between its
+  // neighbours, and the neighbour is found with `select position::text … order
+  // by position` — where an unqualified order binds to the cast output column
+  // and sorts 2 above 10. Every page here has more than ten of something.
+  {
+    // A position where text order and number order disagree: as strings,
+    // '3000' sorts above '10000'. Without one, the check passes either way.
+    await db.query(
+      `insert into blocks (page_id, type, position, anchor_id)
+       values ($1, 'contact_cta', 10000, 'contact')`,
+      [page.id],
+    )
+    const { rows: worst } = await db.query(
+      `select position::text from blocks where deleted_at is null
+        order by position desc limit 1`,
+    )
+    const { rows: right } = await db.query(
+      `select position::text from blocks where deleted_at is null
+        order by blocks.position desc limit 1`,
+    )
+    const { rows: [{ m }] } = await db.query(
+      `select max(position)::text as m from blocks where deleted_at is null`,
+    )
+    check(
+      'the last block is found by number, not by string order',
+      Number(right[0].position) === Number(m),
+      `qualified gave ${right[0].position}, unqualified gives ${worst[0].position}, newest is ${m}`,
+    )
+  }
+
   check(
     'latest publication is found by number, not by string order',
     Number(latest[0].version) === Number(actualMax),

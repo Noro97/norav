@@ -49,7 +49,11 @@ export async function POST(request: Request) {
     `select
        (select position::text from blocks
          where page_id = $1 and deleted_at is null and ($2::uuid is null or id = $2)
-         order by position desc limit 1) as before,
+       -- Qualified for the same reason the manifest's query is: unqualified, it
+       -- binds to the position::text output column above and sorts the rows as
+       -- strings, where 2 lands above 10 -- so the neighbour comes back wrong
+       -- the moment there are ten of anything.
+         order by blocks.position desc limit 1) as before,
        (select min(position)::text from blocks
          where page_id = $1 and deleted_at is null
            and position > coalesce(
