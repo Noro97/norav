@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Locale, SerializedCollectionDefinition } from '@norav/content-schema'
 import { getAtPath, mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
-import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
-import { WorkspaceFooter } from './WorkspaceFooter'
+import { type WorkspaceView } from './ViewSwitcher'
+import { Workspace, FeedbackBanner, LocaleTabs, type Feedback } from './Workspace'
 import { Modal } from './Modal'
 import type { EnvironmentInfo } from '@/lib/environment'
 
@@ -26,7 +26,6 @@ interface Draft {
   content: Record<Locale, Record<string, unknown>>
 }
 
-type Feedback = { kind: 'ok' | 'err' | 'warn'; message: string; details?: string[] } | null
 
 function buildDrafts(
   entries: CollectionEntry[],
@@ -105,7 +104,7 @@ export function CollectionEditor({
   const [locale, setLocale] = useState<Locale>(sourceLocale)
   const [dirty, setDirty] = useState<Record<string, boolean>>({})
   const [busy, setBusy] = useState<'load' | 'save' | 'publish' | 'add' | 'remove' | 'move' | null>('load')
-  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [feedback, setFeedback] = useState<Feedback | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
   const load = useCallback(
@@ -314,49 +313,30 @@ export function CollectionEditor({
   const hasUnsaved = useMemo(() => Object.values(dirty).some(Boolean), [dirty])
 
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <p className="brand">
-          norav<span>.</span>cms
-        </p>
-        <p className="brand-sub">{definition.label.toLowerCase()}</p>
-
-        <ViewSwitcher
-          view={view}
-          collections={collections}
-          disabled={busy !== null}
-          onChange={onViewChange}
-        />
-
-        <div className="palette">
+    <Workspace
+      subtitle={definition.label.toLowerCase()}
+      collections={collections}
+      view={view}
+      onViewChange={onViewChange}
+      userEmail={userEmail}
+      environment={environment}
+      onSignOut={onSignOut}
+      busy={busy !== null}
+      sidebar={
+        <>
+          <div className="palette">
           <button type="button" className="ghost" disabled={busy !== null} onClick={add} style={{ width: '100%' }}>
             + New {definition.label.toLowerCase()}
           </button>
         </div>
-
-        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
-      </aside>
-
-      <main className="main">
+        </>
+      }
+    >
+      <>
         <h1>{definition.label}</h1>
         <p className="subtle">{definition.description}</p>
 
-        {feedback && (
-          <div className={`status ${feedback.kind}`}>
-            {feedback.message}
-            {feedback.details && feedback.details.length > 0 && (
-              <ul>
-                {feedback.details.map((detail) => (
-                  <li key={detail}>{detail}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-
-        {hasUnsaved && !feedback && (
-          <div className="status warn">Unsaved changes. Save, then publish.</div>
-        )}
+        <FeedbackBanner feedback={feedback} unsaved={hasUnsaved} />
 
         {busy === 'load' ? (
           <p className="subtle">Loading…</p>
@@ -491,23 +471,15 @@ export function CollectionEditor({
             </p>
 
             <div className="toolbar">
-              <div className="tabs" role="tablist">
-                {locales.map((code) => (
-                  <button
-                    key={code}
-                    role="tab"
-                    type="button"
-                    aria-selected={code === locale}
-                    onClick={() => {
-                      setLocale(code)
-                      setFieldErrors({})
-                    }}
-                  >
-                    {code.toUpperCase()}
-                    {selected.translations[code]?.status === 'stale' ? ' •' : ''}
-                  </button>
-                ))}
-              </div>
+              <LocaleTabs
+                locales={locales}
+                locale={locale}
+                stale={(code) => selected.translations[code]?.status === 'stale'}
+                onChange={(next) => {
+                  setLocale(next)
+                  setFieldErrors({})
+                }}
+              />
 
               <label className="field checkbox" style={{ margin: 0 }}>
                 <input
@@ -540,7 +512,7 @@ export function CollectionEditor({
             />
           </Modal>
         )}
-      </main>
-    </div>
+      </>
+    </Workspace>
   )
 }
