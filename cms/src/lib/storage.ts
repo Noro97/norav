@@ -26,7 +26,15 @@ export interface Storage {
 const LOCAL_DIR = join(process.cwd(), '.media')
 
 function localUrl(key: string): string {
-  const base = process.env.CMS_PUBLIC_URL?.replace(/\/$/, '') ?? ''
+  // Absolute, because the URL is stored in the content and read by the site,
+  // which is served from a different origin — a relative path would resolve
+  // against norav.dev and find nothing. In development that origin is the port
+  // every script here already assumes.
+  // Trimmed and emptiness-checked rather than `?? `: the variable is present
+  // but blank in the local .env, and an empty string is a value — nullish
+  // coalescing would hand it straight through and produce a relative URL.
+  const configured = process.env.CMS_PUBLIC_URL?.trim().replace(/\/$/, '')
+  const base = configured || (process.env.VERCEL ? '' : 'http://localhost:3300')
   return `${base}/api/public/media/${key}`
 }
 
