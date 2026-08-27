@@ -24,6 +24,9 @@ const content = z.object({
         title: z.string().min(1).max(80),
         description: z.string().min(1).max(400),
         cta: z.string().min(1).max(40),
+        // The tile's illustration. Empty means the layout draws none, which is
+        // how the two Proof tiles have always looked.
+        image: z.string().default(''),
       }),
     )
     .max(8),
@@ -33,6 +36,7 @@ const content = z.object({
         slot: z.number().int().min(0).max(11),
         title: z.string().min(1).max(60),
         description: z.string().min(1).max(200),
+        image: z.string().default(''),
       }),
     )
     .max(12),
@@ -53,6 +57,29 @@ const content = z.object({
       .max(8),
   }),
   principles: z.array(z.object({ text: z.string().min(1).max(80) })).max(8),
+  // Two panels the layout stacks beside a tile rather than inside one. Named
+  // rather than indexed, because their position is a design decision and their
+  // subject is not.
+  // Defaulted, not required: content saved before these fields existed must
+  // keep validating, or the importer refuses a page it wrote itself.
+  illustrations: z
+    .object({
+      omnigrid: z.string().default(''),
+      gamification: z.string().default(''),
+    })
+    .default({ omnigrid: '', gamification: '' }),
+  // The Proof tile's badge artwork, keyed by the tier it stands for. The tiers
+  // themselves are code — the layout draws exactly four — but what each one
+  // looks like is not.
+  badges: z
+    .array(
+      z.object({
+        rarity: z.enum(['common', 'rare', 'epic', 'legendary']),
+        image: z.string().default(''),
+      }),
+    )
+    .max(4)
+    .default([]),
 })
 
 const settings = z.object({})
@@ -72,6 +99,8 @@ export const bentoGridBlock = defineBlock({
       description: '',
       projects: [],
       tiles: [],
+      illustrations: { omnigrid: '', gamification: '' },
+      badges: [],
       dashboard: { title: 'Impact Dashboard', metrics: [] },
       principles: [],
     },
@@ -101,6 +130,7 @@ export const bentoGridBlock = defineBlock({
         { field: 'title', control: 'text', label: 'Title' },
         { field: 'description', control: 'textarea', label: 'Description' },
         { field: 'cta', control: 'text', label: 'Link label' },
+        { field: 'image', control: 'media', label: 'Illustration', localized: false },
       ],
     },
     {
@@ -114,6 +144,7 @@ export const bentoGridBlock = defineBlock({
         { field: 'slot', control: 'number', label: 'Slot', localized: false },
         { field: 'title', control: 'text', label: 'Title' },
         { field: 'description', control: 'textarea', label: 'Description' },
+        { field: 'image', control: 'media', label: 'Illustration', localized: false },
       ],
     },
     {
@@ -145,6 +176,34 @@ export const bentoGridBlock = defineBlock({
       itemLabel: 'text',
       max: 8,
       fields: [{ field: 'text', control: 'text', label: 'Principle' }],
+    },
+    {
+      field: 'badges',
+      control: 'repeater',
+      label: 'Proof badges',
+      itemLabel: 'rarity',
+      max: 4,
+      help: 'One per tier the Proof tile draws. Leave an image empty to fall back to nothing.',
+      fields: [
+        {
+          field: 'rarity',
+          control: 'select',
+          label: 'Tier',
+          localized: false,
+          options: ['common', 'rare', 'epic', 'legendary'].map((value) => ({ value, label: value })),
+        },
+        { field: 'image', control: 'media', label: 'Badge', localized: false },
+      ],
+    },
+    {
+      field: 'illustrations',
+      control: 'group',
+      label: 'Standalone illustrations',
+      help: 'The two panels the layout stacks beside a tile. Leave one empty to draw nothing.',
+      fields: [
+        { field: 'omnigrid', control: 'media', label: 'Beside OmniGrid', localized: false },
+        { field: 'gamification', control: 'media', label: 'Beside Gamification', localized: false },
+      ],
     },
   ],
 })

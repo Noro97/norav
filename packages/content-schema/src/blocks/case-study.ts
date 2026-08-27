@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { defineBlock, type BlockDefinition } from '../define-block'
+import { defineBlock, type BlockDefinition, type FormField } from '../define-block'
 
 /**
  * The five case studies share a shape: an editorial header and a row of
@@ -21,11 +21,21 @@ const settings = z.object({})
 
 export type CaseStudyContent = z.infer<typeof content>
 
+/** The logistics case study, which carries a fallback for its map. */
+export type LogisticsContent = CaseStudyContent & { mapFallback: string }
+
 export function defineCaseStudy(
   type: string,
   label: string,
   description: string,
   defaults: { sectionLabel: string; title: string; techStack: string[] },
+  /**
+   * Extra fields this one case study has and the others do not — the logistics
+   * map's fallback image being the only one so far. Kept as an argument rather
+   * than added to every case study, because a field that means nothing in four
+   * places out of five is noise in four admin forms.
+   */
+  extra: { schema: z.ZodRawShape; form: FormField[] } = { schema: {}, form: [] },
 ): BlockDefinition {
   return defineBlock({
     type,
@@ -33,7 +43,7 @@ export function defineCaseStudy(
     tier: 2,
     singleton: true,
     description,
-    content,
+    content: content.extend(extra.schema),
     settings,
     defaults: {
       content: {
@@ -41,10 +51,12 @@ export function defineCaseStudy(
         title: defaults.title,
         description: '—',
         techStack: defaults.techStack.map((name) => ({ name })),
+        ...Object.fromEntries(Object.keys(extra.schema).map((key) => [key, ''])),
       },
       settings: {},
     },
     form: [
+      ...extra.form,
       { field: 'sectionLabel', control: 'text', label: 'Case study number' },
       { field: 'title', control: 'text', label: 'Title' },
       { field: 'description', control: 'textarea', label: 'Description' },
@@ -69,6 +81,18 @@ export const logisticsBlock = defineCaseStudy(
     sectionLabel: 'Case Study 01',
     title: 'NexusRoute',
     techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
+  },
+  {
+    schema: { mapFallback: z.string().default('') },
+    form: [
+      {
+        field: 'mapFallback',
+        control: 'media',
+        label: 'Map fallback image',
+        localized: false,
+        help: 'Drawn in place of the live map if the Maps API key is rejected. Rarely seen.',
+      },
+    ],
   },
 )
 

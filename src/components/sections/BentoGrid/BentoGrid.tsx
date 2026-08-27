@@ -69,6 +69,12 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
   const gridRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'overview', sectionRef)
 
+  // A tile's illustration lives on the same entry as its words, found by the
+  // slot the layout reserved for it.
+  const tileImage = (slot: number) =>
+    block?.content.tiles.find((tile) => tile.slot === slot)?.image || undefined
+  const illustrations = block?.content.illustrations ?? { omnigrid: '', gamification: '' }
+
   useGSAP(() => {
     const headerEl = sectionRef.current!.querySelector('.bento-header')
     if (headerEl) {
@@ -115,18 +121,20 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
         </div>
 
         {/* Bento Grid */}
+        {/* Illustrations are addressed by the same keys as the copy: a slot
+            number for the tiles, a name for the two standalone panels. */}
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {/* Row 1: NexusRoute (2col) + Perf Audit (1col) */}
           <BentoProjectTile project={BENTO_PROJECTS[0]!} index={0} className="md:col-span-2" />
-          <BentoMicroTile index={MICRO_TILES[0]!.index} icon={MICRO_TILES[0]!.icon} illustration="/assets/img/bento-perf-audit.png" />
+          <BentoMicroTile index={MICRO_TILES[0]!.index} icon={MICRO_TILES[0]!.icon} illustration={tileImage(MICRO_TILES[0]!.index)} />
 
           {/* Row 2: Type-Safe (1col) + MerchForge (2col) */}
-          <BentoMicroTile index={MICRO_TILES[1]!.index} icon={MICRO_TILES[1]!.icon} illustration="/assets/img/bento-typesafe.png" />
+          <BentoMicroTile index={MICRO_TILES[1]!.index} icon={MICRO_TILES[1]!.icon} illustration={tileImage(MICRO_TILES[1]!.index)} />
           <BentoProjectTile project={BENTO_PROJECTS[1]!} index={1} className="md:col-span-2" />
 
           {/* Row 3: Impact Dashboard (2col) + UX Predict (1col) */}
           <BentoImpactDashboard />
-          <BentoMicroTile index={MICRO_TILES[2]!.index} icon={MICRO_TILES[2]!.icon} illustration="/assets/img/bento-ux.png" />
+          <BentoMicroTile index={MICRO_TILES[2]!.index} icon={MICRO_TILES[2]!.icon} illustration={tileImage(MICRO_TILES[2]!.index)} />
 
           {/* Row 4: FilterGraph (full width) */}
           <BentoProjectTile project={BENTO_PROJECTS[2]!} index={2} className="md:col-span-3" />
@@ -134,7 +142,7 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
           {/* Row 5: Cache Hit-Rate + illustration (1col stacked) + OmniGrid (2col) */}
           <div className="flex flex-col gap-3 md:gap-4">
             <BentoMicroTile index={MICRO_TILES[4]!.index} icon={MICRO_TILES[4]!.icon} />
-            <BentoIllustration src="/assets/img/bento-omnigrid.png" alt="OmniGrid illustration" />
+            {illustrations.omnigrid && <BentoIllustration src={illustrations.omnigrid} alt="OmniGrid illustration" />}
           </div>
           <OmniGridBentoTile className="md:col-span-2" />
 
@@ -145,7 +153,7 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
           {/* Row 7: AI Liveness + illustration (1col stacked) + ProofGamification (2col) */}
           <div className="flex flex-col gap-3 md:gap-4">
             <BentoMicroTile index={MICRO_TILES[3]!.index} icon={MICRO_TILES[3]!.icon} />
-            <BentoIllustration src="/assets/img/bento-gamification.png" alt="Gamification illustration" />
+            {illustrations.gamification && <BentoIllustration src={illustrations.gamification} alt="Gamification illustration" />}
           </div>
           <ProofGamificationTile className="md:col-span-2" />
         </div>

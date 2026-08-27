@@ -7,13 +7,6 @@ import { MagneticButton } from '@/components/ui/MagneticButton'
 import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
 import type { BentoProject } from './bento.data'
 
-const TILE_ILLUSTRATIONS: Record<string, string> = {
-  nexusroute: '/assets/img/bento-nexusroute.png',
-  merchforge: '/assets/img/bento-merchforge.png',
-  filtergraph: '/assets/img/bento-filtergraph.png',
-  omnigrid: '/assets/img/bento-omnigrid.png',
-}
-
 interface BentoProjectTileProps {
   project: BentoProject
   className?: string
@@ -25,6 +18,9 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
   // Copy is addressed by project id, so the mosaic's layout and its words
   // can move independently.
   const copy = block?.content.projects.find((candidate) => candidate.project === project.id)
+  // The illustration is addressed the same way the words are. Empty draws
+  // none, which is how the Proof tiles have always looked.
+  const illustration = copy?.image ?? ''
   const tileRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [inViewport, setInViewport] = useState(false)
@@ -104,9 +100,9 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       )}
 
       {/* Illustration — right side */}
-      {TILE_ILLUSTRATIONS[project.id] && (
+      {illustration && (
         <img
-          src={TILE_ILLUSTRATIONS[project.id]}
+          src={illustration}
           alt=""
           loading="lazy"
           className="absolute right-0 top-0 h-full w-1/2 object-contain object-right opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none hidden md:block"

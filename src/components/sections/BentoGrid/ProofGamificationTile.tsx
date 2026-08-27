@@ -1,17 +1,19 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
+import { useBlock } from '@/content/ContentProvider'
+import type { BentoGridContent } from '@norav/content-schema'
 
 interface Props {
   className?: string
 }
 
-const BADGES = [
-  { rarity: 'common', image: '/assets/icons/badge-common.svg' },
-  { rarity: 'rare', image: '/assets/icons/badge-rare.svg' },
-  { rarity: 'epic', image: '/assets/icons/badge-epic.svg' },
-  { rarity: 'legendary', image: '/assets/icons/badge-legendary.svg' },
-] as const
+/**
+ * The four tiers the layout draws. Their order and their names are code — the
+ * grid reserves four cells and the labels come from i18n — while the artwork
+ * for each is content, matched by tier.
+ */
+const TIERS = ['common', 'rare', 'epic', 'legendary'] as const
 
 
 const RARITY_STYLES: Record<string, string> = {
@@ -56,6 +58,13 @@ function AnimatedXP() {
 
 export function ProofGamificationTile({ className = '' }: Props) {
   const { t } = useTranslation('bento')
+  const block = useBlock<BentoGridContent>('bento_grid')
+  // Every tier is drawn whether or not it has artwork, so the cell keeps its
+  // place in the grid and its label while an image is being chosen.
+  const badges = TIERS.map((rarity) => ({
+    rarity,
+    image: block?.content.badges.find((badge) => badge.rarity === rarity)?.image ?? '',
+  }))
   const tileRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(tileRef, { once: true, margin: '-50px' })
 
@@ -152,17 +161,19 @@ export function ProofGamificationTile({ className = '' }: Props) {
               {t('proof.gamification.badges')}
             </p>
             <div className="grid grid-cols-2 gap-2">
-              {BADGES.map((badge, i) => (
+              {badges.map((badge, i) => (
                 <div
                   key={i}
                   className={`group/badge flex flex-col items-center justify-center w-full aspect-square rounded-lg border bg-black/30 transition-all duration-300 hover:scale-105 overflow-hidden ${RARITY_STYLES[badge.rarity]}`}
                 >
-                  <img
-                    src={badge.image}
-                    alt={`${badge.rarity} badge`}
-                    loading="lazy"
-                    className="w-3/4 h-3/4 object-contain transition-transform duration-300 group-hover/badge:scale-110"
-                  />
+                  {badge.image && (
+                    <img
+                      src={badge.image}
+                      alt={`${badge.rarity} badge`}
+                      loading="lazy"
+                      className="w-3/4 h-3/4 object-contain transition-transform duration-300 group-hover/badge:scale-110"
+                    />
+                  )}
                   <span className="font-mono text-[9px] mt-1 opacity-60">
                     {t(`proof.gamification.badge${badge.rarity.charAt(0).toUpperCase() + badge.rarity.slice(1)}`)}
                   </span>

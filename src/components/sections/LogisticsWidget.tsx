@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
-import type { CaseStudyContent } from '@norav/content-schema'
+import type { LogisticsContent } from '@norav/content-schema'
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -59,7 +59,7 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
 }
 
 export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<CaseStudyContent>('logistics')
+  const block = useBlock<LogisticsContent>('logistics')
   const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'logistics', sectionRef)
@@ -221,6 +221,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
               markers={markers}
               connections={connections}
               onLoad={handleMapLoaded}
+              fallbackImage={block?.content.mapFallback}
             />
           </Suspense>
           {/* Overlay label */}
