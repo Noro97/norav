@@ -1,5 +1,5 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
-import { readAccent, withAlpha } from '@/content/theme'
+import { useRef, useEffect, useCallback } from 'react'
+import { useThemeColor, withAlpha } from '@/content/theme'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -11,9 +11,9 @@ export function DynamicGrid() {
   const offscreenRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const lastDrawnCursor = useRef({ x: -999, y: -999 })
-  // A 2D canvas takes colour strings, not CSS variables — resolve the accent
-  // once so the cursor glow tracks the theme like everything else.
-  const [accent] = useState(() => readAccent())
+  // A 2D canvas takes colour strings, not CSS variables, so the cursor glow
+  // follows the accent through a subscription rather than a stylesheet.
+  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
 
   const buildOffscreen = useCallback((width: number, height: number) => {
     const oc = document.createElement('canvas')

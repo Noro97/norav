@@ -1,5 +1,5 @@
-import { useRef, useEffect , useState } from 'react'
-import { readAccent, withAlpha } from '@/content/theme'
+import { useRef, useEffect  } from 'react'
+import { useThemeColor, withAlpha } from '@/content/theme'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { GHOST_CODE_LINES } from './vibecoding.data'
 
@@ -44,9 +44,9 @@ export function TerminalGhosting({ active }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   // A 2D context parses colour strings itself and knows nothing of CSS, so
-  // the accent arrives already resolved. Read once: the palette is written
-  // onto :root before the first render and does not change afterwards.
-  const [accent] = useState(() => readAccent())
+  // the accent arrives already resolved — and re-arrives if the published
+  // theme lands after the first paint.
+  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
   const rafRef = useRef(0)
   const linesRef = useRef<CodeLine[]>([])
   const isMobile = useMediaQuery('(max-width: 768px)')

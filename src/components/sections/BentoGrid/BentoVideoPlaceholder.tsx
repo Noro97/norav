@@ -1,6 +1,6 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import type { BentoVariant } from './bento.data'
-import { readAccent, readSecondary, withAlpha } from '@/content/theme'
+import { readToken, useThemeColor, withAlpha } from '@/content/theme'
 
 /**
  * Each tile is tinted by the project it stands for. The two that carry the
@@ -11,9 +11,9 @@ function variantColors(variant: BentoVariant): { primary: string; secondary: str
   switch (variant) {
     case 'merch':
     case 'proof':
-      return { primary: readAccent(), secondary: getToken('--color-crimson-700', '#541A2E') }
+      return { primary: readToken('--color-crimson-500', '#B51A2B'), secondary: readToken('--color-crimson-700', '#541A2E') }
     case 'omnigrid':
-      return { primary: readSecondary(), secondary: getToken('--color-cyan-700', '#0e7490') }
+      return { primary: readToken('--color-cyan-500', '#22d3ee'), secondary: readToken('--color-cyan-700', '#0e7490') }
     case 'logistics':
       return { primary: '#3b82f6', secondary: '#1e40af' }
     case 'ecommerce':
@@ -21,10 +21,6 @@ function variantColors(variant: BentoVariant): { primary: string; secondary: str
   }
 }
 
-function getToken(name: string, fallback: string): string {
-  if (typeof document === 'undefined') return fallback
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback
-}
 
 interface Props {
   variant: BentoVariant
@@ -35,7 +31,9 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const rafRef = useRef(0)
-  const [palette] = useState(() => variantColors(variant))
+  // Recomputed when the palette changes; the accent it depends on is a token.
+  useThemeColor('--color-crimson-500', '#B51A2B')
+  const palette = variantColors(variant)
   const startTimeRef = useRef(0)
 
   useEffect(() => {

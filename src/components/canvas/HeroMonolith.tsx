@@ -4,7 +4,7 @@ import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
-import { readAccent } from '@/content/theme'
+import { useThemeColor } from '@/content/theme'
 
 const SHARD_COUNT = 40
 const SHARD_SIZE = 0.05
@@ -106,7 +106,7 @@ export function HeroMonolith() {
   // three.js parses this string itself and has never heard of CSS, so the
   // accent has to arrive already resolved. Read once on mount: the palette is
   // written onto :root before the first render and does not change after.
-  const [accent] = useState(() => readAccent())
+  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
 
   const groupRef = useRef<THREE.Group>(null)
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null)
