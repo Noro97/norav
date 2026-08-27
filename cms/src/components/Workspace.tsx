@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import type { Locale, SerializedCollectionDefinition } from '@norav/content-schema'
 import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
 import { WorkspaceFooter } from './WorkspaceFooter'
@@ -100,6 +100,47 @@ export function FeedbackBanner({
   }
   if (unsaved) return <div className="status warn">Unsaved changes. Save, then publish.</div>
   return null
+}
+
+/**
+ * Opens the draft in the real site, in a new tab.
+ *
+ * Rendered by the site itself rather than approximated in the admin — an
+ * approximation is a second implementation of the layout, and the question a
+ * preview answers is what the page will actually look like.
+ */
+export function PreviewButton({ disabled }: { disabled?: boolean }) {
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function open() {
+    setBusy(true)
+    setError(null)
+    // Opened before the request so the browser attributes the tab to the click.
+    // A tab opened from a promise is a popup, and gets blocked.
+    const tab = window.open('', '_blank')
+    try {
+      const response = await fetch('/api/admin/preview', { method: 'POST' })
+      const body = await response.json().catch(() => null)
+      if (!response.ok) {
+        tab?.close()
+        setError(body?.error?.message ?? 'Could not open a preview.')
+        return
+      }
+      if (tab) tab.location.href = body.data.url
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <>
+      <button type="button" className="ghost" disabled={disabled || busy} onClick={() => void open()}>
+        {busy ? 'Opening…' : 'Preview'}
+      </button>
+      {error && <span className="status err">{error}</span>}
+    </>
+  )
 }
 
 /** The language being edited. A dot marks a translation the source has outrun. */

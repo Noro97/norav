@@ -42,6 +42,32 @@ function cmsOrigin(): string | undefined {
   return origin?.replace(/\/$/, '')
 }
 
+/**
+ * The preview key, if this page was opened with one.
+ *
+ * Carried in the fragment rather than the query, because a fragment is never
+ * sent to a server: the key stays out of access logs, out of `Referer` headers
+ * on every outbound link, and out of any analytics that records the path.
+ *
+ * Read once, from the address the visitor arrived on. A preview is a way of
+ * looking at a draft, not a mode the site remembers — reload without the key
+ * and you are back on what is published, which is what you want when the point
+ * is to check what everyone else sees.
+ */
+export function previewToken(): string | null {
+  if (typeof window === 'undefined') return null
+  return new URLSearchParams(window.location.hash.replace(/^#/, '')).get('preview')
+}
+
+async function fetchPreview(baseUrl: string, locale: Locale, token: string): Promise<Snapshot> {
+  const response = await fetch(
+    `${baseUrl}/api/public/preview?locale=${locale}&token=${encodeURIComponent(token)}`,
+    { cache: 'no-store' },
+  )
+  if (!response.ok) throw new Error(`preview ${locale}: HTTP ${response.status}`)
+  return (await response.json()) as Snapshot
+}
+
 async function fetchLocale(baseUrl: string, locale: Locale, version: number): Promise<Snapshot> {
   const response = await fetch(`${baseUrl}/api/public/content?locale=${locale}&v=${version}`)
   if (!response.ok) throw new Error(`content ${locale}: HTTP ${response.status}`)
@@ -61,6 +87,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const locale = toLocale(i18n.language)
   const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isPreview, setIsPreview] = useState(false)
 
   useEffect(() => {
     const configured = cmsOrigin()
@@ -73,6 +100,23 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     async function revalidate() {
       try {
+        const token = previewToken()
+        if (token) {
+          // Straight to the draft: there is no manifest for unpublished content,
+          // and nothing to compare a checksum against.
+          const [en, ru] = await Promise.all([
+            fetchPreview(baseUrl, 'en', token),
+            fetchPreview(baseUrl, 'ru', token),
+          ])
+          if (cancelled) return
+          const draft = { en, ru }
+          setSnapshots(draft)
+          setCurrentSnapshots(draft)
+          applyTheme(draft.en.settings)
+          setIsPreview(true)
+          return
+        }
+
         const response = await fetch(`${baseUrl}/api/public/manifest`, { signal: controller.signal })
         if (!response.ok) return
         const manifest = (await response.json()) as { version: number; checksum: string }
@@ -133,7 +177,53 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     [snapshots, locale, isRefreshing],
   )
 
-  return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
+  return (
+    <ContentContext.Provider value={value}>
+      {isPreview && <PreviewBadge />}
+      {children}
+    </ContentContext.Provider>
+  )
+}
+
+/**
+ * Says out loud that this is not the live site.
+ *
+ * A draft rendered by the real site is indistinguishable from the real thing,
+ * which is the point of a preview and also its one hazard: a screenshot of one,
+ * or a forwarded link, otherwise reads as what visitors see.
+ */
+function PreviewBadge() {
+  return (
+    <div
+      role="status"
+      style={{
+        position: 'fixed',
+        insetInlineStart: '50%',
+        insetBlockEnd: '16px',
+        transform: 'translateX(-50%)',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '7px 14px',
+        borderRadius: '999px',
+        border: '1px solid color-mix(in srgb, var(--color-warning) 45%, transparent)',
+        background: 'color-mix(in srgb, var(--color-background) 88%, transparent)',
+        backdropFilter: 'blur(8px)',
+        color: 'var(--color-warning)',
+        font: '500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
+        letterSpacing: '0.06em',
+      }}
+    >
+      DRAFT PREVIEW — NOT PUBLISHED
+      <a
+        href={window.location.pathname}
+        style={{ color: 'inherit', opacity: 0.7, textDecoration: 'underline' }}
+      >
+        exit
+      </a>
+    </div>
+  )
 }
 
 export function useContent(): ContentValue {

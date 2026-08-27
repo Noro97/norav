@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { SerializedCollectionDefinition, Theme, ThemeTokens } from '@norav/content-schema'
 import { type WorkspaceView } from './ViewSwitcher'
-import { Workspace, FeedbackBanner, type Feedback } from './Workspace'
+import { Workspace, FeedbackBanner, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 /** The steps worth showing: the accent itself and the tones built around it. */
@@ -138,7 +138,8 @@ export function ThemeEditor({
               <button className="ghost" type="button" onClick={save} disabled={busy !== null || !dirty}>
                 {busy === 'save' ? 'Saving…' : 'Save'}
               </button>
-              <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
+              <PreviewButton disabled={busy !== null} />
+          <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
                 {busy === 'publish' ? 'Publishing…' : 'Publish'}
               </button>
             </div>
