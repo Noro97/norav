@@ -11,11 +11,12 @@ import { Editor, type EditorBlock } from '@/components/Editor'
 import { CollectionEditor } from '@/components/CollectionEditor'
 import { ThemeEditor } from '@/components/ThemeEditor'
 import type { WorkspaceView } from '@/components/ViewSwitcher'
+import type { EnvironmentInfo } from '@/lib/environment'
 
 const PAGE_SLUG = 'home'
 
 interface Loaded {
-  user: { email: string }
+  user: { email: string; environment?: EnvironmentInfo }
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
   collections: SerializedCollectionDefinition[]
@@ -103,6 +104,7 @@ export default function AdminPage() {
       <ThemeEditor
         collections={loaded.collections}
         userEmail={loaded.user.email}
+        environment={loaded.user.environment}
         view={view}
         onViewChange={setView}
         onSignOut={signOut}
@@ -120,6 +122,7 @@ export default function AdminPage() {
           locales={loaded.locales}
           sourceLocale={loaded.sourceLocale}
           userEmail={loaded.user.email}
+          environment={loaded.user.environment}
           view={view}
           onViewChange={setView}
           onSignOut={signOut}
@@ -137,6 +140,7 @@ export default function AdminPage() {
       locales={loaded.locales}
       sourceLocale={loaded.sourceLocale}
       userEmail={loaded.user.email}
+      environment={loaded.user.environment}
       view={{ kind: 'page' }}
       onViewChange={setView}
       onSignOut={signOut}

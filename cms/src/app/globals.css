@@ -225,3 +225,21 @@ fieldset > .help { margin-bottom: 14px; }
 .chip { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); }
 .swatch-name { font-size: 11px; color: var(--muted); }
 .swatch-value { font-family: var(--mono); font-size: 10px; color: var(--text); }
+
+/* Says which database the edits in front of you will land in. Shown only when
+   that is not the one this deployment is supposed to write to. */
+.env-warning {
+  margin: 24px 0 0;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--warn) 10%, transparent);
+  color: var(--warn);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.env-warning strong {
+  display: block;
+  font-weight: 600;
+}

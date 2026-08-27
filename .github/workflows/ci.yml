@@ -45,9 +45,10 @@ jobs:
           npm install
           npm test
 
-      - name: CMS type check and build
+      - name: CMS type check, tests and build
         working-directory: cms
         run: |
           npm install
           npm run typecheck
+          npm test
           npx next build

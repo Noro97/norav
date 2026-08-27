@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { SerializedCollectionDefinition, Theme, ThemeTokens } from '@norav/content-schema'
 import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
+import { WorkspaceFooter } from './WorkspaceFooter'
+import type { EnvironmentInfo } from '@/lib/environment'
 
 /** The steps worth showing: the accent itself and the tones built around it. */
 const PREVIEW_STEPS = [300, 400, 500, 600, 700] as const
@@ -12,6 +14,7 @@ type Feedback = { kind: 'ok' | 'err' | 'warn'; message: string } | null
 interface ThemeEditorProps {
   collections: SerializedCollectionDefinition[]
   userEmail: string
+  environment?: EnvironmentInfo
   view: WorkspaceView
   onViewChange: (next: WorkspaceView) => void
   onSignOut: () => void
@@ -27,6 +30,7 @@ interface ThemeEditorProps {
 export function ThemeEditor({
   collections,
   userEmail,
+  environment,
   view,
   onViewChange,
   onSignOut,
@@ -119,12 +123,7 @@ export function ThemeEditor({
 
         <ViewSwitcher view={view} collections={collections} disabled={busy !== null} onChange={onViewChange} />
 
-        <p className="brand-sub" style={{ marginTop: 28, marginBottom: 8 }}>
-          {userEmail}
-        </p>
-        <button className="ghost" type="button" onClick={onSignOut} style={{ width: '100%' }}>
-          Sign out
-        </button>
+        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
       </aside>
 
       <main className="main">

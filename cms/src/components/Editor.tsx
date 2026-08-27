@@ -9,6 +9,8 @@ import type {
 import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
 import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
+import { WorkspaceFooter } from './WorkspaceFooter'
+import type { EnvironmentInfo } from '@/lib/environment'
 
 export interface EditorBlock {
   id: string
@@ -28,6 +30,7 @@ interface EditorProps {
   locales: readonly Locale[]
   sourceLocale: Locale
   userEmail: string
+  environment?: EnvironmentInfo
   view: WorkspaceView
   onViewChange: (next: WorkspaceView) => void
   onSignOut: () => void
@@ -104,6 +107,7 @@ export function Editor({
   locales,
   sourceLocale,
   userEmail,
+  environment,
   view,
   onViewChange,
   onSignOut,
@@ -415,12 +419,7 @@ export function Editor({
           </button>
         </div>
 
-        <p className="brand-sub" style={{ marginTop: 28, marginBottom: 8 }}>
-          {userEmail}
-        </p>
-        <button className="ghost" type="button" onClick={onSignOut} style={{ width: '100%' }}>
-          Sign out
-        </button>
+        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
       </aside>
 
       <main className="main">
