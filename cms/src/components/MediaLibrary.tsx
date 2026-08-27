@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { SerializedCollectionDefinition } from '@norav/content-schema'
-import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
-import { WorkspaceFooter } from './WorkspaceFooter'
+import { type WorkspaceView } from './ViewSwitcher'
+import { Workspace, FeedbackBanner, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 import type { MediaItem } from './MediaPicker'
 
@@ -32,7 +32,7 @@ export function MediaLibrary({
   const [items, setItems] = useState<MediaItem[]>([])
   const [storage, setStorage] = useState<string>('')
   const [busy, setBusy] = useState(true)
-  const [status, setStatus] = useState<{ kind: 'ok' | 'err'; message: string } | null>(null)
+  const [status, setStatus] = useState<Feedback | null>(null)
   const uploadRef = useRef<HTMLInputElement>(null)
   const replaceRef = useRef<HTMLInputElement>(null)
   const [replacing, setReplacing] = useState<MediaItem | null>(null)
@@ -120,30 +120,26 @@ export function MediaLibrary({
   const inUse = items.filter((item) => (item.usedBy?.length ?? 0) > 0).length
 
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <div className="brand">
-          norav<span>.</span>cms
-        </div>
-        <p className="brand-sub">library</p>
-
-        <ViewSwitcher
-          view={view}
-          collections={collections}
-          disabled={busy}
-          onChange={onViewChange}
-        />
-
-        <p className="brand-sub" style={{ marginTop: 24 }}>
+    <Workspace
+      subtitle="library"
+      collections={collections}
+      view={view}
+      onViewChange={onViewChange}
+      userEmail={userEmail}
+      environment={environment}
+      onSignOut={onSignOut}
+      busy={busy}
+      sidebar={
+        <>
+          <p className="brand-sub" style={{ marginTop: 24 }}>
           {items.length} {items.length === 1 ? 'file' : 'files'}, {inUse} in use
           <br />
           stored in {storage === 'blob' ? 'the blob store' : 'this container'}
         </p>
-
-        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
-      </aside>
-
-      <main className="main">
+        </>
+      }
+    >
+      <>
         <h1>Media</h1>
         <p className="subtle">
           Images and documents the content points at. Replacing a file carries every reference with
@@ -176,7 +172,7 @@ export function MediaLibrary({
           />
         </div>
 
-        {status && <div className={`status ${status.kind}`}>{status.message}</div>}
+        <FeedbackBanner feedback={status} />
 
         {busy && items.length === 0 ? (
           <p className="subtle">Loading…</p>
@@ -231,7 +227,7 @@ export function MediaLibrary({
             ))}
           </div>
         )}
-      </main>
-    </div>
+      </>
+    </Workspace>
   )
 }

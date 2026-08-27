@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import type { SerializedCollectionDefinition, Theme, ThemeTokens } from '@norav/content-schema'
-import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
-import { WorkspaceFooter } from './WorkspaceFooter'
+import { type WorkspaceView } from './ViewSwitcher'
+import { Workspace, FeedbackBanner, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 /** The steps worth showing: the accent itself and the tones built around it. */
 const PREVIEW_STEPS = [300, 400, 500, 600, 700] as const
 
-type Feedback = { kind: 'ok' | 'err' | 'warn'; message: string } | null
 
 interface ThemeEditorProps {
   collections: SerializedCollectionDefinition[]
@@ -39,7 +38,7 @@ export function ThemeEditor({
   const [saved, setSaved] = useState<Theme | null>(null)
   const [tokens, setTokens] = useState<ThemeTokens>({})
   const [busy, setBusy] = useState<'load' | 'save' | 'publish' | null>('load')
-  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [feedback, setFeedback] = useState<Feedback | null>(null)
 
   const load = useCallback(async () => {
     const response = await fetch('/api/admin/settings/theme')
@@ -114,19 +113,17 @@ export function ThemeEditor({
   )
 
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <p className="brand">
-          norav<span>.</span>cms
-        </p>
-        <p className="brand-sub">palette</p>
-
-        <ViewSwitcher view={view} collections={collections} disabled={busy !== null} onChange={onViewChange} />
-
-        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
-      </aside>
-
-      <main className="main">
+    <Workspace
+      subtitle="palette"
+      collections={collections}
+      view={view}
+      onViewChange={onViewChange}
+      userEmail={userEmail}
+      environment={environment}
+      onSignOut={onSignOut}
+      busy={busy !== null}
+    >
+      <>
         <h1>Palette</h1>
         <p className="subtle">
           Three colours. Both scales, the surfaces and the text tones are derived from them.
@@ -146,8 +143,7 @@ export function ThemeEditor({
               </button>
             </div>
 
-            {feedback && <div className={`status ${feedback.kind}`}>{feedback.message}</div>}
-            {dirty && !feedback && <div className="status warn">Unsaved changes. Save, then publish.</div>}
+            <FeedbackBanner feedback={feedback} unsaved={dirty} />
 
             <ColourField
               label="Accent"
@@ -197,8 +193,8 @@ export function ThemeEditor({
             </fieldset>
           </>
         )}
-      </main>
-    </div>
+      </>
+    </Workspace>
   )
 }
 

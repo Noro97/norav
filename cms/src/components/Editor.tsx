@@ -8,8 +8,8 @@ import type {
 } from '@norav/content-schema'
 import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
-import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
-import { WorkspaceFooter } from './WorkspaceFooter'
+import { type WorkspaceView } from './ViewSwitcher'
+import { Workspace, FeedbackBanner, LocaleTabs, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 export interface EditorBlock {
@@ -43,9 +43,6 @@ interface Draft {
   content: Record<Locale, Record<string, unknown>>
 }
 
-type Feedback =
-  | { kind: 'ok' | 'err' | 'warn'; message: string; details?: string[] }
-  | null
 
 /** Turns API field paths back into form paths for the locale on screen. */
 function toFormErrors(
@@ -126,8 +123,9 @@ export function Editor({
   const [locale, setLocale] = useState<Locale>(sourceLocale)
   const [dirty, setDirty] = useState<Record<string, boolean>>({})
   const [busy, setBusy] = useState<'save' | 'publish' | 'add' | 'remove' | 'move' | null>(null)
-  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [feedback, setFeedback] = useState<Feedback | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const [filter, setFilter] = useState('')
   const [pendingType, setPendingType] = useState('')
 
   // A singleton already on the page cannot be added twice.
@@ -323,22 +321,40 @@ export function Editor({
   const hasUnsaved = Object.values(dirty).some(Boolean)
 
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <p className="brand">
-          norav<span>.</span>cms
-        </p>
-        <p className="brand-sub">/{pageSlug}</p>
+    <Workspace
+      subtitle={`/${pageSlug}`}
+      collections={collections}
+      view={view}
+      onViewChange={onViewChange}
+      userEmail={userEmail}
+      environment={environment}
+      onSignOut={onSignOut}
+      busy={busy !== null}
+      sidebar={
+        <>
+          {/* A filter rather than groups: the page is one ordered sequence, and
+              grouping it would hide the thing the list is mostly used for —
+              seeing what comes after what. */}
+          {blocks.length > 8 && (
+            <input
+              className="block-filter"
+              type="search"
+              placeholder="Filter sections"
+              aria-label="Filter sections"
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
+            />
+          )}
 
-        <ViewSwitcher
-          view={view}
-          collections={collections}
-          disabled={busy !== null}
-          onChange={onViewChange}
-        />
-
-        <ul className="block-list">
+          <ul className="block-list">
           {blocks.map((block, index) => {
+            const label = definitionsByType.get(block.type)?.label ?? block.type
+            if (
+              filter &&
+              !`${label} ${block.type}`.toLowerCase().includes(filter.trim().toLowerCase())
+            ) {
+              return null
+            }
             const blockDraft = drafts[block.id]
             return (
               <li key={block.id} className="block-row">
@@ -353,7 +369,7 @@ export function Editor({
                   }}
                 >
                   <span className={`dot${blockDraft?.isVisible ? '' : ' hidden'}`} />
-                  {definitionsByType.get(block.type)?.label ?? block.type}
+                  {label}
                   {dirty[block.id] && <em style={{ color: 'var(--warn)' }}>•</em>}
                   <span className="type">{block.type}</span>
                 </button>
@@ -418,11 +434,10 @@ export function Editor({
             Add
           </button>
         </div>
-
-        <WorkspaceFooter userEmail={userEmail} environment={environment} onSignOut={onSignOut} />
-      </aside>
-
-      <main className="main">
+        </>
+      }
+    >
+      <>
         {!selected || !definition || !draft ? (
           <p className="subtle">This page has no blocks yet. Run `npm run seed` in cms/.</p>
         ) : (
@@ -431,23 +446,15 @@ export function Editor({
             <p className="subtle">{definition.description}</p>
 
             <div className="toolbar">
-              <div className="tabs" role="tablist">
-                {locales.map((code) => (
-                  <button
-                    key={code}
-                    role="tab"
-                    type="button"
-                    aria-selected={code === locale}
-                    onClick={() => {
-                      setLocale(code)
-                      setFieldErrors({})
-                    }}
-                  >
-                    {code.toUpperCase()}
-                    {selected.translations[code]?.status === 'stale' ? ' •' : ''}
-                  </button>
-                ))}
-              </div>
+              <LocaleTabs
+                locales={locales}
+                locale={locale}
+                stale={(code) => selected.translations[code]?.status === 'stale'}
+                onChange={(next) => {
+                  setLocale(next)
+                  setFieldErrors({})
+                }}
+              />
 
               <label className="field checkbox" style={{ margin: 0 }}>
                 <input
@@ -468,22 +475,7 @@ export function Editor({
               </button>
             </div>
 
-            {feedback && (
-              <div className={`status ${feedback.kind}`}>
-                {feedback.message}
-                {feedback.details && feedback.details.length > 0 && (
-                  <ul>
-                    {feedback.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-
-            {hasUnsaved && !feedback && (
-              <div className="status warn">Unsaved changes. Save, then publish.</div>
-            )}
+            <FeedbackBanner feedback={feedback} unsaved={hasUnsaved} />
 
             {locale !== sourceLocale && !selected.translations[locale] && (
               <div className="status warn">
@@ -504,7 +496,7 @@ export function Editor({
             />
           </>
         )}
-      </main>
-    </div>
+      </>
+    </Workspace>
   )
 }
