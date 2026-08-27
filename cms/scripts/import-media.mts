@@ -66,10 +66,37 @@ function rewrite(value: unknown, from: string, to: string): unknown {
 }
 
 async function main() {
-  await assertExclusiveLocalDb()
+  const toProduction = process.argv.includes('--production')
+  const usingPostgres = Boolean(process.env.DATABASE_URL)
+
+  // Two guards, because getting either half wrong is expensive and quiet.
+  if (usingPostgres && !toProduction) {
+    throw new Error(
+      'DATABASE_URL is set, so this would rewrite live content.\n' +
+        'Run `npm run import:media` for the embedded database, or\n' +
+        '`npm run import:media:production` if that is genuinely what you want.',
+    )
+  }
+  if (toProduction && !usingPostgres) {
+    throw new Error('--production was passed but DATABASE_URL is empty. Nothing to write to.')
+  }
 
   const storage = getStorage()
-  console.log(`[media] storage: ${storage.kind}`)
+
+  // The failure this prevents: rows written to the shared database pointing at
+  // bytes that only exist on the machine that ran the import. I did exactly
+  // that once, and the only sign was an image that loaded for nobody else.
+  if (toProduction && storage.kind !== 'blob') {
+    throw new Error(
+      'BLOB_READ_WRITE_TOKEN is not set, so files would be written to this\n' +
+        'machine while the database recorded them as live. Connect a Blob store\n' +
+        'to norav-cms and put its token in cms/.env before importing.',
+    )
+  }
+
+  if (!toProduction) await assertExclusiveLocalDb()
+
+  console.log(`[media] database: ${usingPostgres ? 'postgres' : 'embedded'}, storage: ${storage.kind}`)
 
   const files = (await collect(PUBLIC_DIR)).sort()
   let imported = 0
