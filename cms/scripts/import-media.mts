@@ -1,10 +1,13 @@
 // =============================================================================
 // Moves the site's static files into the media library.
 //
-// Until now every image lived in `public/` and changing one meant a deploy.
-// This uploads them through the same storage driver the admin uses, records a
-// media row for each, and rewrites every reference in the content to the URL
-// the store handed back — so what the site renders is what the library holds.
+// It has already run: every image lived in `public/` and changing one meant a
+// deploy, and now only the hero's logo does. Kept for the next batch of files
+// that arrive that way, and because it documents how the first ones got in.
+//
+// It uploads through the same storage driver the admin uses, records a media
+// row for each, and rewrites every reference in the content to the URL the
+// store handed back — so what the site renders is what the library holds.
 //
 // Idempotent: a file already imported (matched by its original path in the alt
 // text) is left alone, so re-running after adding assets does not duplicate.

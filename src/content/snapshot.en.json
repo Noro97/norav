@@ -14,7 +14,7 @@
       "slug": "home",
       "blocks": [
         {
-          "id": "3d8a0032-2f0c-4496-a0f2-8ac13db5fa44",
+          "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
           "type": "hero",
           "content": {
             "name": {
@@ -49,7 +49,7 @@
                 "accent": "none"
               }
             ],
-            "subtitle": "Frontend-Focused Fullstack Engineer",
+            "subtitle": "Fullstack Engineer",
             "scrollHint": "Scroll to explore"
           },
           "anchorId": "hero",
@@ -59,7 +59,7 @@
           }
         },
         {
-          "id": "68ba1088-35bb-4ea0-8947-63055746e161",
+          "id": "3e022794-4c1d-4ed0-9582-9fe8815c2f6f",
           "type": "about",
           "content": {
             "bio": {
@@ -142,20 +142,20 @@
           },
           "anchorId": "about",
           "settings": {
-            "photo": "/assets/img/my-photo.jpg",
-            "cvHref": "/Norayr_Avetisyan_CV.pdf",
+            "photo": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4fac5a7-6cab-4b6e-8d3a-4aec50b3337c.jpg",
+            "cvHref": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/acde6431-fbbe-4027-bf6d-8c1a239ae247.pdf",
             "showStatusBadge": true
           }
         },
         {
-          "id": "1b58fdf6-3b65-4b56-bf26-dd2a8e1a3425",
+          "id": "7c7aa383-8c67-4c66-8470-3494c57d1b37",
           "type": "impact_strip",
           "content": {
             "label": "By the numbers",
             "stats": [
               {
                 "label": "Years shipping",
-                "value": 7,
+                "value": 6,
                 "prefix": "",
                 "suffix": "+"
               },
@@ -185,7 +185,7 @@
           }
         },
         {
-          "id": "bfd4101b-b49e-4f6e-9d23-14e8c0d64deb",
+          "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
           "type": "capabilities",
           "content": {
             "cards": [
@@ -218,7 +218,7 @@
           "settings": {}
         },
         {
-          "id": "819791ea-27f7-4b5d-80ae-f57cc9f6372f",
+          "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
           "type": "experience",
           "content": {
             "title": "Experience",
@@ -231,7 +231,7 @@
           }
         },
         {
-          "id": "58f715b7-e8c5-4145-92b3-4f147914483d",
+          "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
           "type": "skills",
           "content": {
             "title": "Skills & Tools",
@@ -406,7 +406,7 @@
           "settings": {}
         },
         {
-          "id": "60b5d47e-456c-4575-8195-19d382cc7ee1",
+          "id": "93802d8c-1b72-4d14-acac-952e923459a7",
           "type": "tech_marquee",
           "content": {
             "items": [
@@ -471,64 +471,92 @@
           "settings": {}
         },
         {
-          "id": "cd7c1d59-6165-432f-bb65-5f0d1d734cc1",
+          "id": "603fc84f-3a9c-4ff1-be94-f025e51cb7b9",
           "type": "bento_grid",
           "content": {
             "tiles": [
               {
                 "slot": 0,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png",
                 "title": "Performance Audit",
                 "description": "Standard Google Maps markers caused main-thread jank with 500+ real-time updates. Migrated to Advanced Markers with a rAF buffer — 70% scripting reduction, stable 60 FPS."
               },
               {
                 "slot": 1,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png",
                 "title": "Type-Safe Architecture",
                 "description": "End-to-end type system between Node.js backend and React frontend, eliminating 99% of runtime API errors"
               },
               {
                 "slot": 2,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png",
                 "title": "User Experience",
                 "description": "Predictive input system for complex forms, reducing shipment creation time by 15 seconds"
               },
               {
                 "slot": 3,
+                "image": "",
                 "title": "AI Liveness",
                 "description": "Multi-modal AI verification pipeline achieving 98.4% confidence through Gemini vision analysis of user-submitted video proofs."
               },
               {
                 "slot": 4,
+                "image": "",
                 "title": "Cache Hit-Rate",
                 "description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy."
               }
             ],
             "title": "Engineering Impact",
+            "badges": [
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg",
+                "rarity": "common"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg",
+                "rarity": "rare"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg",
+                "rarity": "epic"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg",
+                "rarity": "legendary"
+              }
+            ],
             "projects": [
               {
                 "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png",
                 "title": "NexusRoute",
                 "project": "nexusroute",
                 "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs."
               },
               {
                 "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png",
                 "title": "MerchForge",
                 "project": "merchforge",
                 "description": "AI-powered merchandise designer with real-time state synchronization and live configuration output."
               },
               {
                 "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png",
                 "title": "FilterGraph",
                 "project": "filtergraph",
                 "description": "Faceted search with dependency-aware filtering and URL-as-state architecture."
               },
               {
                 "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
                 "title": "OmniGrid",
                 "project": "omnigrid",
                 "description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management."
               },
               {
                 "cta": "View Architecture",
+                "image": "",
                 "title": "Proof",
                 "project": "proof",
                 "description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, dual-economy reward system, and blockchain-integrated premium unlocks."
@@ -590,13 +618,17 @@
               }
             ],
             "description": "Micro case studies and measurable outcomes from real-world projects.",
-            "sectionLabel": "Deep Dive"
+            "sectionLabel": "Deep Dive",
+            "illustrations": {
+              "omnigrid": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
+              "gamification": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4b1fe6c0-8cff-4517-9bf3-3624c7a382ef.png"
+            }
           },
           "anchorId": "overview",
           "settings": {}
         },
         {
-          "id": "1e09b59f-ac27-4666-b05f-0f4ac5a1fa35",
+          "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
           "type": "vibecoding",
           "content": {
             "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
@@ -673,7 +705,7 @@
           "settings": {}
         },
         {
-          "id": "65ff83f3-92e1-4549-9056-5885fe6ab75b",
+          "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
           "type": "projects_intro",
           "content": {
             "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
@@ -699,11 +731,11 @@
           },
           "anchorId": "projects-intro",
           "settings": {
-            "image": "/assets/img/case-studies-hero.webp"
+            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
           }
         },
         {
-          "id": "5405b1de-238e-4765-9bd4-1d1675ee5eb9",
+          "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
           "type": "logistics",
           "content": {
             "title": "NexusRoute",
@@ -725,13 +757,14 @@
               }
             ],
             "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs. GeoJSON streaming with high-frequency state reconciliation.",
+            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
             "sectionLabel": "Case Study 01"
           },
           "anchorId": "logistics",
           "settings": {}
         },
         {
-          "id": "01639fe2-f27b-4cb9-bf2e-3548cca878e4",
+          "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
           "type": "merch",
           "content": {
             "title": "MerchForge",
@@ -756,7 +789,7 @@
           "settings": {}
         },
         {
-          "id": "80a1ee61-f7a9-444f-b3d5-7c15060ad5bb",
+          "id": "9d32f989-6728-4650-8f23-9c1f893d7247",
           "type": "ecommerce",
           "content": {
             "title": "FilterGraph",
@@ -790,7 +823,7 @@
           "settings": {}
         },
         {
-          "id": "52620a4a-3ae0-4ec7-9e70-66bca4379f03",
+          "id": "50a345ad-b407-46be-9c8a-54fe88138bb6",
           "type": "omnigrid",
           "content": {
             "title": "OmniGrid: Advanced Data Management System",
@@ -815,7 +848,7 @@
           "settings": {}
         },
         {
-          "id": "8a597e0d-8356-412f-956c-9e2c9c2a47b0",
+          "id": "1c556cb2-aac0-4fb6-8e1f-b78371fb3967",
           "type": "proof",
           "content": {
             "title": "Proof: AI Fitness Verification",
@@ -843,7 +876,7 @@
           "settings": {}
         },
         {
-          "id": "fee69ee8-ae1d-4af2-814e-07357c8c4869",
+          "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
           "type": "workflow",
           "content": {
             "title": "AI Workflow Automation",
@@ -891,7 +924,7 @@
           "settings": {}
         },
         {
-          "id": "9f74d469-e5e5-42d3-919d-572d0de33832",
+          "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
           "type": "contact_cta",
           "content": {
             "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
@@ -924,7 +957,7 @@
           }
         },
         {
-          "id": "c843a20a-b11d-4ca7-b5e7-6d1ce7581cb7",
+          "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
           "type": "terminal_footer",
           "content": {
             "hire": {
@@ -963,23 +996,69 @@
     }
   ],
   "locale": "en",
-  "version": 1,
-  "checksum": "a4d0250d3f9c503698ebfeaa7f93da765b962472a8e593126a75fb644f34299c",
+  "version": 12,
+  "checksum": "731c4691a67920b7af43e4f3fbace72ea518bcbd8a387db806c8d028ecef5180",
   "settings": {
     "site": {
       "grain": true,
       "cursor": true,
       "dynamicGrid": true
+    },
+    "theme": {
+      "accent": "#226D2B",
+      "tokens": {
+        "--color-card": "#020202",
+        "--color-info": "#38bdf8",
+        "--color-ring": "#226D2B",
+        "--color-input": "rgba(255, 255, 255, 0.06)",
+        "--color-muted": "#0f0f0f",
+        "--color-accent": "#226D2B",
+        "--color-border": "rgba(255, 255, 255, 0.08)",
+        "--color-danger": "#ef4444",
+        "--color-cyan-50": "#fdf5f5",
+        "--color-primary": "#226D2B",
+        "--color-success": "#22c55e",
+        "--color-warning": "#eab308",
+        "--color-cyan-100": "#fbebeb",
+        "--color-cyan-200": "#f6d7d7",
+        "--color-cyan-300": "#f0b9b9",
+        "--color-cyan-400": "#f14646",
+        "--color-cyan-500": "#EE2020",
+        "--color-cyan-600": "#c40f0f",
+        "--color-cyan-700": "#741d1d",
+        "--color-cyan-800": "#541515",
+        "--color-cyan-900": "#3a0e0e",
+        "--color-secondary": "#0f0f0f",
+        "--color-background": "#000000",
+        "--color-crimson-50": "#f2f9f3",
+        "--color-foreground": "#e0e0e0",
+        "--color-crimson-100": "#e5f4e7",
+        "--color-crimson-200": "#cbe8cf",
+        "--color-crimson-300": "#a4d7aa",
+        "--color-crimson-400": "#319c3e",
+        "--color-crimson-500": "#226D2B",
+        "--color-crimson-600": "#234c28",
+        "--color-crimson-700": "#18341c",
+        "--color-crimson-800": "#122614",
+        "--color-crimson-900": "#0c1a0e",
+        "--color-card-foreground": "#e0e0e0",
+        "--color-muted-foreground": "#888888",
+        "--color-accent-foreground": "#ffffff",
+        "--color-primary-foreground": "#ffffff",
+        "--color-secondary-foreground": "#e0e0e0"
+      },
+      "secondary": "#EE2020",
+      "background": "#000000"
     }
   },
   "collections": {
     "experience": [
       {
-        "id": "d02eb8cd-cd9b-4a74-92d8-fd4f6d4d8efd",
+        "id": "999dfae3-70ff-4baf-a22d-396343a0886a",
         "data": {
           "role": "Founder & Technical Architect",
           "type": "Founder",
-          "image": "/assets/img/exp-startup.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d1bf3316-7456-4cf0-830e-f314dcfb309b.png",
           "stack": [
             {
               "name": "React"
@@ -1015,11 +1094,11 @@
         "slug": "proof-app"
       },
       {
-        "id": "20a28b32-52e7-4606-9226-0e6331382d6b",
+        "id": "cd716ab1-9c35-47af-9863-192b63e09dd8",
         "data": {
           "role": "Lead Frontend Engineer",
           "type": "Remote",
-          "image": "/assets/img/exp-dataviz.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/f28f9c4f-71e8-4e52-9208-c8600f73a648.png",
           "stack": [
             {
               "name": "React"
@@ -1055,11 +1134,11 @@
         "slug": "vizogen"
       },
       {
-        "id": "1f36ca8d-bbc6-4361-8fae-5ed0095a5aa5",
+        "id": "b3b4a4f9-efb0-4c34-8eeb-7d095f0eaebe",
         "data": {
           "role": "Core Frontend Engineer / UI Architect",
           "type": "Remote",
-          "image": "/assets/img/exp-logistics.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/784f1d18-1fac-4995-8dac-296d0de35331.png",
           "stack": [
             {
               "name": "React"
@@ -1092,11 +1171,11 @@
         "slug": "mts-web-services"
       },
       {
-        "id": "1f67f713-e302-474b-9e1b-af65aa407f48",
+        "id": "87c4f7da-9a42-407a-9925-2b2f0d87c558",
         "data": {
           "role": "Senior Frontend Engineer",
           "type": "Remote",
-          "image": "/assets/img/exp-merch.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4c683b8c-175a-448c-b16c-56f569e9a59c.png",
           "stack": [
             {
               "name": "Next.js"
@@ -1126,11 +1205,11 @@
         "slug": "appfox"
       },
       {
-        "id": "2d3b4cd4-0ec8-453b-80ff-e7bb888dc3ff",
+        "id": "b9fe706a-48dc-4cde-afbb-f74c69942b31",
         "data": {
           "role": "Lead Frontend Developer",
           "type": "On-site",
-          "image": "/assets/img/exp-startup.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d1bf3316-7456-4cf0-830e-f314dcfb309b.png",
           "stack": [
             {
               "name": "Next.js"
@@ -1160,11 +1239,11 @@
         "slug": "tirsoft-lead"
       },
       {
-        "id": "da35ea18-ad04-40b3-a148-337362d24b9c",
+        "id": "94b5c062-827d-4e98-ba22-ec4d0681c4d3",
         "data": {
           "role": "Frontend Developer",
           "type": "On-site",
-          "image": "/assets/img/exp-dataviz.png",
+          "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/f28f9c4f-71e8-4e52-9208-c8600f73a648.png",
           "stack": [
             {
               "name": "React"
@@ -1195,5 +1274,5 @@
       }
     ]
   },
-  "publishedAt": "2026-08-26T20:55:37.193Z"
+  "publishedAt": "2026-08-27T12:42:59.010Z"
 }
