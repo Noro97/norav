@@ -209,6 +209,27 @@ await expectError(
     `insert into publications (payload, locales, checksum) values ('{"pages":[]}'::jsonb, array['en'], 'sha256:2') returning version`,
   )
   check('publications.version increments monotonically', Number(second[0].version) === first + 1)
+
+  // The query the manifest and the publish route run, in the shape they run it.
+  // `version::text` in the select list creates an output column of the same
+  // name, and an unqualified `order by version` binds to *that* — sorting the
+  // rows as strings, where '9' lands above '12'. The manifest served version 9
+  // through three publishes before anyone noticed, because the site kept
+  // rendering the copy baked into its bundle.
+  while (Number((await db.query(`select max(version) as m from publications`)).rows[0].m) < 12) {
+    await db.query(
+      `insert into publications (payload, locales, checksum) values ('{"pages":[]}'::jsonb, array['en'], 'sha256:n')`,
+    )
+  }
+  const { rows: latest } = await db.query(
+    `select version::text, checksum from publications order by publications.version desc limit 1`,
+  )
+  const { rows: [{ m: actualMax }] } = await db.query(`select max(version) as m from publications`)
+  check(
+    'latest publication is found by number, not by string order',
+    Number(latest[0].version) === Number(actualMax),
+    `got ${latest[0].version}, newest is ${actualMax}`,
+  )
 }
 
 {

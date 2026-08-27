@@ -22,7 +22,8 @@ export async function GET() {
       `select count(*)::text as count from schema_migrations`,
     )
     const publication = await queryOne<{ version: string; published_at: string }>(
-      `select version::text, published_at from publications order by version desc limit 1`,
+      `select version::text, published_at from publications
+       order by publications.version desc limit 1`,
     )
 
     return NextResponse.json(
