@@ -19,7 +19,7 @@ interface WorkflowDiagramProps {
 
 const NODE_STYLES: Record<WorkflowNode['type'], { border: string; glow: string }> = {
   trigger: { border: 'border-violet-500/40', glow: 'shadow-[0_0_12px_rgba(108,58,237,0.3)]' },
-  action: { border: 'border-crimson-500/40', glow: 'shadow-[0_0_12px_rgba(181,26,43,0.3)]' },
+  action: { border: 'border-crimson-500/40', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_30%,_transparent)]' },
   ai: { border: 'border-violet-500/50', glow: 'shadow-[0_0_12px_rgba(108,58,237,0.4)]' },
   output: { border: 'border-emerald-500/40', glow: 'shadow-[0_0_12px_rgba(34,197,94,0.3)]' },
 }

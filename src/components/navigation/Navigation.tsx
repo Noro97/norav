@@ -85,7 +85,7 @@ export function Navigation() {
                   block w-1.5 h-1.5 rounded-full shrink-0
                   transition-all duration-300
                   ${isActive
-                    ? 'bg-crimson-500 shadow-[0_0_8px_rgba(181,26,43,0.6)]'
+                    ? 'bg-crimson-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
                     : 'bg-white/25 group-hover:bg-white/40'
                   }
                 `}
@@ -153,7 +153,7 @@ export function Navigation() {
                       className={`
                         block w-1.5 h-1.5 rounded-full shrink-0
                         ${isActive
-                          ? 'bg-crimson-500 shadow-[0_0_8px_rgba(181,26,43,0.6)]'
+                          ? 'bg-crimson-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
                           : 'bg-white/20'
                         }
                       `}

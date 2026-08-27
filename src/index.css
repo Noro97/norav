@@ -52,6 +52,27 @@
   --color-crimson-800: #3d1322;
   --color-crimson-900: #2a0e17;
 
+  /* Cyan scale — the second accent: case studies and the interactive widgets.
+     Named after Tailwind's own cyan so the utilities already in the codebase
+     follow the theme without the components being touched. */
+  --color-cyan-50: #f5fcfd;
+  --color-cyan-100: #ebf9fb;
+  --color-cyan-200: #d7f2f6;
+  --color-cyan-300: #b9e9f0;
+  --color-cyan-400: #47daf1;
+  --color-cyan-500: #22d3ee;
+  --color-cyan-600: #0fadc5;
+  --color-cyan-700: #1d6975;
+  --color-cyan-800: #154c55;
+  --color-cyan-900: #0f353a;
+
+  /* Status colours — meaning, not brand, so they do not follow the accent.
+     "Delayed" stays red on a green-accented site. */
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+  --color-info: #38bdf8;
+
   /* Gold scale — secondary accent, used for highlight/emphasis hierarchy */
   --color-gold-50: #fdf8ec;
   --color-gold-100: #faeecb;

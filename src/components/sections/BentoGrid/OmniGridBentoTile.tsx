@@ -96,14 +96,14 @@ export function OmniGridBentoTile({ className = '' }: Props) {
       ref={tileRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-cyan-500/20 hover:shadow-[0_0_60px_-12px_rgba(6,182,212,0.15)] ${className}`}
+      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-cyan-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-cyan-500)_15%,_transparent)] ${className}`}
     >
       {/* Gradient mesh — cyan/teal */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
           background:
-            'radial-gradient(ellipse at 30% 20%, rgba(6,182,212,0.6) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(8,145,178,0.3) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--color-cyan-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(8,145,178,0.3) 0%, transparent 60%)',
         }}
       />
 

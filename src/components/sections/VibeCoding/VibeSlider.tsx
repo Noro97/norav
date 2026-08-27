@@ -222,7 +222,7 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
 
           {/* Thumb */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-crimson-500 shadow-[0_0_12px_rgba(181,26,43,0.4)] border-2 border-white/20 transition-shadow hover:shadow-[0_0_20px_rgba(181,26,43,0.6)]"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-crimson-500 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_40%,_transparent)] border-2 border-white/20 transition-shadow hover:shadow-[0_0_20px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
             style={{ left: thumbLeft }}
           />
         </div>
@@ -257,7 +257,7 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
               <path
                 d={`M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`}
                 fill="none"
-                stroke="rgba(181, 26, 43, 0.3)"
+                stroke="color-mix(in srgb, var(--color-crimson-500) 30%, transparent)"
                 strokeWidth={1.5}
                 strokeDasharray="8 8"
                 className="animate-dash-flow"
@@ -265,10 +265,10 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
               {/* Arrowhead at target */}
               <polygon
                 points={`${x2 - 5},${y2 - 1} ${x2 + 5},${y2 - 1} ${x2},${y2 + 5}`}
-                fill="rgba(181, 26, 43, 0.4)"
+                fill="color-mix(in srgb, var(--color-crimson-500) 40%, transparent)"
               />
               {/* Pulse dot at source */}
-              <circle cx={x1} cy={y1} r={3} fill="rgba(181, 26, 43, 0.5)">
+              <circle cx={x1} cy={y1} r={3} fill="color-mix(in srgb, var(--color-crimson-500) 50%, transparent)">
                 <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
               </circle>
@@ -286,8 +286,8 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
             width={node.width}
             height={NODE_HEIGHT}
             rx={10}
-            fill="rgba(181, 26, 43, 0.08)"
-            stroke="rgba(181, 26, 43, 0.25)"
+            fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
+            stroke="color-mix(in srgb, var(--color-crimson-500) 25%, transparent)"
             strokeWidth={1}
           />
           <text

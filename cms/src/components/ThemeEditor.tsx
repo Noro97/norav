@@ -18,9 +18,9 @@ interface ThemeEditorProps {
 }
 
 /**
- * The palette, as the two decisions it is built from.
+ * The palette, as the three decisions it is built from.
  *
- * Everything else — the accent's scale, the surfaces, the text tones — is
+ * Everything else — both accents' scales, the surfaces, the text tones — is
  * derived, and the preview here is the same derivation the publish will run,
  * so what is shown is what the site will paint.
  */
@@ -101,7 +101,13 @@ export function ThemeEditor({
     )
   }
 
-  const dirty = Boolean(theme && saved && (theme.accent !== saved.accent || theme.background !== saved.background))
+  const dirty = Boolean(
+    theme &&
+      saved &&
+      (theme.accent !== saved.accent ||
+        theme.secondary !== saved.secondary ||
+        theme.background !== saved.background),
+  )
 
   return (
     <div className="shell">
@@ -124,7 +130,7 @@ export function ThemeEditor({
       <main className="main">
         <h1>Palette</h1>
         <p className="subtle">
-          Two colours. The accent&apos;s scale, the surfaces and the text tones are derived from them.
+          Three colours. Both scales, the surfaces and the text tones are derived from them.
         </p>
 
         {busy === 'load' || !theme ? (
@@ -153,6 +159,14 @@ export function ThemeEditor({
             />
 
             <ColourField
+              label="Secondary"
+              help="Case studies and the interactive widgets — the parts that are not brand."
+              value={theme.secondary}
+              disabled={busy !== null}
+              onChange={(secondary) => setTheme({ ...theme, secondary })}
+            />
+
+            <ColourField
               label="Background"
               help="Cards and panels are lifted from this, so a tinted background tints them too."
               value={theme.background}
@@ -168,6 +182,11 @@ export function ThemeEditor({
               <div className="swatches">
                 {PREVIEW_STEPS.map((step) => (
                   <Swatch key={step} name={String(step)} value={tokens[`--color-crimson-${step}`]} />
+                ))}
+              </div>
+              <div className="swatches">
+                {PREVIEW_STEPS.map((step) => (
+                  <Swatch key={step} name={String(step)} value={tokens[`--color-cyan-${step}`]} />
                 ))}
               </div>
               <div className="swatches">

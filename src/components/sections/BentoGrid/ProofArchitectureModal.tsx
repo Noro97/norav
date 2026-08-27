@@ -82,8 +82,8 @@ function ArchitectureModalContent({ onClose }: Props) {
                       width={node.width}
                       height={60}
                       rx={8}
-                      fill="rgba(181,26,43,0.08)"
-                      stroke="rgba(181,26,43,0.25)"
+                      fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
+                      stroke="color-mix(in srgb, var(--color-crimson-500) 25%, transparent)"
                       strokeWidth={1}
                     />
                     <text
@@ -113,7 +113,7 @@ function ArchitectureModalContent({ onClose }: Props) {
                         y1={midY}
                         x2={x2 - 4}
                         y2={midY}
-                        stroke="rgba(181,26,43,0.35)"
+                        stroke="color-mix(in srgb, var(--color-crimson-500) 35%, transparent)"
                         strokeWidth={1.5}
                         strokeDasharray="8 8"
                         className="animate-dash-flow"
@@ -122,7 +122,7 @@ function ArchitectureModalContent({ onClose }: Props) {
                       {/* Arrowhead */}
                       <polygon
                         points={`${x2 - 4},${midY - 4} ${x2 - 4},${midY + 4} ${x2},${midY}`}
-                        fill="rgba(181,26,43,0.4)"
+                        fill="color-mix(in srgb, var(--color-crimson-500) 40%, transparent)"
                       />
                     </g>
                   )

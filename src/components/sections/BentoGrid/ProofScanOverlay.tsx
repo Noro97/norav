@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect , useState } from 'react'
+import { readAccent, withAlpha } from '@/content/theme'
 
 interface Props {
   active: boolean
@@ -7,6 +8,10 @@ interface Props {
 export function ProofScanOverlay({ active }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
+  // A 2D context parses colour strings itself and knows nothing of CSS, so
+  // the accent arrives already resolved. Read once: the palette is written
+  // onto :root before the first render and does not change afterwards.
+  const [accent] = useState(() => readAccent())
   const rafRef = useRef(0)
   const startTimeRef = useRef(0)
 
@@ -38,7 +43,7 @@ export function ProofScanOverlay({ active }: Props) {
 
       // Static grid lines
       const spacing = 24
-      ctx.strokeStyle = 'rgba(181, 26, 43, 0.04)'
+      ctx.strokeStyle = withAlpha(accent, 0.04)
       ctx.lineWidth = 0.5
       ctx.beginPath()
       for (let x = spacing; x < w; x += spacing) {
@@ -55,9 +60,9 @@ export function ProofScanOverlay({ active }: Props) {
       const scanY = (t * 60) % h
       const grad = ctx.createLinearGradient(0, scanY - 20, 0, scanY + 20)
       grad.addColorStop(0, 'transparent')
-      grad.addColorStop(0.4, 'rgba(181, 26, 43, 0.08)')
-      grad.addColorStop(0.5, 'rgba(181, 26, 43, 0.15)')
-      grad.addColorStop(0.6, 'rgba(181, 26, 43, 0.08)')
+      grad.addColorStop(0.4, withAlpha(accent, 0.08))
+      grad.addColorStop(0.5, withAlpha(accent, 0.15))
+      grad.addColorStop(0.6, withAlpha(accent, 0.08))
       grad.addColorStop(1, 'transparent')
       ctx.fillStyle = grad
       ctx.fillRect(0, scanY - 20, w, 40)
@@ -69,7 +74,7 @@ export function ProofScanOverlay({ active }: Props) {
           const nearestY = Math.round(scanY / spacing) * spacing
           ctx.beginPath()
           ctx.arc(x, nearestY, 2, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(181, 26, 43, ${0.3 * (1 - dy / 12)})`
+          ctx.fillStyle = withAlpha(accent, 0.3 * (1 - dy / 12))
           ctx.fill()
         }
       }
@@ -77,7 +82,7 @@ export function ProofScanOverlay({ active }: Props) {
       // Corner brackets (camera viewfinder)
       const bracketLen = 20
       const bracketOffset = 8
-      ctx.strokeStyle = 'rgba(181, 26, 43, 0.2)'
+      ctx.strokeStyle = withAlpha(accent, 0.2)
       ctx.lineWidth = 1.5
       ctx.beginPath()
       // Top-left
@@ -103,7 +108,7 @@ export function ProofScanOverlay({ active }: Props) {
 
     rafRef.current = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [active])
+  }, [active, accent])
 
   return (
     <canvas

@@ -48,7 +48,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
 
             <a
               href={`mailto:${settings.email}`}
-              className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_rgba(181,26,43,0.6)]"
+              className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
             >
               <Mail className="w-4 h-4" strokeWidth={2} />
               {content.emailLabel}

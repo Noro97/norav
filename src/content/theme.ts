@@ -36,3 +36,25 @@ export function readAccent(fallback = '#B51A2B'): string {
     .trim()
   return value || fallback
 }
+
+/** The second accent, for the same purpose. */
+export function readSecondary(fallback = '#22d3ee'): string {
+  if (typeof document === 'undefined') return fallback
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue('--color-cyan-500')
+    .trim()
+  return value || fallback
+}
+
+/**
+ * `#rrggbb` at a given opacity, for canvas and WebGL, which take colour
+ * strings rather than CSS and so cannot use `color-mix`.
+ */
+export function withAlpha(color: string, alpha: number): string {
+  const hex = color.trim()
+  if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r},${g},${b},${alpha})`
+}

@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
+import { readAccent, withAlpha } from '@/content/theme'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 interface MapViewProps {
@@ -68,6 +69,10 @@ function createBezierOverlay(): google.maps.OverlayView & {
 
   const overlay = new google.maps.OverlayView()
 
+  // Resolved here rather than per draw: a 2D context takes colour strings, and
+  // reading computed style on every redraw would be a layout read per frame.
+  const accent = readAccent()
+
   overlay.onAdd = function () {
     this.getPanes()?.overlayLayer.appendChild(canvas)
   }
@@ -94,7 +99,7 @@ function createBezierOverlay(): google.maps.OverlayView & {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     ctx.clearRect(0, 0, w, h)
 
-    ctx.strokeStyle = 'rgba(181, 26, 43, 0.12)'
+    ctx.strokeStyle = withAlpha(accent, 0.12)
     ctx.lineWidth = 0.8
 
     connections.features.forEach((f) => {

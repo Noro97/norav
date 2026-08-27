@@ -4,6 +4,7 @@ import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
+import { readAccent } from '@/content/theme'
 
 const SHARD_COUNT = 40
 const SHARD_SIZE = 0.05
@@ -102,6 +103,11 @@ function useSVGGeometries(url: string, depth: number) {
 }
 
 export function HeroMonolith() {
+  // three.js parses this string itself and has never heard of CSS, so the
+  // accent has to arrive already resolved. Read once on mount: the palette is
+  // written onto :root before the first render and does not change after.
+  const [accent] = useState(() => readAccent())
+
   const groupRef = useRef<THREE.Group>(null)
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null)
   const logoGroupRef = useRef<THREE.Group>(null)
@@ -261,7 +267,7 @@ export function HeroMonolith() {
     <group ref={groupRef} position={[0, 1.2, 0]}>
       <Environment preset="city" />
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
-      <pointLight position={[-2, -1, 3]} intensity={0.4} color="var(--color-crimson-500)" />
+      <pointLight position={[-2, -1, 3]} intensity={0.4} color={accent} />
 
       {/* SVG logo extruded into 3D with glass material */}
       {/* SVG viewBox: x=213 y=341 w=454 h=544 → center at (440, 613) */}
@@ -281,7 +287,7 @@ export function HeroMonolith() {
                 thickness={1.5}
                 ior={1.3}
                 envMapIntensity={0.4}
-                color="var(--color-crimson-500)"
+                color={accent}
                 clearcoat={0.15}
                 clearcoatRoughness={0.4}
                 transparent={true}
@@ -305,7 +311,7 @@ export function HeroMonolith() {
           thickness={1.5}
           ior={1.3}
           envMapIntensity={0.4}
-          color="var(--color-crimson-500)"
+          color={accent}
           clearcoat={0.15}
           clearcoatRoughness={0.6}
           transparent={true}

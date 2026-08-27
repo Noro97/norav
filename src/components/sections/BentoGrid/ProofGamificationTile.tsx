@@ -18,7 +18,7 @@ const RARITY_STYLES: Record<string, string> = {
   common: 'border-white/10 text-white/40',
   rare: 'border-white/15 text-white/50',
   epic: 'border-crimson-500/25 text-crimson-400/50',
-  legendary: 'border-crimson-500/40 text-crimson-400/70 shadow-[0_0_12px_rgba(181,26,43,0.15)]',
+  legendary: 'border-crimson-500/40 text-crimson-400/70 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)]',
 }
 
 
@@ -69,7 +69,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
           background:
-            'radial-gradient(ellipse at 70% 30%, rgba(181,26,43,0.5) 0%, transparent 50%), radial-gradient(ellipse at 30% 70%, rgba(140,21,35,0.3) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--color-crimson-500) 50%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 30% 70%, color-mix(in srgb, var(--color-crimson-700) 30%, transparent) 0%, transparent 60%)',
         }}
       />
 
