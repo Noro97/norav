@@ -6,6 +6,7 @@ import { getAtPath, mergeLocale, pickLocalized, setAtPath } from '@norav/content
 import { BlockForm, type FieldSource } from './BlockForm'
 import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
 import { WorkspaceFooter } from './WorkspaceFooter'
+import { Modal } from './Modal'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 export interface CollectionEntry {
@@ -121,8 +122,12 @@ export function CollectionEditor({
       setEntries(next)
       setDrafts(buildDrafts(next, definition, locales, sourceLocale))
       setDirty({})
+      // Nothing opens on its own. The list used to select the first row so the
+      // form beside it had something to show; now that editing happens in a
+      // dialog, opening one unasked would put a modal in front of the table
+      // every time it loads.
       setSelectedId((current) =>
-        selectId ?? (next.some((entry) => entry.id === current) ? current : (next[0]?.id ?? '')),
+        selectId ?? (next.some((entry) => entry.id === current) ? current : ''),
       )
       setBusy(null)
     },
@@ -323,54 +328,6 @@ export function CollectionEditor({
           onChange={onViewChange}
         />
 
-        <ul className="block-list">
-          {entries.map((entry, index) => (
-            <li key={entry.id} className="block-row">
-              <button
-                type="button"
-                className="block-item"
-                aria-current={entry.id === selectedId}
-                onClick={() => {
-                  setSelectedId(entry.id)
-                  setFieldErrors({})
-                  setFeedback(null)
-                }}
-              >
-                <span className={`dot${drafts[entry.id]?.isVisible ? '' : ' hidden'}`} />
-                {title(entry)}
-                {dirty[entry.id] && <em style={{ color: 'var(--warn)' }}>•</em>}
-              </button>
-
-              <span className="block-actions">
-                <button
-                  type="button"
-                  onClick={() => move(entry.id, -1)}
-                  disabled={busy !== null || index === 0}
-                  aria-label="Move up"
-                >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  onClick={() => move(entry.id, 1)}
-                  disabled={busy !== null || index === entries.length - 1}
-                  aria-label="Move down"
-                >
-                  ↓
-                </button>
-                <button
-                  type="button"
-                  onClick={() => remove(entry.id)}
-                  disabled={busy !== null}
-                  aria-label="Remove entry"
-                >
-                  ✕
-                </button>
-              </span>
-            </li>
-          ))}
-        </ul>
-
         <div className="palette">
           <button type="button" className="ghost" disabled={busy !== null} onClick={add} style={{ width: '100%' }}>
             + New {definition.label.toLowerCase()}
@@ -381,17 +338,139 @@ export function CollectionEditor({
       </aside>
 
       <main className="main">
+        <h1>{definition.label}</h1>
+        <p className="subtle">{definition.description}</p>
+
+        {feedback && (
+          <div className={`status ${feedback.kind}`}>
+            {feedback.message}
+            {feedback.details && feedback.details.length > 0 && (
+              <ul>
+                {feedback.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
+        {hasUnsaved && !feedback && (
+          <div className="status warn">Unsaved changes. Save, then publish.</div>
+        )}
+
         {busy === 'load' ? (
           <p className="subtle">Loading…</p>
-        ) : !selected || !draft ? (
-          <>
-            <h1>{definition.label}</h1>
-            <p className="subtle">{definition.description}</p>
-            <p className="subtle">Nothing here yet — add the first one.</p>
-          </>
+        ) : entries.length === 0 ? (
+          <p className="subtle">Nothing here yet — add the first one.</p>
         ) : (
-          <>
-            <h1>{title(selected)}</h1>
+          <div className="table-scroll">
+            {/* A table rather than a list, because the useful facts about a row —
+                whether it is visible, whether a translation is stale, whether it
+                is saved — are things you want to compare across rows, and a list
+                can only show one of them. */}
+            <table className="rows">
+              <thead>
+                <tr>
+                  <th scope="col" className="num">#</th>
+                  <th scope="col">{definition.label}</th>
+                  <th scope="col">Slug</th>
+                  <th scope="col">Visible</th>
+                  <th scope="col">Translations</th>
+                  <th scope="col"><span className="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map((entry, index) => {
+                  const row = drafts[entry.id]
+                  const stale = locales.filter(
+                    (code) => entry.translations[code]?.status === 'stale',
+                  )
+                  return (
+                    <tr key={entry.id}>
+                      <td className="num">{String(index + 1).padStart(2, '0')}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="row-open"
+                          disabled={busy !== null}
+                          onClick={() => {
+                            setSelectedId(entry.id)
+                            setFieldErrors({})
+                            setFeedback(null)
+                          }}
+                        >
+                          {title(entry)}
+                        </button>
+                        {dirty[entry.id] && <em className="row-dirty" title="Unsaved">•</em>}
+                      </td>
+                      <td className="mono">{row?.slug ?? entry.slug}</td>
+                      <td>
+                        <span className={`pill ${row?.isVisible ? 'pill-on' : 'pill-off'}`}>
+                          {row?.isVisible ? 'shown' : 'hidden'}
+                        </span>
+                      </td>
+                      <td className="mono">
+                        {stale.length > 0 ? (
+                          <span className="pill pill-warn">{stale.join(', ').toUpperCase()} stale</span>
+                        ) : (
+                          <span className="subtle">up to date</span>
+                        )}
+                      </td>
+                      <td className="row-actions">
+                        <button
+                          type="button"
+                          onClick={() => move(entry.id, -1)}
+                          disabled={busy !== null || index === 0}
+                          aria-label="Move up"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => move(entry.id, 1)}
+                          disabled={busy !== null || index === entries.length - 1}
+                          aria-label="Move down"
+                        >
+                          ↓
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => remove(entry.id)}
+                          disabled={busy !== null}
+                          aria-label="Remove entry"
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {selected && draft && (
+          <Modal
+            wide
+            title={title(selected)}
+            onClose={() => setSelectedId('')}
+            footer={
+              <>
+                <button
+                  className="ghost"
+                  type="button"
+                  onClick={save}
+                  disabled={busy !== null || !dirty[selected.id]}
+                >
+                  {busy === 'save' ? 'Saving…' : 'Save'}
+                </button>
+                <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
+                  {busy === 'publish' ? 'Publishing…' : 'Publish'}
+                </button>
+              </>
+            }
+          >
             <p className="subtle slug-line">
               {definition.label} ·
               <input
@@ -446,38 +525,7 @@ export function CollectionEditor({
                 />
                 <span style={{ fontSize: 13 }}>Visible</span>
               </label>
-
-              <span className="spacer" />
-
-              <button
-                className="ghost"
-                type="button"
-                onClick={save}
-                disabled={busy !== null || !dirty[selected.id]}
-              >
-                {busy === 'save' ? 'Saving…' : 'Save'}
-              </button>
-              <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
-                {busy === 'publish' ? 'Publishing…' : 'Publish'}
-              </button>
             </div>
-
-            {feedback && (
-              <div className={`status ${feedback.kind}`}>
-                {feedback.message}
-                {feedback.details && feedback.details.length > 0 && (
-                  <ul>
-                    {feedback.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-
-            {hasUnsaved && !feedback && (
-              <div className="status warn">Unsaved changes. Save, then publish.</div>
-            )}
 
             <BlockForm
               fields={definition.form}
@@ -490,7 +538,7 @@ export function CollectionEditor({
               sourceLocale={sourceLocale}
               onChange={handleChange}
             />
-          </>
+          </Modal>
         )}
       </main>
     </div>

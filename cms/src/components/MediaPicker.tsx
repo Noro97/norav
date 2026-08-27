@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Modal } from './Modal'
 
 export interface MediaItem {
   id: string
@@ -83,65 +84,60 @@ export function MediaPicker({
   }
 
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label="Media library">
-      <div className="overlay-panel">
-        <div className="overlay-head">
-          <strong>Media</strong>
-          <span className="spacer" />
-          <button
-            type="button"
-            className="ghost"
-            disabled={busy}
-            onClick={() => inputRef.current?.click()}
-          >
-            Upload
-          </button>
-          <button type="button" className="ghost" onClick={onClose}>
-            Close
-          </button>
-        </div>
+    <Modal
+      title="Media library"
+      onClose={onClose}
+      footer={
+        <button
+          type="button"
+          className="ghost"
+          disabled={busy}
+          onClick={() => inputRef.current?.click()}
+        >
+          Upload
+        </button>
+      }
+    >
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*,application/pdf"
+        multiple
+        hidden
+        onChange={(event) => {
+          void upload(event.target.files)
+          event.target.value = ''
+        }}
+      />
 
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          hidden
-          onChange={(event) => {
-            void upload(event.target.files)
-            event.target.value = ''
-          }}
-        />
+      {error && <div className="status err">{error}</div>}
 
-        {error && <div className="status err">{error}</div>}
-
-        {busy ? (
-          <p className="subtle">Working…</p>
-        ) : items.length === 0 ? (
-          <p className="subtle">Nothing uploaded yet.</p>
-        ) : (
-          <ul className="media-grid">
-            {items.map((item) => (
-              <li key={item.id}>
-                <button type="button" className="media-card" onClick={() => onSelect(item)}>
-                  <img src={item.url} alt="" loading="lazy" />
-                  <span className="media-meta">
-                    {item.width && item.height ? `${item.width}×${item.height}` : item.mime}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  className="media-remove"
-                  aria-label="Delete file"
-                  onClick={() => remove(item)}
-                >
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
+      {busy ? (
+        <p className="subtle">Working…</p>
+      ) : items.length === 0 ? (
+        <p className="subtle">Nothing uploaded yet.</p>
+      ) : (
+        <ul className="media-grid">
+          {items.map((item) => (
+            <li key={item.id}>
+              <button type="button" className="media-card" onClick={() => onSelect(item)}>
+                <img src={item.url} alt="" loading="lazy" />
+                <span className="media-meta">
+                  {item.width && item.height ? `${item.width}×${item.height}` : item.mime}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="media-remove"
+                aria-label="Delete file"
+                onClick={() => remove(item)}
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Modal>
   )
 }

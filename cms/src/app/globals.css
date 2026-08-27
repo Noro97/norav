@@ -289,3 +289,65 @@ fieldset > .help { margin-bottom: 14px; }
   .media-row { grid-template-columns: 44px 1fr; }
   .media-actions { grid-column: 1 / -1; }
 }
+
+/* ===== TABLES AND COLLAPSED ROWS ===== */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.table-scroll { overflow-x: auto; margin-top: 20px; }
+
+/* Rows are compared across, not read down: the columns carry the facts a list
+   could only show one of — visible, translated, saved. */
+table.rows { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+table.rows th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  padding: 0 12px 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+table.rows td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.rows td.num,
+table.rows th.num { width: 2.5rem; font-family: var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+.row-open {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--text); font: inherit; text-align: left;
+}
+.row-open:hover:not(:disabled) { color: var(--crimson-light); }
+.row-dirty { color: var(--warn); font-style: normal; margin-left: 6px; }
+.row-actions { text-align: right; white-space: nowrap; }
+.row-actions button { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 5px; }
+.row-actions button:hover:not(:disabled) { color: var(--text); }
+.row-actions button:disabled { opacity: 0.3; cursor: default; }
+
+.pill { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 3px; }
+.pill-on { background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok); }
+.pill-off { background: rgba(255, 255, 255, 0.05); color: var(--muted); }
+.pill-warn { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); }
+
+/* A repeater row shows what identifies it and what it looks like; the rest is
+   behind a dialog, so the list keeps its place while one row is edited. */
+.repeat-rows { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.repeat-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px; }
+.repeat-row .index { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.repeat-thumb { width: 34px; height: 34px; border-radius: 5px; object-fit: cover; background: var(--panel-2); flex-shrink: 0; }
+.repeat-thumb-empty { display: block; }
+.repeat-open {
+  flex: 1; background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--text); font: inherit; font-size: 13px; text-align: left;
+}
+.repeat-open:hover:not(:disabled) { color: var(--crimson-light); }
+.repeat-row > button:not(.repeat-open) { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 5px; }
+.repeat-row > button:not(.repeat-open):hover:not(:disabled) { color: var(--text); }
+.repeat-row > button:disabled { opacity: 0.3; cursor: default; }
+
+.overlay-body { overflow-y: auto; max-height: min(70vh, 640px); padding-right: 4px; }
+.overlay-wide { max-width: 760px; width: 92vw; }
