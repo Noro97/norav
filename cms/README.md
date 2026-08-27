@@ -80,6 +80,23 @@ dependencies underneath itself — which leaves react-three-fiber with two copie
 of its store and throws *"R3F: Hooks can only be used within the Canvas
 component!"*, blanking the page.
 
+## Getting the site's files into the library
+
+The images and the CV started life in `public/`, where changing one meant a
+deploy. This uploads them through the storage driver, records a library entry
+for each, and repoints every reference in the content at the stored copy:
+
+```bash
+npm --prefix cms run import:media
+```
+
+It forces the embedded database, like `db:reset`. Re-running is safe — a file
+already imported is recognised by the original path kept in its alt text.
+
+Publish afterwards to put the new URLs on the site. In production this needs
+`BLOB_READ_WRITE_TOKEN`: the container's own filesystem is read-only, so the
+local driver cannot store anything there.
+
 ## Trying a change safely
 
 `cms/.env` holds the production connection string, so a plain `npm run dev`

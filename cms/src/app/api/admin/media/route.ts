@@ -11,7 +11,13 @@ export const dynamic = 'force-dynamic'
 
 const MAX_BYTES = 12 * 1024 * 1024
 
-/** What the library will accept. Anything else is refused before it is stored. */
+/**
+ * What the library will accept. Anything else is refused before it is stored.
+ *
+ * Documents are here because the library is meant to hold everything the site
+ * links to, and the CV is a PDF — leaving it out would have meant one file that
+ * still had to be replaced by a deploy.
+ */
 const ACCEPTED: Record<string, string> = {
   'image/jpeg': '.jpg',
   'image/png': '.png',
@@ -19,6 +25,12 @@ const ACCEPTED: Record<string, string> = {
   'image/avif': '.avif',
   'image/gif': '.gif',
   'image/svg+xml': '.svg',
+  'application/pdf': '.pdf',
+}
+
+/** Only images have dimensions to read, and only some of them. */
+function hasDimensions(mime: string): boolean {
+  return mime.startsWith('image/') && mime !== 'image/svg+xml'
 }
 
 interface MediaRow {
@@ -57,7 +69,7 @@ export async function POST(request: Request) {
   if (!extension) {
     return fail(415, {
       code: 'unsupported_type',
-      message: `${file.type || 'That file'} is not an image the library accepts.`,
+      message: `${file.type || 'That file'} is not a file the library accepts.`,
     })
   }
   if (file.size > MAX_BYTES) {
@@ -73,7 +85,7 @@ export async function POST(request: Request) {
   // between a smooth load and a jumping page. SVG has none to read.
   let width: number | null = null
   let height: number | null = null
-  if (file.type !== 'image/svg+xml') {
+  if (hasDimensions(file.type)) {
     try {
       const sharp = (await import('sharp')).default
       const metadata = await sharp(bytes).metadata()
