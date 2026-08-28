@@ -112,6 +112,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           const draft = { en, ru }
           setSnapshots(draft)
           setCurrentSnapshots(draft)
+          // No version: a draft palette must not be remembered, or leaving the
+          // preview would take its colours along to the published page.
           applyTheme(draft.en.settings)
           setIsPreview(true)
           return
@@ -137,7 +139,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         setSnapshots(latest)
         // Keep the non-React readers (the terminal) on the same content.
         setCurrentSnapshots(latest)
-        applyTheme(latest.en.settings)
+        applyTheme(latest.en.settings, manifest.version)
         if (import.meta.env.DEV) {
           console.info(
             `[content] swapped in version ${manifest.version} from ${baseUrl} ` +

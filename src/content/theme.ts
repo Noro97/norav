@@ -31,12 +31,14 @@ if (typeof window !== 'undefined') {
   })
 }
 
-export function applyTheme(settings: Record<string, unknown> | undefined): void {
+export function applyTheme(settings: Record<string, unknown> | undefined, version?: number): void {
   if (typeof document === 'undefined') return
 
   const theme = settings?.theme as { tokens?: Record<string, string> } | undefined
   const tokens = theme?.tokens
   if (!tokens) return
+
+  if (typeof version === 'number') remember(tokens, version)
 
   const root = document.documentElement
   for (const [name, value] of Object.entries(tokens)) {
@@ -83,6 +85,51 @@ export function useThemeColor(name: string, fallback: string): string {
     return () => window.removeEventListener(THEME_EVENT, update)
   }, [name, fallback])
   return value
+}
+
+const REMEMBERED = 'norav:theme'
+
+/**
+ * The palette this browser saw last, so a reload does not flash the old one.
+ *
+ * The snapshot baked into the bundle is only as new as the last deploy, and a
+ * publish is usually newer. Painting the baked palette and repainting a moment
+ * later is the flash: green, then blue, every reload, for as long as the two
+ * disagree.
+ *
+ * Kept per browser and applied before the first render, so a returning visitor
+ * opens straight into the palette they last saw. A first visit still paints
+ * what the bundle carries — nothing has been seen yet to remember.
+ */
+function remember(tokens: Record<string, string>, version: number): void {
+  try {
+    window.localStorage.setItem(REMEMBERED, JSON.stringify({ version, tokens }))
+  } catch {
+    // Private windows, cleared site data, storage switched off. A palette that
+    // cannot be remembered is a flash, not a failure.
+  }
+}
+
+/**
+ * Applies the remembered palette when it is newer than the bundle's.
+ *
+ * The version comparison is the whole safety of this: a remembered palette from
+ * an older publish would otherwise override a newer baked one and flash in the
+ * opposite direction, which is worse for being unexpected.
+ */
+export function applyRememberedTheme(bakedVersion: number): void {
+  if (typeof document === 'undefined') return
+  try {
+    const raw = window.localStorage.getItem(REMEMBERED)
+    if (!raw) return
+    const saved = JSON.parse(raw) as { version?: number; tokens?: Record<string, string> }
+    if (typeof saved.version !== 'number' || saved.version <= bakedVersion) return
+    if (!saved.tokens) return
+    applyTheme({ theme: { tokens: saved.tokens } })
+  } catch {
+    // Unreadable or malformed: the bundle's palette is the fallback, which is
+    // what would have happened anyway.
+  }
 }
 
 /** The accent, read back from the page, for the parts that cannot use CSS. */

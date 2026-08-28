@@ -7,7 +7,7 @@ import './i18n'
 import App from './App'
 import { ContentProvider } from '@/content/ContentProvider'
 import { BAKED_SNAPSHOTS } from '@/content'
-import { applyTheme } from '@/content/theme'
+import { applyTheme, applyRememberedTheme } from '@/content/theme'
 import { reportWebVitals } from '@/lib/webVitals'
 import './index.css'
 import '@warmbros/warmbros-components/styles.css'
@@ -15,8 +15,12 @@ import '@warmbros/warmbros-components/styles.css'
 // Register GSAP plugins once
 gsap.registerPlugin(ScrollTrigger)
 
-// Before the first render, so the published palette is the only one ever painted.
+// Both before the first render. The bundle's palette is as new as the last
+// deploy; the remembered one is as new as the last visit, and wins when it is
+// newer — which is what keeps a reload from flashing the previous colours on
+// the way to the current ones.
 applyTheme(BAKED_SNAPSHOTS.en.settings)
+applyRememberedTheme(BAKED_SNAPSHOTS.en.version)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
