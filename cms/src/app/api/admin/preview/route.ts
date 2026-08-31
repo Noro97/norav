@@ -1,6 +1,6 @@
 import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
-import { ok } from '@/lib/http'
+import { canonicalOrigin, ok } from '@/lib/http'
 import { createPreviewToken } from '@/lib/preview'
 import { describeEnvironment } from '@/lib/environment'
 
@@ -27,7 +27,9 @@ export async function POST(request: Request) {
   // to a site that asks production about a token production has never seen, and
   // quietly shows the published copy instead.
   const production = describeEnvironment().target === 'production'
-  const site = production ? process.env.SITE_ORIGIN || 'https://norav.dev' : 'http://localhost:5173'
+  // SITE_ORIGIN is an allowlist, so take the canonical entry: the raw value can
+  // name several origins, and a URL can only have one.
+  const site = production ? canonicalOrigin() : 'http://localhost:5173'
   return ok({
     // In the fragment: a fragment never reaches a server, so the key stays out
     // of access logs and out of the Referer header of every link on the page.
