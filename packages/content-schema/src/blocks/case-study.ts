@@ -57,7 +57,12 @@ export function defineCaseStudy(
     },
     form: [
       ...extra.form,
-      { field: 'sectionLabel', control: 'text', label: 'Case study number' },
+      {
+        field: 'sectionLabel',
+        control: 'text',
+        label: 'Eyebrow',
+        help: 'The number is added from this section\'s place on the page — hide one and the rest renumber.',
+      },
       { field: 'title', control: 'text', label: 'Title' },
       { field: 'description', control: 'textarea', label: 'Description' },
       {
@@ -78,7 +83,7 @@ export const logisticsBlock = defineCaseStudy(
   'NexusRoute',
   'Live logistics map case study.',
   {
-    sectionLabel: 'Case Study 01',
+    sectionLabel: 'Case Study',
     title: 'NexusRoute',
     techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
   },
@@ -97,7 +102,7 @@ export const logisticsBlock = defineCaseStudy(
 )
 
 export const merchBlock = defineCaseStudy('merch', 'MerchForge', 'AI merch configurator case study.', {
-  sectionLabel: 'Case Study 02',
+  sectionLabel: 'Case Study',
   title: 'MerchForge',
   techStack: ['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'],
 })
@@ -107,7 +112,7 @@ export const ecommerceBlock = defineCaseStudy(
   'FilterGraph',
   'Faceted commerce search case study.',
   {
-    sectionLabel: 'Case Study 03',
+    sectionLabel: 'Case Study',
     title: 'FilterGraph',
     techStack: ['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo', 'Modal', 'Multi-step Form', 'Confetti'],
   },
@@ -118,7 +123,7 @@ export const omniGridBlock = defineCaseStudy(
   'OmniGrid',
   'Operations console case study — virtualised data grid.',
   {
-    sectionLabel: 'Case Study 04',
+    sectionLabel: 'Case Study',
     title: 'OmniGrid',
     techStack: ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll'],
   },
@@ -129,7 +134,7 @@ export const proofBlock = defineCaseStudy(
   'Proof',
   'Telegram-native fitness platform case study.',
   {
-    sectionLabel: 'Case Study 05',
+    sectionLabel: 'Case Study',
     title: 'Proof',
     techStack: ['Supabase Edge Functions', 'Google Gemini API', 'pgmq', 'FFmpeg.wasm', 'Telegram Mini App SDK'],
   },
