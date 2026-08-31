@@ -64,7 +64,7 @@ Senior Front-End Engineer with extensive experience building high-impact product
 - Bachelor of Computer Science — Armenian State University of Economics, Yerevan, Armenia
 
 ## This Portfolio
-Built with React 19, TypeScript, Three.js (R3F), GSAP, Framer Motion, Tailwind CSS 4, Zustand, Lenis smooth scroll, i18n (English/Russian), and deployed on Cloudflare Pages. Features include a 3D particle constellation, interactive terminal, custom cursor system, magnetic buttons, and this AI chat widget powered by Claude API.
+Built with React 19, TypeScript, Three.js (R3F), GSAP, Framer Motion, Tailwind CSS 4, Zustand, Lenis smooth scroll, i18n (English/Russian), and deployed on Vercel. Features include a 3D particle constellation, interactive terminal, custom cursor system, magnetic buttons, and this AI chat widget powered by Claude API.
 
 ## Guidelines
 - Be concise (2-4 sentences per answer unless more detail is asked for)
