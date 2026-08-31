@@ -26,7 +26,11 @@ const COLOR_KEYS = [
 ] as const
 
 const COLOR_VALUES = ['Midnight Black', 'Arctic White', 'Crimson Red', 'Navy Blue', 'Forest Green']
-const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', 'var(--color-crimson-500)', '#1e3a5f', '#2d5a3d']
+// What the garment is dyed, not what the site is themed. A sweep that replaced
+// hardcoded brand hexes with the accent token caught this one too, and the
+// swatch labelled "Crimson Red" turned green when the palette did — while its
+// neighbours, navy and forest, stayed put. Muted to sit with them.
+const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', '#7d1f2b', '#1e3a5f', '#2d5a3d']
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
