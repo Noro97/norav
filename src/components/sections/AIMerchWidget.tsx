@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
+import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import type { CaseStudyContent } from '@norav/content-schema'
 import type { MerchConfig } from '@/types'
 
@@ -213,9 +214,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                     key={type}
                     onClick={() => updateConfig('productType', type)}
                     className={`px-3 py-1.5 text-xs font-mono rounded border transition-all ${
-                      config.productType === type
-                        ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
-                        : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                      config.productType === type ? CHOSEN : UNCHOSEN
                     }`}
                   >
                     {t(`projects:${PRODUCT_TYPE_KEYS[i]}`)}
@@ -237,7 +236,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                     title={t(`projects:${COLOR_KEYS[i]}`)}
                     className={`w-8 h-8 rounded-full border-2 transition-all ${
                       config.color === colorName
-                        ? 'border-crimson-500 scale-110'
+                        ? 'border-cyan-500 scale-110'
                         : 'border-white/10 hover:border-white/30'
                     }`}
                     style={{ backgroundColor: COLOR_HEXES[i] }}
@@ -260,9 +259,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                     key={s}
                     onClick={() => updateConfig('size', s)}
                     className={`w-10 h-10 text-xs font-mono rounded border transition-all ${
-                      config.size === s
-                        ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
-                        : 'border-white/10 text-white/40 hover:border-white/20'
+                      config.size === s ? CHOSEN : UNCHOSEN
                     }`}
                   >
                     {s}

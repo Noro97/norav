@@ -1,5 +1,5 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
-import { readToken, withAlpha } from '@/content/theme'
+import { useRef, useEffect, useCallback, useMemo, useState } from 'react'
+import { readToken, useThemeColor, withAlpha } from '@/content/theme'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 interface MapViewProps {
@@ -16,35 +16,54 @@ setOptions({
   v: 'weekly',
 })
 
-// Dark "Night" style — applied via JSON so no mapId needed
-const DARK_STYLE: google.maps.MapTypeStyle[] = [
-  { elementType: 'geometry', stylers: [{ color: '#1d2c4d' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#8ec3b9' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#1a3646' }] },
-  { featureType: 'administrative.country', elementType: 'geometry.stroke', stylers: [{ color: '#4b6878' }] },
-  { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#64779e' }] },
-  { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#4b6878' }] },
-  { featureType: 'landscape.man_made', elementType: 'geometry.stroke', stylers: [{ color: '#334e87' }] },
-  { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#023e58' }] },
-  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#283d6a' }] },
-  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#6f9ba5' }] },
-  { featureType: 'poi', elementType: 'labels.text.stroke', stylers: [{ color: '#1d2c4d' }] },
-  { featureType: 'poi.park', elementType: 'geometry.fill', stylers: [{ color: '#023e58' }] },
-  { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#3C7680' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#304a7d' }] },
-  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#98a5be' }] },
-  { featureType: 'road', elementType: 'labels.text.stroke', stylers: [{ color: '#1d2c4d' }] },
-  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2c6675' }] },
-  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#255763' }] },
-  { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#b0d5ce' }] },
-  { featureType: 'road.highway', elementType: 'labels.text.stroke', stylers: [{ color: '#023e58' }] },
-  { featureType: 'transit', elementType: 'labels.text.fill', stylers: [{ color: '#98a5be' }] },
-  { featureType: 'transit', elementType: 'labels.text.stroke', stylers: [{ color: '#1d2c4d' }] },
-  { featureType: 'transit.line', elementType: 'geometry.fill', stylers: [{ color: '#283d6a' }] },
-  { featureType: 'transit.station', elementType: 'geometry', stylers: [{ color: '#3a4762' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0e1626' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#4e6d70' }] },
-]
+/**
+ * Google's stock "Night" palette was fourteen navy hexes, so the map stayed
+ * dark blue while the rest of the page followed whatever accent and background
+ * the CMS published — the one panel on the site that did not.
+ *
+ * Four roles now, all read from the theme. Every feature the stock style named
+ * is still named here: dropping one lets Google's default daylight colour show
+ * through for that feature alone, which is worse than a colour that is merely
+ * wrong.
+ *
+ * Maps takes resolved colours, not CSS variables — the same constraint the 3D
+ * mark works under.
+ */
+function darkStyle(
+  ground: string,
+  water: string,
+  line: string,
+  text: string,
+): google.maps.MapTypeStyle[] {
+  return [
+    { elementType: 'geometry', stylers: [{ color: ground }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: ground }] },
+    { featureType: 'administrative.country', elementType: 'geometry.stroke', stylers: [{ color: line }] },
+    { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: line }] },
+    { featureType: 'landscape.man_made', elementType: 'geometry.stroke', stylers: [{ color: line }] },
+    { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: ground }] },
+    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: ground }] },
+    { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'poi', elementType: 'labels.text.stroke', stylers: [{ color: ground }] },
+    { featureType: 'poi.park', elementType: 'geometry.fill', stylers: [{ color: ground }] },
+    { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: line }] },
+    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'road', elementType: 'labels.text.stroke', stylers: [{ color: ground }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: line }] },
+    { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: ground }] },
+    { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'road.highway', elementType: 'labels.text.stroke', stylers: [{ color: ground }] },
+    { featureType: 'transit', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+    { featureType: 'transit', elementType: 'labels.text.stroke', stylers: [{ color: ground }] },
+    { featureType: 'transit.line', elementType: 'geometry.fill', stylers: [{ color: line }] },
+    { featureType: 'transit.station', elementType: 'geometry', stylers: [{ color: line }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: water }] },
+    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: text }] },
+  ]
+}
 
 // SVG marker icon factory — pulsing dot via Symbol
 function createMarkerIcon(intensity: number): google.maps.Symbol {
@@ -153,6 +172,25 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
   const pendingRafRef = useRef(0)
   const [authFailed, setAuthFailed] = useState(false)
 
+  // Four roles, re-read when the CMS publishes a palette.
+  const ground = useThemeColor('--color-card', '#0f0f14')
+  const water = useThemeColor('--color-background', '#08080b')
+  const line = useThemeColor('--color-muted', '#1a1a22')
+  const text = useThemeColor('--color-muted-foreground', '#8a8a99')
+  const styles = useMemo(() => darkStyle(ground, water, line, text), [ground, water, line, text])
+
+  // The init effect must not re-run on a palette change — it would rebuild the
+  // map and drop every marker. It reads the current styles through a ref, and a
+  // second effect restyles the map that already exists.
+  const stylesRef = useRef(styles)
+
+  useEffect(() => {
+    // Writing the ref here rather than during render: init awaits the Maps
+    // library, so by the time it builds the map this has already run.
+    stylesRef.current = styles
+    mapRef.current?.setOptions({ styles, backgroundColor: water })
+  }, [styles, water])
+
   useEffect(() => {
     onLoadRef.current = onLoad
   }, [onLoad])
@@ -188,8 +226,10 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
         maxZoom: 10,
         disableDefaultUI: true,
         gestureHandling: 'cooperative',
-        backgroundColor: '#1d2c4d',
-        styles: DARK_STYLE,
+        // Read here rather than closed over: this effect must not list a
+        // colour as a dependency, or a publish would rebuild the map.
+        backgroundColor: readToken('--color-background', '#08080b'),
+        styles: stylesRef.current,
       })
 
       mapRef.current = map
@@ -319,7 +359,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
 
   if (authFailed) {
     return (
-      <div className="absolute inset-0 bg-[#1d2c4d]">
+      <div className="absolute inset-0 bg-background">
         {fallbackImage && (
           <img
             src={fallbackImage}
@@ -327,7 +367,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
             className="absolute inset-0 w-full h-full object-cover opacity-60"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1d2c4d] via-transparent to-[#1d2c4d]/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
       </div>
     )
   }
@@ -336,7 +376,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
     <div
       ref={mapDivRef}
       className="absolute inset-0"
-      style={{ backgroundColor: '#1d2c4d' }}
+      style={{ backgroundColor: 'var(--color-background)' }}
     />
   )
 }

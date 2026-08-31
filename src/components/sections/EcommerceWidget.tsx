@@ -262,7 +262,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                       <div
                         className={`w-4 h-4 rounded border shrink-0 transition-all flex items-center justify-center ${
                           isActive
-                            ? 'border-crimson-500 bg-crimson-500'
+                            ? 'border-cyan-500 bg-cyan-500'
                             : 'border-white/20 group-hover:border-white/40'
                         }`}
                       >
@@ -332,7 +332,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                     onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, sortBy: opt.value })) }}
                     className={`w-full text-left px-2 py-1.5 rounded text-xs font-mono transition-all ${
                       filters.sortBy === opt.value
-                        ? 'text-crimson-400 bg-crimson-500/10'
+                        ? 'text-cyan-400 bg-cyan-500/10'
                         : 'text-white/40 hover:text-white/60 hover:bg-white/3'
                     }`}
                   >
@@ -432,7 +432,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                     onClick={() => setPage(i)}
                     className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-xs transition-all ${
                       page === i
-                        ? 'border-crimson-500/40 bg-crimson-500/10 text-crimson-400'
+                        ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400'
                         : 'border-white/10 text-white/40 hover:text-white/70 hover:border-white/20'
                     }`}
                   >

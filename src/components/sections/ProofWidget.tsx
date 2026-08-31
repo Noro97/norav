@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
+import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import type { CaseStudyContent } from '@norav/content-schema'
 
 interface Activity {
@@ -298,9 +299,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                     key={act.key}
                     onClick={() => handleSelectActivity(i)}
                     className={`px-3 py-1.5 text-xs font-mono rounded border transition-all ${
-                      selectedActivity === i
-                        ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
-                        : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                      selectedActivity === i ? CHOSEN : UNCHOSEN
                     }`}
                   >
                     <span className="mr-1.5 opacity-60">{act.icon}</span>
