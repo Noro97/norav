@@ -1,193 +1,87 @@
-# Life Compass - React + TypeScript# Monolite - Creative Landing Page
+# norav.dev
 
+Personal portfolio of Norayr Avetisyan — a single-page site with a 3D hero,
+interactive case-study widgets, and its own CMS.
 
+Live at **[norav.dev](https://norav.dev)**. The admin is at
+**[cms.norav.dev](https://cms.norav.dev)**.
 
-A creative landing page with liquid glass effects and animations, built with React and TypeScript.## Project Overview
+## What is here
 
-- **Name**: Monolite
+This repository holds three things that ship separately.
 
-## 🚀 Tech Stack- **Goal**: Modern, creative landing page with liquid glass effects and smooth animations
+| Path | What it is |
+| --- | --- |
+| `src/`, `public/`, `index.html` | the site — Vite 6, React 19, TypeScript |
+| `cms/` | the admin — Next.js 15, its own lockfile, its own Vercel project |
+| `db/` | numbered SQL migrations and a PGlite test harness |
+| `packages/content-schema/` | the block registry and snapshot contract, shared by both |
+| `server/`, `api/` | the terminal's `ask` command: one handler, an edge function |
 
-- **Features**: Hero section, animated sliders, contact form, responsive design
+The site is Three.js and React Three Fiber for the hero, GSAP for scroll work,
+Tailwind v4 for everything else.
 
-- **React 19** - Modern UI library
+## How content reaches the page
 
-- **TypeScript** - Type-safe JavaScript## URLs
+Editing in the CMS writes a draft. **Publish** turns the draft into an
+immutable snapshot — every locale, every block, validated once — and stores it
+as a numbered publication.
 
-- **Vite** - Fast build tool and dev server- **Development**: https://3000-i6zcq1fwfy5hrb8ohhbi5-b237eb32.sandbox.novita.ai
+The site gets that snapshot twice over:
 
-- **Tailwind CSS** - Utility-first CSS framework- **GitHub**: TBD (ready for GitHub integration)
+- **At build time.** `prebuild` fetches the latest publication and bakes it into
+  the bundle, so the first paint needs no network.
+- **At run time.** The page checks a manifest and swaps in anything newer,
+  without a deploy.
 
+A publish also triggers a rebuild, so the baked copy catches up rather than
+staying a version behind.
 
+Nothing the site renders is hardcoded: sections, their order, their visibility,
+every image, and the colour palette all come from the snapshot.
 
-## 📦 Installation## Features Implemented
-
-✅ **Hero Section**: Large hero with animated background shapes and gradient text  
-
-```bash✅ **Liquid Glass Effect**: Beautiful glassmorphism cards with backdrop blur  
-
-npm install✅ **Animated Sliders**: Infinite scrolling feature cards with hover effects  
-
-```✅ **Purple & Dark Blue Theme**: Modern gradient color scheme  
-
-✅ **Minimalistic Fonts**: Inter and JetBrains Mono for clean typography  
-
-## 🛠️ Development✅ **Responsive Design**: Mobile-first approach with Tailwind CSS  
-
-✅ **Interactive Animations**: Scroll-triggered animations and micro-interactions  
-
-Start the development server:✅ **Contact Form**: Functional contact form with validation  
-
-✅ **Navigation**: Smooth scrolling navigation with backdrop blur  
-
-```bash
-
-npm run dev## Data Architecture
-
-```- **Data Models**: Contact form submissions (frontend only)
-
-- **Storage Services**: Static assets served via Cloudflare Pages
-
-The app will be available at `http://localhost:5173` (or another port if 5173 is in use).- **Data Flow**: Client-side form handling with JavaScript animations
-
-
-
-## 🏗️ Build## Technical Stack
-
-- **Backend**: Hono framework with TypeScript
-
-Build for production:- **Frontend**: Vanilla JavaScript with Tailwind CSS
-
-- **Fonts**: Inter (sans-serif), JetBrains Mono (monospace)
-
-```bash- **Styling**: Custom CSS with glassmorphism effects
-
-npm run build- **Animations**: CSS keyframes with JavaScript triggers
-
-```- **Build**: Vite with Cloudflare Pages deployment
-
-
-
-The built files will be in the `dist/` directory.## User Guide
-
-1. **Navigation**: Click nav links for smooth scrolling to sections
-
-## 👀 Preview2. **Hero Interaction**: Hover over buttons for animated effects
-
-3. **Feature Cards**: Scroll to see animated slider with feature highlights
-
-Preview the production build locally:4. **Contact Form**: Fill out form with real-time validation
-
-5. **Mobile**: Fully responsive design works on all screen sizes
+## Running it
 
 ```bash
+npm install
+npm run dev            # the site on :5173
+```
 
-npm run preview## Development Commands
+The site talks to a CMS on `localhost:3300` in development, and falls back to
+the snapshot committed under `src/content/` when none is running.
 
-``````bash
+For the admin — its own install, its own database:
 
-# Start development server
+```bash
+npm --prefix cms install
+npm --prefix cms run db:reset                     # embedded database, seeded
+DATABASE_URL= npm --prefix cms run user:add -- --email you@example.com
+npm --prefix cms run dev:local                    # the admin on :3300
+```
 
-## 📁 Project Structurenpm run build && npm run start
+`dev:local` and `db:reset` force the embedded database regardless of what
+`cms/.env` says. That matters: `cms/.env` holds the production connection
+string, so a plain `npm run dev` in `cms/` edits the live site.
 
+See [`cms/README.md`](cms/README.md) for the admin in detail and
+[`cms/DEPLOY.md`](cms/DEPLOY.md) for what production needs.
 
+## Tests
 
-```# Stop development server
+```bash
+npm test               # the site and the shared schema
+npm --prefix cms test  # the admin
+npm --prefix db test   # migrations, against real Postgres compiled to WASM
+```
 
-webapp/npm run stop
+The `db` suite applies every migration to an ephemeral PGlite instance and
+asserts the invariants the API relies on — no Docker, no local cluster.
 
-├── public/              # Static assets
+## Deploying
 
-│   ├── assets/# Check logs
+Two Vercel projects from one repository: `norav` builds the site from the root,
+`norav-cms` builds the admin from `cms/`. Both deploy on a push to `main`.
+Postgres lives on Neon; uploaded files live in Vercel Blob.
 
-│   │   └── img/npm run logs
-
-│   └── static/
-
-├── src/# Test endpoint
-
-│   ├── App.tsx         # Main App componentnpm run test
-
-│   ├── main.tsx        # Entry point
-
-│   └── vite-env.d.ts   # Vite type declarations# Clean port and rebuild
-
-├── index.html          # HTML entry pointnpm run clean-port && npm run build
-
-├── package.json```
-
-├── tsconfig.json       # TypeScript config
-
-├── tsconfig.node.json  # TypeScript config for Node## Features Ready for Enhancement
-
-└── vite.config.ts      # Vite configuration🔄 **Backend API**: Add server-side contact form processing  
-
-```🔄 **Database**: Integrate contact submissions with Cloudflare D1  
-
-🔄 **Authentication**: Add user login/signup functionality  
-
-## 🎨 Features🔄 **CMS**: Add content management for dynamic sections  
-
-🔄 **Analytics**: Add visitor tracking and usage analytics  
-
-- ✅ **Hero Section**: Large hero with animated background shapes and gradient text
-
-- ✅ **Liquid Glass Effect**: Beautiful glassmorphism cards with backdrop blur## Recommended Next Steps
-
-- ✅ **Animated Sliders**: Infinite scrolling feature cards with hover effects1. **Deploy to Production**: Set up Cloudflare Pages deployment
-
-- ✅ **Purple & Dark Blue Theme**: Modern gradient color scheme2. **Add API Endpoints**: Create backend routes for form submissions
-
-- ✅ **Minimalistic Fonts**: Inter and JetBrains Mono for clean typography3. **Database Integration**: Store contact form data in Cloudflare D1
-
-- ✅ **Responsive Design**: Mobile-first approach with Tailwind CSS4. **SEO Optimization**: Add meta tags, structured data, sitemap
-
-- ✅ **Interactive Animations**: Scroll-triggered animations and micro-interactions5. **Performance**: Implement lazy loading for images and animations
-
-- ✅ **Contact Form**: Functional contact form with validation6. **A/B Testing**: Create variations for landing page optimization
-
-- ✅ **Navigation**: Smooth scrolling navigation with backdrop blur
-
-## Deployment
-
-## 🔧 Migration Notes- **Platform**: Cloudflare Pages
-
-- **Status**: ✅ Development Active
-
-This project was converted from a Hono server-side application to a React client-side application:- **Tech Stack**: Hono + TypeScript + TailwindCSS + Vanilla JS
-
-- **Last Updated**: October 2024
-
-### What Changed:
-
-- ✅ Removed Hono and Cloudflare Workers dependencies## Animation Features
-
-- ✅ Added React, React DOM, and TypeScript support- **Floating Shapes**: Background geometric shapes with parallax effect
-
-- ✅ Converted server-side JSX to React components- **Liquid Glass Cards**: Glassmorphism with rotating gradient backgrounds
-
-- ✅ Updated build configuration for client-side rendering- **Scroll Animations**: Elements animate in as user scrolls
-
-- ✅ Replaced Hono routing with React component structure- **Hover Effects**: Interactive button and card hover states
-
-- ✅ Configured Vite for optimal React development- **Loading Animation**: Page loader with pulsing logo
-
-- **Slider Animation**: Infinite scroll with pause on hover
-
-### Backup Files:- **Form Validation**: Real-time input validation with visual feedback
-
-- Old Hono files are backed up with `.old` extension in `src/` directory
-
-- `index.tsx.old` - Original Hono server entry pointThe landing page showcases modern web design principles with cutting-edge CSS effects and smooth JavaScript animations, perfect for creative agencies, SaaS products, or portfolio websites.
-- `renderer.tsx.old` - Original Hono JSX renderer
-
-### New Files:
-- `index.html` - HTML entry point
-- `src/main.tsx` - React application entry point
-- `src/App.tsx` - Main React component
-- `src/vite-env.d.ts` - Vite type declarations
-- `tsconfig.node.json` - Node-specific TypeScript config
-
----
-
-© 2024 Life Compass. All rights reserved.
+Migrations are **not** applied automatically on Postgres — only the embedded
+database does that. Production takes `npm --prefix db run migrate`.
