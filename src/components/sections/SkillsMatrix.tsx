@@ -136,6 +136,30 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
   )
 }
 
+/**
+ * A category's dot colour, mixed from the palette.
+ *
+ * This was a hex typed into the CMS per category, seeded with the old brand
+ * crimson and one violet — five values that survived every palette change, so
+ * the panel showed four shades of a red the site had stopped using next to a
+ * purple that was never in it. Nobody needs to hand-pick five colours that have
+ * no meaning beyond telling five rows apart, and a field whose only correct
+ * answer is "whatever the palette says" should not be a field.
+ *
+ * The ramp runs accent to secondary across however many categories there are.
+ * color-mix interpolates in the browser, so it re-mixes on a publish with no
+ * JavaScript watching the theme.
+ */
+function categoryColour(index: number, count: number): string {
+  const ratio = count > 1 ? Math.round((index / (count - 1)) * 100) : 0
+  return `color-mix(in srgb, var(--color-cyan-500) ${ratio}%, var(--color-crimson-500))`
+}
+
+/** The same colour as a wash behind a card. */
+function categoryGlow(index: number, count: number): string {
+  return `color-mix(in srgb, ${categoryColour(index, count)} 8%, transparent)`
+}
+
 export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<SkillsContent>('skills')
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -209,14 +233,14 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                 {/* Subtle category glow */}
                 <div
                   className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ backgroundColor: `${category.color}15` }}
+                  style={{ backgroundColor: categoryGlow(catIdx, categories.length) }}
                 />
 
                 <div className="relative">
                   <div className="flex items-center gap-2.5 mb-4">
                     <div
                       className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: category.color }}
+                      style={{ backgroundColor: categoryColour(catIdx, categories.length) }}
                     />
                     <h3 className="font-mono text-xs text-white/50 tracking-[0.15em] uppercase">
                       {category.name}
@@ -265,7 +289,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                   >
                     <div
                       className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: cat.color }}
+                      style={{ backgroundColor: categoryColour(i, categories.length) }}
                     />
                     <span className="font-mono text-xs text-white/40 flex-1">{cat.name}</span>
                     <span className="font-mono text-xs text-white/40">{avg}%</span>

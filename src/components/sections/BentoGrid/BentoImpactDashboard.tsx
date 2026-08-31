@@ -96,7 +96,7 @@ export function BentoImpactDashboard() {
   const metrics = content.dashboard.metrics
 
   return (
-    <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0a0a14] backdrop-blur-xl">
+    <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-white/[0.06] bg-background backdrop-blur-xl">
       {/* Subtle crimson gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-crimson-500/[0.03] via-transparent to-transparent pointer-events-none" />
 

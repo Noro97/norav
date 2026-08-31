@@ -58,7 +58,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
         </div>
 
         {/* Terminal window */}
-        <div className="terminal-window rounded-xl overflow-hidden border border-white/10 bg-[#08080f] shadow-2xl shadow-black/50">
+        <div className="terminal-window rounded-xl overflow-hidden border border-white/10 bg-background shadow-2xl shadow-black/50">
           {/* Title bar */}
           <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/5" aria-hidden="true">
             <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
