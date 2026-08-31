@@ -48,9 +48,36 @@ export function isSameOrigin(request: Request): boolean {
 }
 
 /** Public content endpoints are read by the site from another origin. */
-export function withCors(response: NextResponse): NextResponse {
-  const allowed = process.env.SITE_ORIGIN || '*'
-  response.headers.set('Access-Control-Allow-Origin', allowed)
+/**
+ * Who may read the public API from a browser.
+ *
+ * A list rather than one value, so a laptop can point at the deployed CMS and
+ * see what is actually published — without which local development runs
+ * against whatever content happens to be committed, and a change made in the
+ * admin is invisible until someone rebuilds.
+ *
+ * Still a list and not `*`: these responses are public, but an allowlist is
+ * the difference between a decision and an omission. Set it as
+ * SITE_ORIGIN=https://norav.dev,http://localhost:5173
+ */
+function allowedOrigins(): string[] {
+  return (process.env.SITE_ORIGIN ?? '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean)
+}
+
+export function withCors(response: NextResponse, request?: Request): NextResponse {
+  const allowed = allowedOrigins()
+  const asked = request?.headers.get('origin')?.replace(/\/$/, '') ?? null
+
+  // Unset means unrestricted, which is what local development wants and what
+  // production never has. Otherwise: echo the caller's origin when it is on the
+  // list, and fall back to the first entry so the header is never absent.
+  const value = allowed.length === 0 ? '*' : asked && allowed.includes(asked) ? asked : allowed[0]!
+
+  response.headers.set('Access-Control-Allow-Origin', value)
+  // Without this a CDN would serve one origin's header to another.
   response.headers.set('Vary', 'Origin')
   return response
 }

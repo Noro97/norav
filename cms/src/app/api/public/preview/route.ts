@@ -24,6 +24,7 @@ export async function GET(request: Request) {
         { error: { code: 'preview_expired', message: 'This preview link is no longer valid.' } },
         { status: 401 },
       ),
+      request,
     )
   }
 
@@ -34,6 +35,7 @@ export async function GET(request: Request) {
         { error: { code: 'invalid_locale', message: `Unsupported locale "${locale}".` } },
         { status: 400 },
       ),
+      request,
     )
   }
 
@@ -50,6 +52,7 @@ export async function GET(request: Request) {
         },
         { status: 422 },
       ),
+      request,
     )
   }
 
@@ -57,9 +60,10 @@ export async function GET(request: Request) {
     NextResponse.json(built.payload.locales[locale], {
       headers: { 'Cache-Control': 'no-store' },
     }),
+    request,
   )
 }
 
-export async function OPTIONS() {
-  return withCors(new NextResponse(null, { status: 204 }))
+export async function OPTIONS(request: Request) {
+  return withCors(new NextResponse(null, { status: 204 }), request)
 }

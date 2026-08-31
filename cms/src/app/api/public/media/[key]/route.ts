@@ -8,7 +8,7 @@ export const runtime = 'nodejs'
  * Serves files held by the local driver. In production the blob store serves
  * its own URLs and this route is never reached.
  */
-export async function GET(_request: Request, context: { params: Promise<{ key: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ key: string }> }) {
   const storage = getStorage()
   if (!storage.read) return new NextResponse(null, { status: 404 })
 
@@ -28,5 +28,6 @@ export async function GET(_request: Request, context: { params: Promise<{ key: s
         'Cache-Control': 'public, max-age=31536000, immutable',
       },
     }),
+    request,
   )
 }

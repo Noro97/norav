@@ -23,6 +23,7 @@ export async function GET(request: Request) {
         { error: { code: 'invalid_locale', message: `Unsupported locale "${localeParam}".` } },
         { status: 400 },
       ),
+      request,
     )
   }
 
@@ -41,6 +42,7 @@ export async function GET(request: Request) {
         { error: { code: 'not_published', message: 'Nothing has been published yet.' } },
         { status: 404 },
       ),
+      request,
     )
   }
 
@@ -52,9 +54,9 @@ export async function GET(request: Request) {
         : 'public, s-maxage=60, stale-while-revalidate=600',
     },
   })
-  return withCors(response)
+  return withCors(response, request)
 }
 
-export async function OPTIONS() {
-  return withCors(new NextResponse(null, { status: 204 }))
+export async function OPTIONS(request: Request) {
+  return withCors(new NextResponse(null, { status: 204 }), request)
 }
