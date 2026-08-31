@@ -102,16 +102,24 @@ describe('executeCommand', () => {
     expect(contents.toLowerCase()).toContain('not found')
   })
 
-  it('handles ask command without arguments', () => {
-    const result = executeCommand('ask')
+  // `ask` is switched off while the account behind it has no credit. These two
+  // describe that state; when ASK_ENABLED goes back to true they are what has
+  // to change with it, which is the point of testing the behaviour rather than
+  // the constant.
+  it('says ask is switched off rather than reaching the network', () => {
+    const result = executeCommand('ask What skills does he have?')
     const contents = result.map((l) => l.content).join('\n')
-    expect(contents).toContain('Usage')
+    expect(contents).toContain('switched off')
+    // The marker is what makes useTerminal call the endpoint. Its absence is
+    // the difference between a command that is off and one that is broken.
+    expect(result.some((l) => l.content.startsWith('__ASK__'))).toBe(false)
   })
 
-  it('returns ask marker for ask with question', () => {
-    const result = executeCommand('ask What skills does he have?')
-    const outputs = result.filter((l) => l.type === 'output')
-    expect(outputs.some((l) => l.content.startsWith('__ASK__'))).toBe(true)
+  it('leaves ask out of help while it is off', () => {
+    const contents = executeCommand('help')
+      .map((l) => l.content)
+      .join('\n')
+    expect(contents).not.toContain('ask ')
   })
 
   it('is case-insensitive for commands', () => {
