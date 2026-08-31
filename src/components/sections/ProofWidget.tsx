@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
+import { useCaseStudyLabel } from '@/content/case-studies'
 import type { CaseStudyContent } from '@norav/content-schema'
 
 interface Activity {
@@ -47,6 +48,9 @@ const REP_INTERVAL = 250
 
 export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<CaseStudyContent>('proof')
+  // Before the early return: the number is a hook, and a hook cannot sit
+  // behind a conditional.
+  const sectionLabel = useCaseStudyLabel('proof', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'proof', sectionRef)
@@ -261,7 +265,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <span className="label-mono">{content.sectionLabel}</span>
+          <span className="label-mono">{sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white mt-3">
             {content.title}
           </h2>

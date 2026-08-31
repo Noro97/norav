@@ -301,6 +301,48 @@ await expectError(
 }
 
 {
+  // 0009 takes the number out of the eyebrow. The row it must not touch is a
+  // section that is not a case study, and a label whose trailing digits are
+  // part of the copy.
+  const { rows: study } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'merch', 9000) returning id`,
+    [page.id],
+  )
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [study[0].id, JSON.stringify({ sectionLabel: 'Case Study 02', title: 'MerchForge' })],
+  )
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'ru', $2::jsonb)`,
+    [study[0].id, JSON.stringify({ sectionLabel: 'Кейс 02', title: 'MerchForge' })],
+  )
+  const { rows: other } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'capabilities', 9100) returning id`,
+    [page.id],
+  )
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [other[0].id, JSON.stringify({ sectionLabel: 'Selected Work 2026', title: 'Capabilities' })],
+  )
+
+  await db.exec(readFileSync(join(root, 'migrations', '0009_case_study_number_is_position.sql'), 'utf8'))
+
+  const labelOf = async (id, locale) => {
+    const { rows } = await db.query(
+      `select content ->> 'sectionLabel' as label from block_translations where block_id = $1 and locale = $2`,
+      [id, locale],
+    )
+    return rows[0].label
+  }
+  check('the number leaves the case study eyebrow', (await labelOf(study[0].id, 'en')) === 'Case Study')
+  check('every locale, not just the one', (await labelOf(study[0].id, 'ru')) === 'Кейс')
+  check(
+    'a section that is not a case study keeps its digits',
+    (await labelOf(other[0].id, 'en')) === 'Selected Work 2026',
+  )
+}
+
+{
   // History must survive the author's account being removed.
   await db.query(`insert into revisions (entity_type, entity_id, locale, data, author_id) values ('block', $1, 'en', '{}'::jsonb, $2)`, [hero.id, owner.id])
   await db.query(`delete from admin_users where id = $1`, [owner.id])
