@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { Coffee, Image as ImageIcon, Shirt, Sticker, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -32,14 +33,24 @@ const COLOR_VALUES = ['Midnight Black', 'Arctic White', 'Crimson Red', 'Navy Blu
 // neighbours, navy and forest, stayed put. Muted to sit with them.
 const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', '#7d1f2b', '#1e3a5f', '#2d5a3d']
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-
-const BASE_PRICES: Record<string, number> = {
-  'T-Shirt': 29.99,
-  'Hoodie': 59.99,
-  'Mug': 14.99,
-  'Poster': 24.99,
-  'Sticker Pack': 9.99,
+/**
+ * What each product actually is. Sizes used to be one list of garment sizes
+ * shown for all five, so a mug was offered in XS through XXL and its SKU came
+ * out as MF-MUG-MB-M-S — a medium mug.
+ *
+ * The icon stands in for a photograph. The one here was a T-shirt from
+ * Unsplash: a third-party request in the middle of a case study about a
+ * configurator, and a T-shirt no matter which product was selected.
+ */
+const PRODUCTS: Record<
+  string,
+  { price: number; sizes: string[]; defaultSize: string; Icon: LucideIcon }
+> = {
+  'T-Shirt': { price: 29.99, sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], defaultSize: 'M', Icon: Shirt },
+  'Hoodie': { price: 59.99, sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], defaultSize: 'L', Icon: Shirt },
+  'Mug': { price: 14.99, sizes: ['11oz', '15oz'], defaultSize: '11oz', Icon: Coffee },
+  'Poster': { price: 24.99, sizes: ['A3', 'A2', 'A1'], defaultSize: 'A2', Icon: ImageIcon },
+  'Sticker Pack': { price: 9.99, sizes: ['S', 'M', 'L'], defaultSize: 'M', Icon: Sticker },
 }
 
 const DEFAULT_CONFIG: MerchConfig = {
@@ -54,7 +65,7 @@ const DEFAULT_CONFIG: MerchConfig = {
 function generateSKU(config: MerchConfig): string {
   const type = config.productType.replace(/\s/g, '').slice(0, 3).toUpperCase()
   const color = config.color.split(' ').map((w) => w[0]).join('').toUpperCase()
-  const size = config.size
+  const size = config.size.toUpperCase()
   return `MF-${type}-${color}-${size}-${config.premium ? 'P' : 'S'}`
 }
 
@@ -88,7 +99,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
 
   // Computed output with derived fields
   const fullOutput = useMemo(() => {
-    const basePrice = BASE_PRICES[config.productType] ?? 29.99
+    const basePrice = PRODUCTS[config.productType]?.price ?? 29.99
     const premiumMultiplier = config.premium ? 1.4 : 1.0
     const unitPrice = Math.round(basePrice * premiumMultiplier * 100) / 100
     const total = Math.round(unitPrice * config.quantity * 100) / 100
@@ -161,6 +172,26 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
     []
   )
 
+  /**
+   * Switching product is not an edit to a configuration, it is a different
+   * configuration — so it does not add to the count, and it carries the size
+   * across only when the new product has one by that name. A T-shirt in M
+   * becoming a mug in M was how "medium mug" got into the SKU.
+   */
+  const selectProduct = useCallback((productType: string) => {
+    setConfig((prev) => {
+      const product = PRODUCTS[productType]
+      if (!product) return { ...prev, productType }
+      return {
+        ...prev,
+        productType,
+        size: product.sizes.includes(prev.size) ? prev.size : product.defaultSize,
+      }
+    })
+  }, [])
+
+  const sizes = PRODUCTS[config.productType]?.sizes ?? []
+  const ProductIcon = PRODUCTS[config.productType]?.Icon ?? Shirt
   const activeColorIdx = COLOR_VALUES.indexOf(config.color)
   const activeHex = activeColorIdx >= 0 ? COLOR_HEXES[activeColorIdx] : '#1a1a1a'
 
@@ -211,7 +242,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                 {PRODUCT_TYPE_VALUES.map((type, i) => (
                   <button
                     key={type}
-                    onClick={() => updateConfig('productType', type)}
+                    onClick={() => selectProduct(type)}
                     className={`px-3 py-1.5 text-xs font-mono rounded border transition-all ${
                       config.productType === type
                         ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
@@ -255,11 +286,11 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                 {t('projects:merch.labels.size')}
               </label>
               <div className="flex gap-1.5">
-                {SIZES.map((s) => (
+                {sizes.map((s) => (
                   <button
                     key={s}
                     onClick={() => updateConfig('size', s)}
-                    className={`w-10 h-10 text-xs font-mono rounded border transition-all ${
+                    className={`h-10 min-w-10 px-2 text-xs font-mono rounded border transition-all ${
                       config.size === s
                         ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
                         : 'border-white/10 text-white/40 hover:border-white/20'
@@ -340,15 +371,11 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
             {/* SKU preview */}
             <div className="flex items-center gap-3 pt-2 border-t border-white/5">
               <div className="w-12 h-12 rounded-lg border border-white/10 shrink-0 relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop"
-                  alt=""
-                  className="w-full h-full object-cover opacity-60"
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{ backgroundColor: activeHex, mixBlendMode: 'multiply', opacity: 0.7 }}
+                <div className="absolute inset-0" style={{ backgroundColor: activeHex }} />
+                <ProductIcon
+                  className="absolute inset-0 m-auto w-6 h-6 text-white/80 mix-blend-difference"
+                  strokeWidth={1.5}
+                  aria-hidden
                 />
               </div>
               <div>
