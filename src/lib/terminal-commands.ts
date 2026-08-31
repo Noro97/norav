@@ -14,6 +14,19 @@ const t = (key: string) => i18n.t(key, { ns: 'terminal' })
  */
 const copy = () => currentBlockContent<TerminalFooterContent>('terminal_footer', i18n.language)
 
+/**
+ * Whether the terminal offers `ask`.
+ *
+ * Off while the Anthropic account behind it has no credit. The endpoint, its
+ * rate limit and its error messages are all deployed and working — the only
+ * thing between them and an answer is billing — but a command that can only
+ * fail is worse than one that is not offered, so it is neither listed in help
+ * nor left to reach the network.
+ *
+ * Turn it back on by flipping this to true. Nothing else needs changing.
+ */
+const ASK_ENABLED = false
+
 const COMMANDS: Record<string, CommandHandler> = {
   help: () => [
     '',
@@ -27,7 +40,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     t('help.echo'),
     t('help.neofetch'),
     t('help.sudo'),
-    t('help.ask'),
+    ...(ASK_ENABLED ? [t('help.ask')] : []),
     t('help.clear'),
     '',
     t('help.hint'),
@@ -233,6 +246,9 @@ const COMMANDS: Record<string, CommandHandler> = {
   },
 
   ask: (args) => {
+    if (!ASK_ENABLED) {
+      return ['', '  ask is switched off on this deployment.', '']
+    }
     if (args.length === 0) {
       return ['', '  Usage: ask <question>', '  Example: ask What projects demonstrate real-time data?', '']
     }
