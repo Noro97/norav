@@ -60,11 +60,21 @@ export function isSameOrigin(request: Request): boolean {
  * the difference between a decision and an omission. Set it as
  * SITE_ORIGIN=https://norav.dev,http://localhost:5173
  */
-function allowedOrigins(): string[] {
+export function allowedOrigins(): string[] {
   return (process.env.SITE_ORIGIN ?? '')
     .split(',')
     .map((origin) => origin.trim().replace(/\/$/, ''))
     .filter(Boolean)
+}
+
+/**
+ * The site's canonical address — the first entry, the one links are meant to
+ * point at. Anything that builds a URL needs exactly one origin, and handing it
+ * the whole list produces `https://norav.dev,http://localhost:5173/...`, which
+ * resolves to nothing.
+ */
+export function canonicalOrigin(fallback = 'https://norav.dev'): string {
+  return allowedOrigins()[0] ?? fallback
 }
 
 export function withCors(response: NextResponse, request?: Request): NextResponse {

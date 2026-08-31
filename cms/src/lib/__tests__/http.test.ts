@@ -1,6 +1,6 @@
 import { describe, expect, it, afterEach } from 'vitest'
 import { NextResponse } from 'next/server'
-import { withCors } from '../http'
+import { canonicalOrigin, withCors } from '../http'
 
 const saved = process.env.SITE_ORIGIN
 afterEach(() => {
@@ -44,5 +44,26 @@ describe('withCors', () => {
   it('varies on Origin, so a CDN cannot serve one caller the answer for another', () => {
     process.env.SITE_ORIGIN = 'https://norav.dev'
     expect(withCors(NextResponse.json({})).headers.get('Vary')).toBe('Origin')
+  })
+})
+
+describe('canonicalOrigin', () => {
+  it('takes the first entry, not the whole list', () => {
+    // The preview link is built from this. Handing it the raw value produced
+    // https://norav.dev,http://localhost:5173/#preview=… — a URL that resolves
+    // to nothing, which is how the list broke preview.
+    process.env.SITE_ORIGIN = 'https://norav.dev,http://localhost:5173'
+    expect(canonicalOrigin()).toBe('https://norav.dev')
+  })
+
+  it('drops a trailing slash, so the caller can append a path', () => {
+    process.env.SITE_ORIGIN = 'https://norav.dev/'
+    expect(canonicalOrigin()).toBe('https://norav.dev')
+  })
+
+  it('falls back when nothing is set', () => {
+    delete process.env.SITE_ORIGIN
+    expect(canonicalOrigin()).toBe('https://norav.dev')
+    expect(canonicalOrigin('http://localhost:5173')).toBe('http://localhost:5173')
   })
 })
