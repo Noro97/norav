@@ -1,11 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-
-/**
- * How a tagline segment is painted. The layout is fixed by design; the CMS
- * decides which words carry which emphasis, and how many segments there are.
- */
-export const taglineAccent = z.enum(['none', 'crimson', 'bright'])
+import { ACCENT_OPTIONS, segments } from './shared'
 
 const content = z.object({
   subtitle: z.string().min(1).max(120),
@@ -13,10 +8,7 @@ const content = z.object({
     first: z.object({ highlight: z.string(), rest: z.string() }),
     last: z.object({ highlight: z.string(), rest: z.string() }),
   }),
-  tagline: z
-    .array(z.object({ text: z.string().min(1), accent: taglineAccent }))
-    .min(1)
-    .max(8),
+  tagline: segments(8),
   scrollHint: z.string().max(60),
 })
 
@@ -42,11 +34,11 @@ export const heroBlock = defineBlock({
         last: { highlight: 'Av', rest: 'etisyan' },
       },
       tagline: [
-        { text: 'Building high-performance interfaces at the intersection of', accent: 'none' },
-        { text: 'engineering precision', accent: 'crimson' },
-        { text: 'and', accent: 'none' },
-        { text: 'visual storytelling', accent: 'bright' },
-        { text: '.', accent: 'none' },
+        { text: 'Building high-performance interfaces at the intersection of', accent: 'main' },
+        { text: 'engineering precision', accent: 'highlight' },
+        { text: 'and', accent: 'main' },
+        { text: 'visual storytelling', accent: 'main' },
+        { text: '.', accent: 'main' },
       ],
       scrollHint: 'Scroll to explore',
     },
@@ -80,11 +72,7 @@ export const heroBlock = defineBlock({
           field: 'accent',
           control: 'select',
           label: 'Emphasis',
-          options: [
-            { value: 'none', label: 'Muted' },
-            { value: 'crimson', label: 'Crimson' },
-            { value: 'bright', label: 'Bright' },
-          ],
+          options: ACCENT_OPTIONS,
         },
       ],
     },

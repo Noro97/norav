@@ -263,6 +263,44 @@ await expectError(
 }
 
 {
+  // 0008 narrowed the accent enum. The walk has to reach values nested in arrays
+  // of runs, and leave prose alone — a body of copy is free to say "crimson".
+  const legacy = {
+    tagline: [
+      { text: 'Building interfaces', accent: 'none' },
+      { text: 'engineering precision', accent: 'crimson' },
+      { text: 'and visual storytelling', accent: 'bright' },
+    ],
+    body: 'The palette was crimson before it was green.',
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'ru', $2::jsonb)`,
+    [hero.id, JSON.stringify(legacy)],
+  )
+  await db.exec(readFileSync(join(root, 'migrations', '0008_two_tones.sql'), 'utf8'))
+
+  const { rows } = await db.query(
+    `select content from block_translations where block_id = $1 and locale = 'ru'`,
+    [hero.id],
+  )
+  const after = rows[0].content
+  check(
+    'retired accents are rewritten wherever they are nested',
+    after.tagline.map((run) => run.accent).join(',') === 'main,highlight,main',
+    `got ${after.tagline.map((run) => run.accent).join(',')}`,
+  )
+  check(
+    'prose that mentions a retired accent is left alone',
+    after.body === legacy.body,
+    `got ${after.body}`,
+  )
+  check(
+    'the text of every run survives the walk',
+    after.tagline.map((run) => run.text).join('|') === legacy.tagline.map((run) => run.text).join('|'),
+  )
+}
+
+{
   // History must survive the author's account being removed.
   await db.query(`insert into revisions (entity_type, entity_id, locale, data, author_id) values ('block', $1, 'en', '{}'::jsonb, $2)`, [hero.id, owner.id])
   await db.query(`delete from admin_users where id = $1`, [owner.id])

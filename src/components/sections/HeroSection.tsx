@@ -5,13 +5,13 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useAppStore } from '@/store/useAppStore'
 import { useBlock } from '@/content/ContentProvider'
+import { toneOf, type Tone } from '@/content/accent'
 import type { HeroContent, HeroSettings } from '@norav/content-schema'
 
-/** How a tagline segment is painted. Unknown accents fall back to the base tone. */
-const ACCENT_CLASS: Record<string, string> = {
-  none: '',
-  crimson: 'text-crimson-400',
-  bright: 'text-white/80',
+/** How a tagline segment is painted. */
+const TONE_CLASS: Record<Tone, string> = {
+  main: '',
+  highlight: 'text-crimson-400',
 }
 
 /** Segments are space-joined, except one that opens with punctuation. */
@@ -158,7 +158,7 @@ export function HeroSection() {
           {content.tagline.map((segment, index) => (
             <Fragment key={index}>
               {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
-              <span className={ACCENT_CLASS[segment.accent] ?? ''}>{segment.text}</span>
+              <span className={TONE_CLASS[toneOf(segment.accent)]}>{segment.text}</span>
             </Fragment>
           ))}
         </p>
