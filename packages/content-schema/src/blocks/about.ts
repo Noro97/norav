@@ -44,7 +44,7 @@ export const aboutBlock = defineBlock({
       name: 'Norayr Avetisyan',
       role: 'Frontend-Focused Fullstack Engineer',
       bio: {
-        lead: [{ text: 'I build interfaces that feel alive.', accent: 'none' }],
+        lead: [{ text: 'I build interfaces that feel alive.', accent: 'main' }],
         paragraphs: [{ text: '' }],
       },
       facts: [],

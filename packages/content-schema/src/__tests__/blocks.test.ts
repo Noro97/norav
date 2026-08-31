@@ -67,3 +67,33 @@ describe('hero block', () => {
     expect(translated.tagline[1]?.text).toBe('engineering precision')
   })
 })
+
+describe('accented text carries two tones', () => {
+  const withTagline = (accents: string[]) => ({
+    ...heroBlock.defaults.content,
+    tagline: accents.map((accent, index) => ({ text: `run ${index}`, accent })),
+  })
+
+  it('accepts the two tones it offers', () => {
+    expect(validateBlockContent('hero', withTagline(['main', 'highlight']))).toMatchObject({ ok: true })
+  })
+
+  it('normalises the retired values rather than rejecting them', () => {
+    // Drafts and every publication ever made hold these strings. Narrowing an
+    // enum must not turn old content into a validation error.
+    const result = validateBlockContent('hero', withTagline(['none', 'crimson', 'bright']))
+    expect(result).toMatchObject({ ok: true })
+    const content = (result as { ok: true; data: HeroContent }).data
+    expect(content.tagline.map((run) => run.accent)).toEqual(['main', 'highlight', 'main'])
+  })
+
+  it('still rejects an accent that never existed', () => {
+    expect(validateBlockContent('hero', withTagline(['chartreuse']))).toMatchObject({ ok: false })
+  })
+
+  it('offers exactly the two tones in the editor', () => {
+    const field = heroBlock.form.find((f) => f.field === 'tagline')
+    const accent = field?.fields?.find((f) => f.field === 'accent')
+    expect(accent?.options?.map((o) => o.value)).toEqual(['main', 'highlight'])
+  })
+})

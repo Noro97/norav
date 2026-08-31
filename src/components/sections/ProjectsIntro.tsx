@@ -1,12 +1,12 @@
 import { Fragment } from 'react'
 import { ContainerScroll } from '@warmbros/warmbros-components'
 import { useBlock } from '@/content/ContentProvider'
+import { toneOf, type Tone } from '@/content/accent'
 import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content-schema'
 
-const ACCENT_CLASS: Record<string, string> = {
-  none: '',
-  crimson: 'italic text-crimson-500',
-  bright: 'text-white',
+const TONE_CLASS: Record<Tone, string> = {
+  main: '',
+  highlight: 'italic text-crimson-500',
 }
 
 function needsLeadingSpace(text: string): boolean {
@@ -28,22 +28,17 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
       <ContainerScroll
         titleComponent={
           <>
-            <p className="label-editorial tracking-[0.3em] text-xs mb-4">{content.label}</p>
-            <h2
-              className="font-display font-semibold text-white tracking-[-0.02em] leading-[1.05]"
-              style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)', margin: 0 }}
-            >
+            <p className="label-mono">{content.label}</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
               {content.heading.map((segment, index) => (
                 <Fragment key={index}>
                   {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
-                  <span className={ACCENT_CLASS[segment.accent] ?? ''}>{segment.text}</span>
+                  <span className={TONE_CLASS[toneOf(segment.accent)]}>{segment.text}</span>
                   {segment.lineBreakAfter && <br />}
                 </Fragment>
               ))}
             </h2>
-            <p className="mt-6 text-[#DAD4D4]/70 text-base max-w-xl mx-auto leading-relaxed">
-              {content.body}
-            </p>
+            <p className="text-white/40 text-base max-w-xl mx-auto">{content.body}</p>
           </>
         }
       >

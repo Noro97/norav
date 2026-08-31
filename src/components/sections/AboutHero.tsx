@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useMagneticEffect } from '@/hooks/useMagneticEffect'
 import { useBlock } from '@/content/ContentProvider'
+import { toneOf, type Tone } from '@/content/accent'
 import type { AboutContent, AboutSettings } from '@norav/content-schema'
 
 const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
@@ -43,10 +44,9 @@ const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
 }
 
 /** How an accented run of the biography is painted. */
-const ACCENT_CLASS: Record<string, string> = {
-  none: '',
-  crimson: 'text-crimson-400',
-  bright: 'text-white/80',
+const TONE_CLASS: Record<Tone, string> = {
+  main: '',
+  highlight: 'text-crimson-400',
 }
 
 function needsLeadingSpace(text: string): boolean {
@@ -241,7 +241,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                 {content.bio.lead.map((run, index) => (
                   <Fragment key={index}>
                     {index > 0 && needsLeadingSpace(run.text) ? ' ' : ''}
-                    <span className={ACCENT_CLASS[run.accent] ?? ''}>{run.text}</span>
+                    <span className={TONE_CLASS[toneOf(run.accent)]}>{run.text}</span>
                   </Fragment>
                 ))}
               </p>

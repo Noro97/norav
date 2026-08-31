@@ -2,10 +2,23 @@ import { z } from 'zod'
 import type { FormField } from '../define-block'
 
 /**
- * How an inline run of text is painted. The layout is fixed by design; the CMS
- * decides which words carry which emphasis, and how many runs there are.
+ * How an inline run of text is painted. Two tones, and only two: the tone the
+ * paragraph is set in, and the accent. A third — a brighter white — used to sit
+ * between them, which meant a sentence could carry three greys and read as an
+ * accident rather than a decision.
+ *
+ * Both retired values map onto `main`: `none` already was the paragraph's tone,
+ * and `bright` differed from it only by opacity. Published content and drafts
+ * still hold the old strings, so they are accepted and normalised on the way in
+ * rather than rejected — a reader should never meet a validation error because
+ * an enum was narrowed under them.
  */
-export const accent = z.enum(['none', 'crimson', 'bright'])
+const RETIRED: Record<string, string> = { none: 'main', bright: 'main', crimson: 'highlight' }
+
+export const accent = z.preprocess(
+  (value) => (typeof value === 'string' && value in RETIRED ? RETIRED[value] : value),
+  z.enum(['main', 'highlight']),
+)
 
 /**
  * A paragraph as accented runs. Runs are joined with a space, except one that
@@ -16,9 +29,8 @@ export const segments = (max = 8) =>
   z.array(z.object({ text: z.string().min(1), accent })).min(1).max(max)
 
 export const ACCENT_OPTIONS: { value: string; label: string }[] = [
-  { value: 'none', label: 'Muted' },
-  { value: 'crimson', label: 'Crimson' },
-  { value: 'bright', label: 'Bright' },
+  { value: 'main', label: 'Main' },
+  { value: 'highlight', label: 'Highlighted' },
 ]
 
 /** The repeater children every accented-text field uses. */

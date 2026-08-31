@@ -40,9 +40,9 @@ export const projectsIntroBlock = defineBlock({
     content: {
       label: 'Selected Work · 2024 — 2026',
       heading: [
-        { text: 'From zero to', accent: 'none', lineBreakAfter: false },
-        { text: 'production', accent: 'crimson', lineBreakAfter: true },
-        { text: 'in every frame.', accent: 'none', lineBreakAfter: false },
+        { text: 'From zero to', accent: 'main', lineBreakAfter: false },
+        { text: 'production', accent: 'highlight', lineBreakAfter: true },
+        { text: 'in every frame.', accent: 'main', lineBreakAfter: false },
       ],
       body: '',
       imageAlt: '',
