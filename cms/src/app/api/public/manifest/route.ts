@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
  * What the site polls in the background to notice that the copy baked into its
  * bundle is out of date. Small and short-lived on purpose.
  */
-export async function GET() {
+export async function GET(request: Request) {
   // `publications.version` is qualified deliberately. Unqualified, it resolves
   // to the `version::text` output column and sorts the rows as strings, where
   // '9' lands above '12' — which is why this endpoint reported version 9 for
@@ -35,9 +35,9 @@ export async function GET() {
       'Cache-Control': 'public, max-age=0, must-revalidate, s-maxage=60, stale-while-revalidate=600',
     },
   })
-  return withCors(response)
+  return withCors(response, request)
 }
 
-export async function OPTIONS() {
-  return withCors(new NextResponse(null, { status: 204 }))
+export async function OPTIONS(request: Request) {
+  return withCors(new NextResponse(null, { status: 204 }), request)
 }
