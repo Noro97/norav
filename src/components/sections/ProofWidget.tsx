@@ -4,6 +4,8 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
+import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
+import { useCaseStudyLabel } from '@/content/case-studies'
 import type { CaseStudyContent } from '@norav/content-schema'
 
 interface Activity {
@@ -46,6 +48,9 @@ const REP_INTERVAL = 250
 
 export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<CaseStudyContent>('proof')
+  // Before the early return: the number is a hook, and a hook cannot sit
+  // behind a conditional.
+  const sectionLabel = useCaseStudyLabel('proof', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'proof', sectionRef)
@@ -260,7 +265,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <span className="label-mono">{content.sectionLabel}</span>
+          <span className="label-mono">{sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white mt-3">
             {content.title}
           </h2>
@@ -298,9 +303,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                     key={act.key}
                     onClick={() => handleSelectActivity(i)}
                     className={`px-3 py-1.5 text-xs font-mono rounded border transition-all ${
-                      selectedActivity === i
-                        ? 'border-crimson-500 bg-crimson-500/10 text-crimson-400'
-                        : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                      selectedActivity === i ? CHOSEN : UNCHOSEN
                     }`}
                   >
                     <span className="mr-1.5 opacity-60">{act.icon}</span>

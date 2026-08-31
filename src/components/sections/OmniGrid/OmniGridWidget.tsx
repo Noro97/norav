@@ -13,6 +13,7 @@ import {
 } from '@tanstack/react-table'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
+import { useCaseStudyLabel } from '@/content/case-studies'
 import type { CaseStudyContent } from '@norav/content-schema'
 import { useShipments } from './useShipments'
 import { OMNIGRID_COLUMNS, STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
@@ -32,6 +33,9 @@ const CACHE_COLORS: Record<string, string> = {
 
 function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<CaseStudyContent>('omnigrid')
+  // Before the early return: the number is a hook, and a hook cannot sit
+  // behind a conditional.
+  const sectionLabel = useCaseStudyLabel('omnigrid', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'omnigrid', sectionRef)
@@ -111,7 +115,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <span className="label-mono">{content.sectionLabel}</span>
+          <span className="label-mono">{sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white tracking-tight mt-4 mb-5">
             {content.title}
           </h2>

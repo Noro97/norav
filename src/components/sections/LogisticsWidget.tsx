@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
+import { useCaseStudyLabel } from '@/content/case-studies'
 import type { LogisticsContent } from '@norav/content-schema'
 
 const MapView = lazy(() => import('./MapView'))
@@ -60,6 +61,9 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
 
 export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<LogisticsContent>('logistics')
+  // Before the early return: the number is a hook, and a hook cannot sit
+  // behind a conditional.
+  const sectionLabel = useCaseStudyLabel('logistics', block?.content.sectionLabel ?? '')
   const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'logistics', sectionRef)
@@ -147,7 +151,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
-          <span className="label-mono">{content.sectionLabel}</span>
+          <span className="label-mono">{sectionLabel}</span>
           <h2 className="text-display-lg font-bold text-white leading-tight">
             {content.title}
           </h2>
