@@ -229,7 +229,6 @@ export function OmniGridBentoTile({ className = '' }: Props) {
           onClick={handleScrollTo}
           aria-label={copy?.cta ?? ''}
           className="inline-flex items-center gap-2.5 text-xs font-mono text-cyan-400/80 uppercase tracking-[0.15em] group/btn hover:text-cyan-300 transition-colors duration-300"
-          data-cursor="link"
         >
           <span className="relative">
             {copy?.cta ?? ''}

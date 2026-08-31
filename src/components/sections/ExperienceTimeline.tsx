@@ -117,10 +117,10 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4" data-cursor="text">
+        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
           {content.title}
         </h2>
-        <p className="text-white/40 text-base max-w-xl mb-16" data-cursor="text">
+        <p className="text-white/40 text-base max-w-xl mb-16">
           {content.description}
         </p>
 
@@ -181,7 +181,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                       </div>
 
                       {/* Description */}
-                      <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`} data-cursor="text">
+                      <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
                         {exp.description}
                       </p>
 

@@ -191,7 +191,6 @@ export function ProofVerificationTile({ className = '' }: Props) {
             onClick={() => setShowArchModal(true)}
             aria-label={copy?.cta ?? ''}
             className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
-            data-cursor="link"
           >
             <span className="relative">
               {copy?.cta ?? ''}

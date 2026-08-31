@@ -88,15 +88,6 @@ export function HeroSection() {
     })
   }, { scope: containerRef })
 
-  const handleClick = () => {
-    if (!hero?.settings.enableParticleBurst) return
-    const store = useAppStore.getState()
-    if (!store.heroExploded) {
-      store.setHeroExploded(true)
-      store.triggerParticleBurst()
-    }
-  }
-
   // Every hook has run by here, so the block being absent — hidden in the CMS —
   // can short-circuit the render.
   if (!hero) return null
@@ -123,9 +114,13 @@ export function HeroSection() {
     <section
       id={hero.anchorId ?? 'hero'}
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center"
-      onClick={handleClick}
-      style={{ cursor: settings.enableParticleBurst ? 'pointer' : 'default' }}
+      // Transparent to the pointer, all of it. The mark is drawn on the canvas
+      // behind this layer and overlaps the copy at narrow widths, so anything
+      // here that answered the pointer would cover it. Nothing in the hero is
+      // interactive — it is a headline and two lines of prose — and the cost is
+      // that they cannot be selected, which buys the mark being the one thing
+      // in the section you can click.
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center pointer-events-none"
     >
       <div className="relative z-10 max-w-4xl mx-auto pt-[28vh]">
         <p
@@ -135,7 +130,7 @@ export function HeroSection() {
           {content.subtitle}
         </p>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" data-cursor="text" style={{ fontFamily: 'var(--font-family-display)' }}>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
           {nameParts.map((part, partIdx) => {
             const elements = part.text.split('').map((char, i) => {
               const idx = (charBaseOffsets[partIdx] ?? 0) + i

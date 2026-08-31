@@ -209,7 +209,6 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onDoubleClick={onDoubleClick}
-          data-cursor="link"
         >
           {/* Track background */}
           <div className="absolute inset-x-0 h-1 rounded-full bg-white/[0.06]">

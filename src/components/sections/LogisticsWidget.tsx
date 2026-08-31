@@ -209,7 +209,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
         </div>
 
         {/* Right — Map */}
-        <div className="logistics-map case-study-card relative aspect-[4/3] overflow-hidden bg-card" data-cursor="target">
+        <div className="logistics-map case-study-card relative aspect-[4/3] overflow-hidden bg-card">
           <Suspense
             fallback={
               <div className="absolute inset-0 flex items-center justify-center">
