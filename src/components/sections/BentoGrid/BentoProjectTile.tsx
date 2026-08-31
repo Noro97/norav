@@ -68,7 +68,6 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
   return (
     <div
       ref={tileRef}
-      data-cursor={project.videoSrc && inViewport ? 'play' : undefined}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)] ${className}`}
@@ -153,7 +152,6 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           onClick={handleScrollTo}
           aria-label={`${copy?.cta ?? ''} — ${copy?.title ?? ''}`}
           className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
-          data-cursor="link"
         >
           <span className="relative">
             {copy?.cta ?? ''}

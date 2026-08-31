@@ -4,6 +4,7 @@ import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
+import { useBlock } from '@/content/ContentProvider'
 import { useThemeColor } from '@/content/theme'
 
 const SHARD_COUNT = 40
@@ -103,6 +104,28 @@ function useSVGGeometries(url: string, depth: number) {
 }
 
 export function HeroMonolith() {
+  const hero = useBlock('hero')
+  const [hovering, setHovering] = useState(false)
+
+  const burst = () => {
+    if (!hero?.settings || !(hero.settings as { enableParticleBurst?: boolean }).enableParticleBurst) return
+    const store = useAppStore.getState()
+    if (store.heroExploded) return
+    store.setHeroExploded(true)
+    store.triggerParticleBurst()
+  }
+
+  // The canvas fills the viewport, so the cursor has to be set on the document:
+  // there is no element under the mark to hang a CSS rule on.
+  useEffect(() => {
+    if (!hovering) return
+    const previous = document.body.style.cursor
+    document.body.style.cursor = 'pointer'
+    return () => {
+      document.body.style.cursor = previous
+    }
+  }, [hovering])
+
   // three.js parses this string itself and has never heard of CSS, so the
   // accent has to arrive already resolved. Read once on mount: the palette is
   // written onto :root before the first render and does not change after.
@@ -264,7 +287,16 @@ export function HeroMonolith() {
   })
 
   return (
-    <group ref={groupRef} position={[0, 1.2, 0]}>
+    <group
+      ref={groupRef}
+      position={[0, 1.2, 0]}
+      // The burst belongs to the mark, not to the screen. It used to fire from
+      // anywhere in the hero, which made a whole viewport-high section behave
+      // like a button and left the pointer misreporting what was clickable.
+      onClick={burst}
+      onPointerOver={() => setHovering(true)}
+      onPointerOut={() => setHovering(false)}
+    >
       <Environment preset="city" />
       <pointLight position={[2, 2, 4]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color={accent} />

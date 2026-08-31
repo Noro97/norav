@@ -319,7 +319,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
 
   if (authFailed) {
     return (
-      <div className="absolute inset-0 bg-[#1d2c4d]" data-cursor="target">
+      <div className="absolute inset-0 bg-[#1d2c4d]">
         {fallbackImage && (
           <img
             src={fallbackImage}
@@ -337,7 +337,6 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
       ref={mapDivRef}
       className="absolute inset-0"
       style={{ backgroundColor: '#1d2c4d' }}
-      data-cursor="target"
     />
   )
 }

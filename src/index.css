@@ -280,9 +280,14 @@
    Used by the BentoGrid parallax tiles. */
 html { position: relative; }
 
-/* ===== CUSTOM CURSOR — hide native cursor on fine-pointer devices ===== */
-html, body { cursor: none; }
-a, button, [role="button"], input, select, textarea { cursor: none; }
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  html, body, a, button, [role="button"], input, select, textarea { cursor: auto; }
+/* The scene is drawn on a canvas behind the content, so anything on the content
+   layer that answers the pointer hides it. Sections take events back one at a
+   time, and the hero opts out again with a utility class.
+   In `base` deliberately: an unlayered rule beats every Tailwind utility no
+   matter how specific the utility is, so written plainly these two would win
+   against the class and the mark would stay unclickable. */
+@layer base {
+  main { pointer-events: none; }
+  main > section { pointer-events: auto; }
 }
+

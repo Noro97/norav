@@ -104,7 +104,6 @@ export function ProofEconomyTile() {
               ? 'border-crimson-500/15 text-crimson-400/40 bg-crimson-500/[0.03]'
               : 'border-green-500/20 text-green-400/60 bg-green-500/[0.05]'
         }`}
-        data-cursor="link"
       >
         {walletState === 'idle' && t('proof.economy.connectWallet')}
         {walletState === 'connecting' && (

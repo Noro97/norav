@@ -1,7 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { useThemeColor, withAlpha } from '@/content/theme'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
-import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { GRID_SPACING, GRID_GLOW_RADIUS } from '@/lib/constants'
 
@@ -11,6 +10,10 @@ export function DynamicGrid() {
   const offscreenRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const lastDrawnCursor = useRef({ x: -999, y: -999 })
+  // Its own listener. This used to read a store the custom cursor kept up to
+  // date; with that gone the glow would have sat frozen in the corner, which is
+  // the sort of thing nobody reports and everybody notices.
+  const pointer = useRef({ x: -999, y: -999 })
   // A 2D canvas takes colour strings, not CSS variables, so the cursor glow
   // follows the accent through a subscription rather than a stylesheet.
   const accent = useThemeColor('--color-crimson-500', '#B51A2B')
@@ -45,6 +48,14 @@ export function DynamicGrid() {
 
   // Initial draw + resize handler
   useEffect(() => {
+    const onMove = (event: PointerEvent) => {
+      pointer.current = { x: event.clientX, y: event.clientY }
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [])
+
+  useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -70,7 +81,7 @@ export function DynamicGrid() {
     if (!canvas || !offscreen || !ctx) return
 
     const { width, height } = canvas
-    const { x: cx, y: cy } = useAppStore.getState().cursorPosition
+    const { x: cx, y: cy } = pointer.current
 
     // Skip redraw if cursor hasn't moved significantly
     const dx = cx - lastDrawnCursor.current.x

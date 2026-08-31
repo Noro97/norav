@@ -62,7 +62,6 @@ function ArchitectureModalContent({ onClose }: Props) {
                 onClick={onClose}
                 className="w-8 h-8 rounded-lg border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white/60 hover:border-white/15 transition-all duration-200"
                 aria-label={t('proof.architecture.close')}
-                data-cursor="link"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 6 6 18" /><path d="m6 6 12 12" />

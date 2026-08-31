@@ -180,7 +180,6 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                           href={isMail ? undefined : link.href}
                           target={isMail ? undefined : '_blank'}
                           rel={isMail ? undefined : 'noopener noreferrer'}
-                          data-cursor="link"
                           title={link.label}
                           onClick={isMail ? (e) => {
                             e.preventDefault()
@@ -212,7 +211,6 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                     href={settings.cvHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-cursor="link"
                     className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_color-mix(in_srgb,_var(--color-crimson-500)_30%,_transparent)] transition-all duration-300"
                   >
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -230,7 +228,6 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
             {/* Visually the name, but not a heading — the hero <h1> already owns that role, and repeating it confuses screen readers. */}
             <p
               className="text-3xl md:text-5xl font-bold text-white leading-tight"
-              data-cursor="text"
               aria-hidden="true"
             >
               {content.name}
@@ -239,7 +236,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
               {content.role}
             </p>
 
-            <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl" data-cursor="text">
+            <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl">
               <p>
                 {content.bio.lead.map((run, index) => (
                   <Fragment key={index}>

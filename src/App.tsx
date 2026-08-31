@@ -7,9 +7,6 @@ import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { BlockRenderer } from '@/content/BlockRenderer'
 
-const CursorManager = lazy(() =>
-  import('@/components/cursor/CursorManager').then((m) => ({ default: m.CursorManager }))
-)
 const AnimatedGrain = lazy(() =>
   import('@/components/ui/AnimatedGrain').then((m) => ({ default: m.AnimatedGrain }))
 )
@@ -66,7 +63,6 @@ function App() {
             <AnimatedGrain />
           </>
         )}
-        <CursorManager />
       </Suspense>
 
       {/* R3F Canvas */}
