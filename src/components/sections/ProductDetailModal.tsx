@@ -224,7 +224,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
 
         {/* Content */}
         <motion.div
-          className="relative max-w-lg w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-[#0a0a14] backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
+          className="relative max-w-lg w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-background backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}

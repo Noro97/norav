@@ -340,6 +340,43 @@ await expectError(
     'a section that is not a case study keeps its digits',
     (await labelOf(other[0].id, 'en')) === 'Selected Work 2026',
   )
+  // 0010 drops the seeded category colours without disturbing anything else in
+  // the block — the skills sit in the same object.
+  const { rows: skills } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'skills', 9200) returning id`,
+    [page.id],
+  )
+  const before = {
+    sectionLabel: 'Expertise',
+    categories: [
+      { name: 'Frontend Core', color: '#B51A2B', skills: [{ name: 'React.js', level: 95 }] },
+      { name: 'Platform & AI', color: '#6C3AED', skills: [{ name: 'Docker', level: 70 }] },
+    ],
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [skills[0].id, JSON.stringify(before)],
+  )
+
+  await db.exec(
+    readFileSync(join(root, 'migrations', '0010_category_colours_follow_the_palette.sql'), 'utf8'),
+  )
+
+  const { rows } = await db.query(
+    `select content from block_translations where block_id = $1 and locale = 'en'`,
+    [skills[0].id],
+  )
+  const after = rows[0].content
+  check(
+    'every category colour is dropped',
+    after.categories.every((category) => !('color' in category)),
+    JSON.stringify(after.categories),
+  )
+  check(
+    'the skills inside each category survive',
+    after.categories[0].skills[0].name === 'React.js' && after.categories[1].skills[0].level === 70,
+  )
+  check('the rest of the block is untouched', after.sectionLabel === 'Expertise')
 }
 
 {

@@ -13,7 +13,6 @@ const content = sectionHeader.extend({
     .array(
       z.object({
         name: z.string().min(1).max(60),
-        color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
         skills: z
           .array(
             z.object({
@@ -48,7 +47,7 @@ export const skillsBlock = defineBlock({
       proficiencyOverview: 'Proficiency Overview',
       skillsTracked: '{{count}} skills tracked',
       categories: [
-        { name: 'Frontend Core', color: '#B51A2B', skills: [{ name: 'React.js', level: 95, years: 7 }] },
+        { name: 'Frontend Core', skills: [{ name: 'React.js', level: 95, years: 7 }] },
       ],
     },
     settings: {},
@@ -71,7 +70,6 @@ export const skillsBlock = defineBlock({
       max: 8,
       fields: [
         { field: 'name', control: 'text', label: 'Category' },
-        { field: 'color', control: 'text', label: 'Colour', localized: false, placeholder: '#B51A2B' },
         {
           field: 'skills',
           control: 'repeater',

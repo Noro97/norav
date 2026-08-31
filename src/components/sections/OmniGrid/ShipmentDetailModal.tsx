@@ -58,7 +58,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="case-study-card relative w-full max-w-lg bg-[#0a0a14]/95 shadow-2xl overflow-hidden"
+          className="case-study-card relative w-full max-w-lg bg-background/95 shadow-2xl overflow-hidden"
         >
           {/* Top accent */}
           <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />

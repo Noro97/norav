@@ -391,7 +391,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
           </div>
 
           {/* Right — Live JSON */}
-          <div className="merch-right bg-[#08080f] p-6 md:p-8 border-l border-white/5 relative">
+          <div className="merch-right bg-background p-6 md:p-8 border-l border-white/5 relative">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-green-500/40" />
               <span className="font-mono text-xs text-white/45">output.json</span>
