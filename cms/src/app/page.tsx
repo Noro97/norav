@@ -11,13 +11,16 @@ import { Editor, type EditorBlock } from '@/components/Editor'
 import { CollectionEditor } from '@/components/CollectionEditor'
 import { ThemeEditor } from '@/components/ThemeEditor'
 import { MediaLibrary } from '@/components/MediaLibrary'
-import type { WorkspaceView } from '@/components/ViewSwitcher'
+import type { PageSummary, WorkspaceView } from '@/components/ViewSwitcher'
+import { ROOT_SLUG } from '@/lib/pages'
+import { PagesProvider } from '@/components/PagesContext'
 import type { EnvironmentInfo } from '@/lib/environment'
 
-const PAGE_SLUG = 'home'
+
 
 interface Loaded {
   user: { email: string; environment?: EnvironmentInfo }
+  pages: PageSummary[]
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
   collections: SerializedCollectionDefinition[]
@@ -36,32 +39,48 @@ export default function AdminPage() {
   const router = useRouter()
   const [loaded, setLoaded] = useState<Loaded | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [view, setView] = useState<WorkspaceView>({ kind: 'page' })
+  const [view, setView] = useState<WorkspaceView>({ kind: 'page', slug: ROOT_SLUG })
+  // Which page is loaded, kept apart from which view is showing: switching to
+  // the palette or the media library must not refetch a page, and coming back
+  // must not lose the one that was open.
+  const [pageSlug, setPageSlug] = useState(ROOT_SLUG)
+
+  const changeView = useCallback((next: WorkspaceView) => {
+    if (next.kind === 'page') setPageSlug(next.slug)
+    setView(next)
+  }, [])
 
   useEffect(() => {
     let cancelled = false
 
     async function load() {
-      const [me, schema, page] = await Promise.all([
+      const [me, schema, pages, page] = await Promise.all([
         fetch('/api/auth/me'),
         fetch('/api/admin/schema'),
-        fetch(`/api/admin/pages/${PAGE_SLUG}`),
+        fetch('/api/admin/pages'),
+        fetch(`/api/admin/pages/${pageSlug}`),
       ])
 
       if (me.status === 401) {
         router.replace('/login')
         return
       }
-      if (!me.ok || !schema.ok || !page.ok) {
+      if (!me.ok || !schema.ok || !pages.ok || !page.ok) {
         if (!cancelled) setError('Could not load the editor. Check the server logs.')
         return
       }
 
-      const [meBody, schemaBody, pageBody] = await Promise.all([me.json(), schema.json(), page.json()])
+      const [meBody, schemaBody, pagesBody, pageBody] = await Promise.all([
+        me.json(),
+        schema.json(),
+        pages.json(),
+        page.json(),
+      ])
       if (cancelled) return
 
       setLoaded({
         user: meBody.data,
+        pages: pagesBody.data.pages,
         definitions: schemaBody.data.blocks,
         collections: schemaBody.data.collections,
         locales: schemaBody.data.locales,
@@ -77,7 +96,14 @@ export default function AdminPage() {
     return () => {
       cancelled = true
     }
-  }, [router])
+  }, [router, pageSlug])
+
+  const reloadPages = useCallback(async () => {
+    const response = await fetch('/api/admin/pages')
+    if (!response.ok) return
+    const body = await response.json()
+    setLoaded((prev) => (prev ? { ...prev, pages: body.data.pages } : prev))
+  }, [])
 
   const signOut = useCallback(async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
@@ -100,36 +126,40 @@ export default function AdminPage() {
     )
   }
 
+  const withPages = (node: React.ReactNode) => (
+    <PagesProvider value={{ pages: loaded.pages, reload: reloadPages }}>{node}</PagesProvider>
+  )
+
   if (view.kind === 'theme') {
-    return (
+    return withPages(
       <ThemeEditor
         collections={loaded.collections}
         userEmail={loaded.user.email}
         environment={loaded.user.environment}
         view={view}
-        onViewChange={setView}
+        onViewChange={changeView}
         onSignOut={signOut}
-      />
+      />,
     )
   }
 
   if (view.kind === 'media') {
-    return (
+    return withPages(
       <MediaLibrary
         collections={loaded.collections}
         userEmail={loaded.user.email}
         environment={loaded.user.environment}
         view={view}
-        onViewChange={setView}
+        onViewChange={changeView}
         onSignOut={signOut}
-      />
+      />,
     )
   }
 
   if (view.kind === 'collection') {
     const definition = loaded.collections.find((candidate) => candidate.key === view.key)
     if (definition) {
-      return (
+      return withPages(
         <CollectionEditor
           definition={definition}
           collections={loaded.collections}
@@ -138,16 +168,16 @@ export default function AdminPage() {
           userEmail={loaded.user.email}
           environment={loaded.user.environment}
           view={view}
-          onViewChange={setView}
+          onViewChange={changeView}
           onSignOut={signOut}
-        />
+        />,
       )
     }
   }
 
-  return (
+  return withPages(
     <Editor
-      pageSlug={PAGE_SLUG}
+      pageSlug={pageSlug}
       blocks={loaded.blocks}
       definitions={loaded.definitions}
       collections={loaded.collections}
@@ -155,9 +185,10 @@ export default function AdminPage() {
       sourceLocale={loaded.sourceLocale}
       userEmail={loaded.user.email}
       environment={loaded.user.environment}
-      view={{ kind: 'page' }}
-      onViewChange={setView}
+      view={view}
+      onViewChange={changeView}
       onSignOut={signOut}
-    />
+      onPagesChanged={reloadPages}
+    />,
   )
 }

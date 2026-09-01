@@ -23,6 +23,7 @@ export function Workspace({
   environment,
   onSignOut,
   busy,
+  onNewPage,
   sidebar,
   children,
 }: {
@@ -34,6 +35,8 @@ export function Workspace({
   environment?: EnvironmentInfo
   onSignOut: () => void
   busy?: boolean
+  /** Offered only where creating a page makes sense: the page editor. */
+  onNewPage?: () => void
   /** Whatever this editor needs below the switcher: a block list, a counter. */
   sidebar?: ReactNode
   children: ReactNode
@@ -51,6 +54,7 @@ export function Workspace({
           collections={collections}
           disabled={busy}
           onChange={onViewChange}
+          onNewPage={onNewPage}
         />
 
         {sidebar}
