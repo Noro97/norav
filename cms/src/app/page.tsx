@@ -176,7 +176,15 @@ export default function AdminPage() {
   }
 
   return withPages(
+    // Keyed by the page: the editor seeds blocks, drafts, the selection and the
+    // dirty set from its props once, as state. Without a key it stays mounted
+    // across a page switch and keeps the first page's sections — which is what
+    // it did, showing the home page's list under every other page's name.
+    // Remounting is also the right behaviour: another page is another editing
+    // session, and carrying a selection or an unsaved draft into it would be
+    // worse than losing it.
     <Editor
+      key={pageSlug}
       pageSlug={pageSlug}
       blocks={loaded.blocks}
       definitions={loaded.definitions}
