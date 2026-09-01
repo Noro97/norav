@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest'
 // The generator is a build script rather than site code: it runs in `prebuild`,
 // after the snapshot is baked and before vite sees it. Its address logic is
 // tested here, next to the routing it has to agree with.
-import { addressOf, buildSitemap, LOCALES } from '../../../scripts/generate-sitemap.mjs'
+import { readFileSync } from 'node:fs'
+import { addressOf, buildSitemap, LOCALES, SITE } from '../../../scripts/generate-sitemap.mjs'
+import { SITE as SITE_IN_THE_APP } from '../PageHead'
 import { hrefFor } from '../routing'
-
-const SITE = 'https://norav.dev'
 
 const snapshot = {
   publishedAt: '2026-09-01T09:43:21.936Z',
@@ -52,7 +52,7 @@ describe('buildSitemap', () => {
   it('leaves out the site page', () => {
     // `site` is the chrome — its blocks render below every page. It answers at
     // /site, but as an address of its own it is a footer with no page above it.
-    expect(xml).not.toContain('<loc>https://norav.dev/site</loc>')
+    expect(xml).not.toContain(`<loc>${SITE}/site</loc>`)
   })
 
   it('points each address at its translation', () => {
@@ -72,5 +72,39 @@ describe('buildSitemap', () => {
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
     expect(xml.match(/<urlset/g)).toHaveLength(1)
     expect(xml.match(/<url>/g)).toHaveLength(6)
+  })
+})
+
+describe('the site’s address', () => {
+  it('is the same one the app publishes', () => {
+    // The bug this file exists beside was a copied origin going stale: robots
+    // and the sitemap pointed at a domain that had stopped resolving while the
+    // app pointed at the live one. Copies are fine; unguarded copies are not.
+    expect(SITE).toBe(SITE_IN_THE_APP)
+  })
+
+  it('is the one robots.txt sends a crawler to', () => {
+    expect(readFileSync('public/robots.txt', 'utf8')).toContain(`Sitemap: ${SITE}/sitemap.xml`)
+  })
+})
+
+describe('addresses that need encoding', () => {
+  const xml = buildSitemap(
+    { publishedAt: '2026-09-01T00:00:00.000Z', pages: [{ slug: 'work/новый-кейс', blocks: [{}] }] },
+    SITE,
+  )
+
+  it('percent-encodes a slug the CMS allows but the protocol does not', () => {
+    expect(xml).toContain(`<loc>${SITE}/work/%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BA%D0%B5%D0%B9%D1%81</loc>`)
+    expect(xml).not.toContain('новый-кейс')
+  })
+
+  it('does not double the separator when the origin carries a slash', () => {
+    const trailing = buildSitemap(
+      { publishedAt: '2026-09-01T00:00:00.000Z', pages: [{ slug: 'about', blocks: [{}] }] },
+      `${SITE}/`,
+    )
+    expect(trailing).toContain(`<loc>${SITE}/about</loc>`)
+    expect(trailing).not.toContain('//about')
   })
 })

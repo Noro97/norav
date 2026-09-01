@@ -10,19 +10,42 @@
          frame before React runs, and what a crawler without JS is left with. -->
     <title>Norayr Avetisyan — Frontend-Focused Fullstack Engineer</title>
     <meta name="author" content="Norayr Avetisyan" />
+    <meta
+      name="description"
+      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+    />
+
+    <!-- The site's own copy, and the floor under every page.
+
+         PageHead rewrites these in place once React runs, so a page carries its
+         own title and card. It cannot render its own copies: React appends to
+         the head rather than replacing, and a consumer meeting two of a tag
+         reads the first.
+
+         They stay because most link unfurlers — Telegram, Slack, LinkedIn,
+         Facebook, X — fetch this HTML and never execute it. What is written
+         here is the only card they will ever see. -->
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <!-- og:image, og:title and og:description are written per page by PageHead.
-         A copy here would win by being first and pin every page to one card. -->
+    <meta property="og:site_name" content="Norayr Avetisyan" />
+    <meta property="og:title" content="Norayr Avetisyan — Frontend-Focused Fullstack Engineer" />
+    <meta
+      property="og:description"
+      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+    />
+    <meta property="og:image" content="https://norav.dev/assets/img/logo-new.svg" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="ru_RU" />
 
     <!-- Twitter Card -->
-    <!-- Only the card's shape. Its title and description are written per page
-         by PageHead — a value here would win by being first and pin every page
-         to one headline. -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Norayr Avetisyan — Frontend-Focused Fullstack Engineer" />
+    <meta
+      name="twitter:description"
+      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+    />
+    <meta name="twitter:image" content="https://norav.dev/assets/img/logo-new.svg" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">

@@ -12,9 +12,15 @@ export declare const SITE: string
 
 export declare function addressOf(slug: string, locale: Locale): string
 
+export declare function localesOnDisk(dir: string): string[]
+
 export interface SitemapSnapshot {
   publishedAt?: string
   pages?: { slug: string; blocks?: unknown[] }[]
 }
 
-export declare function buildSitemap(snapshot: SitemapSnapshot, site?: string): string
+export declare function buildSitemap(
+  snapshot: SitemapSnapshot,
+  site?: string,
+  locales?: readonly string[],
+): string

@@ -8,13 +8,21 @@
 // nothing about the Russian half of the site. A map kept by hand is a map that
 // is wrong the first time a page is added.
 // =============================================================================
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-/** Mirrors LOCALES in the schema, the way fetch-content.mjs already does. */
-export const LOCALES = ['en', 'ru']
 const DEFAULT_LOCALE = 'en'
+
+/**
+ * The languages to publish when nobody says otherwise.
+ *
+ * `main` does say otherwise: it reads the set off the snapshots on disk, so a
+ * locale added to the schema appears here the first time it is published rather
+ * than the day someone remembers this file. This constant is only the default
+ * for callers that pass a snapshot of their own.
+ */
+export const LOCALES = ['en', 'ru']
 
 /**
  * The chrome, not a page: its blocks render below every other page. It answers
@@ -25,6 +33,7 @@ const DEFAULT_LOCALE = 'en'
 const CHROME_SLUG = 'site'
 const HOME_SLUG = 'home'
 
+/** Guarded against the site's own copy in src/content/PageHead.tsx by a test. */
 export const SITE = 'https://norav.dev'
 
 /**
@@ -41,8 +50,20 @@ export function addressOf(slug, locale) {
   return locale === DEFAULT_LOCALE ? path || '/' : `/${locale}${path}`
 }
 
-const escape = (value) =>
+const escapeXml = (value) =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/**
+ * One address, ready to sit in XML.
+ *
+ * Slugs are free text from the CMS and the site is bilingual, so a page called
+ * `work/новый-кейс` is an ordinary thing to create. The sitemap protocol wants
+ * `<loc>` percent-encoded; encodeURI leaves the slashes alone and takes care of
+ * everything else, and the XML escaping goes on top because `&` survives it.
+ */
+function urlFor(site, slug, locale) {
+  return escapeXml(site.replace(/\/$/, '') + encodeURI(addressOf(slug, locale)))
+}
 
 /**
  * Which pages belong in the map.
@@ -56,24 +77,24 @@ function indexable(pages) {
   return pages.filter((page) => page.slug !== CHROME_SLUG && (page.blocks?.length ?? 0) > 0)
 }
 
-export function buildSitemap(snapshot, site = SITE) {
+export function buildSitemap(snapshot, site = SITE, locales = LOCALES) {
   const lastmod = (snapshot.publishedAt ?? new Date().toISOString()).slice(0, 10)
 
   const urls = indexable(snapshot.pages ?? []).flatMap((page) => {
     // Every address carries the whole set of alternates, itself included —
     // hreflang is only believed when the pages point at each other.
     const alternates = [
-      ...LOCALES.map(
+      ...locales.map(
         (locale) =>
-          `    <xhtml:link rel="alternate" hreflang="${locale}" href="${escape(site + addressOf(page.slug, locale))}"/>`,
+          `    <xhtml:link rel="alternate" hreflang="${locale}" href="${urlFor(site, page.slug, locale)}"/>`,
       ),
-      `    <xhtml:link rel="alternate" hreflang="x-default" href="${escape(site + addressOf(page.slug, DEFAULT_LOCALE))}"/>`,
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFor(site, page.slug, DEFAULT_LOCALE)}"/>`,
     ]
 
-    return LOCALES.map((locale) =>
+    return locales.map((locale) =>
       [
         '  <url>',
-        `    <loc>${escape(site + addressOf(page.slug, locale))}</loc>`,
+        `    <loc>${urlFor(site, page.slug, locale)}</loc>`,
         `    <lastmod>${lastmod}</lastmod>`,
         ...alternates,
         '  </url>',
@@ -91,16 +112,43 @@ export function buildSitemap(snapshot, site = SITE) {
   ].join('\n')
 }
 
+/**
+ * The languages that were actually baked, default first.
+ *
+ * Derived rather than declared: fetch-content.mjs writes one snapshot per
+ * locale, so the files on disk are the answer. A third language reaches the
+ * sitemap by being published, not by anyone editing this script.
+ */
+export function localesOnDisk(dir) {
+  const found = readdirSync(dir)
+    .map((name) => /^snapshot\.([a-z]{2}(?:-[a-z]{2})?)\.json$/i.exec(name)?.[1])
+    .filter((locale) => locale !== undefined)
+
+  return found.sort((a, b) =>
+    a === DEFAULT_LOCALE ? -1 : b === DEFAULT_LOCALE ? 1 : a.localeCompare(b),
+  )
+}
+
 function main() {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-  const snapshot = JSON.parse(readFileSync(join(root, 'src', 'content', `snapshot.${DEFAULT_LOCALE}.json`), 'utf8'))
-  const xml = buildSitemap(snapshot, SITE)
+  const content = join(root, 'src', 'content')
+  const locales = localesOnDisk(content)
+  const snapshot = JSON.parse(readFileSync(join(content, `snapshot.${DEFAULT_LOCALE}.json`), 'utf8'))
 
-  writeFileSync(join(root, 'public', 'sitemap.xml'), xml)
-  console.log(`[sitemap] ${indexable(snapshot.pages ?? []).length} pages × ${LOCALES.length} languages.`)
+  writeFileSync(join(root, 'public', 'sitemap.xml'), buildSitemap(snapshot, SITE, locales))
+  console.log(`[sitemap] ${indexable(snapshot.pages ?? []).length} pages × ${locales.join(', ')}.`)
 }
 
 // Only when run as a command. The test imports this file for its functions.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main()
+  try {
+    main()
+  } catch (error) {
+    // The same bargain fetch-content.mjs strikes one line earlier in `prebuild`:
+    // a deploy must not be lost to the content pipeline. A sitemap that is a
+    // build old is worth incomparably less than a build that never happened, so
+    // this reports and stands aside, leaving the committed map in place.
+    console.error(`[sitemap] not regenerated: ${error.message}`)
+    console.error('[sitemap] keeping the committed public/sitemap.xml.')
+  }
 }
