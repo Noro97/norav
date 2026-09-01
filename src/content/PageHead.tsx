@@ -36,7 +36,19 @@ export function PageHead({ slug }: { slug: string }) {
   // step — it arrives as { en: {...}, ru: {...} } in both snapshots. English is
   // the fallback rather than an empty head.
   const byLocale = (page?.seo ?? {}) as Record<string, Seo | undefined>
-  const seo = byLocale[locale] ?? byLocale.en ?? {}
+  const written = byLocale[locale] ?? byLocale.en ?? {}
+
+  // A page whose seo has not been filled in falls back to what its first block
+  // already says. A case study's title and description are written once, as its
+  // own copy; copying them into the page's seo would be a second place to keep
+  // them right, and a page with no title at all is the one outcome worth
+  // avoiding on pages that exist to be found.
+  const first = page?.blocks[0]?.content as { title?: string; description?: string } | undefined
+  const seo: Seo = {
+    title: written.title ?? first?.title,
+    description: written.description ?? first?.description,
+    ogImage: written.ogImage,
+  }
 
   const other = otherLocale(locale)
   const here = `${SITE}${hrefFor(slug, locale)}`

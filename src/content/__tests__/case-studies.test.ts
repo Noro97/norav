@@ -61,3 +61,26 @@ describe('withoutNumber', () => {
     expect(withoutNumber('Case Study')).toBe('Case Study')
   })
 })
+
+// After the split each case study sits alone on its own page, so anything that
+// counted within a page would number all five of them 01.
+const split = [
+  { slug: 'home', blocks: page('hero', 'projects_intro', 'contact_cta') },
+  { slug: 'work/logistics', blocks: page('logistics') },
+  { slug: 'work/merch', blocks: page('merch') },
+  { slug: 'work/proof', blocks: page('proof') },
+]
+
+describe('numbering once the case studies are on separate pages', () => {
+  it('counts across pages, in page order', () => {
+    const everything = split.flatMap((p) => p.blocks)
+    expect(numberedLabel(everything, 'logistics', 'Case Study')).toBe('Case Study 01')
+    expect(numberedLabel(everything, 'merch', 'Case Study')).toBe('Case Study 02')
+    expect(numberedLabel(everything, 'proof', 'Case Study')).toBe('Case Study 03')
+  })
+
+  it('still renumbers when one page is unpublished', () => {
+    const without = split.filter((p) => p.slug !== 'work/logistics').flatMap((p) => p.blocks)
+    expect(numberedLabel(without, 'merch', 'Case Study')).toBe('Case Study 01')
+  })
+})
