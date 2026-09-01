@@ -27,9 +27,32 @@ html, body {
 
 a { color: var(--crimson-light); }
 
-.shell { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
-.sidebar { border-right: 1px solid var(--border); padding: 24px 18px; background: var(--panel); }
-.main { padding: 28px 32px 80px; max-width: 860px; }
+/* The sidebar holds a site map now, not one button. Thirteen page names at
+   280px wrapped mid-row into a ragged block. One fixed width rather than a
+   fluid one: it is a list of names, and a column that resizes with the window
+   makes those names change places for no reason. */
+.shell {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: 100vh;
+}
+
+/* Stays put while the form scrolls. A block form runs well past a screen, and
+   a sidebar that leaves with it means scrolling back up to change page. */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  padding: 24px 18px;
+  background: var(--panel);
+}
+
+/* Wider, but still bounded: a single-line input stretched across a large
+   monitor is harder to read, not easier. */
+.main { padding: 28px 36px 80px; max-width: 1000px; }
 
 .brand { font-weight: 700; letter-spacing: -0.02em; font-size: 15px; margin: 0 0 2px; }
 .brand span { color: var(--crimson); }
@@ -430,4 +453,19 @@ table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   border-radius: 50%;
   background: var(--warn);
   vertical-align: middle;
+}
+
+/* A fixed 340px column is right on a desktop and wrong on anything narrow:
+   below this the sidebar stops being a column, stops sticking, and sits above
+   the form instead of squeezing it. */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .main { padding: 20px 18px 64px; }
 }
