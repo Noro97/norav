@@ -3,6 +3,16 @@
 import type { SerializedCollectionDefinition } from '@norav/content-schema'
 import { ROOT_SLUG, SITE_SLUG } from '@/lib/pages'
 import { usePages } from './PagesContext'
+import {
+  HomeIcon,
+  MediaIcon,
+  MenuIcon,
+  PageIcon,
+  PaletteIcon,
+  PlusIcon,
+  RowsIcon,
+  SiteIcon,
+} from './icons'
 
 export interface PageSummary {
   id: string
@@ -42,72 +52,100 @@ export function ViewSwitcher({
   const { pages } = usePages()
 
   return (
-    <nav className="views" aria-label="Workspace">
-      {pages.map((page) => {
-        // work/merch reads as a child of work, so it is shown as one: the list
-        // is a site map, and a flat run of slugs is the one thing a site map
-        // must not be.
-        const depth = page.slug.split('/').length - 1
-        const leaf = page.slug.split('/').pop()!
-        return (
+    <div className="views">
+      <nav aria-label="Pages">
+        <p className="views-heading">Pages</p>
+        {pages.map((page) => {
+          // work/merch is a child of work and reads as one. A wrapping row of
+          // thirteen slugs was a pile; a site map is a list, one page per line,
+          // children under their parent.
+          const segments = page.slug.split('/')
+          const depth = segments.length - 1
+          const isRoot = page.slug === ROOT_SLUG
+          const isSite = page.slug === SITE_SLUG
+
+          return (
+            <button
+              key={page.slug}
+              type="button"
+              className="view-item"
+              aria-current={view.kind === 'page' && view.slug === page.slug}
+              disabled={disabled}
+              onClick={() => onChange({ kind: 'page', slug: page.slug })}
+              style={depth ? { paddingInlineStart: `${10 + depth * 16}px` } : undefined}
+              title={`/${isRoot ? '' : page.slug} · ${page.status}`}
+            >
+              <span className="view-icon">
+                {isRoot ? <HomeIcon /> : isSite ? <SiteIcon /> : <PageIcon />}
+              </span>
+              <span className="view-name">{isRoot ? '/' : segments[depth]}</span>
+              <span className="view-meta">
+                {page.changed && page.blocks > 0 && (
+                  <em className="view-dot" title="Edited since the last publish" />
+                )}
+                {isSite ? 'every page' : page.blocks === 0 ? 'empty' : page.blocks}
+              </span>
+            </button>
+          )
+        })}
+
+        {onNewPage && (
           <button
-            key={page.slug}
             type="button"
-            className="view-item"
-            aria-current={view.kind === 'page' && view.slug === page.slug}
+            className="view-item view-add"
             disabled={disabled}
-            onClick={() => onChange({ kind: 'page', slug: page.slug })}
-            style={depth ? { paddingLeft: `${0.75 + depth * 0.85}rem` } : undefined}
-            title={
-              page.slug === SITE_SLUG
-                ? 'Renders below every page'
-                : `/${page.slug === ROOT_SLUG ? '' : page.slug} · ${page.blocks} section${page.blocks === 1 ? '' : 's'} · ${page.status}`
-            }
+            onClick={onNewPage}
           >
-            {page.slug === ROOT_SLUG ? '/' : depth ? leaf : `/${page.slug}`}
-            {page.blocks === 0 && <em className="view-note">empty</em>}
-            {page.slug === SITE_SLUG && <em className="view-note">every page</em>}
-            {page.changed && page.blocks > 0 && (
-              <em className="view-dot" title="Edited since the last publish" />
-            )}
+            <span className="view-icon">
+              <PlusIcon />
+            </span>
+            <span className="view-name">New page</span>
           </button>
-        )
-      })}
-      {onNewPage && (
-        <button type="button" className="view-item view-add" disabled={disabled} onClick={onNewPage}>
-          + New page
-        </button>
-      )}
-      <button
-        type="button"
-        className="view-item"
-        aria-current={view.kind === 'theme'}
-        disabled={disabled}
-        onClick={() => onChange({ kind: 'theme' })}
-      >
-        Palette
-      </button>
-      <button
-        type="button"
-        className="view-item"
-        aria-current={view.kind === 'media'}
-        disabled={disabled}
-        onClick={() => onChange({ kind: 'media' })}
-      >
-        Media
-      </button>
-      {collections.map((collection) => (
+        )}
+      </nav>
+
+      <nav aria-label="Library">
+        <p className="views-heading">Library</p>
         <button
-          key={collection.key}
           type="button"
           className="view-item"
-          aria-current={view.kind === 'collection' && view.key === collection.key}
+          aria-current={view.kind === 'theme'}
           disabled={disabled}
-          onClick={() => onChange({ kind: 'collection', key: collection.key })}
+          onClick={() => onChange({ kind: 'theme' })}
         >
-          {collection.label}
+          <span className="view-icon">
+            <PaletteIcon />
+          </span>
+          <span className="view-name">Palette</span>
         </button>
-      ))}
-    </nav>
+        <button
+          type="button"
+          className="view-item"
+          aria-current={view.kind === 'media'}
+          disabled={disabled}
+          onClick={() => onChange({ kind: 'media' })}
+        >
+          <span className="view-icon">
+            <MediaIcon />
+          </span>
+          <span className="view-name">Media</span>
+        </button>
+        {collections.map((collection) => (
+          <button
+            key={collection.key}
+            type="button"
+            className="view-item"
+            aria-current={view.kind === 'collection' && view.key === collection.key}
+            disabled={disabled}
+            onClick={() => onChange({ kind: 'collection', key: collection.key })}
+          >
+            <span className="view-icon">
+              {collection.key === 'navigation' ? <MenuIcon /> : <RowsIcon />}
+            </span>
+            <span className="view-name">{collection.label}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
   )
 }
