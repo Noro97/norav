@@ -18,18 +18,26 @@ export async function GET(request: Request) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
 
+  // `changed` answers the question the sidebar could not: which pages hold work
+  // that is saved but not yet on the site. A block's own updated_at is the
+  // truth — the page row does not change when a section under it is edited.
   const pages = await query<{
     id: string
     slug: string
     status: string
     seo: unknown
     blocks: number
-    updated_at: string
+    changed: boolean
   }>(
-    `select p.id, p.slug, p.status, p.seo, p.updated_at,
-            count(b.id) filter (where b.deleted_at is null)::int as blocks
+    `select p.id, p.slug, p.status, p.seo,
+            count(b.id) filter (where b.deleted_at is null)::int as blocks,
+            coalesce(
+              greatest(p.updated_at, max(b.updated_at))
+                > (select max(published_at) from publications),
+              true
+            ) as changed
        from pages p
-       left join blocks b on b.page_id = p.id
+       left join blocks b on b.page_id = p.id and b.deleted_at is null
       group by p.id
       order by p.slug = $1 desc, p.slug`,
     [ROOT_SLUG],

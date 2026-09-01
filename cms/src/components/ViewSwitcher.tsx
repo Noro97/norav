@@ -11,6 +11,8 @@ export interface PageSummary {
   /** Per locale: { en: { title, description }, ru: {...} }. */
   seo: Record<string, { title?: string; description?: string }>
   blocks: number
+  /** Edited since the last publish — work that is saved but not on the site. */
+  changed: boolean
 }
 
 export type WorkspaceView =
@@ -65,6 +67,9 @@ export function ViewSwitcher({
             {page.slug === ROOT_SLUG ? '/' : depth ? leaf : `/${page.slug}`}
             {page.blocks === 0 && <em className="view-note">empty</em>}
             {page.slug === SITE_SLUG && <em className="view-note">every page</em>}
+            {page.changed && page.blocks > 0 && (
+              <em className="view-dot" title="Edited since the last publish" />
+            )}
           </button>
         )
       })}

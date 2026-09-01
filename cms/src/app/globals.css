@@ -79,6 +79,34 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border: 1px solid var(--border); border-radius: 8px;
   padding: 9px 11px; font: inherit; font-size: 13px;
 }
+
+/* Every select, not only the ones inside a field: the section picker and the
+   move control sit in the sidebar and were left with the browser's own
+   rendering — a white system dropdown in the middle of a dark panel.
+   `appearance: none` takes the native arrow with it, so one is drawn back in. */
+select {
+  appearance: none;
+  background-color: var(--panel);
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: right 13px center, right 8px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 26px 8px 10px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+select:hover:not(:disabled) { border-color: var(--border-strong, rgba(255,255,255,0.18)); }
+select:focus { outline: none; border-color: rgba(181, 26, 43, 0.5); }
+select:disabled { opacity: 0.45; cursor: default; }
+
+/* The list itself is drawn by the operating system, which does not read our
+   variables — naming the colours is the most that can be done for it. */
+select option { background: var(--panel); color: var(--text); }
 .field input:focus, .field textarea:focus, .field select:focus {
   outline: none; border-color: rgba(181, 26, 43, 0.5);
 }
@@ -390,4 +418,16 @@ table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 
 .move-to {
   max-width: 7.5rem;
+}
+
+/* Saved, but not on the site yet. Deliberately a mark rather than a word: it
+   appears on most pages most of the time, and a row of "unpublished" labels
+   would drown the names they belong to. */
+.view-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  margin-left: 0.4rem;
+  border-radius: 50%;
+  background: var(--warn);
+  vertical-align: middle;
 }
