@@ -60,7 +60,7 @@ export function isSameOrigin(request: Request): boolean {
  * the difference between a decision and an omission. Set it as
  * SITE_ORIGIN=https://norav.dev,http://localhost:5173
  */
-export function allowedOrigins(): string[] {
+function allowedOrigins(): string[] {
   return (process.env.SITE_ORIGIN ?? '')
     .split(',')
     .map((origin) => origin.trim().replace(/\/$/, ''))

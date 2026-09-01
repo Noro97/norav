@@ -2,8 +2,8 @@ import { z } from 'zod'
 import { createColumnHelper } from '@tanstack/react-table'
 
 // --- Zod schema for API response validation ---
-export const ShipmentStatusEnum = z.enum(['Pending', 'In Transit', 'Delivered', 'Delayed'])
-export const ShipmentPriorityEnum = z.enum(['Low', 'Medium', 'High', 'Critical'])
+const ShipmentStatusEnum = z.enum(['Pending', 'In Transit', 'Delivered', 'Delayed'])
+const ShipmentPriorityEnum = z.enum(['Low', 'Medium', 'High', 'Critical'])
 
 export const ShipmentRecordSchema = z.object({
   id: z.string(),
@@ -45,7 +45,7 @@ const STATUSES: ShipmentStatus[] = ['Pending', 'In Transit', 'Delivered', 'Delay
 const PRIORITIES: ShipmentPriority[] = ['Low', 'Medium', 'High', 'Critical']
 
 // --- Generator ---
-export function generateShipments(count: number): ShipmentRecord[] {
+function generateShipments(count: number): ShipmentRecord[] {
   const rand = seededRandom(42)
   const records: ShipmentRecord[] = []
 

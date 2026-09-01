@@ -9,7 +9,7 @@ import { Workspace, FeedbackBanner, LocaleTabs, PreviewButton, type Feedback } f
 import { Modal } from './Modal'
 import type { EnvironmentInfo } from '@/lib/environment'
 
-export interface CollectionEntry {
+interface CollectionEntry {
   id: string
   slug: string
   is_visible: boolean

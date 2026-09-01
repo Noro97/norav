@@ -60,7 +60,7 @@ export function previewToken(): string | null {
 }
 
 /** What the CMS says when it will not render a draft. */
-export interface PreviewRefusal {
+interface PreviewRefusal {
   message: string
   fields: { page: string; block: string; locale: string; path: string; message: string }[]
 }
