@@ -1,63 +1,9 @@
 {
   "pages": [
     {
-      "seo": {
-        "en": {
-          "title": "Norayr Avetisyan — Frontend-Focused Fullstack Engineer",
-          "description": "Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
-        },
-        "ru": {
-          "title": "Норайр Аветисян — Frontend-focused fullstack-инженер",
-          "description": "Создаю высокопроизводительные интерфейсы на стыке инженерной точности и визуального повествования."
-        }
-      },
-      "slug": "home",
+      "seo": {},
+      "slug": "about",
       "blocks": [
-        {
-          "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
-          "type": "hero",
-          "content": {
-            "name": {
-              "last": {
-                "rest": "etisyan",
-                "highlight": "Av"
-              },
-              "first": {
-                "rest": "ayr",
-                "highlight": "Nor"
-              }
-            },
-            "tagline": [
-              {
-                "text": "Building high-performance interfaces at the intersection of",
-                "accent": "none"
-              },
-              {
-                "text": "engineering precision",
-                "accent": "crimson"
-              },
-              {
-                "text": "and",
-                "accent": "none"
-              },
-              {
-                "text": "visual storytelling",
-                "accent": "bright"
-              },
-              {
-                "text": ".",
-                "accent": "none"
-              }
-            ],
-            "subtitle": "Fullstack Engineer",
-            "scrollHint": "Scroll to explore"
-          },
-          "anchorId": "hero",
-          "settings": {
-            "showScrollHint": true,
-            "enableParticleBurst": true
-          }
-        },
         {
           "id": "3e022794-4c1d-4ed0-9582-9fe8815c2f6f",
           "type": "about",
@@ -66,23 +12,23 @@
               "lead": [
                 {
                   "text": "I build interfaces that feel alive — and think. My work sits at the crossroads of",
-                  "accent": "none"
+                  "accent": "main"
                 },
                 {
                   "text": "engineering rigor",
-                  "accent": "bright"
+                  "accent": "main"
                 },
                 {
                   "text": ",",
-                  "accent": "none"
+                  "accent": "main"
                 },
                 {
                   "text": "visual craft",
-                  "accent": "crimson"
+                  "accent": "highlight"
                 },
                 {
                   "text": ", and scalable architecture — from enterprise UI systems and generative AI platforms to high-load fintech portals and Telegram Mini Apps.",
-                  "accent": "none"
+                  "accent": "main"
                 }
               ],
               "paragraphs": [
@@ -148,261 +94,80 @@
           }
         },
         {
-          "id": "7c7aa383-8c67-4c66-8470-3494c57d1b37",
-          "type": "impact_strip",
+          "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
+          "type": "vibecoding",
           "content": {
-            "label": "By the numbers",
+            "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
             "stats": [
               {
-                "label": "Years shipping",
-                "value": 6,
-                "prefix": "",
-                "suffix": "+"
+                "label": "Test Coverage",
+                "value": "92%"
               },
               {
-                "label": "MAU reached",
-                "value": 10,
-                "prefix": "",
-                "suffix": "M+"
+                "label": "DB Migrations",
+                "value": "27"
               },
               {
-                "label": "Companies",
-                "value": 6,
-                "prefix": "",
-                "suffix": ""
-              },
-              {
-                "label": "Concurrent sessions",
-                "value": 50,
-                "prefix": "",
-                "suffix": "K+"
-              }
-            ]
-          },
-          "anchorId": null,
-          "settings": {
-            "animateCounters": true
-          }
-        },
-        {
-          "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
-          "type": "capabilities",
-          "content": {
-            "cards": [
-              {
-                "body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms.",
-                "icon": "Layers",
-                "title": "Frontend Architecture"
-              },
-              {
-                "body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work.",
-                "icon": "Bot",
-                "title": "AI & Automation"
-              },
-              {
-                "body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent.",
-                "icon": "Component",
-                "title": "Design Systems"
-              },
-              {
-                "body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them.",
-                "icon": "Gauge",
-                "title": "Performance & DX"
+                "label": "Systems",
+                "value": "3"
               }
             ],
-            "title": "What I Do",
-            "description": "Four ways I turn complex product requirements into fast, durable software.",
-            "sectionLabel": "Capabilities"
-          },
-          "anchorId": null,
-          "settings": {}
-        },
-        {
-          "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
-          "type": "experience",
-          "content": {
-            "title": "Experience",
-            "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale.",
-            "sectionLabel": "Career"
-          },
-          "anchorId": "experience",
-          "settings": {
-            "showImages": true
-          }
-        },
-        {
-          "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
-          "type": "skills",
-          "content": {
-            "title": "Skills & Tools",
-            "categories": [
+            "title": "Vibe Coding: High-Velocity Orchestration",
+            "slider": {
+              "lowVibe": "Low Vibe",
+              "highVibe": "High Vibe",
+              "archLabel": "proof-architecture.svg",
+              "boringLabel": "basic-crud.ts"
+            },
+            "systems": [
               {
-                "name": "Frontend Core",
-                "color": "#B51A2B",
-                "skills": [
-                  {
-                    "name": "React.js",
-                    "level": 95,
-                    "years": 7
-                  },
-                  {
-                    "name": "TypeScript",
-                    "level": 95,
-                    "years": 6
-                  },
-                  {
-                    "name": "Next.js (SSR/ISR)",
-                    "level": 90,
-                    "years": 5
-                  },
-                  {
-                    "name": "Vue.js / Nuxt.js",
-                    "level": 85,
-                    "years": 4
-                  },
-                  {
-                    "name": "HTML5 / CSS3",
-                    "level": 95,
-                    "years": 7
-                  },
-                  {
-                    "name": "Micro-frontends",
-                    "level": 75,
-                    "years": 2
-                  }
-                ]
+                "name": "TON / Web3",
+                "tone": "sky"
               },
               {
-                "name": "State & Data",
-                "color": "#d63040",
-                "skills": [
-                  {
-                    "name": "Redux Toolkit",
-                    "level": 90,
-                    "years": 5
-                  },
-                  {
-                    "name": "Zustand / Pinia",
-                    "level": 85,
-                    "years": 3
-                  },
-                  {
-                    "name": "TanStack Query/Table",
-                    "level": 85,
-                    "years": 3
-                  },
-                  {
-                    "name": "Context API / MobX",
-                    "level": 80,
-                    "years": 4
-                  },
-                  {
-                    "name": "GraphQL / REST API",
-                    "level": 90,
-                    "years": 6
-                  }
-                ]
+                "name": "Gemini AI",
+                "tone": "violet"
               },
               {
-                "name": "Styling & Design",
-                "color": "#8c1523",
-                "skills": [
-                  {
-                    "name": "Tailwind CSS",
-                    "level": 95,
-                    "years": 5
-                  },
-                  {
-                    "name": "Styled Components",
-                    "level": 90,
-                    "years": 4
-                  },
-                  {
-                    "name": "Material UI",
-                    "level": 80,
-                    "years": 3
-                  },
-                  {
-                    "name": "Sass / Bootstrap",
-                    "level": 85,
-                    "years": 6
-                  },
-                  {
-                    "name": "Design Systems",
-                    "level": 85,
-                    "years": 3
-                  }
-                ]
-              },
-              {
-                "name": "Tooling & Infra",
-                "color": "#541A2E",
-                "skills": [
-                  {
-                    "name": "Vite / Webpack",
-                    "level": 90,
-                    "years": 5
-                  },
-                  {
-                    "name": "Storybook",
-                    "level": 85,
-                    "years": 3
-                  },
-                  {
-                    "name": "Vitest / Jest",
-                    "level": 80,
-                    "years": 4
-                  },
-                  {
-                    "name": "Docker / CI/CD",
-                    "level": 70,
-                    "years": 3
-                  },
-                  {
-                    "name": "Git / GitHub",
-                    "level": 90,
-                    "years": 7
-                  }
-                ]
-              },
-              {
-                "name": "Platform & AI",
-                "color": "#6C3AED",
-                "skills": [
-                  {
-                    "name": "Telegram Mini Apps",
-                    "level": 85,
-                    "years": 2
-                  },
-                  {
-                    "name": "Supabase / PostgreSQL",
-                    "level": 75,
-                    "years": 3
-                  },
-                  {
-                    "name": "Node.js / Vercel",
-                    "level": 80,
-                    "years": 5
-                  },
-                  {
-                    "name": "Claude Code",
-                    "level": 70,
-                    "years": 1
-                  },
-                  {
-                    "name": "Feature-Sliced Design",
-                    "level": 80,
-                    "years": 3
-                  }
-                ]
+                "name": "Supabase",
+                "tone": "emerald"
               }
             ],
-            "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
-            "sectionLabel": "Expertise",
-            "skillsTracked": "{{count}} skills tracked",
-            "proficiencyOverview": "Proficiency Overview"
+            "archNodes": [
+              {
+                "node": "tma",
+                "label": "TMA (React)"
+              },
+              {
+                "node": "auth",
+                "label": "Auth"
+              },
+              {
+                "node": "storage",
+                "label": "Supabase Storage"
+              },
+              {
+                "node": "edge",
+                "label": "Edge Functions"
+              },
+              {
+                "node": "gemini",
+                "label": "Gemini AI"
+              },
+              {
+                "node": "db",
+                "label": "DB Update"
+              },
+              {
+                "node": "feed",
+                "label": "Real-time Feed"
+              }
+            ],
+            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+            "sectionLabel": "Philosophy",
+            "systemsSyncedLabel": "Systems Synced"
           },
-          "anchorId": "skills",
+          "anchorId": "vibecoding",
           "settings": {}
         },
         {
@@ -469,6 +234,496 @@
           },
           "anchorId": null,
           "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "automation",
+      "blocks": [
+        {
+          "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
+          "type": "workflow",
+          "content": {
+            "title": "AI Workflow Automation",
+            "techStack": [
+              {
+                "name": "n8n"
+              },
+              {
+                "name": "Claude API"
+              },
+              {
+                "name": "Webhooks"
+              },
+              {
+                "name": "SSE Streaming"
+              },
+              {
+                "name": "Slack API"
+              },
+              {
+                "name": "GitHub Actions"
+              }
+            ],
+            "workflows": [
+              {
+                "title": "Lead Analysis Pipeline",
+                "diagram": "lead-pipeline",
+                "description": "Incoming leads are analyzed by Claude AI for intent and qualification, then routed to Slack for immediate team notification and CRM for tracking."
+              },
+              {
+                "title": "Content Generation",
+                "diagram": "content-gen",
+                "description": "Scheduled content generation via Claude API with human-in-the-loop review before publishing to blog, social media, or documentation."
+              },
+              {
+                "title": "CI/CD Pipeline",
+                "diagram": "ci-cd",
+                "description": "Automated build pipeline triggered by GitHub push — runs tests, builds artifacts, and deploys to Cloudflare Pages with status notifications."
+              }
+            ],
+            "description": "Production-ready n8n workflows integrating Claude AI for intelligent automation — from lead analysis to content generation and CI/CD pipelines.",
+            "sectionLabel": "Automation"
+          },
+          "anchorId": "workflows",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "experience",
+      "blocks": [
+        {
+          "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
+          "type": "experience",
+          "content": {
+            "title": "Experience",
+            "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale.",
+            "sectionLabel": "Career"
+          },
+          "anchorId": "experience",
+          "settings": {
+            "showImages": true
+          }
+        }
+      ]
+    },
+    {
+      "seo": {
+        "en": {
+          "title": "Norayr Avetisyan — Frontend-Focused Fullstack Engineer",
+          "description": "Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+        },
+        "ru": {
+          "title": "Норайр Аветисян — Frontend-focused fullstack-инженер",
+          "description": "Создаю высокопроизводительные интерфейсы на стыке инженерной точности и визуального повествования."
+        }
+      },
+      "slug": "home",
+      "blocks": [
+        {
+          "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
+          "type": "hero",
+          "content": {
+            "name": {
+              "last": {
+                "rest": "etisyan",
+                "highlight": "Av"
+              },
+              "first": {
+                "rest": "ayr",
+                "highlight": "Nor"
+              }
+            },
+            "tagline": [
+              {
+                "text": "Building high-performance interfaces at the intersection of",
+                "accent": "main"
+              },
+              {
+                "text": "engineering precision",
+                "accent": "highlight"
+              },
+              {
+                "text": "and",
+                "accent": "main"
+              },
+              {
+                "text": "visual storytelling",
+                "accent": "main"
+              },
+              {
+                "text": ".",
+                "accent": "main"
+              }
+            ],
+            "subtitle": "Fullstack Engineer",
+            "scrollHint": "Scroll to explore"
+          },
+          "anchorId": "hero",
+          "settings": {
+            "showScrollHint": true,
+            "enableParticleBurst": true
+          }
+        },
+        {
+          "id": "7c7aa383-8c67-4c66-8470-3494c57d1b37",
+          "type": "impact_strip",
+          "content": {
+            "label": "By the numbers",
+            "stats": [
+              {
+                "label": "Years shipping",
+                "value": 6,
+                "prefix": "",
+                "suffix": "+"
+              },
+              {
+                "label": "MAU reached",
+                "value": 10,
+                "prefix": "",
+                "suffix": "M+"
+              },
+              {
+                "label": "Companies",
+                "value": 6,
+                "prefix": "",
+                "suffix": ""
+              },
+              {
+                "label": "Concurrent sessions",
+                "value": 50,
+                "prefix": "",
+                "suffix": "K+"
+              }
+            ]
+          },
+          "anchorId": null,
+          "settings": {
+            "animateCounters": true
+          }
+        },
+        {
+          "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
+          "type": "contact_cta",
+          "content": {
+            "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
+            "label": "Get in touch",
+            "title": "Let's build something that ships.",
+            "socials": [
+              {
+                "href": "https://github.com/Noro97",
+                "icon": "github",
+                "label": "GitHub"
+              },
+              {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
+                "icon": "linkedin",
+                "label": "LinkedIn"
+              },
+              {
+                "href": "https://t.me/antarber",
+                "icon": "telegram",
+                "label": "Telegram"
+              }
+            ],
+            "emailLabel": "Email me",
+            "availability": "Available for new work"
+          },
+          "anchorId": null,
+          "settings": {
+            "email": "noroavetisyan@gmail.com",
+            "showAvailability": true
+          }
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "site",
+      "blocks": [
+        {
+          "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
+          "type": "terminal_footer",
+          "content": {
+            "hire": {
+              "burst": "  ✦ PARTICLE BURST ACTIVATED ✦",
+              "openTo": "  Open to: Senior / Staff roles",
+              "message": "  Let's build something great.",
+              "niceTry": "Nice try. ;)",
+              "location": "  Location: Yerevan, Armenia / Remote"
+            },
+            "title": "The Terminal",
+            "prompt": "visitor@portfolio:~$",
+            "whoami": {
+              "hint": "  Try: cat about.txt, neofetch, sudo hire",
+              "visitor": "  visitor",
+              "welcome": "  Curious minds are always welcome here.",
+              "exploring": "  You're exploring Norayr Avetisyan's portfolio."
+            },
+            "welcome": [
+              {
+                "text": "Welcome to Norayr Avetisyan's portfolio terminal."
+              },
+              {
+                "text": "Type 'help' for available commands."
+              }
+            ],
+            "subtitle": "$ interact with this portfolio",
+            "titleBar": "visitor@portfolio ~ zsh",
+            "placeholder": "type a command...",
+            "sectionLabel": "Contact",
+            "commandNotFound": "command not found: {{cmd}}. Type 'help' for available commands."
+          },
+          "anchorId": "terminal",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "skills",
+      "blocks": [
+        {
+          "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
+          "type": "capabilities",
+          "content": {
+            "cards": [
+              {
+                "body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms.",
+                "icon": "Layers",
+                "title": "Frontend Architecture"
+              },
+              {
+                "body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work.",
+                "icon": "Bot",
+                "title": "AI & Automation"
+              },
+              {
+                "body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent.",
+                "icon": "Component",
+                "title": "Design Systems"
+              },
+              {
+                "body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them.",
+                "icon": "Gauge",
+                "title": "Performance & DX"
+              }
+            ],
+            "title": "What I Do",
+            "description": "Four ways I turn complex product requirements into fast, durable software.",
+            "sectionLabel": "Capabilities"
+          },
+          "anchorId": null,
+          "settings": {}
+        },
+        {
+          "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
+          "type": "skills",
+          "content": {
+            "title": "Skills & Tools",
+            "categories": [
+              {
+                "name": "Frontend Core",
+                "skills": [
+                  {
+                    "name": "React.js",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "TypeScript",
+                    "level": 95,
+                    "years": 6
+                  },
+                  {
+                    "name": "Next.js (SSR/ISR)",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Vue.js / Nuxt.js",
+                    "level": 85,
+                    "years": 4
+                  },
+                  {
+                    "name": "HTML5 / CSS3",
+                    "level": 95,
+                    "years": 7
+                  },
+                  {
+                    "name": "Micro-frontends",
+                    "level": 75,
+                    "years": 2
+                  }
+                ]
+              },
+              {
+                "name": "State & Data",
+                "skills": [
+                  {
+                    "name": "Redux Toolkit",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Zustand / Pinia",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "TanStack Query/Table",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Context API / MobX",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "GraphQL / REST API",
+                    "level": 90,
+                    "years": 6
+                  }
+                ]
+              },
+              {
+                "name": "Styling & Design",
+                "skills": [
+                  {
+                    "name": "Tailwind CSS",
+                    "level": 95,
+                    "years": 5
+                  },
+                  {
+                    "name": "Styled Components",
+                    "level": 90,
+                    "years": 4
+                  },
+                  {
+                    "name": "Material UI",
+                    "level": 80,
+                    "years": 3
+                  },
+                  {
+                    "name": "Sass / Bootstrap",
+                    "level": 85,
+                    "years": 6
+                  },
+                  {
+                    "name": "Design Systems",
+                    "level": 85,
+                    "years": 3
+                  }
+                ]
+              },
+              {
+                "name": "Tooling & Infra",
+                "skills": [
+                  {
+                    "name": "Vite / Webpack",
+                    "level": 90,
+                    "years": 5
+                  },
+                  {
+                    "name": "Storybook",
+                    "level": 85,
+                    "years": 3
+                  },
+                  {
+                    "name": "Vitest / Jest",
+                    "level": 80,
+                    "years": 4
+                  },
+                  {
+                    "name": "Docker / CI/CD",
+                    "level": 70,
+                    "years": 3
+                  },
+                  {
+                    "name": "Git / GitHub",
+                    "level": 90,
+                    "years": 7
+                  }
+                ]
+              },
+              {
+                "name": "Platform & AI",
+                "skills": [
+                  {
+                    "name": "Telegram Mini Apps",
+                    "level": 85,
+                    "years": 2
+                  },
+                  {
+                    "name": "Supabase / PostgreSQL",
+                    "level": 75,
+                    "years": 3
+                  },
+                  {
+                    "name": "Node.js / Vercel",
+                    "level": 80,
+                    "years": 5
+                  },
+                  {
+                    "name": "Claude Code",
+                    "level": 70,
+                    "years": 1
+                  },
+                  {
+                    "name": "Feature-Sliced Design",
+                    "level": 80,
+                    "years": 3
+                  }
+                ]
+              }
+            ],
+            "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
+            "sectionLabel": "Expertise",
+            "skillsTracked": "{{count}} skills tracked",
+            "proficiencyOverview": "Proficiency Overview"
+          },
+          "anchorId": "skills",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work",
+      "blocks": [
+        {
+          "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
+          "type": "projects_intro",
+          "content": {
+            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
+            "label": "Selected Work · 2024 — 2026",
+            "heading": [
+              {
+                "text": "From zero to",
+                "accent": "main",
+                "lineBreakAfter": false
+              },
+              {
+                "text": "production",
+                "accent": "highlight",
+                "lineBreakAfter": true
+              },
+              {
+                "text": "in every frame.",
+                "accent": "main",
+                "lineBreakAfter": false
+              }
+            ],
+            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+          },
+          "anchorId": "projects-intro",
+          "settings": {
+            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
+          }
         },
         {
           "id": "603fc84f-3a9c-4ff1-be94-f025e51cb7b9",
@@ -626,168 +881,13 @@
           },
           "anchorId": "overview",
           "settings": {}
-        },
-        {
-          "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
-          "type": "vibecoding",
-          "content": {
-            "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
-            "stats": [
-              {
-                "label": "Test Coverage",
-                "value": "92%"
-              },
-              {
-                "label": "DB Migrations",
-                "value": "27"
-              },
-              {
-                "label": "Systems",
-                "value": "3"
-              }
-            ],
-            "title": "Vibe Coding: High-Velocity Orchestration",
-            "slider": {
-              "lowVibe": "Low Vibe",
-              "highVibe": "High Vibe",
-              "archLabel": "proof-architecture.svg",
-              "boringLabel": "basic-crud.ts"
-            },
-            "systems": [
-              {
-                "name": "TON / Web3",
-                "tone": "sky"
-              },
-              {
-                "name": "Gemini AI",
-                "tone": "violet"
-              },
-              {
-                "name": "Supabase",
-                "tone": "emerald"
-              }
-            ],
-            "archNodes": [
-              {
-                "node": "tma",
-                "label": "TMA (React)"
-              },
-              {
-                "node": "auth",
-                "label": "Auth"
-              },
-              {
-                "node": "storage",
-                "label": "Supabase Storage"
-              },
-              {
-                "node": "edge",
-                "label": "Edge Functions"
-              },
-              {
-                "node": "gemini",
-                "label": "Gemini AI"
-              },
-              {
-                "node": "db",
-                "label": "DB Update"
-              },
-              {
-                "node": "feed",
-                "label": "Real-time Feed"
-              }
-            ],
-            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
-            "sectionLabel": "Philosophy",
-            "systemsSyncedLabel": "Systems Synced"
-          },
-          "anchorId": "vibecoding",
-          "settings": {}
-        },
-        {
-          "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
-          "type": "projects_intro",
-          "content": {
-            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
-            "label": "Selected Work · 2024 — 2026",
-            "heading": [
-              {
-                "text": "From zero to",
-                "accent": "none",
-                "lineBreakAfter": false
-              },
-              {
-                "text": "production",
-                "accent": "crimson",
-                "lineBreakAfter": true
-              },
-              {
-                "text": "in every frame.",
-                "accent": "none",
-                "lineBreakAfter": false
-              }
-            ],
-            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
-          },
-          "anchorId": "projects-intro",
-          "settings": {
-            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
-          }
-        },
-        {
-          "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
-          "type": "logistics",
-          "content": {
-            "title": "NexusRoute",
-            "techStack": [
-              {
-                "name": "Google Maps API"
-              },
-              {
-                "name": "WebSocket"
-              },
-              {
-                "name": "GeoJSON"
-              },
-              {
-                "name": "Advanced Markers"
-              },
-              {
-                "name": "Zustand"
-              }
-            ],
-            "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs. GeoJSON streaming with high-frequency state reconciliation.",
-            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
-            "sectionLabel": "Case Study 01"
-          },
-          "anchorId": "logistics",
-          "settings": {}
-        },
-        {
-          "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
-          "type": "merch",
-          "content": {
-            "title": "MerchForge",
-            "techStack": [
-              {
-                "name": "React State"
-              },
-              {
-                "name": "JSON Sync"
-              },
-              {
-                "name": "Derived Data"
-              },
-              {
-                "name": "Typing Animation"
-              }
-            ],
-            "description": "AI-powered merchandise designer with real-time state synchronization. Every UI interaction instantly reflects in the live configuration output.",
-            "sectionLabel": "Case Study 02"
-          },
-          "anchorId": "merch",
-          "settings": {}
-        },
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work/ecommerce",
+      "blocks": [
         {
           "id": "9d32f989-6728-4650-8f23-9c1f893d7247",
           "type": "ecommerce",
@@ -817,11 +917,83 @@
               }
             ],
             "description": "Faceted search with dependency-aware filtering and URL-as-state architecture. Filter changes sync bidirectionally with query parameters.",
-            "sectionLabel": "Case Study 03"
+            "sectionLabel": "Case Study"
           },
           "anchorId": "ecommerce",
           "settings": {}
-        },
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work/logistics",
+      "blocks": [
+        {
+          "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
+          "type": "logistics",
+          "content": {
+            "title": "NexusRoute",
+            "techStack": [
+              {
+                "name": "Google Maps API"
+              },
+              {
+                "name": "WebSocket"
+              },
+              {
+                "name": "GeoJSON"
+              },
+              {
+                "name": "Advanced Markers"
+              },
+              {
+                "name": "Zustand"
+              }
+            ],
+            "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs. GeoJSON streaming with high-frequency state reconciliation.",
+            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
+            "sectionLabel": "Case Study"
+          },
+          "anchorId": "logistics",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work/merch",
+      "blocks": [
+        {
+          "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
+          "type": "merch",
+          "content": {
+            "title": "MerchForge",
+            "techStack": [
+              {
+                "name": "React State"
+              },
+              {
+                "name": "JSON Sync"
+              },
+              {
+                "name": "Derived Data"
+              },
+              {
+                "name": "Typing Animation"
+              }
+            ],
+            "description": "AI-powered merchandise designer with real-time state synchronization. Every UI interaction instantly reflects in the live configuration output.",
+            "sectionLabel": "Case Study"
+          },
+          "anchorId": "merch",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work/omnigrid",
+      "blocks": [
         {
           "id": "50a345ad-b407-46be-9c8a-54fe88138bb6",
           "type": "omnigrid",
@@ -842,11 +1014,17 @@
               }
             ],
             "description": "High-density data grid with virtualized scrolling, headless table architecture, and server-state cache orchestration. Handling massive datasets with zero-latency UI interactions and complex server-side state synchronization.",
-            "sectionLabel": "Case Study 04"
+            "sectionLabel": "Case Study"
           },
           "anchorId": "omnigrid",
           "settings": {}
-        },
+        }
+      ]
+    },
+    {
+      "seo": {},
+      "slug": "work/proof",
+      "blocks": [
         {
           "id": "1c556cb2-aac0-4fb6-8e1f-b78371fb3967",
           "type": "proof",
@@ -870,134 +1048,17 @@
               }
             ],
             "description": "Telegram Mini App that gamifies fitness verification with real-time AI analysis. Gemini 2.5 Flash counts reps, verifies form, checks liveness — awarding Physio/Neuro points across 20 progression levels.",
-            "sectionLabel": "Case Study 05"
+            "sectionLabel": "Case Study"
           },
           "anchorId": "proof",
-          "settings": {}
-        },
-        {
-          "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
-          "type": "workflow",
-          "content": {
-            "title": "AI Workflow Automation",
-            "techStack": [
-              {
-                "name": "n8n"
-              },
-              {
-                "name": "Claude API"
-              },
-              {
-                "name": "Webhooks"
-              },
-              {
-                "name": "SSE Streaming"
-              },
-              {
-                "name": "Slack API"
-              },
-              {
-                "name": "GitHub Actions"
-              }
-            ],
-            "workflows": [
-              {
-                "title": "Lead Analysis Pipeline",
-                "diagram": "lead-pipeline",
-                "description": "Incoming leads are analyzed by Claude AI for intent and qualification, then routed to Slack for immediate team notification and CRM for tracking."
-              },
-              {
-                "title": "Content Generation",
-                "diagram": "content-gen",
-                "description": "Scheduled content generation via Claude API with human-in-the-loop review before publishing to blog, social media, or documentation."
-              },
-              {
-                "title": "CI/CD Pipeline",
-                "diagram": "ci-cd",
-                "description": "Automated build pipeline triggered by GitHub push — runs tests, builds artifacts, and deploys to Cloudflare Pages with status notifications."
-              }
-            ],
-            "description": "Production-ready n8n workflows integrating Claude AI for intelligent automation — from lead analysis to content generation and CI/CD pipelines.",
-            "sectionLabel": "Automation"
-          },
-          "anchorId": "workflows",
-          "settings": {}
-        },
-        {
-          "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
-          "type": "contact_cta",
-          "content": {
-            "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
-            "label": "Get in touch",
-            "title": "Let's build something that ships.",
-            "socials": [
-              {
-                "href": "https://github.com/Noro97",
-                "icon": "github",
-                "label": "GitHub"
-              },
-              {
-                "href": "https://www.linkedin.com/in/norayravetisyan/",
-                "icon": "linkedin",
-                "label": "LinkedIn"
-              },
-              {
-                "href": "https://t.me/antarber",
-                "icon": "telegram",
-                "label": "Telegram"
-              }
-            ],
-            "emailLabel": "Email me",
-            "availability": "Available for new work"
-          },
-          "anchorId": null,
-          "settings": {
-            "email": "noroavetisyan@gmail.com",
-            "showAvailability": true
-          }
-        },
-        {
-          "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
-          "type": "terminal_footer",
-          "content": {
-            "hire": {
-              "burst": "  ✦ PARTICLE BURST ACTIVATED ✦",
-              "openTo": "  Open to: Senior / Staff roles",
-              "message": "  Let's build something great.",
-              "niceTry": "Nice try. ;)",
-              "location": "  Location: Yerevan, Armenia / Remote"
-            },
-            "title": "The Terminal",
-            "prompt": "visitor@portfolio:~$",
-            "whoami": {
-              "hint": "  Try: cat about.txt, neofetch, sudo hire",
-              "visitor": "  visitor",
-              "welcome": "  Curious minds are always welcome here.",
-              "exploring": "  You're exploring Norayr Avetisyan's portfolio."
-            },
-            "welcome": [
-              {
-                "text": "Welcome to Norayr Avetisyan's portfolio terminal."
-              },
-              {
-                "text": "Type 'help' for available commands."
-              }
-            ],
-            "subtitle": "$ interact with this portfolio",
-            "titleBar": "visitor@portfolio ~ zsh",
-            "placeholder": "type a command...",
-            "sectionLabel": "Contact",
-            "commandNotFound": "command not found: {{cmd}}. Type 'help' for available commands."
-          },
-          "anchorId": "terminal",
           "settings": {}
         }
       ]
     }
   ],
   "locale": "en",
-  "version": 15,
-  "checksum": "60aadf777c4861c6623572360017311c15f5fddc347078b33358410e05b375b4",
+  "version": 21,
+  "checksum": "a74b2532f1476c88a30f4a3761632d0b3891f138146b703170572e9f7d5680df",
   "settings": {
     "site": {
       "grain": true,
@@ -1005,50 +1066,50 @@
       "dynamicGrid": true
     },
     "theme": {
-      "accent": "#D97420",
+      "accent": "#0A7B1D",
       "tokens": {
-        "--color-card": "#020202",
+        "--color-card": "#0f0e0f",
         "--color-info": "#38bdf8",
-        "--color-ring": "#D97420",
+        "--color-ring": "#0A7B1D",
         "--color-input": "rgba(255, 255, 255, 0.06)",
-        "--color-muted": "#0f0f0f",
-        "--color-accent": "#D97420",
+        "--color-muted": "#1d1b1d",
+        "--color-accent": "#0A7B1D",
         "--color-border": "rgba(255, 255, 255, 0.08)",
         "--color-danger": "#ef4444",
-        "--color-cyan-50": "#fdf5fd",
-        "--color-primary": "#D97420",
+        "--color-cyan-50": "#f8f8fb",
+        "--color-primary": "#0A7B1D",
         "--color-success": "#22c55e",
         "--color-warning": "#eab308",
-        "--color-cyan-100": "#faebfb",
-        "--color-cyan-200": "#f6d7f6",
-        "--color-cyan-300": "#efb9f0",
-        "--color-cyan-400": "#ee46f1",
-        "--color-cyan-500": "#EB20EE",
-        "--color-cyan-600": "#c10fc4",
-        "--color-cyan-700": "#731d74",
-        "--color-cyan-800": "#531554",
-        "--color-cyan-900": "#390e3a",
-        "--color-secondary": "#0f0f0f",
-        "--color-background": "#000000",
-        "--color-crimson-50": "#fcf8f5",
+        "--color-cyan-100": "#f0f1f8",
+        "--color-cyan-200": "#e2e3f1",
+        "--color-cyan-300": "#cccfe6",
+        "--color-cyan-400": "#7d87cf",
+        "--color-cyan-500": "#636EC5",
+        "--color-cyan-600": "#3f4aa8",
+        "--color-cyan-700": "#2b3374",
+        "--color-cyan-800": "#272b4c",
+        "--color-cyan-900": "#1b1e34",
+        "--color-secondary": "#1d1b1d",
+        "--color-background": "#0D0C0D",
+        "--color-crimson-50": "#effcf1",
         "--color-foreground": "#e0e0e0",
-        "--color-crimson-100": "#f9f1ea",
-        "--color-crimson-200": "#f3e3d6",
-        "--color-crimson-300": "#eaceb7",
-        "--color-crimson-400": "#e38b42",
-        "--color-crimson-500": "#D97420",
-        "--color-crimson-600": "#a95b19",
-        "--color-crimson-700": "#664020",
-        "--color-crimson-800": "#4a2e17",
-        "--color-crimson-900": "#332010",
+        "--color-crimson-100": "#e0f8e4",
+        "--color-crimson-200": "#c0f1c8",
+        "--color-crimson-300": "#91e7a0",
+        "--color-crimson-400": "#0fb62b",
+        "--color-crimson-500": "#0A7B1D",
+        "--color-crimson-600": "#15531f",
+        "--color-crimson-700": "#0e3916",
+        "--color-crimson-800": "#0b2910",
+        "--color-crimson-900": "#071c0b",
         "--color-card-foreground": "#e0e0e0",
         "--color-muted-foreground": "#888888",
         "--color-accent-foreground": "#ffffff",
         "--color-primary-foreground": "#ffffff",
         "--color-secondary-foreground": "#e0e0e0"
       },
-      "secondary": "#EB20EE",
-      "background": "#000000"
+      "secondary": "#636EC5",
+      "background": "#0D0C0D"
     }
   },
   "collections": {
@@ -1272,7 +1333,89 @@
         },
         "slug": "tirsoft-frontend"
       }
+    ],
+    "navigation": [
+      {
+        "id": "b5f8890d-8702-43b3-8ad3-7014d08a9502",
+        "data": {
+          "page": "home",
+          "label": "Home",
+          "anchor": "hero",
+          "external": ""
+        },
+        "slug": "home"
+      },
+      {
+        "id": "aa8e18a1-7074-4f47-881f-0c914b5cea98",
+        "data": {
+          "page": "about",
+          "label": "About",
+          "anchor": "about",
+          "external": ""
+        },
+        "slug": "about"
+      },
+      {
+        "id": "dafbd988-f699-4c9c-83d9-d98aecb5f2af",
+        "data": {
+          "page": "experience",
+          "label": "Experience",
+          "anchor": "experience",
+          "external": ""
+        },
+        "slug": "experience"
+      },
+      {
+        "id": "fa963b01-42eb-435f-ba9b-8164a97a3ff2",
+        "data": {
+          "page": "skills",
+          "label": "Skills",
+          "anchor": "skills",
+          "external": ""
+        },
+        "slug": "skills"
+      },
+      {
+        "id": "4568579b-6b7b-4b62-aade-b3add570dd6b",
+        "data": {
+          "page": "work",
+          "label": "Overview",
+          "anchor": "overview",
+          "external": ""
+        },
+        "slug": "overview"
+      },
+      {
+        "id": "85f3556b-00ef-4fdf-8cc3-f2646a2a62e6",
+        "data": {
+          "page": "work",
+          "label": "Projects",
+          "anchor": "",
+          "external": ""
+        },
+        "slug": "projects"
+      },
+      {
+        "id": "9419beb5-0767-4699-819d-a209e1db1646",
+        "data": {
+          "page": "automation",
+          "label": "Automation",
+          "anchor": "workflows",
+          "external": ""
+        },
+        "slug": "automation"
+      },
+      {
+        "id": "e24aaf01-34ca-4235-af67-9dd1f68777b8",
+        "data": {
+          "page": "site",
+          "label": "Contact",
+          "anchor": "terminal",
+          "external": ""
+        },
+        "slug": "contact"
+      }
     ]
   },
-  "publishedAt": "2026-08-31T14:19:33.467Z"
+  "publishedAt": "2026-09-01T11:08:14.554Z"
 }
