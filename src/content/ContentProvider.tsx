@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router'
+import { readPath } from './routing'
 import type { Locale, Snapshot } from '@norav/content-schema'
 import { BAKED_SNAPSHOTS, findBlock } from './index'
 import { setCurrentSnapshots } from './current'
@@ -21,10 +23,6 @@ interface ContentValue {
 }
 
 const ContentContext = createContext<ContentValue | null>(null)
-
-function toLocale(language: string): Locale {
-  return language.startsWith('ru') ? 'ru' : 'en'
-}
 
 /**
  * Where the published content comes from.
@@ -84,7 +82,18 @@ async function fetchLatest(baseUrl: string, version: number): Promise<Record<Loc
 
 export function ContentProvider({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation()
-  const locale = toLocale(i18n.language)
+  // The address decides the language. i18n still holds it, because the code's
+  // own strings are translated through it — but it follows the URL rather than
+  // the other way round, so a link to /ru/work/merch lands in Russian and a
+  // reload stays there.
+  const { locale } = readPath(useLocation().pathname)
+
+  useEffect(() => {
+    // Compare on the base tag. The browser's detector reports regional codes —
+    // en-US, ru-RU — which never equal a bare locale, so comparing the whole
+    // string asks i18n to change language on every render, for ever.
+    if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
+  }, [i18n, locale])
   const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isPreview, setIsPreview] = useState(false)
@@ -260,17 +269,22 @@ export function useBlock<TContent, TSettings = Record<string, unknown>>(
 }
 
 /**
- * The anchors present on the published page. Navigation intersects its own list
- * with this, so hiding a section in the CMS also removes it from the menu
- * instead of leaving a link that scrolls nowhere.
+ * Every anchor the site publishes, and the page it is on.
+ *
+ * It used to be a set, which was enough while there was one page: an anchor
+ * either existed or it did not, and the nav scrolled to it. With several pages
+ * a menu item has to know whether the section is here — scroll — or elsewhere —
+ * follow a link. Building the index from the snapshot rather than a list in the
+ * code means moving a section between pages in the CMS fixes the menu without
+ * anyone touching it.
  */
-export function useVisibleAnchors(): Set<string> {
+export function useAnchorPages(): Map<string, string> {
   const { snapshot } = useContent()
   return useMemo(() => {
-    const anchors = new Set<string>()
+    const anchors = new Map<string, string>()
     for (const page of snapshot.pages) {
       for (const block of page.blocks) {
-        if (block.anchorId) anchors.add(block.anchorId)
+        if (block.anchorId) anchors.set(block.anchorId, page.slug)
       }
     }
     return anchors

@@ -1,4 +1,5 @@
 import type { Snapshot, SnapshotBlock } from '@norav/content-schema'
+import { HOME_SLUG } from './routing'
 import enSnapshot from './snapshot.en.json'
 import ruSnapshot from './snapshot.ru.json'
 
@@ -18,7 +19,7 @@ export const BAKED_SNAPSHOTS = {
   ru: ruSnapshot as unknown as Snapshot,
 } as const
 
-export const HOME_SLUG = 'home'
+export { HOME_SLUG } from './routing'
 
 export function findBlock(snapshot: Snapshot, type: string): SnapshotBlock | undefined {
   const page = snapshot.pages.find((candidate) => candidate.slug === HOME_SLUG)

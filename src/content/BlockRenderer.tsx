@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { BLOCK_COMPONENTS } from './blocks'
 import { useContent } from './ContentProvider'
-import { HOME_SLUG } from './index'
 
 const SectionLoader = () => (
   <div className="min-h-[50vh] flex items-center justify-center">
@@ -17,9 +16,12 @@ const SectionLoader = () => (
  * throwing, so a CMS that is ahead of this deployment degrades to missing a
  * section rather than a blank page.
  */
-export function BlockRenderer() {
+export function BlockRenderer({ slug }: { slug: string }) {
   const { snapshot } = useContent()
-  const page = snapshot.pages.find((candidate) => candidate.slug === HOME_SLUG)
+  const page = snapshot.pages.find((candidate) => candidate.slug === slug)
+  // A slug the CMS has not published. The caller decides what that looks like;
+  // rendering nothing here would be a blank page with a working header, which
+  // reads as a bug rather than as an address that does not exist.
   if (!page) return null
 
   return (
