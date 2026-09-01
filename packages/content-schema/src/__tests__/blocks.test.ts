@@ -97,3 +97,19 @@ describe('accented text carries two tones', () => {
     expect(accent?.options?.map((o) => o.value)).toEqual(['main', 'highlight'])
   })
 })
+
+describe('a block is valid the moment it is created', () => {
+  // The admin creates a block from its registry defaults. If those do not pass
+  // the block's own schema, adding one immediately blocks preview and publish
+  // for the whole site until someone finds the field and fills it in — which
+  // is how `about` shipped with an empty required paragraph.
+  for (const definition of listBlockDefinitions()) {
+    it(`${definition.type} defaults pass its own schema`, () => {
+      const content = validateBlockContent(definition.type, definition.defaults.content)
+      expect(content, JSON.stringify(content)).toMatchObject({ ok: true })
+
+      const settings = validateBlockSettings(definition.type, definition.defaults.settings)
+      expect(settings, JSON.stringify(settings)).toMatchObject({ ok: true })
+    })
+  }
+})
