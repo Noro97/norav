@@ -59,12 +59,33 @@ export function previewToken(): string | null {
   return new URLSearchParams(window.location.hash.replace(/^#/, '')).get('preview')
 }
 
+/** What the CMS says when it will not render a draft. */
+export interface PreviewRefusal {
+  message: string
+  fields: { page: string; block: string; locale: string; path: string; message: string }[]
+}
+
 async function fetchPreview(baseUrl: string, locale: Locale, token: string): Promise<Snapshot> {
   const response = await fetch(
     `${baseUrl}/api/public/preview?locale=${locale}&token=${encodeURIComponent(token)}`,
     { cache: 'no-store' },
   )
-  if (!response.ok) throw new Error(`preview ${locale}: HTTP ${response.status}`)
+  if (!response.ok) {
+    // The CMS explains itself — an expired key, or a draft that does not
+    // validate. Throwing the status alone turned every one of those into the
+    // site quietly falling back to published content, which then renders a 404
+    // for the page being previewed. The reader is the person who pressed
+    // Preview; they should be told which field is wrong, not shown a wrong
+    // answer.
+    const body = (await response.json().catch(() => null)) as
+      | { error?: { message?: string; fields?: PreviewRefusal['fields'] } }
+      | null
+    const refusal: PreviewRefusal = {
+      message: body?.error?.message ?? `The CMS answered ${response.status}.`,
+      fields: body?.error?.fields ?? [],
+    }
+    throw Object.assign(new Error(refusal.message), { refusal })
+  }
   return (await response.json()) as Snapshot
 }
 
@@ -102,6 +123,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   // the manifest answers, either way.
   const [isRefreshing, setIsRefreshing] = useState(() => cmsOrigin() !== undefined)
   const [isPreview, setIsPreview] = useState(false)
+  const [refusal, setRefusal] = useState<PreviewRefusal | null>(null)
 
   useEffect(() => {
     const configured = cmsOrigin()
@@ -161,6 +183,13 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           )
         }
       } catch (error) {
+        // A refused preview is the one failure worth showing. Falling back to
+        // published content is right, but the person who pressed Preview then
+        // sees the published site — or a 404 for a page that is not published
+        // yet — with no hint that their draft was rejected and why.
+        const refused = (error as { refusal?: PreviewRefusal })?.refusal
+        if (refused && !cancelled) setRefusal(refused)
+
         // The bundle already holds a complete, valid snapshot — staying on it is
         // the correct outcome of any failure here. In development, say so: a
         // silent no-op is indistinguishable from "my edit did not show up".
@@ -196,6 +225,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   return (
     <ContentContext.Provider value={value}>
       {isPreview && <PreviewBadge />}
+      {refusal && <PreviewRefused refusal={refusal} />}
       {children}
     </ContentContext.Provider>
   )
@@ -208,6 +238,48 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  * which is the point of a preview and also its one hazard: a screenshot of one,
  * or a forwarded link, otherwise reads as what visitors see.
  */
+/**
+ * The CMS refused to render the draft, and said why.
+ *
+ * Without this the site falls back to published content and the person who
+ * pressed Preview is left looking at the live site — or at a 404 for a page
+ * that is not published yet — with nothing to connect it to the empty field
+ * that caused it.
+ */
+function PreviewRefused({ refusal }: { refusal: PreviewRefusal }) {
+  return (
+    <div
+      role="alert"
+      style={{
+        position: 'fixed',
+        insetInlineStart: '50%',
+        insetBlockEnd: '16px',
+        transform: 'translateX(-50%)',
+        zIndex: 9999,
+        maxWidth: 'min(90vw, 520px)',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        border: '1px solid color-mix(in srgb, var(--color-danger) 45%, transparent)',
+        background: 'color-mix(in srgb, var(--color-background) 92%, transparent)',
+        backdropFilter: 'blur(8px)',
+        color: 'var(--color-danger)',
+        font: '500 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace',
+      }}
+    >
+      <strong style={{ letterSpacing: '0.06em' }}>PREVIEW REFUSED</strong>
+      <div style={{ marginTop: 6, color: 'var(--color-muted-foreground)' }}>{refusal.message}</div>
+      {refusal.fields.slice(0, 4).map((field, index) => (
+        <div key={index} style={{ marginTop: 4, color: 'var(--color-muted-foreground)' }}>
+          /{field.page} · {field.block} · {field.locale} · {field.path} — {field.message}
+        </div>
+      ))}
+      <div style={{ marginTop: 8, color: 'var(--color-muted-foreground)' }}>
+        You are looking at published content instead.
+      </div>
+    </div>
+  )
+}
+
 function PreviewBadge() {
   return (
     <div

@@ -33,7 +33,13 @@ export const capabilitiesBlock = defineBlock({
       sectionLabel: 'Capabilities',
       title: 'What I Do',
       description: '',
-      cards: [{ icon: 'Layers', title: 'Frontend Architecture', body: '' }],
+      cards: [
+        {
+          icon: 'Layers',
+          title: 'Frontend Architecture',
+          body: 'What this capability covers.',
+        },
+      ],
     },
     settings: {},
   },
