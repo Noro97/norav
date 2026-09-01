@@ -30,6 +30,8 @@ interface EditorProps {
   pageSlug: string
   /** Re-reads the page list after one is created, renamed or deleted. */
   onPagesChanged: () => Promise<void>
+  /** Another page was chosen and its sections are still on the way. */
+  loading?: boolean
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
   collections: SerializedCollectionDefinition[]
@@ -115,6 +117,7 @@ export function Editor({
   onViewChange,
   onSignOut,
   onPagesChanged,
+  loading,
 }: EditorProps) {
   const definitionsByType = useMemo(
     () => new Map(definitions.map((definition) => [definition.type, definition])),
@@ -366,14 +369,14 @@ export function Editor({
 
   return (
     <Workspace
-      subtitle={`/${pageSlug === 'home' ? '' : pageSlug}`}
+      subtitle={loading ? 'loading…' : `/${pageSlug === 'home' ? '' : pageSlug}`}
       collections={collections}
       view={view}
       onViewChange={onViewChange}
       userEmail={userEmail}
       environment={environment}
       onSignOut={onSignOut}
-      busy={busy !== null}
+      busy={busy !== null || loading === true}
       onNewPage={() => setNewPageSlug('')}
       sidebar={
         <>
@@ -392,6 +395,12 @@ export function Editor({
           )}
 
           <ul className="block-list">
+          {blocks.length === 0 && (
+            <li className="block-empty subtle">
+              Nothing on this page yet. Add a section below, or move one here
+              from another page.
+            </li>
+          )}
           {blocks.map((block, index) => {
             const label = definitionsByType.get(block.type)?.label ?? block.type
             if (
@@ -449,7 +458,7 @@ export function Editor({
                         if (event.target.value) moveToPage(block.id, event.target.value)
                       }}
                     >
-                      <option value="">→</option>
+                      <option value="">Move to…</option>
                       {elsewhere.map((page) => (
                         <option key={page.slug} value={page.slug}>
                           /{page.slug === 'home' ? '' : page.slug}
@@ -543,7 +552,7 @@ export function Editor({
               >
                 Page settings
               </button>
-              <PreviewButton disabled={busy !== null} />
+              <PreviewButton slug={pageSlug} disabled={busy !== null} />
           <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
                 {busy === 'publish' ? 'Publishing…' : 'Publish'}
               </button>

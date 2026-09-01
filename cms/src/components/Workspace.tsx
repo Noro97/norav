@@ -113,7 +113,7 @@ export function FeedbackBanner({
  * approximation is a second implementation of the layout, and the question a
  * preview answers is what the page will actually look like.
  */
-export function PreviewButton({ disabled }: { disabled?: boolean }) {
+export function PreviewButton({ slug, disabled }: { slug?: string; disabled?: boolean }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -124,7 +124,11 @@ export function PreviewButton({ disabled }: { disabled?: boolean }) {
     // A tab opened from a promise is a popup, and gets blocked.
     const tab = window.open('', '_blank')
     try {
-      const response = await fetch('/api/admin/preview', { method: 'POST' })
+      const response = await fetch('/api/admin/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page: slug }),
+      })
       const body = await response.json().catch(() => null)
       if (!response.ok) {
         tab?.close()

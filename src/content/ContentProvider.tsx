@@ -20,6 +20,8 @@ interface ContentValue {
   locale: Locale
   /** True while a newer published version is being fetched. */
   isRefreshing: boolean
+  /** Looking at a draft, not at what the site publishes. */
+  isPreview: boolean
 }
 
 const ContentContext = createContext<ContentValue | null>(null)
@@ -187,8 +189,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const value = useMemo<ContentValue>(
-    () => ({ snapshot: locale === 'ru' ? snapshots.ru : snapshots.en, locale, isRefreshing }),
-    [snapshots, locale, isRefreshing],
+    () => ({ snapshot: locale === 'ru' ? snapshots.ru : snapshots.en, locale, isRefreshing, isPreview }),
+    [snapshots, locale, isRefreshing, isPreview],
   )
 
   return (
