@@ -109,6 +109,19 @@ export async function PATCH(request: Request, context: { params: Promise<{ slug:
     [page.id, body.slug ?? null, body.status ?? null, body.seo ? JSON.stringify(body.seo) : null],
   )
 
+  // The menu names pages by slug, which is the whole reason renaming is safe:
+  // the address is derived, so the items follow. Doing it here rather than
+  // leaving it to the editor is the difference between a rename and a rename
+  // plus a silent breakage nobody notices until a reader does.
+  if (body.slug && body.slug !== path) {
+    await query(
+      `update entries
+          set data = jsonb_set(data, '{page}', to_jsonb($2::text))
+        where collection = 'navigation' and data ->> 'page' = $1 and deleted_at is null`,
+      [path, body.slug],
+    )
+  }
+
   await audit({
     actorId: auth.user.id,
     action: 'page.update',

@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { useAppStore } from '@/store/useAppStore'
-import { SECTIONS } from '@/lib/constants'
-import { useAnchorPages, useContent } from '@/content/ContentProvider'
-import { HOME_SLUG, SITE_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
+import { useContent } from '@/content/ContentProvider'
+import { useNavigation } from '@/content/navigation'
+import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 
 // Map widget section IDs to their parent nav section
 const NAV_SECTION_MAP: Record<string, string> = {
@@ -18,30 +17,13 @@ const NAV_SECTION_MAP: Record<string, string> = {
 export function Navigation() {
   const rawActiveSection = useAppStore((s) => s.activeSection)
   const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
-  const { t } = useTranslation('common')
-  // A section hidden in the CMS is on no page, so it must not be in the menu.
-  const anchorPages = useAnchorPages()
-  const sections = SECTIONS.filter((section) => anchorPages.has(section.id))
   const { locale } = useContent()
   const here = readPath(useLocation().pathname).slug
+  // The menu is content. An item whose page or section is hidden in the CMS
+  // drops out on its own: the item names a page, and the snapshot only carries
+  // pages that are published.
+  const sections = useNavigation(here)
   const navigate = useNavigate()
-
-  /**
-   * Where a menu item points. A section on this page is a hash; a section on
-   * another page is that page's address plus the hash, so the browser lands and
-   * scrolls in one move.
-   */
-  const linkTo = useCallback(
-    (id: string) => {
-      const page = anchorPages.get(id) ?? HOME_SLUG
-      // A section in the site chrome renders below whatever page you are on, so
-      // it is always here. Linking to /site would send a reader to the footer's
-      // own address, which is a page nobody means to visit.
-      const elsewhere = page !== here && page !== SITE_SLUG
-      return elsewhere ? `${hrefFor(page, locale)}#${id}` : `#${id}`
-    },
-    [anchorPages, here, locale],
-  )
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -107,8 +89,8 @@ export function Navigation() {
           return (
             <Link
               key={section.id}
-              to={linkTo(section.id)}
-              onClick={(event) => handleClick(event, section.id)}
+              to={section.href}
+              onClick={(event) => section.anchor && handleClick(event, section.anchor)}
               className={`
                 relative flex items-center gap-2 px-3 py-2 rounded-full
                 transition-all duration-300 ease-out
@@ -138,7 +120,7 @@ export function Navigation() {
                   }
                 `}
               >
-                {t(section.labelKey)}
+                {section.label}
               </span>
             </Link>
           )
@@ -160,7 +142,7 @@ export function Navigation() {
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-1.5 font-mono text-xs text-white/40 tracking-widest uppercase"
           >
-            {t(sections.find((s) => s.id === activeSection)?.labelKey ?? '')}
+            {sections.find((item) => item.anchor === activeSection)?.label ?? ''}
             <ChevronDown
               size={14}
               className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
@@ -170,13 +152,13 @@ export function Navigation() {
           {dropdownOpen && (
             <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-white/10 bg-background/90 backdrop-blur-md py-1.5 shadow-xl">
               {sections.map((section) => {
-                const isActive = activeSection === section.id
+                const isActive = section.anchor !== null && activeSection === section.anchor
                 return (
                   <Link
                     key={section.id}
-                    to={linkTo(section.id)}
+                    to={section.href}
                     onClick={(event) => {
-                      handleClick(event, section.id)
+                      if (section.anchor) handleClick(event, section.anchor)
                       setDropdownOpen(false)
                     }}
                     className={`
@@ -198,7 +180,7 @@ export function Navigation() {
                         }
                       `}
                     />
-                    {t(section.labelKey)}
+                    {section.label}
                   </Link>
                 )
               })}
