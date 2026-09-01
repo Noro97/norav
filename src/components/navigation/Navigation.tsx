@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
 import { useAnchorPages, useContent } from '@/content/ContentProvider'
-import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
+import { HOME_SLUG, SITE_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 
 // Map widget section IDs to their parent nav section
 const NAV_SECTION_MAP: Record<string, string> = {
@@ -33,7 +33,11 @@ export function Navigation() {
   const linkTo = useCallback(
     (id: string) => {
       const page = anchorPages.get(id) ?? HOME_SLUG
-      return page === here ? `#${id}` : `${hrefFor(page, locale)}#${id}`
+      // A section in the site chrome renders below whatever page you are on, so
+      // it is always here. Linking to /site would send a reader to the footer's
+      // own address, which is a page nobody means to visit.
+      const elsewhere = page !== here && page !== SITE_SLUG
+      return elsewhere ? `${hrefFor(page, locale)}#${id}` : `#${id}`
     },
     [anchorPages, here, locale],
   )
