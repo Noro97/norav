@@ -45,7 +45,10 @@ CMS edit ──► publish ──► immutable snapshot (one JSON per locale)
    snapshot for each locale into `src/content/snapshot.{en,ru}.json`. Those files
    are committed: with `CMS_URL` unset, or the CMS unreachable, the build uses
    them and exits successfully. A content service being down is not a deploy
-   failure.
+   failure. `scripts/generate-sitemap.mjs` then writes `public/sitemap.xml` from
+   whichever snapshot won, so the map always describes the content that shipped.
+   It strikes the same bargain: an unreadable snapshot is reported and stepped
+   around, never a failed build.
 3. **At runtime** `ContentProvider` waits for the page to go idle, then asks
    `/api/public/manifest` for the current checksum. If it differs from the baked
    one it fetches the new snapshot and swaps it in mid-session. Compared by
@@ -120,6 +123,10 @@ api/chat.ts              Vercel edge entry — a four-line adapter
 server/chat.ts           the actual /api/chat handler, shared by both environments
 vite-api-plugin.ts       serves that same handler in dev, so the two cannot drift
 
+scripts/
+  fetch-content.mjs      bakes the published snapshot into src/content
+  generate-sitemap.mjs   writes public/sitemap.xml from it — both run in prebuild
+
 src/
   content/               the CMS boundary
     index.ts             the baked snapshots
@@ -163,6 +170,19 @@ published theme must not be able to set arbitrary CSS. Applied before first
 paint, and remembered by version so a reload does not flash the shipped palette.
 Canvas and WebGL copy their colours on mount, so they listen for a
 `norav:themechange` event instead.
+
+**What the head says.** Two audiences read it and they do not overlap. Google
+runs the JavaScript and sees whatever `PageHead` ends up writing; every link
+unfurler that matters — Telegram, Slack, LinkedIn, Facebook, X — fetches
+`index.html` and never executes it, so the static tags are the only card it will
+ever see. Both are served by having one tag each: `index.html` carries the
+site's own title, description and card, and `PageHead` **rewrites those tags in
+place** once React runs, rather than rendering copies beside them. The tags that
+exist only per page — `canonical`, the `hreflang` alternates, `og:url` — are
+rendered normally, because there is nothing in the shell for them to collide
+with. `public/sitemap.xml` is generated, never edited: it lists every published
+page in both languages, and skips the `site` page and any page with no sections,
+which the site renders as a 404.
 
 **Motion.** GSAP ScrollTrigger for scroll work, Framer Motion for component
 transitions, R3F for the constellation. `prefers-reduced-motion: reduce` drops
@@ -227,6 +247,14 @@ nothing.
 **Stop the CMS with Ctrl-C, not `kill -9`.** PGlite writes its data directory on
 shutdown and a hard kill can leave it unopenable. It is disposable —
 `npm --prefix cms run db:reset` — but you will have to re-add your user.
+
+**Do not render a `<title>` or an `og:` tag that `index.html` already has.**
+React 19 hoists meta into the head by appending, not replacing, and a browser —
+like a crawler — reads the first one it finds. A second tag is therefore not an
+override but dead weight: for a while every address on the site answered to the
+home page's title this way, and it looked correct on the only page whose title
+happened to match. `PageHead` writes those tags imperatively for exactly this
+reason; add a new one to `applySeo`, not to the JSX.
 
 **A failed content fetch at build time is not an error.** If `npm run build`
 prints `keeping the committed snapshots`, the deploy succeeded with whatever is
