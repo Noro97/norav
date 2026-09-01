@@ -41,6 +41,7 @@ function App() {
   // like the address was wrong.
   const page = snapshot.pages.find((candidate) => candidate.slug === slug)
   const exists = page !== undefined && (page.blocks.length > 0 || isPreview)
+  const hasHero = page?.blocks.some((block) => block.type === 'hero') ?? false
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -84,8 +85,12 @@ function App() {
         )}
       </Suspense>
 
-      {/* R3F Canvas */}
-      {!prefersReducedMotion && (
+      {/* The 3D mark belongs to the hero, so it goes where the hero goes.
+          It used to hang in the app shell, which was invisible while the site
+          was one page and wrong the moment it was several: the mark floated
+          behind About and Skills, over sections that were never designed to sit
+          under it — and paid for a WebGL context on every page. */}
+      {!prefersReducedMotion && hasHero && (
         <Suspense fallback={null}>
           <SceneController />
         </Suspense>
