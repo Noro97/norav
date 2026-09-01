@@ -15,6 +15,15 @@ import type { Locale } from '@norav/content-schema'
 export const DEFAULT_LOCALE: Locale = 'en'
 export const HOME_SLUG = 'home'
 
+/**
+ * The page that is not a page: its blocks render below every other one.
+ *
+ * A footer belongs to the site, not to a page, and the block model has only
+ * pages — so this is the page that means "everywhere". It is reachable at /site
+ * like any other, which is how it stays editable and previewable.
+ */
+export const SITE_SLUG = 'site'
+
 const PREFIXED: Locale[] = ['ru']
 
 export interface Address {
