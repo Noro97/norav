@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
 import { useAnchorPages, useContent } from '@/content/ContentProvider'
@@ -24,6 +24,7 @@ export function Navigation() {
   const sections = SECTIONS.filter((section) => anchorPages.has(section.id))
   const { locale } = useContent()
   const here = readPath(useLocation().pathname).slug
+  const navigate = useNavigate()
 
   /**
    * Where a menu item points. A section on this page is a hash; a section on
@@ -56,8 +57,14 @@ export function Navigation() {
       event.preventDefault()
       // Native scroll — Lenis intercepts this automatically.
       el.scrollIntoView()
+      // And the address follows. Scrolling without it left every section of a
+      // page at the same URL, so a reader looking at one could neither send it
+      // to anyone nor come back to it. replace rather than push: reading down a
+      // page is one visit, and the back button should leave the page rather
+      // than retrace the sections.
+      navigate(`${window.location.pathname}#${id}`, { replace: true })
     },
-    [],
+    [navigate],
   )
 
   // Close dropdown on outside click
