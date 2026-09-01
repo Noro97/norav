@@ -99,28 +99,40 @@ export async function PATCH(request: Request, context: { params: Promise<{ slug:
     if (taken) return conflict(`A page at "${body.slug}" already exists.`)
   }
 
+  // One statement, because these two writes are one change. The menu names
+  // pages by slug — that is what makes renaming safe — so a rename whose
+  // repoint does not land leaves the menu pointing at a page that no longer
+  // answers, which is the exact failure this design exists to prevent. There is
+  // no transaction helper in lib/db, and a CTE needs none.
   const updated = await queryOne<{ id: string; slug: string; status: string; seo: unknown }>(
-    `update pages
-        set slug = coalesce($2, slug),
-            status = coalesce($3, status),
-            seo = coalesce($4::jsonb, seo)
-      where id = $1
-      returning id, slug, status, seo`,
-    [page.id, body.slug ?? null, body.status ?? null, body.seo ? JSON.stringify(body.seo) : null],
-  )
-
-  // The menu names pages by slug, which is the whole reason renaming is safe:
-  // the address is derived, so the items follow. Doing it here rather than
-  // leaving it to the editor is the difference between a rename and a rename
-  // plus a silent breakage nobody notices until a reader does.
-  if (body.slug && body.slug !== path) {
-    await query(
-      `update entries
+    `with renamed as (
+       update pages
+          set slug   = coalesce($2, slug),
+              status = coalesce($3, status),
+              -- Merged, not replaced: a request carrying one locale must not
+              -- drop the other. Shallow, so { en: {...} } does replace all of
+              -- en — which is what the editor sends, a whole locale at a time.
+              seo    = case when $4::jsonb is null then seo else seo || $4::jsonb end
+        where id = $1
+        returning id, slug, status, seo
+     ), repointed as (
+       update entries
           set data = jsonb_set(data, '{page}', to_jsonb($2::text))
-        where collection = 'navigation' and data ->> 'page' = $1 and deleted_at is null`,
-      [path, body.slug],
-    )
-  }
+        where $2::text is not null
+          and collection = 'navigation'
+          and data ->> 'page' = $5
+          and deleted_at is null
+        returning 1
+     )
+     select id, slug, status, seo from renamed`,
+    [
+      page.id,
+      body.slug ?? null,
+      body.status ?? null,
+      body.seo ? JSON.stringify(body.seo) : null,
+      path,
+    ],
+  )
 
   await audit({
     actorId: auth.user.id,
@@ -161,6 +173,21 @@ export async function DELETE(request: Request, context: { params: Promise<{ slug
   if (held && held.count > 0) {
     return conflict(
       `"${path}" still holds ${held.count} section${held.count === 1 ? '' : 's'}. Move or delete them first.`,
+    )
+  }
+
+  // The same reasoning one guard up, for the other thing that points at a page.
+  // The site drops a menu item whose page is gone, so nothing breaks for a
+  // reader — but the item stays in the collection as invisible dead data, and
+  // the person deleting the page is the only one in a position to decide.
+  const linked = await queryOne<{ count: number }>(
+    `select count(*)::int as count from entries
+      where collection = 'navigation' and data ->> 'page' = $1 and deleted_at is null`,
+    [path],
+  )
+  if (linked && linked.count > 0) {
+    return conflict(
+      `${linked.count} menu item${linked.count === 1 ? '' : 's'} point${linked.count === 1 ? 's' : ''} at "${path}". Change or remove them first.`,
     )
   }
 

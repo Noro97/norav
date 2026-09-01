@@ -17,12 +17,21 @@ const NAV_SECTION_MAP: Record<string, string> = {
 export function Navigation() {
   const rawActiveSection = useAppStore((s) => s.activeSection)
   const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
-  const { locale } = useContent()
+  // isRefreshing is set the moment the manifest's checksum disagrees with the
+  // one baked into this bundle — that is, when a different menu is already on
+  // its way. Painting the bundle's copy in that window shows items that are
+  // about to vanish, which is what "hidden item visible for a second" is.
+  //
+  // Holding the items for that fetch is the lesser fault: a menu that appears a
+  // moment late is a load, a menu that offers a section which is not there is a
+  // broken promise.
+  const { locale, isRefreshing } = useContent()
   const here = readPath(useLocation().pathname).slug
   // The menu is content. An item whose page or section is hidden in the CMS
   // drops out on its own: the item names a page, and the snapshot only carries
   // pages that are published.
-  const sections = useNavigation(here)
+  const published = useNavigation(here)
+  const sections = isRefreshing ? [] : published
   const navigate = useNavigate()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
