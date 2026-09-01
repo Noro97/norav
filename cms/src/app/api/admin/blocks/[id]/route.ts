@@ -18,6 +18,8 @@ const patchSchema = z.object({
   /** The version the editor read. A stale one means someone else saved first. */
   version: z.number().int().positive(),
   isVisible: z.boolean().optional(),
+  /** Move the section to another page. It lands at the end of that one. */
+  pageSlug: z.string().min(1).optional(),
   anchorId: z.string().min(1).max(64).nullable().optional(),
   settings: z.unknown().optional(),
   translations: z
@@ -102,9 +104,42 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     }
   }
 
+  // A move, resolved before the update so a bad slug fails without touching the
+  // row. The block lands at the end of its new page: a fractional position is
+  // meaningful only among its own neighbours, and carrying one across would put
+  // the section in an arbitrary place.
+  let destination: { id: string; position: number } | null = null
+  if (patch.pageSlug) {
+    const target = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [
+      patch.pageSlug,
+    ])
+    if (!target) return notFound('Page')
+
+    const last = await queryOne<{ last: string | null }>(
+      // Qualified, and cast in the outer select only: an unqualified order by
+      // would bind to a cast output column and sort these numbers as strings.
+      `select max(blocks.position)::text as last
+         from blocks where page_id = $1 and deleted_at is null`,
+      [target.id],
+    )
+    destination = { id: target.id, position: last?.last ? Number(last.last) + 1000 : 1000 }
+
+    const singleton = await queryOne<{ id: string }>(
+      `select b.id from blocks b
+        where b.page_id = $1 and b.type = (select type from blocks where id = $2)
+          and b.deleted_at is null`,
+      [target.id, id],
+    )
+    if (singleton) {
+      return conflict(`That page already has this section.`)
+    }
+  }
+
   const updated = await queryOne<{ version: number; updated_at: string }>(
     `update blocks
-        set is_visible = coalesce($2, is_visible),
+        set page_id    = coalesce($6::uuid, page_id),
+            position   = coalesce($7::numeric, position),
+            is_visible = coalesce($2, is_visible),
             anchor_id  = case when $3::boolean then $4 else anchor_id end,
             settings   = coalesce($5::jsonb, settings),
             version    = version + 1
@@ -116,6 +151,8 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
       Object.prototype.hasOwnProperty.call(patch, 'anchorId'),
       patch.anchorId ?? null,
       patch.settings === undefined ? null : JSON.stringify(patch.settings),
+      destination?.id ?? null,
+      destination?.position ?? null,
     ],
   )
 

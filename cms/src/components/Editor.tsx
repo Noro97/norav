@@ -9,6 +9,10 @@ import type {
 import { mergeLocale, pickLocalized, setAtPath } from '@norav/content-schema'
 import { BlockForm, type FieldSource } from './BlockForm'
 import { type WorkspaceView } from './ViewSwitcher'
+import { usePages } from './PagesContext'
+import { PageSettings } from './PageSettings'
+import { Modal } from './Modal'
+import { SLUG } from '@/lib/pages'
 import { Workspace, FeedbackBanner, LocaleTabs, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 
@@ -24,6 +28,8 @@ export interface EditorBlock {
 
 interface EditorProps {
   pageSlug: string
+  /** Re-reads the page list after one is created, renamed or deleted. */
+  onPagesChanged: () => Promise<void>
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
   collections: SerializedCollectionDefinition[]
@@ -108,6 +114,7 @@ export function Editor({
   view,
   onViewChange,
   onSignOut,
+  onPagesChanged,
 }: EditorProps) {
   const definitionsByType = useMemo(
     () => new Map(definitions.map((definition) => [definition.type, definition])),
@@ -127,6 +134,8 @@ export function Editor({
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [filter, setFilter] = useState('')
   const [pendingType, setPendingType] = useState('')
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [newPageSlug, setNewPageSlug] = useState<string | null>(null)
 
   // A singleton already on the page cannot be added twice.
   const available = useMemo(() => {
@@ -318,11 +327,46 @@ export function Editor({
     )
   }
 
+  const { pages } = usePages()
+  const current = pages.find((page) => page.slug === pageSlug)
+  const elsewhere = pages.filter((page) => page.slug !== pageSlug)
+
+  /** Moves a section to another page. It lands at the end of that one. */
+  const moveToPage = (id: string, slug: string) => {
+    const block = blocks.find((candidate) => candidate.id === id)
+    if (!block) return
+    void structural(
+      'move',
+      () =>
+        fetch(`/api/admin/blocks/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ version: block.version, pageSlug: slug }),
+        }),
+    ).then(onPagesChanged)
+  }
+
+  async function createPage(slug: string) {
+    const response = await fetch('/api/admin/pages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug }),
+    })
+    const body = await response.json().catch(() => null)
+    if (!response.ok) {
+      setFeedback({ kind: 'err', message: body?.error?.message ?? 'That did not work.' })
+      return
+    }
+    await onPagesChanged()
+    setNewPageSlug(null)
+    onViewChange({ kind: 'page', slug })
+  }
+
   const hasUnsaved = Object.values(dirty).some(Boolean)
 
   return (
     <Workspace
-      subtitle={`/${pageSlug}`}
+      subtitle={`/${pageSlug === 'home' ? '' : pageSlug}`}
       collections={collections}
       view={view}
       onViewChange={onViewChange}
@@ -330,6 +374,7 @@ export function Editor({
       environment={environment}
       onSignOut={onSignOut}
       busy={busy !== null}
+      onNewPage={() => setNewPageSlug('')}
       sidebar={
         <>
           {/* A filter rather than groups: the page is one ordered sequence, and
@@ -393,6 +438,25 @@ export function Editor({
                   >
                     ↓
                   </button>
+                  {elsewhere.length > 0 && (
+                    <select
+                      className="move-to"
+                      value=""
+                      disabled={busy !== null}
+                      aria-label="Move to another page"
+                      title="Move to another page"
+                      onChange={(event) => {
+                        if (event.target.value) moveToPage(block.id, event.target.value)
+                      }}
+                    >
+                      <option value="">→</option>
+                      {elsewhere.map((page) => (
+                        <option key={page.slug} value={page.slug}>
+                          /{page.slug === 'home' ? '' : page.slug}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <button
                     type="button"
                     onClick={() => remove(block.id)}
@@ -470,6 +534,15 @@ export function Editor({
               <button className="ghost" type="button" onClick={save} disabled={busy !== null || !dirty[selected.id]}>
                 {busy === 'save' ? 'Saving…' : 'Save'}
               </button>
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => setSettingsOpen(true)}
+                disabled={busy !== null}
+                title="Address, status and search listing"
+              >
+                Page settings
+              </button>
               <PreviewButton disabled={busy !== null} />
           <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
                 {busy === 'publish' ? 'Publishing…' : 'Publish'}
@@ -498,6 +571,65 @@ export function Editor({
           </>
         )}
       </>
+      {settingsOpen && current && (
+        <PageSettings
+          slug={pageSlug}
+          status={current.status}
+          seo={(current.seo ?? {}) as Record<string, { title?: string; description?: string }>}
+          locales={locales}
+          blocks={current.blocks}
+          onClose={() => setSettingsOpen(false)}
+          onSaved={(next) => {
+            setSettingsOpen(false)
+            if (next !== pageSlug) onViewChange({ kind: 'page', slug: next })
+          }}
+          onDeleted={() => {
+            setSettingsOpen(false)
+            onViewChange({ kind: 'page', slug: 'home' })
+          }}
+        />
+      )}
+
+      {newPageSlug !== null && (
+        <Modal
+          title="New page"
+          onClose={() => setNewPageSlug(null)}
+          footer={
+            <>
+              <button type="button" className="ghost" onClick={() => setNewPageSlug(null)}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="primary"
+                onClick={() => void createPage(newPageSlug)}
+                disabled={!SLUG.test(newPageSlug)}
+              >
+                Create
+              </button>
+            </>
+          }
+        >
+          <label className="field">
+            <span>Address</span>
+            <input
+              autoFocus
+              value={newPageSlug}
+              placeholder="work/new-case-study"
+              spellCheck={false}
+              onChange={(event) => setNewPageSlug(event.target.value)}
+            />
+            <small className="subtle">
+              {newPageSlug && !SLUG.test(newPageSlug)
+                ? 'Lowercase words, separated by - and /.'
+                : `The site will serve it at /${newPageSlug}`}
+            </small>
+          </label>
+          <p className="subtle">
+            It starts empty. Add sections to it, or move them here from another page.
+          </p>
+        </Modal>
+      )}
     </Workspace>
   )
 }
