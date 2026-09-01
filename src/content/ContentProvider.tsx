@@ -97,7 +97,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
   }, [i18n, locale])
   const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  // Starts true when a CMS is configured, because at the first paint nothing
+  // has been checked yet and "up to date" would be a guess. Cleared the moment
+  // the manifest answers, either way.
+  const [isRefreshing, setIsRefreshing] = useState(() => cmsOrigin() !== undefined)
   const [isPreview, setIsPreview] = useState(false)
 
   useEffect(() => {

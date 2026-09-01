@@ -124,14 +124,32 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     )
     destination = { id: target.id, position: last?.last ? Number(last.last) + 1000 : 1000 }
 
+    // `b.id <> $2` so that moving a block to the page it is already on is a
+    // no-op rather than a refusal to move it onto itself.
     const singleton = await queryOne<{ id: string }>(
       `select b.id from blocks b
-        where b.page_id = $1 and b.type = (select type from blocks where id = $2)
+        where b.page_id = $1 and b.id <> $2
+          and b.type = (select type from blocks where id = $2)
           and b.deleted_at is null`,
       [target.id, id],
     )
     if (singleton) {
       return conflict(`That page already has this section.`)
+    }
+
+    // Anchors are unique per page by index, so a collision here would surface as
+    // a constraint violation — a 500 for what is an ordinary editorial clash.
+    const anchorTaken = await queryOne<{ anchor_id: string }>(
+      `select b.anchor_id from blocks b
+        where b.page_id = $1 and b.id <> $2 and b.deleted_at is null
+          and b.anchor_id is not null
+          and b.anchor_id = (select anchor_id from blocks where id = $2)`,
+      [target.id, id],
+    )
+    if (anchorTaken) {
+      return conflict(
+        `That page already has a section anchored at "${anchorTaken.anchor_id}". Rename one of them first.`,
+      )
     }
   }
 

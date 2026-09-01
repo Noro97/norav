@@ -2,9 +2,11 @@ import type { z } from 'zod'
 import type { CollectionDefinition, SerializedCollectionDefinition } from '../define-collection'
 import { serializeCollectionDefinition } from '../define-collection'
 import { experienceCollection } from './experience'
+import { navigationCollection } from './navigation'
 import { validateWith, type ValidationResult } from '../blocks'
 
 export const COLLECTION_REGISTRY = {
+  navigation: navigationCollection,
   experience: experienceCollection,
 } satisfies Record<string, CollectionDefinition<z.ZodType, z.ZodType>>
 
@@ -37,5 +39,5 @@ export function validateEntryContent(key: string, value: unknown): ValidationRes
   return definition ? validateWith(definition.content, value) : unknownCollection(key)
 }
 
-export { experienceCollection }
+export { experienceCollection, navigationCollection }
 export type { ExperienceData, ExperienceContent } from './experience'

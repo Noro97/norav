@@ -21,6 +21,8 @@ export type FormControl =
   | 'repeater'
   | 'group'
   | 'collection'
+  /** A page in this site, chosen from the ones that exist. */
+  | 'page'
 
 /**
  * Declarative description of one editor control. The admin renders forms from

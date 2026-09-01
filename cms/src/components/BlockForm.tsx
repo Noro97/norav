@@ -3,6 +3,7 @@
 import type { FormField, Locale } from '@norav/content-schema'
 import { useState } from 'react'
 import { getAtPath } from '@norav/content-schema'
+import { usePages } from './PagesContext'
 import { MediaPicker } from './MediaPicker'
 import { Modal } from './Modal'
 
@@ -54,6 +55,7 @@ interface FieldProps extends BlockFormProps {
 }
 
 function Field({ field, prefix, ...form }: FieldProps) {
+  const { pages } = usePages()
   const source: FieldSource = field.source ?? 'content'
   const path = prefix ? `${prefix}.${field.field}` : field.field
   const root =
@@ -161,7 +163,23 @@ function Field({ field, prefix, ...form }: FieldProps) {
     <div className="field">
       <label htmlFor={id}>{field.label}</label>
 
-      {field.control === 'select' ? (
+      {field.control === 'page' ? (
+        // The pages that exist, rather than a URL typed by hand. A menu item
+        // stores the slug and the site derives the address, so this is the
+        // whole of what makes renaming a page safe.
+        <select
+          id={id}
+          value={String(value ?? '')}
+          disabled={disabled}
+          onChange={(e) => form.onChange(source, path, e.target.value)}
+        >
+          {pages.map((page) => (
+            <option key={page.slug} value={page.slug}>
+              /{page.slug === 'home' ? '' : page.slug}
+            </option>
+          ))}
+        </select>
+      ) : field.control === 'select' ? (
         <select
           id={id}
           value={String(value ?? '')}

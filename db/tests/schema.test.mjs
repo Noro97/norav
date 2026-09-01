@@ -380,6 +380,54 @@ await expectError(
 }
 
 {
+  // 0013 seeds the menu. The assertion that matters is what it stores: a page
+  // slug and a section, never an address — an address would look identical
+  // until someone renamed the page, and then point at nothing.
+  const { rows } = await db.query(
+    `select slug, data from entries where collection = 'navigation' order by position`,
+  )
+  check('the menu is seeded', rows.length === 8, `got ${rows.length}`)
+  check(
+    'no item stores an address',
+    rows.every((row) => !JSON.stringify(row.data).includes('/')),
+    JSON.stringify(rows.map((r) => r.data)),
+  )
+  check(
+    'the contact item points at the site chrome, where the footer lives',
+    rows.find((row) => row.slug === 'contact')?.data.page === 'site',
+  )
+
+  const { rows: labels } = await db.query(
+    `select t.locale, t.data from entry_translations t
+       join entries e on e.id = t.entry_id
+      where e.collection = 'navigation' and e.slug = 'about'`,
+  )
+  check('both languages are seeded', labels.length === 2, `got ${labels.length}`)
+  check(
+    'the Russian label is Russian',
+    labels.find((row) => row.locale === 'ru')?.data.label === 'Обо мне',
+  )
+}
+
+{
+  // The page route merges seo with `||` rather than replacing it, so a request
+  // carrying one locale must not drop the other. It is a shallow merge, which
+  // is right for whole locales and wrong for half of one — asserted both ways
+  // so the limit is written down rather than assumed.
+  const { rows: seoPage } = await db.query(
+    `insert into pages (slug, status, seo) values ('seo-merge', 'published', $1::jsonb) returning id`,
+    [JSON.stringify({ en: { title: 'English' }, ru: { title: 'Русский' } })],
+  )
+  await db.query(
+    `update pages set seo = seo || $2::jsonb where id = $1`,
+    [seoPage[0].id, JSON.stringify({ en: { title: 'Changed' } })],
+  )
+  const { rows: merged } = await db.query(`select seo from pages where id = $1`, [seoPage[0].id])
+  check('the other locale survives a one-locale write', merged[0].seo.ru?.title === 'Русский')
+  check('the written locale is replaced', merged[0].seo.en?.title === 'Changed')
+}
+
+{
   // History must survive the author's account being removed.
   await db.query(`insert into revisions (entity_type, entity_id, locale, data, author_id) values ('block', $1, 'en', '{}'::jsonb, $2)`, [hero.id, owner.id])
   await db.query(`delete from admin_users where id = $1`, [owner.id])
