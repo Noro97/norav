@@ -423,8 +423,8 @@ export function Editor({
                   }}
                 >
                   <span className={`dot${blockDraft?.isVisible ? '' : ' hidden'}`} />
-                  {label}
-                  {dirty[block.id] && <em style={{ color: 'var(--warn)' }}>•</em>}
+                  <span className="block-name">{label}</span>
+                  {dirty[block.id] && <em className="block-unsaved" title="Unsaved">•</em>}
                   <span className="type">{block.type}</span>
                 </button>
 
@@ -458,7 +458,7 @@ export function Editor({
                         if (event.target.value) moveToPage(block.id, event.target.value)
                       }}
                     >
-                      <option value="">Move to…</option>
+                      <option value="">⇄</option>
                       {elsewhere.map((page) => (
                         <option key={page.slug} value={page.slug}>
                           /{page.slug === 'home' ? '' : page.slug}
