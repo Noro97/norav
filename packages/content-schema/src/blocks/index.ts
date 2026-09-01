@@ -19,6 +19,13 @@ import {
   omniGridBlock,
   proofBlock,
 } from './case-study'
+import {
+  ecommerceDetailBlock,
+  logisticsDetailBlock,
+  merchDetailBlock,
+  omnigridDetailBlock,
+  proofDetailBlock,
+} from './case-study-detail'
 import { vibeCodingBlock } from './vibecoding'
 import { workflowBlock } from './workflow'
 
@@ -39,10 +46,15 @@ export const BLOCK_REGISTRY = {
   vibecoding: vibeCodingBlock,
   projects_intro: projectsIntroBlock,
   logistics: logisticsBlock,
+  logistics_detail: logisticsDetailBlock,
   merch: merchBlock,
+  merch_detail: merchDetailBlock,
   ecommerce: ecommerceBlock,
+  ecommerce_detail: ecommerceDetailBlock,
   omnigrid: omniGridBlock,
+  omnigrid_detail: omnigridDetailBlock,
   proof: proofBlock,
+  proof_detail: proofDetailBlock,
   workflow: workflowBlock,
   contact_cta: contactCtaBlock,
   terminal_footer: terminalFooterBlock,
@@ -99,6 +111,11 @@ export function validateBlockSettings(type: string, value: unknown): ValidationR
 export {
   bentoGridBlock,
   ecommerceBlock,
+  ecommerceDetailBlock,
+  logisticsDetailBlock,
+  merchDetailBlock,
+  omnigridDetailBlock,
+  proofDetailBlock,
   logisticsBlock,
   merchBlock,
   omniGridBlock,
@@ -128,5 +145,6 @@ export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-int
 export type { WorkflowContent } from './workflow'
 export type { VibeCodingContent } from './vibecoding'
 export type { CaseStudyContent, LogisticsContent } from './case-study'
+export type { CaseStudyDetailContent } from './case-study-detail'
 export type { BentoGridContent } from './bento-grid'
 export type { TerminalFooterContent } from './terminal-footer'

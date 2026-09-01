@@ -37,6 +37,14 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   ecommerce: named(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'),
   omnigrid: named(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'),
   proof: named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'),
+
+  // The reasoning under each demo. One component, five types — a type names
+  // exactly one block, so each study needs its own.
+  logistics_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'LogisticsDetail'),
+  merch_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'MerchDetail'),
+  ecommerce_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'EcommerceDetail'),
+  omnigrid_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'OmniGridDetail'),
+  proof_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'ProofDetail'),
   workflow: named(
     () => import('@/components/sections/WorkflowAutomation/WorkflowAutomation'),
     'WorkflowAutomation',
