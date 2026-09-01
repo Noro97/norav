@@ -68,7 +68,21 @@ a { color: var(--crimson-light); }
 }
 .block-item:hover { background: var(--panel-2); }
 .block-item[aria-current='true'] { background: var(--panel-2); border-color: rgba(181, 26, 43, 0.35); }
-.block-item .type { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: auto; }
+/* One line, always. The name gives way to an ellipsis rather than wrapping,
+   because a list whose rows change height as you read it is hard to scan. */
+.block-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.block-unsaved { flex: 0 0 auto; color: var(--warn); font-style: normal; }
+.block-item .type {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.65;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); flex: none; }
 .dot.hidden { background: var(--muted); }
 
@@ -163,18 +177,58 @@ fieldset > .help { margin-bottom: 14px; }
 .login { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
 .login form { width: 320px; }
 
-.block-row { display: flex; align-items: center; gap: 2px; }
-.block-row .block-item { flex: 1; min-width: 0; }
-.block-row .block-item > :nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.block-actions { display: flex; gap: 0; opacity: 0; transition: opacity 0.15s; }
+.block-row { position: relative; }
+.block-row .block-item { width: 100%; min-width: 0; }
+
+/* The actions sit over the row rather than beside it. Beside it they took
+   layout width the moment a pointer arrived, so the name reflowed and "Impact
+   strip" broke onto a second line under the cursor — the list moved while it
+   was being used. */
+.block-actions {
+  position: absolute;
+  inset-block: 3px;
+  inset-inline-end: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-inline-start: 18px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--panel-2) 18px,
+    var(--panel-2)
+  );
+  border-radius: 6px;
+}
 .block-row:hover .block-actions,
 .block-row:focus-within .block-actions { opacity: 1; }
-.block-actions button {
-  background: transparent; border: 0; color: var(--muted);
-  cursor: pointer; font-size: 11px; padding: 4px 5px; border-radius: 6px;
+
+/* One size for all four, so the row reads as a strip of controls rather than
+   three buttons and a form field. */
+.block-actions button,
+.block-actions select {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
 }
-.block-actions button:hover:not(:disabled) { color: var(--text); background: var(--panel-2); }
+.block-actions button:hover:not(:disabled),
+.block-actions select:hover:not(:disabled) { color: var(--text); background: var(--panel); }
 .block-actions button:disabled { opacity: 0.25; cursor: not-allowed; }
+/* No CSS arrow on this one: at 24px the glyph in the option is the whole label. */
+.block-actions select { background-image: none; appearance: none; text-indent: 1px; }
 
 .palette { display: flex; gap: 6px; margin-top: 14px; }
 .palette select {
@@ -184,20 +238,63 @@ fieldset > .help { margin-bottom: 14px; }
 }
 .palette button { padding: 7px 12px; font-size: 12px; }
 
-.views {
-  display: flex; flex-wrap: wrap; gap: 4px;
-  margin: 0 0 18px; padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
+/* A site map, not a row of chips. Four items wrapped fine; thirteen pages plus
+   the library wrapped into a pile with no hierarchy and no way to tell a page
+   from a tool. Two groups, one item per line, children under their parent. */
+.views { margin: 0 0 18px; }
+.views nav + nav {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.views-heading {
+  margin: 0 0 6px;
+  padding-inline-start: 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.7;
 }
 .view-item {
-  background: transparent; border: 1px solid transparent; border-radius: 7px;
-  color: var(--muted); cursor: pointer;
-  font: inherit; font-size: 12px; padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  text-align: start;
+  cursor: pointer;
+}
+.view-icon { display: flex; flex: 0 0 auto; opacity: 0.55; }
+.view-name { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The counts sit in a column of their own so the eye can read down them. */
+.view-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.5;
 }
 .view-item:hover:not(:disabled) { background: var(--panel-2); color: var(--text); }
+.view-item:hover:not(:disabled) .view-icon { opacity: 0.85; }
 .view-item[aria-current='true'] {
-  background: var(--panel-2); color: var(--text); border-color: rgba(181, 26, 43, 0.35);
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--crimson) 40%, transparent);
+  background: color-mix(in srgb, var(--crimson) 8%, transparent);
 }
+.view-item[aria-current='true'] .view-icon { opacity: 1; color: var(--crimson-light); }
+.view-item:disabled { opacity: 0.45; cursor: default; }
+.view-add { color: var(--muted); opacity: 0.75; }
+.view-add:hover:not(:disabled) { opacity: 1; }
+
 .view-item:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .main code {
@@ -420,15 +517,6 @@ table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 
 /* The page list is a site map: a child sits under its parent, and a page that
    needs explaining says so rather than looking like the others. */
-.view-note {
-  margin-left: 0.4rem;
-  font-style: normal;
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  opacity: 0.45;
-}
-
 .view-add {
   opacity: 0.7;
 }
@@ -439,20 +527,17 @@ table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
   font-size: 0.78rem;
 }
 
-.move-to {
-  max-width: 7.5rem;
-}
+
 
 /* Saved, but not on the site yet. Deliberately a mark rather than a word: it
    appears on most pages most of the time, and a row of "unpublished" labels
    would drown the names they belong to. */
 .view-dot {
-  display: inline-block;
-  width: 5px; height: 5px;
-  margin-left: 0.4rem;
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
   border-radius: 50%;
   background: var(--warn);
-  vertical-align: middle;
 }
 
 /* A fixed 340px column is right on a desktop and wrong on anything narrow:
