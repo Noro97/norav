@@ -36,6 +36,9 @@ function App() {
   // that gives a reader a header above an empty screen — which reads as broken
   // rather than as an address that has nothing behind it.
   const exists = snapshot.pages.some((page) => page.slug === slug && page.blocks.length > 0)
+  const hasHero = snapshot.pages.some(
+    (page) => page.slug === slug && page.blocks.some((block) => block.type === 'hero'),
+  )
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -79,8 +82,12 @@ function App() {
         )}
       </Suspense>
 
-      {/* R3F Canvas */}
-      {!prefersReducedMotion && (
+      {/* The 3D mark belongs to the hero, so it goes where the hero goes.
+          It used to hang in the app shell, which was invisible while the site
+          was one page and wrong the moment it was several: the mark floated
+          behind About and Skills, over sections that were never designed to sit
+          under it — and paid for a WebGL context on every page. */}
+      {!prefersReducedMotion && hasHero && (
         <Suspense fallback={null}>
           <SceneController />
         </Suspense>
