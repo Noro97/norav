@@ -49,13 +49,6 @@ export const PROOF_PROJECT: BentoProject = {
   variant: 'proof',
 }
 
-export const PROOF_METRICS = {
-  aiConfidence: { value: 98.4, suffix: '%' },
-  dbMigrations: { value: 27, suffix: '' },
-  xpTotal: { value: 15000, suffix: 'XP' },
-  badgeCount: { value: 42, suffix: '' },
-}
-
 export const MICRO_TILES = [
   { index: 0, icon: 'zap' },    // Performance Audit
   { index: 1, icon: 'shield' }, // Type-Safe Architecture

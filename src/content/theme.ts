@@ -137,11 +137,6 @@ export function readAccent(fallback = '#B51A2B'): string {
   return readToken('--color-crimson-500', fallback)
 }
 
-/** The second accent, for the same purpose. */
-export function readSecondary(fallback = '#22d3ee'): string {
-  return readToken('--color-cyan-500', fallback)
-}
-
 /**
  * `#rrggbb` at a given opacity, for canvas and WebGL, which take colour
  * strings rather than CSS and so cannot use `color-mix`.

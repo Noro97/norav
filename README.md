@@ -138,7 +138,7 @@ src/
   components/
     canvas/              R3F scene, particle field, GLSL shaders
     sections/            one folder or file per block type
-    cursor/  ui/  navigation/
+    ui/  navigation/
   i18n/locales/{en,ru}/  interface chrome only — see below
   lib/                   terminal commands, SSE reader, web vitals, the AI system prompt
   hooks/  store/  types/
