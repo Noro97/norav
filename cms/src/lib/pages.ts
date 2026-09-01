@@ -14,3 +14,10 @@ export const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/
  * would leave the site without one.
  */
 export const ROOT_SLUG = 'home'
+
+/**
+ * The page whose blocks render below every other one — the site's chrome.
+ * Named here so the admin can say so rather than showing it as an ordinary
+ * page nobody understands the purpose of.
+ */
+export const SITE_SLUG = 'site'

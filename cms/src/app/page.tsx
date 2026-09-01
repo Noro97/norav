@@ -20,6 +20,8 @@ import type { EnvironmentInfo } from '@/lib/environment'
 
 interface Loaded {
   user: { email: string; environment?: EnvironmentInfo }
+  /** Which page `blocks` came from. Not always the one that is selected. */
+  slug: string
   pages: PageSummary[]
   blocks: EditorBlock[]
   definitions: SerializedBlockDefinition[]
@@ -80,6 +82,7 @@ export default function AdminPage() {
 
       setLoaded({
         user: meBody.data,
+        slug: pageSlug,
         pages: pagesBody.data.pages,
         definitions: schemaBody.data.blocks,
         collections: schemaBody.data.collections,
@@ -176,16 +179,20 @@ export default function AdminPage() {
   }
 
   return withPages(
-    // Keyed by the page: the editor seeds blocks, drafts, the selection and the
-    // dirty set from its props once, as state. Without a key it stays mounted
-    // across a page switch and keeps the first page's sections — which is what
-    // it did, showing the home page's list under every other page's name.
-    // Remounting is also the right behaviour: another page is another editing
+    // Keyed by the page the blocks actually came from, not by the one that is
+    // selected. The editor seeds its state from props once, at mount; keying on
+    // the selection remounted it the instant a page was clicked, while the
+    // fetch was still in flight, so it seeded from the previous page's blocks
+    // and never remounted again. The header said /site and the list underneath
+    // was the home page's.
+    //
+    // Remounting per page is still right: another page is another editing
     // session, and carrying a selection or an unsaved draft into it would be
-    // worse than losing it.
+    // worse than dropping it.
     <Editor
-      key={pageSlug}
-      pageSlug={pageSlug}
+      key={loaded.slug}
+      pageSlug={loaded.slug}
+      loading={loaded.slug !== pageSlug}
       blocks={loaded.blocks}
       definitions={loaded.definitions}
       collections={loaded.collections}
