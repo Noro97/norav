@@ -31,7 +31,11 @@ const SceneController = lazy(() =>
 function App() {
   const { slug } = readPath(useLocation().pathname)
   const { snapshot } = useContent()
-  const exists = snapshot.pages.some((page) => page.slug === slug)
+  // A page with nothing on it is not a page. Hiding its last section in the CMS
+  // leaves the row in the database and the slug in the snapshot, and rendering
+  // that gives a reader a header above an empty screen — which reads as broken
+  // rather than as an address that has nothing behind it.
+  const exists = snapshot.pages.some((page) => page.slug === slug && page.blocks.length > 0)
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
