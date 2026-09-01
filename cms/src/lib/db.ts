@@ -9,11 +9,11 @@ import { join } from 'node:path'
  * database under `cms/.pglite`, applying `db/migrations` on first boot. Same
  * SQL, same placeholders, no Docker and no cloud account to get started.
  */
-export interface QueryResult<T> {
+interface QueryResult<T> {
   rows: T[]
 }
 
-export interface Db {
+interface Db {
   query<T = Record<string, unknown>>(sql: string, params?: unknown[]): Promise<QueryResult<T>>
   /**
    * Flush and release the connection. PGlite writes its data directory here —
@@ -80,7 +80,7 @@ async function createPgliteClient(): Promise<Db> {
 // instance would be re-created (and re-locked) on each change.
 const globalForDb = globalThis as unknown as { __noravDb?: Promise<Db> }
 
-export function getDb(): Promise<Db> {
+function getDb(): Promise<Db> {
   if (!globalForDb.__noravDb) {
     const connectionString = process.env.DATABASE_URL
 

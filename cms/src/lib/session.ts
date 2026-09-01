@@ -2,7 +2,7 @@ import { createHash, randomBytes } from 'node:crypto'
 import { cookies } from 'next/headers'
 import { query, queryOne } from './db'
 
-export const SESSION_COOKIE = 'norav_cms_session'
+const SESSION_COOKIE = 'norav_cms_session'
 const SESSION_DAYS = 30
 
 export interface SessionUser {
