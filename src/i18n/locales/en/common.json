@@ -19,5 +19,8 @@
   "labels.delivery": "Delivery",
   "labels.changes": "changes",
   "labels.commands": "commands",
-  "footer.builtWith": "Built with React + Three.js + GSAP + TypeScript"
+  "footer.builtWith": "Built with React + Three.js + GSAP + TypeScript",
+  "notFound.title": "This page does not exist",
+  "notFound.body": "The address is wrong, or the page was unpublished.",
+  "notFound.home": "Back to the site"
 }

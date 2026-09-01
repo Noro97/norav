@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router'
 import '@fontsource/inter-tight/900.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -24,9 +25,11 @@ applyRememberedTheme(BAKED_SNAPSHOTS.en.version)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ContentProvider>
-      <App />
-    </ContentProvider>
+    <BrowserRouter>
+      <ContentProvider>
+        <App />
+      </ContentProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
 

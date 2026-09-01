@@ -1,11 +1,17 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useScrollTracking } from '@/hooks/useScrollTracking'
+import { useHashScroll } from '@/hooks/useHashScroll'
 import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { BlockRenderer } from '@/content/BlockRenderer'
+import { PageHead } from '@/content/PageHead'
+import { NotFound } from '@/components/NotFound'
+import { readPath } from '@/content/routing'
+import { useContent } from '@/content/ContentProvider'
 
 const AnimatedGrain = lazy(() =>
   import('@/components/ui/AnimatedGrain').then((m) => ({ default: m.AnimatedGrain }))
@@ -23,6 +29,9 @@ const SceneController = lazy(() =>
 )
 
 function App() {
+  const { slug } = readPath(useLocation().pathname)
+  const { snapshot } = useContent()
+  const exists = snapshot.pages.some((page) => page.slug === slug)
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -32,6 +41,7 @@ function App() {
   }, [isMobile, setIsMobile])
 
   useScrollTracking()
+  useHashScroll()
 
   const mainRef = useRef<HTMLElement>(null)
 
@@ -75,9 +85,18 @@ function App() {
       <Navigation />
       <ScrollProgress />
 
-      {/* Sections, their order and their visibility all come from the CMS. */}
+      {/* Sections, their order and their visibility all come from the CMS —
+          and so does the set of pages. A slug the CMS has not published is a
+          404, not an empty page under a working header. */}
       <main ref={mainRef} className="relative z-10">
-        <BlockRenderer />
+        {exists ? (
+          <>
+            <PageHead slug={slug} />
+            <BlockRenderer slug={slug} />
+          </>
+        ) : (
+          <NotFound />
+        )}
       </main>
     </>
   )

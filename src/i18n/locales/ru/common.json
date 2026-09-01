@@ -19,5 +19,8 @@
   "labels.delivery": "Доставка",
   "labels.changes": "изменений",
   "labels.commands": "команд",
-  "footer.builtWith": "Создано с React + Three.js + GSAP + TypeScript"
+  "footer.builtWith": "Создано с React + Three.js + GSAP + TypeScript",
+  "notFound.title": "Такой страницы нет",
+  "notFound.body": "Адрес неверный, либо страницу сняли с публикации.",
+  "notFound.home": "Вернуться на сайт"
 }

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
+import { Link, useLocation } from 'react-router'
 import { useAppStore } from '@/store/useAppStore'
 import { SECTIONS } from '@/lib/constants'
-import { useVisibleAnchors } from '@/content/ContentProvider'
+import { useAnchorPages, useContent } from '@/content/ContentProvider'
+import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 
 // Map widget section IDs to their parent nav section
 const NAV_SECTION_MAP: Record<string, string> = {
@@ -16,20 +18,43 @@ const NAV_SECTION_MAP: Record<string, string> = {
 export function Navigation() {
   const rawActiveSection = useAppStore((s) => s.activeSection)
   const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
-  const { t, i18n } = useTranslation('common')
-  // A section hidden in the CMS is not on the page, so it must not be in the menu.
-  const visibleAnchors = useVisibleAnchors()
-  const sections = SECTIONS.filter((section) => visibleAnchors.has(section.id))
+  const { t } = useTranslation('common')
+  // A section hidden in the CMS is on no page, so it must not be in the menu.
+  const anchorPages = useAnchorPages()
+  const sections = SECTIONS.filter((section) => anchorPages.has(section.id))
+  const { locale } = useContent()
+  const here = readPath(useLocation().pathname).slug
+
+  /**
+   * Where a menu item points. A section on this page is a hash; a section on
+   * another page is that page's address plus the hash, so the browser lands and
+   * scrolls in one move.
+   */
+  const linkTo = useCallback(
+    (id: string) => {
+      const page = anchorPages.get(id) ?? HOME_SLUG
+      return page === here ? `#${id}` : `${hrefFor(page, locale)}#${id}`
+    },
+    [anchorPages, here, locale],
+  )
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleClick = useCallback((id: string) => {
-    const el = document.getElementById(id)
-    if (el) {
-      // Use native scroll — Lenis intercepts this automatically
+  /**
+   * Scroll rather than navigate when the section is already here. The link keeps
+   * its href either way: a menu item should be right-clickable, and a crawler
+   * should see where it goes.
+   */
+  const handleClick = useCallback(
+    (event: React.MouseEvent, id: string) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      event.preventDefault()
+      // Native scroll — Lenis intercepts this automatically.
       el.scrollIntoView()
-    }
-  }, [])
+    },
+    [],
+  )
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -54,23 +79,25 @@ export function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 backdrop-blur-md bg-background/60 border-b border-white/5">
       {/* Logo */}
-      <button
-        onClick={() => handleClick('hero')}
+      <Link
+        to={hrefFor(HOME_SLUG, locale)}
+        onClick={(event) => here === HOME_SLUG && handleClick(event, 'hero')}
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
         <span className="hidden sm:inline font-mono text-sm font-semibold tracking-widest uppercase">
           <span className="text-crimson-500">nor</span><span className="text-crimson-500">av</span><span className="text-white/45">.</span><span className="text-crimson-500">dev</span>
         </span>
-      </button>
+      </Link>
 
       {/* Dot navigation — desktop */}
       <div className="hidden md:flex items-center gap-1">
         {sections.map((section) => {
           const isActive = activeSection === section.id
           return (
-            <button
+            <Link
               key={section.id}
-              onClick={() => handleClick(section.id)}
+              to={linkTo(section.id)}
+              onClick={(event) => handleClick(event, section.id)}
               className={`
                 relative flex items-center gap-2 px-3 py-2 rounded-full
                 transition-all duration-300 ease-out
@@ -102,16 +129,17 @@ export function Navigation() {
               >
                 {t(section.labelKey)}
               </span>
-            </button>
+            </Link>
           )
         })}
-        <button
-          onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
+        <Link
+          to={hrefFor(here, otherLocale(locale))}
           className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
           aria-label="Switch language"
+          hrefLang={otherLocale(locale)}
         >
-          {i18n.language === 'en' ? 'RU' : 'EN'}
-        </button>
+          {otherLocale(locale).toUpperCase()}
+        </Link>
       </div>
 
       {/* Mobile — current section dropdown + language toggle */}
@@ -133,10 +161,11 @@ export function Navigation() {
               {sections.map((section) => {
                 const isActive = activeSection === section.id
                 return (
-                  <button
+                  <Link
                     key={section.id}
-                    onClick={() => {
-                      handleClick(section.id)
+                    to={linkTo(section.id)}
+                    onClick={(event) => {
+                      handleClick(event, section.id)
                       setDropdownOpen(false)
                     }}
                     className={`
@@ -159,20 +188,21 @@ export function Navigation() {
                       `}
                     />
                     {t(section.labelKey)}
-                  </button>
+                  </Link>
                 )
               })}
             </div>
           )}
         </div>
 
-        <button
-          onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}
+        <Link
+          to={hrefFor(here, otherLocale(locale))}
           className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
           aria-label="Switch language"
+          hrefLang={otherLocale(locale)}
         >
-          {i18n.language === 'en' ? 'RU' : 'EN'}
-        </button>
+          {otherLocale(locale).toUpperCase()}
+        </Link>
       </div>
     </nav>
   )
