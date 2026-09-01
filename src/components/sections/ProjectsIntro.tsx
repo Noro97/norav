@@ -1,6 +1,10 @@
 import { Fragment } from 'react'
+import { ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router'
 import { ContainerScroll } from '@warmbros/warmbros-components'
-import { useBlock } from '@/content/ContentProvider'
+import { useBlock, useContent } from '@/content/ContentProvider'
+import { useCaseStudyLinks } from '@/content/case-studies'
+import { hrefFor } from '@/content/routing'
 import { toneOf, type Tone } from '@/content/accent'
 import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content-schema'
 
@@ -19,6 +23,10 @@ function needsLeadingSpace(text: string): boolean {
  */
 export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<ProjectsIntroContent, ProjectsIntroSettings>('projects_intro')
+  // Whatever case studies have a page of their own. Empty while they all still
+  // sit below this band, which is exactly when a list of links would be wrong.
+  const links = useCaseStudyLinks()
+  const { locale } = useContent()
   if (!block) return null
 
   const { content, settings } = block
@@ -52,6 +60,32 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
           draggable={false}
         />
       </ContainerScroll>
+
+      {links.length > 0 && (
+        <div className="relative px-6 md:px-16 pb-24 -mt-8">
+          <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {links.map((study) => (
+              <Link
+                key={study.slug}
+                to={hrefFor(study.slug, locale)}
+                className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/20"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="label-mono">{study.number}</span>
+                  <ArrowUpRight
+                    className="w-4 h-4 text-white/25 transition-colors group-hover:text-cyan-400"
+                    strokeWidth={1.75}
+                  />
+                </div>
+                <h3 className="mt-3 text-xl font-bold text-white leading-tight">{study.title}</h3>
+                <p className="mt-2 text-white/40 text-sm leading-relaxed line-clamp-3">
+                  {study.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

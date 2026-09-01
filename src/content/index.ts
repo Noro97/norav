@@ -1,5 +1,4 @@
 import type { Snapshot, SnapshotBlock } from '@norav/content-schema'
-import { HOME_SLUG } from './routing'
 import enSnapshot from './snapshot.en.json'
 import ruSnapshot from './snapshot.ru.json'
 
@@ -21,7 +20,16 @@ export const BAKED_SNAPSHOTS = {
 
 export { HOME_SLUG } from './routing'
 
+/**
+ * Every block type on this site is a singleton, so a type names exactly one
+ * block wherever it lives. Searching every page rather than the home page is
+ * what lets a section be moved to another page in the CMS without the component
+ * that renders it knowing anything about pages.
+ */
 export function findBlock(snapshot: Snapshot, type: string): SnapshotBlock | undefined {
-  const page = snapshot.pages.find((candidate) => candidate.slug === HOME_SLUG)
-  return page?.blocks.find((block) => block.type === type)
+  for (const page of snapshot.pages) {
+    const block = page.blocks.find((candidate) => candidate.type === type)
+    if (block) return block
+  }
+  return undefined
 }
