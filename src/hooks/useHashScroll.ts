@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router'
 
 /**
@@ -12,8 +12,16 @@ import { useLocation } from 'react-router'
  */
 export function useHashScroll() {
   const { pathname, hash } = useLocation()
+  const arrivedFrom = useRef<string | null>(null)
 
   useEffect(() => {
+    // Only on arrival. The menu writes the anchor into the address as it scrolls
+    // smoothly; reacting to that would jump to the same place and cut the
+    // animation in half.
+    const arriving = arrivedFrom.current !== pathname
+    arrivedFrom.current = pathname
+    if (!arriving) return
+
     if (!hash) {
       window.scrollTo(0, 0)
       return
