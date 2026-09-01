@@ -21,14 +21,15 @@ interface BlockRow {
 }
 
 /** The editor's read model: a page with its blocks and every translation. */
-export async function GET(request: Request, context: { params: Promise<{ slug: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ slug: string[] }> }) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
 
   const { slug } = await context.params
+  const path = slug.join('/')
   const page = await queryOne<{ id: string; slug: string; status: string; seo: unknown }>(
     `select id, slug, status, seo from pages where slug = $1`,
-    [slug],
+    [path],
   )
   if (!page) return notFound('Page')
 
@@ -69,30 +70,31 @@ const patchSchema = z
   .refine((body) => Object.keys(body).length > 0, 'Nothing to change')
 
 /** Renames a page, changes what it publishes as, or edits its search listing. */
-export async function PATCH(request: Request, context: { params: Promise<{ slug: string }> }) {
+export async function PATCH(request: Request, context: { params: Promise<{ slug: string[] }> }) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
 
   const { slug } = await context.params
+  const path = slug.join('/')
   const parsed = patchSchema.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
     return invalid(parsed.error.issues.map((i) => ({ path: i.path.join('.'), message: i.message })))
   }
   const body = parsed.data
 
-  const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [slug])
+  const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [path])
   if (!page) return notFound('Page')
 
   // The site serves this page at its root, by that name. Renaming it would not
   // move the homepage — it would leave the site without one.
-  if (slug === ROOT_SLUG && body.slug && body.slug !== ROOT_SLUG) {
+  if (path === ROOT_SLUG && body.slug && body.slug !== ROOT_SLUG) {
     return fail(422, {
       code: 'root_page',
       message: `"${ROOT_SLUG}" is the address of the site itself and cannot be renamed.`,
     })
   }
 
-  if (body.slug && body.slug !== slug) {
+  if (body.slug && body.slug !== path) {
     const taken = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [body.slug])
     if (taken) return conflict(`A page at "${body.slug}" already exists.`)
   }
@@ -120,19 +122,20 @@ export async function PATCH(request: Request, context: { params: Promise<{ slug:
 }
 
 /** Removes a page. Its blocks must be moved or deleted first. */
-export async function DELETE(request: Request, context: { params: Promise<{ slug: string }> }) {
+export async function DELETE(request: Request, context: { params: Promise<{ slug: string[] }> }) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
 
   const { slug } = await context.params
-  if (slug === ROOT_SLUG) {
+  const path = slug.join('/')
+  if (path === ROOT_SLUG) {
     return fail(422, {
       code: 'root_page',
       message: `"${ROOT_SLUG}" is the address of the site itself and cannot be deleted.`,
     })
   }
 
-  const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [slug])
+  const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [path])
   if (!page) return notFound('Page')
 
   // blocks cascade on delete, and a block carries its translations and its
@@ -144,7 +147,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ slug
   )
   if (held && held.count > 0) {
     return conflict(
-      `"${slug}" still holds ${held.count} section${held.count === 1 ? '' : 's'}. Move or delete them first.`,
+      `"${path}" still holds ${held.count} section${held.count === 1 ? '' : 's'}. Move or delete them first.`,
     )
   }
 
@@ -156,8 +159,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ slug
     entityType: 'page',
     entityId: page.id,
     ip: clientIp(request),
-    diff: { slug },
+    diff: { slug: path },
   })
 
-  return ok({ deleted: slug })
+  return ok({ deleted: path })
 }
