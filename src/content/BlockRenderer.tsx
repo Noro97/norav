@@ -32,6 +32,20 @@ export function BlockRenderer({ slug }: { slug: string }) {
 
   const sections = slug === SITE_SLUG ? page.blocks : [...page.blocks, ...(chrome?.blocks ?? [])]
 
+  if (page.blocks.length === 0) {
+    // Only reachable in preview: a reader gets a 404 instead. The person
+    // looking at this just made the page and needs to know it is theirs and
+    // empty, not wonder whether the address was wrong.
+    return (
+      <section className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <span className="label-mono">/{slug}</span>
+        <p className="text-white/40 text-base max-w-md">
+          This page has no sections yet. Add one in the CMS, or move one here from another page.
+        </p>
+      </section>
+    )
+  }
+
   return (
     <>
       {sections.map((block) => {

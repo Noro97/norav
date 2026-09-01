@@ -552,7 +552,7 @@ export function Editor({
               >
                 Page settings
               </button>
-              <PreviewButton disabled={busy !== null} />
+              <PreviewButton slug={pageSlug} disabled={busy !== null} />
           <button className="primary" type="button" onClick={publish} disabled={busy !== null}>
                 {busy === 'publish' ? 'Publishing…' : 'Publish'}
               </button>
