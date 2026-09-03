@@ -273,6 +273,14 @@
   animation: cursor-blink 0.8s step-end infinite;
 }
 
+/* `settings.site.cursor` — CursorEffect (src/components/ui/effects/CursorEffect.tsx)
+   toggles this class on <html> while it's mounted, hiding the system cursor
+   everywhere so its own crosshair is the only one visible. */
+.cursor-effect-active,
+.cursor-effect-active * {
+  cursor: none !important;
+}
+
 /* Bento grid: `bento_grid.settings.glowBorder` makes every tile's border glow
    permanently instead of only on hover. Cascaded from the grid container so no
    individual tile component (there are eight) needs to know about it. */

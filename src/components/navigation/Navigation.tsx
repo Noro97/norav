@@ -5,6 +5,13 @@ import { useAppStore } from '@/store/useAppStore'
 import { useContent } from '@/content/ContentProvider'
 import { useNavigation } from '@/content/navigation'
 import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
+
+/** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
+interface SiteSettings {
+  navIndicator?: 'dot' | 'gooey'
+}
 
 // Map widget section IDs to their parent nav section
 const NAV_SECTION_MAP: Record<string, string> = {
@@ -25,7 +32,10 @@ export function Navigation() {
   // Holding the items for that fetch is the lesser fault: a menu that appears a
   // moment late is a load, a menu that offers a section which is not there is a
   // broken promise.
-  const { locale, isRefreshing } = useContent()
+  const { locale, isRefreshing, snapshot } = useContent()
+  const reducedMotion = useReducedMotion()
+  const siteSettings = snapshot.settings.site as SiteSettings | undefined
+  const navIndicator = reducedMotion ? 'dot' : (siteSettings?.navIndicator ?? 'dot')
   const here = readPath(useLocation().pathname).slug
   // The menu is content. An item whose page or section is hidden in the CMS
   // drops out on its own: the item names a page, and the snapshot only carries
@@ -103,12 +113,13 @@ export function Navigation() {
               className={`
                 relative flex items-center gap-2 px-3 py-2 rounded-full
                 transition-all duration-300 ease-out
-                ${isActive
+                ${isActive && navIndicator === 'dot'
                   ? 'bg-crimson-500/10'
                   : 'hover:bg-white/5'
                 }
               `}
             >
+              {isActive && navIndicator === 'gooey' && <GooeyNavIndicator />}
               <span
                 className={`
                   block w-1.5 h-1.5 rounded-full shrink-0
