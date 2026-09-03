@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { SECTION_HEADER_FIELDS, sectionHeader } from './shared'
+import { CARD_EFFECT_OPTIONS, SECTION_HEADER_FIELDS, cardEffect, sectionHeader } from './shared'
 
 /** Icons the section is designed around; anything else would break the grid's rhythm. */
 const icon = z.enum(['Layers', 'Bot', 'Component', 'Gauge', 'Sparkles', 'Rocket'])
@@ -18,7 +18,7 @@ const content = sectionHeader.extend({
     .max(8),
 })
 
-const settings = z.object({})
+const settings = z.object({ cardEffect: cardEffect.default('spotlight') })
 
 export const capabilitiesBlock = defineBlock({
   type: 'capabilities',
@@ -41,10 +41,18 @@ export const capabilitiesBlock = defineBlock({
         },
       ],
     },
-    settings: {},
+    settings: { cardEffect: 'spotlight' },
   },
   form: [
     ...SECTION_HEADER_FIELDS,
+    {
+      field: 'cardEffect',
+      control: 'select',
+      label: 'Card hover effect',
+      source: 'settings',
+      localized: false,
+      options: CARD_EFFECT_OPTIONS,
+    },
     {
       field: 'cards',
       control: 'repeater',
@@ -75,3 +83,4 @@ export const capabilitiesBlock = defineBlock({
 })
 
 export type CapabilitiesContent = z.infer<typeof content>
+export type CapabilitiesSettings = z.infer<typeof settings>

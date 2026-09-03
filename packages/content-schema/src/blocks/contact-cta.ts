@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
+import { CTA_STYLE_OPTIONS, ctaStyle } from './shared'
 
 const content = z.object({
   availability: z.string().max(60),
@@ -21,6 +22,8 @@ const content = z.object({
 const settings = z.object({
   email: z.string().min(1),
   showAvailability: z.boolean(),
+  ctaStyle: ctaStyle.default('solid'),
+  clickSpark: z.boolean().default(true),
 })
 
 export const contactCtaBlock = defineBlock({
@@ -40,7 +43,12 @@ export const contactCtaBlock = defineBlock({
       emailLabel: 'Email me',
       socials: [],
     },
-    settings: { email: 'noroavetisyan@gmail.com', showAvailability: true },
+    settings: {
+      email: 'noroavetisyan@gmail.com',
+      showAvailability: true,
+      ctaStyle: 'solid',
+      clickSpark: true,
+    },
   },
   form: [
     { field: 'availability', control: 'text', label: 'Availability badge' },
@@ -74,6 +82,15 @@ export const contactCtaBlock = defineBlock({
     },
     { field: 'email', control: 'text', label: 'Email address', source: 'settings' },
     { field: 'showAvailability', control: 'boolean', label: 'Show availability badge', source: 'settings' },
+    {
+      field: 'ctaStyle',
+      control: 'select',
+      label: 'Button style',
+      source: 'settings',
+      localized: false,
+      options: CTA_STYLE_OPTIONS,
+    },
+    { field: 'clickSpark', control: 'boolean', label: 'Spark on click', source: 'settings', localized: false },
   ],
 })
 

@@ -1,5 +1,8 @@
+import type { ReactNode } from 'react'
 import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } from 'lucide-react'
 import { useBlock } from '@/content/ContentProvider'
+import { StarBorderButton } from '@/components/ui/effects/StarBorderButton'
+import { ClickSpark } from '@/components/ui/effects/ClickSpark'
 import type { ContactCtaContent, ContactCtaSettings } from '@norav/content-schema'
 
 /** The social icons the CMS offers, resolved to components. */
@@ -9,6 +12,11 @@ const ICONS: Record<string, LucideIcon> = {
   telegram: Send,
   email: Mail,
   website: Globe,
+}
+
+/** Wraps the CTA in ClickSpark only when the setting is on. */
+function MaybeSpark({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return enabled ? <ClickSpark>{children}</ClickSpark> : <>{children}</>
 }
 
 export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
@@ -46,14 +54,30 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
               {content.body}
             </p>
 
-            <a
-              href={`mailto:${settings.email}`}
-              className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
-            >
-              <Mail className="w-4 h-4" strokeWidth={2} />
-              {content.emailLabel}
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            <MaybeSpark enabled={settings.clickSpark}>
+              {settings.ctaStyle === 'star-border' ? (
+                <StarBorderButton
+                  href={`mailto:${settings.email}`}
+                  className="rounded-full"
+                  innerClassName="rounded-full bg-crimson-500/90 hover:bg-crimson-500 transition-colors duration-300"
+                >
+                  <span className="group inline-flex items-center gap-2.5 px-6 py-3 text-white font-medium text-sm">
+                    <Mail className="w-4 h-4" strokeWidth={2} />
+                    {content.emailLabel}
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </StarBorderButton>
+              ) : (
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
+                >
+                  <Mail className="w-4 h-4" strokeWidth={2} />
+                  {content.emailLabel}
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              )}
+            </MaybeSpark>
 
             <div className="flex items-center justify-center gap-3 mt-9">
               {content.socials.map((social) => {

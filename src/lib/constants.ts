@@ -39,3 +39,7 @@ export const ARTIFACT_SPEED_MAX = 0.3
 // Dynamic grid
 export const GRID_SPACING = 40
 export const GRID_GLOW_RADIUS = 200
+
+// Tilt/glare cards
+export const TILT_MAX_DEG = 16
+export const TILT_GLARE_OPACITY = 0.15

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
+import { TEXT_REVEAL_OPTIONS, textReveal } from './shared'
 
 /**
  * The slider, the ghost-code backdrop and the architecture diagram's geometry
@@ -29,7 +30,7 @@ const content = z.object({
   archNodes: z.array(z.object({ node: archNode, label: z.string().min(1).max(40) })).max(12),
 })
 
-const settings = z.object({})
+const settings = z.object({ codeReveal: textReveal.exclude(['none']).default('scramble') })
 
 const TONE_OPTIONS = [
   { value: 'sky', label: 'Sky' },
@@ -63,13 +64,21 @@ export const vibeCodingBlock = defineBlock({
       stats: [],
       archNodes: [],
     },
-    settings: {},
+    settings: { codeReveal: 'scramble' },
   },
   form: [
     { field: 'sectionLabel', control: 'text', label: 'Eyebrow' },
     { field: 'title', control: 'text', label: 'Title' },
     { field: 'body', control: 'textarea', label: 'Body' },
     { field: 'microCopy', control: 'textarea', label: 'Pull quote' },
+    {
+      field: 'codeReveal',
+      control: 'select',
+      label: 'Pull quote reveal',
+      source: 'settings',
+      localized: false,
+      options: TEXT_REVEAL_OPTIONS.filter((option) => option.value !== 'none'),
+    },
     {
       field: 'slider',
       control: 'group',
@@ -129,3 +138,4 @@ export const vibeCodingBlock = defineBlock({
 })
 
 export type VibeCodingContent = z.infer<typeof content>
+export type VibeCodingSettings = z.infer<typeof settings>

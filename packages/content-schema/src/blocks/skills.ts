@@ -29,7 +29,7 @@ const content = sectionHeader.extend({
     .max(8),
 })
 
-const settings = z.object({})
+const settings = z.object({ showCounters: z.boolean().default(true) })
 
 export const skillsBlock = defineBlock({
   type: 'skills',
@@ -50,10 +50,17 @@ export const skillsBlock = defineBlock({
         { name: 'Frontend Core', skills: [{ name: 'React.js', level: 95, years: 7 }] },
       ],
     },
-    settings: {},
+    settings: { showCounters: true },
   },
   form: [
     ...SECTION_HEADER_FIELDS,
+    {
+      field: 'showCounters',
+      control: 'boolean',
+      label: 'Animate skill percentages',
+      source: 'settings',
+      localized: false,
+    },
     { field: 'proficiencyOverview', control: 'text', label: 'Chart heading' },
     {
       field: 'skillsTracked',
@@ -89,3 +96,4 @@ export const skillsBlock = defineBlock({
 })
 
 export type SkillsContent = z.infer<typeof content>
+export type SkillsSettings = z.infer<typeof settings>

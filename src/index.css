@@ -273,6 +273,16 @@
   animation: cursor-blink 0.8s step-end infinite;
 }
 
+/* ===== SHARED EFFECT COMPONENTS (src/components/ui/effects) ===== */
+@keyframes starBorderSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes clickSparkRay {
+  0% { opacity: 1; transform: rotate(var(--spark-angle, 0rad)) translateX(0) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--spark-angle, 0rad)) translateX(16px) scaleX(0.4); }
+}
+
 /* ===== SCROLL CONTAINER =====
    Framer Motion's useScroll({ target }) measures the target against
    document.scrollingElement (<html>), and warns when that element is

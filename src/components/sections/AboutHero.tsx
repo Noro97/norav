@@ -1,10 +1,11 @@
-import { Fragment, useCallback, useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useMagneticEffect } from '@/hooks/useMagneticEffect'
 import { useBlock } from '@/content/ContentProvider'
 import { toneOf, type Tone } from '@/content/accent'
+import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { AboutContent, AboutSettings } from '@norav/content-schema'
 
 const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
@@ -60,24 +61,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
   const cvLinkRef = useRef<HTMLAnchorElement>(null)
   useMagneticEffect(cvLinkRef, 60, 0.35)
 
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 })
   const [emailCopied, setEmailCopied] = useState<{ x: number; y: number } | null>(null)
-
-  const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTilt({ x: y * -8, y: x * 8 })
-    setGlowPos({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    })
-  }, [])
-
-  const handleCardMouseLeave = useCallback(() => {
-    setTilt({ x: 0, y: 0 })
-  }, [])
 
   useGSAP(() => {
     const section = sectionRef.current!
@@ -122,31 +106,14 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 mt-8">
           {/* Left — Interactive Avatar Card */}
           <div className="flex flex-col items-center lg:items-start">
-            <div
-              className="about-avatar relative w-full"
-              onMouseMove={handleCardMouseMove}
-              onMouseLeave={handleCardMouseLeave}
-              style={{
-                perspective: '800px',
-              }}
-            >
+            <div className="about-avatar relative w-full">
               {/* Ambient glow behind card */}
               <div className="absolute -inset-4 rounded-3xl bg-crimson-500/[0.06] blur-2xl pointer-events-none transition-opacity duration-500" />
 
-              <div
-                className="relative rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl overflow-hidden transition-transform duration-200 ease-out"
-                style={{
-                  transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                }}
+              <EffectCard
+                effect={settings.cardEffect}
+                className="rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl overflow-hidden"
               >
-                {/* Cursor-following border glow */}
-                <div
-                  className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
-                  style={{
-                    background: `radial-gradient(400px circle at ${glowPos.x}% ${glowPos.y}%, color-mix(in srgb, var(--color-crimson-500) 15%, transparent), transparent 60%)`,
-                  }}
-                />
-
                 {/* Photo */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden">
                   <img
@@ -219,7 +186,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                     {content.cvLabel}
                   </a>
                 </div>
-              </div>
+              </EffectCard>
             </div>
           </div>
 
