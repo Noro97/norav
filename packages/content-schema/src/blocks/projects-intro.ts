@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { ACCENT_OPTIONS, accent } from './shared'
+import { ACCENT_OPTIONS, CTA_STYLE_OPTIONS, TEXT_REVEAL_OPTIONS, accent, ctaStyle, textReveal } from './shared'
 
 /**
  * The scroll-reveal band that introduces the case studies. Its copy was
@@ -22,10 +22,14 @@ const content = z.object({
     .max(10),
   body: z.string().max(400),
   imageAlt: z.string().max(200),
+  /** Empty hides the button — most locales will want one, but it isn't forced. */
+  viewAllLabel: z.string().max(40).default(''),
 })
 
 const settings = z.object({
   image: z.string().min(1),
+  headlineReveal: textReveal.default('none'),
+  ctaStyle: ctaStyle.default('solid'),
 })
 
 export const projectsIntroBlock = defineBlock({
@@ -46,8 +50,9 @@ export const projectsIntroBlock = defineBlock({
       ],
       body: '',
       imageAlt: '',
+      viewAllLabel: 'View all work',
     },
-    settings: { image: '/assets/img/case-studies-hero.webp' },
+    settings: { image: '/assets/img/case-studies-hero.webp', headlineReveal: 'none', ctaStyle: 'solid' },
   },
   form: [
     { field: 'label', control: 'text', label: 'Eyebrow' },
@@ -67,7 +72,24 @@ export const projectsIntroBlock = defineBlock({
     },
     { field: 'body', control: 'textarea', label: 'Body' },
     { field: 'imageAlt', control: 'text', label: 'Image alt text' },
+    { field: 'viewAllLabel', control: 'text', label: '"View all work" button', help: 'Empty hides the button.' },
     { field: 'image', control: 'media', label: 'Image', source: 'settings' },
+    {
+      field: 'headlineReveal',
+      control: 'select',
+      label: 'Heading reveal',
+      source: 'settings',
+      localized: false,
+      options: TEXT_REVEAL_OPTIONS,
+    },
+    {
+      field: 'ctaStyle',
+      control: 'select',
+      label: '"View all work" button style',
+      source: 'settings',
+      localized: false,
+      options: CTA_STYLE_OPTIONS,
+    },
   ],
 })
 

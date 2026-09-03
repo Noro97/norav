@@ -19,6 +19,11 @@ function MaybeSpark({ enabled, children }: { enabled: boolean; children: ReactNo
   return enabled ? <ClickSpark>{children}</ClickSpark> : <>{children}</>
 }
 
+/** Wraps the CTA in the spinning star border only when that style is chosen. */
+function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return enabled ? <StarBorderButton className="rounded-full">{children}</StarBorderButton> : <>{children}</>
+}
+
 export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<ContactCtaContent, ContactCtaSettings>('contact_cta')
   if (!block) return null
@@ -55,19 +60,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
             </p>
 
             <MaybeSpark enabled={settings.clickSpark}>
-              {settings.ctaStyle === 'star-border' ? (
-                <StarBorderButton
-                  href={`mailto:${settings.email}`}
-                  className="rounded-full"
-                  innerClassName="rounded-full bg-crimson-500/90 hover:bg-crimson-500 transition-colors duration-300"
-                >
-                  <span className="group inline-flex items-center gap-2.5 px-6 py-3 text-white font-medium text-sm">
-                    <Mail className="w-4 h-4" strokeWidth={2} />
-                    {content.emailLabel}
-                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
-                </StarBorderButton>
-              ) : (
+              <MaybeStarBorder enabled={settings.ctaStyle === 'star-border'}>
                 <a
                   href={`mailto:${settings.email}`}
                   className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
@@ -76,7 +69,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
                   {content.emailLabel}
                   <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
-              )}
+              </MaybeStarBorder>
             </MaybeSpark>
 
             <div className="flex items-center justify-center gap-3 mt-9">

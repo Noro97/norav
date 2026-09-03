@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { ACCENT_OPTIONS, segments } from './shared'
+import { ACCENT_OPTIONS, TEXT_REVEAL_OPTIONS, segments, textReveal } from './shared'
 
 const content = z.object({
   subtitle: z.string().min(1).max(120),
@@ -16,6 +16,12 @@ const settings = z.object({
   showScrollHint: z.boolean(),
   /** Clicking the hero bursts the particle field. Off = a plain static hero. */
   enableParticleBurst: z.boolean(),
+  /**
+   * Applies to the role line above the name, not the name itself — the name
+   * already runs its own carefully timed per-character GSAP entrance, and a
+   * second reveal effect on the same text would fight it.
+   */
+  subtitleReveal: textReveal.default('none'),
 })
 
 export const heroBlock = defineBlock({
@@ -42,7 +48,7 @@ export const heroBlock = defineBlock({
       ],
       scrollHint: 'Scroll to explore',
     },
-    settings: { showScrollHint: true, enableParticleBurst: true },
+    settings: { showScrollHint: true, enableParticleBurst: true, subtitleReveal: 'none' },
   },
   form: [
     { field: 'subtitle', control: 'text', label: 'Role line', help: 'Small mono line above the name.' },
@@ -83,6 +89,15 @@ export const heroBlock = defineBlock({
       control: 'boolean',
       label: 'Particle burst on click',
       source: 'settings',
+    },
+    {
+      field: 'subtitleReveal',
+      control: 'select',
+      label: 'Role line reveal',
+      help: 'The name itself always uses its own character-by-character entrance.',
+      source: 'settings',
+      localized: false,
+      options: TEXT_REVEAL_OPTIONS,
     },
   ],
 })

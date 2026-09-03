@@ -6,6 +6,8 @@ import { useBlock, useContent } from '@/content/ContentProvider'
 import { useCaseStudyLinks } from '@/content/case-studies'
 import { hrefFor } from '@/content/routing'
 import { toneOf, type Tone } from '@/content/accent'
+import { ScrambleText } from '@/components/ui/effects/ScrambleText'
+import { StarBorderButton } from '@/components/ui/effects/StarBorderButton'
 import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content-schema'
 
 const TONE_CLASS: Record<Tone, string> = {
@@ -41,12 +43,42 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
               {content.heading.map((segment, index) => (
                 <Fragment key={index}>
                   {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
-                  <span className={TONE_CLASS[toneOf(segment.accent)]}>{segment.text}</span>
+                  <span className={TONE_CLASS[toneOf(segment.accent)]}>
+                    {settings.headlineReveal === 'none' ? (
+                      segment.text
+                    ) : (
+                      <ScrambleText text={segment.text} variant={settings.headlineReveal} />
+                    )}
+                  </span>
                   {segment.lineBreakAfter && <br />}
                 </Fragment>
               ))}
             </h2>
             <p className="text-white/40 text-base max-w-xl mx-auto">{content.body}</p>
+
+            {content.viewAllLabel && (
+              <div className="mt-6">
+                {settings.ctaStyle === 'star-border' ? (
+                  <StarBorderButton className="rounded-full">
+                    <Link
+                      to={hrefFor('work', locale)}
+                      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-background text-white/80 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
+                    >
+                      {content.viewAllLabel}
+                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Link>
+                  </StarBorderButton>
+                ) : (
+                  <Link
+                    to={hrefFor('work', locale)}
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/[0.08] text-white/60 hover:text-white hover:border-cyan-500/30 font-mono text-xs uppercase tracking-wider transition-colors duration-300"
+                  >
+                    {content.viewAllLabel}
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                )}
+              </div>
+            )}
           </>
         }
       >

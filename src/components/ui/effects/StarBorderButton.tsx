@@ -1,30 +1,27 @@
-import type { AnchorHTMLAttributes, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
-interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
+interface Props {
   children: ReactNode
-  /** The visible surface inside the spinning border. Defaults to a card-like fill. */
-  innerClassName?: string
+  /** Include the same rounding the wrapped element uses (e.g. `rounded-full`) — the wrapper doesn't infer it. */
+  className?: string
 }
 
 /**
- * Wraps any link in a rotating conic-gradient border. The rotation is a plain
- * CSS animation (`starBorderSpin`, defined in index.css) rather than JS, so
- * it costs nothing to mount and is trivial to freeze under reduced motion.
+ * Wraps any single link (a plain `<a>`, a router `<Link>`, whatever) in a
+ * rotating conic-gradient border. Deliberately doesn't own the interactive
+ * element itself — unlike a component that renders its own `<a>`, this composes
+ * with react-router's `<Link>` too, and the wrapped element supplies its own
+ * background/padding/shape, which shows through the 1px gap this leaves.
+ * The rotation is a plain CSS animation (`starBorderSpin`, in index.css)
+ * rather than JS, so it costs nothing to mount and freezes trivially under
+ * reduced motion.
  */
-export function StarBorderButton({
-  children,
-  className = '',
-  innerClassName = 'rounded-[11px] bg-background',
-  ...props
-}: Props) {
+export function StarBorderButton({ children, className = '' }: Props) {
   const reducedMotion = useReducedMotion()
 
   return (
-    <a
-      {...props}
-      className={`group relative inline-flex rounded-xl p-px overflow-hidden ${className}`}
-    >
+    <span className={`relative inline-flex p-px overflow-hidden ${className}`}>
       <span
         aria-hidden="true"
         className="absolute inset-[-1000%]"
@@ -34,9 +31,7 @@ export function StarBorderButton({
           animation: reducedMotion ? undefined : 'starBorderSpin 3s linear infinite',
         }}
       />
-      <span className={`relative inline-flex w-full items-center justify-center ${innerClassName}`}>
-        {children}
-      </span>
-    </a>
+      {children}
+    </span>
   )
 }

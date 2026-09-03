@@ -1,77 +1,29 @@
-import { useRef, useState, useCallback } from 'react'
+import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock, useCollection } from '@/content/ContentProvider'
-import type { ExperienceBlockContent, ExperienceContent, ExperienceData } from '@norav/content-schema'
+import { EffectCard, type CardEffect } from '@/components/ui/effects/EffectCard'
+import type { ExperienceBlockContent, ExperienceContent, ExperienceData, ExperienceSettings } from '@norav/content-schema'
 
 /** A published row: the non-localized columns composed with the translated ones. */
 type ExperienceRow = ExperienceData & ExperienceContent
 
-function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [transform, setTransform] = useState('perspective(800px) rotateX(0deg) rotateY(0deg)')
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 })
-
-  const frameRef = useRef(0)
-  const latest = useRef({ x: 0.5, y: 0.5 })
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current
-    if (!card) return
-    const rect = card.getBoundingClientRect()
-    latest.current = {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    }
-    // One re-render per frame instead of one per mousemove event.
-    if (frameRef.current) return
-    frameRef.current = requestAnimationFrame(() => {
-      frameRef.current = 0
-      const { x, y } = latest.current
-      setTransform(`perspective(800px) rotateX(${(y - 0.5) * -16}deg) rotateY(${(x - 0.5) * 16}deg) scale3d(1.03,1.03,1.03)`)
-      setGlare({ x: x * 100, y: y * 100, opacity: 0.15 })
-    })
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    if (frameRef.current) {
-      cancelAnimationFrame(frameRef.current)
-      frameRef.current = 0
-    }
-    setTransform('perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)')
-    setGlare({ x: 50, y: 50, opacity: 0 })
-  }, [])
-
+function InteractiveImageCard({ src, alt, effect }: { src: string; alt: string; effect: CardEffect }) {
   return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-crimson-500)_20%,_transparent)] will-change-transform"
-      style={{ transform, transition: 'transform 0.15s ease-out' }}
+    <EffectCard
+      effect={effect}
+      className="rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-crimson-500)_20%,_transparent)]"
     >
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        className="w-full h-full object-cover"
-      />
-      {/* Glare overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}), transparent 60%)`,
-        }}
-      />
+      <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover" />
       {/* Edge highlight */}
       <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/[0.08]" />
-    </div>
+    </EffectCard>
   )
 }
 
 export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<ExperienceBlockContent, { showImages: boolean }>('experience')
+  const block = useBlock<ExperienceBlockContent, ExperienceSettings>('experience')
   const roles = useCollection<ExperienceRow>('experience')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'experience', sectionRef)
@@ -216,7 +168,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                         isLeft ? 'md:pl-12' : 'md:pr-12'
                       }`}
                     >
-                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} />
+                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} effect={settings.imageEffect} />
                     </div>
                   )}
                 </div>

@@ -3,8 +3,12 @@ import { describe, expect, it } from 'vitest'
 import { StarBorderButton } from '../StarBorderButton'
 
 describe('StarBorderButton', () => {
-  it('renders its children inside a link', () => {
-    render(<StarBorderButton href="/work">View all work</StarBorderButton>)
+  it('renders the wrapped link unchanged', () => {
+    render(
+      <StarBorderButton className="rounded-full">
+        <a href="/work">View all work</a>
+      </StarBorderButton>
+    )
     const link = screen.getByRole('link', { name: 'View all work' })
     expect(link).toHaveAttribute('href', '/work')
   })

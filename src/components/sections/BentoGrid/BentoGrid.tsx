@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { BENTO_PROJECTS, MICRO_TILES } from './bento.data'
 import { useBlock } from '@/content/ContentProvider'
-import type { BentoGridContent } from '@norav/content-schema'
+import type { BentoGridContent, BentoGridSettings } from '@norav/content-schema'
 import { BentoProjectTile } from './BentoProjectTile'
 import { BentoMicroTile } from './BentoMicroTile'
 import { BentoImpactDashboard } from './BentoImpactDashboard'
@@ -64,7 +64,7 @@ function BentoIllustration({ src, alt }: { src: string; alt: string }) {
 }
 
 export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<BentoGridContent>('bento_grid')
+  const block = useBlock<BentoGridContent, BentoGridSettings>('bento_grid')
   const sectionRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'overview', sectionRef)
@@ -96,7 +96,7 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
   }, { scope: sectionRef })
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
 
   return (
     <section
@@ -123,7 +123,10 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
         {/* Bento Grid */}
         {/* Illustrations are addressed by the same keys as the copy: a slot
             number for the tiles, a name for the two standalone panels. */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        <div
+          ref={gridRef}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 ${settings.glowBorder ? 'bento-glow' : ''}`}
+        >
           {/* Row 1: NexusRoute (2col) + Perf Audit (1col) */}
           <BentoProjectTile project={BENTO_PROJECTS[0]!} index={0} className="md:col-span-2" />
           <BentoMicroTile index={MICRO_TILES[0]!.index} icon={MICRO_TILES[0]!.icon} illustration={tileImage(MICRO_TILES[0]!.index)} />

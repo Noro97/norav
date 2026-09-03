@@ -82,7 +82,7 @@ const content = z.object({
     .default([]),
 })
 
-const settings = z.object({})
+const settings = z.object({ glowBorder: z.boolean().default(false) })
 
 export const bentoGridBlock = defineBlock({
   type: 'bento_grid',
@@ -104,12 +104,20 @@ export const bentoGridBlock = defineBlock({
       dashboard: { title: 'Impact Dashboard', metrics: [] },
       principles: [],
     },
-    settings: {},
+    settings: { glowBorder: false },
   },
   form: [
     { field: 'sectionLabel', control: 'text', label: 'Eyebrow' },
     { field: 'title', control: 'text', label: 'Title' },
     { field: 'description', control: 'textarea', label: 'Description' },
+    {
+      field: 'glowBorder',
+      control: 'boolean',
+      label: 'Always-on tile glow',
+      help: 'Otherwise the glow only shows on hover.',
+      source: 'settings',
+      localized: false,
+    },
     {
       field: 'projects',
       control: 'repeater',
@@ -209,3 +217,4 @@ export const bentoGridBlock = defineBlock({
 })
 
 export type BentoGridContent = z.infer<typeof content>
+export type BentoGridSettings = z.infer<typeof settings>
