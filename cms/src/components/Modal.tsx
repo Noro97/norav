@@ -12,6 +12,9 @@ import { useCallback, useEffect, useRef, type ReactNode } from 'react'
  */
 const open: symbol[] = []
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 /**
  * A dialog that behaves like one.
  *
@@ -34,6 +37,7 @@ export function Modal({
   wide?: boolean
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
   const returnFocusTo = useRef<HTMLElement | null>(null)
   // The caller's onClose is rarely memoized (`onClose={() => setX(null)}` is
   // the natural way to write it) — reading it through a ref means a re-render
@@ -46,12 +50,7 @@ export function Modal({
   }, [onClose])
 
   const focusables = useCallback(
-    () =>
-      Array.from(
-        panelRef.current?.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ) ?? [],
-      ),
+    () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []),
     [],
   )
 
@@ -61,7 +60,14 @@ export function Modal({
     const isInnermost = () => open[open.length - 1] === token
 
     returnFocusTo.current = document.activeElement as HTMLElement | null
-    focusables()[0]?.focus()
+    // The body, not the panel: the footer's buttons live in the head, so they
+    // come first in DOM order and would otherwise swallow the opening focus —
+    // a dialog that opens with "Cancel" selected instead of the field you came
+    // to fill in. (React drops `autoFocus` from the DOM, so the field cannot
+    // just ask for it itself.)
+    const first =
+      bodyRef.current?.querySelector<HTMLElement>(FOCUSABLE) ?? focusables()[0]
+    first?.focus()
 
     function onKeyDown(event: KeyboardEvent) {
       if (!isInnermost()) return
@@ -125,7 +131,9 @@ export function Modal({
             Close
           </button>
         </div>
-        <div className="overlay-body">{children}</div>
+        <div ref={bodyRef} className="overlay-body">
+          {children}
+        </div>
       </div>
     </div>
   )
