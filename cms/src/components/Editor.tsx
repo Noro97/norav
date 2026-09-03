@@ -512,7 +512,17 @@ export function Editor({
     >
       <>
         {!selected || !definition || !draft ? (
-          <p className="subtle">This page has no blocks yet. Run `npm run seed` in cms/.</p>
+          // Two different empty states, and the difference matters: a page with
+          // no sections needs one added, while a page that has them just needs
+          // one picked. This used to say "Run `npm run seed`" in both cases —
+          // advice that only ever applied to a database with nothing in it at
+          // all, and that sends anyone who has just created a page off to run a
+          // command that will not add a section to it.
+          <p className="subtle">
+            {blocks.length === 0
+              ? 'Nothing on this page yet. Add a section from the list on the left.'
+              : 'Pick a section on the left to edit it.'}
+          </p>
         ) : (
           <>
             <h1>{definition.label}</h1>
