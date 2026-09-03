@@ -5,7 +5,8 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
-import type { LogisticsContent } from '@norav/content-schema'
+import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
+import type { CaseStudySettings, LogisticsContent } from '@norav/content-schema'
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -60,7 +61,7 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
 }
 
 export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<LogisticsContent>('logistics')
+  const block = useBlock<LogisticsContent, CaseStudySettings>('logistics')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('logistics', block?.content.sectionLabel ?? '')
@@ -140,7 +141,8 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
   }, [])
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
+  const screenshots = content.screenshots.map((s) => s.image).filter(Boolean)
 
   return (
     <section
@@ -233,6 +235,12 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
             {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>
+
+        {screenshots.length > 0 && (
+          <div className="lg:col-span-2 mt-6">
+            <GalleryVariant images={screenshots} variant={settings.galleryStyle} alt={content.title} />
+          </div>
+        )}
       </div>
     </section>
   )

@@ -7,7 +7,8 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
-import type { CaseStudyContent } from '@norav/content-schema'
+import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
+import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 import type { MerchConfig } from '@/types'
 
 const PRODUCT_TYPE_KEYS = [
@@ -90,7 +91,7 @@ function syntaxHighlight(json: string): string {
 }
 
 export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<CaseStudyContent>('merch')
+  const block = useBlock<CaseStudyContent, CaseStudySettings>('merch')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('merch', block?.content.sectionLabel ?? '')
@@ -201,7 +202,8 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
   const activeHex = activeColorIdx >= 0 ? COLOR_HEXES[activeColorIdx] : '#1a1a1a'
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
+  const screenshots = content.screenshots.map((s) => s.image).filter(Boolean)
 
   return (
     <section
@@ -418,6 +420,12 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
             <div className="absolute left-0 top-14 bottom-0 w-8 bg-gradient-to-r from-white/[0.01] to-transparent pointer-events-none" />
           </div>
         </div>
+
+        {screenshots.length > 0 && (
+          <div className="mt-10">
+            <GalleryVariant images={screenshots} variant={settings.galleryStyle} alt={content.title} />
+          </div>
+        )}
       </div>
     </section>
   )

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
+import { TEXT_REVEAL_OPTIONS, textReveal } from './shared'
 
 /**
  * The terminal's narrative — what it says when it opens, who it says you are,
@@ -33,7 +34,10 @@ const content = z.object({
   commandNotFound: z.string().min(1).max(160),
 })
 
-const settings = z.object({})
+const settings = z.object({
+  /** Applies to each command's response as it's printed — never to what the visitor typed. */
+  outputTextEffect: textReveal.default('none'),
+})
 
 export const terminalFooterBlock = defineBlock({
   type: 'terminal_footer',
@@ -56,10 +60,19 @@ export const terminalFooterBlock = defineBlock({
       hire: { message: '—', openTo: '—', location: '—', burst: '—', niceTry: '—' },
       commandNotFound: 'command not found: {{cmd}}',
     },
-    settings: {},
+    settings: { outputTextEffect: 'none' },
   },
   form: [
     { field: 'sectionLabel', control: 'text', label: 'Eyebrow' },
+    {
+      field: 'outputTextEffect',
+      control: 'select',
+      label: 'Command output reveal',
+      help: 'Applies to what the terminal prints back, not to what the visitor types.',
+      source: 'settings',
+      localized: false,
+      options: TEXT_REVEAL_OPTIONS,
+    },
     { field: 'title', control: 'text', label: 'Title' },
     { field: 'subtitle', control: 'text', label: 'Subtitle' },
     { field: 'titleBar', control: 'text', label: 'Window title', localized: false },
@@ -107,3 +120,4 @@ export const terminalFooterBlock = defineBlock({
 })
 
 export type TerminalFooterContent = z.infer<typeof content>
+export type TerminalFooterSettings = z.infer<typeof settings>

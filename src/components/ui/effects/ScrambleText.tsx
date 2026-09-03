@@ -61,7 +61,7 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
           text
             .split('')
             .map((char, index) => {
-              if (char === ' ') return ' '
+              if (/\s/.test(char)) return char
               if (index < revealCount) return char
               return chars[Math.floor(Math.random() * chars.length)]
             })
@@ -84,7 +84,7 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
         setDisplay(
           text
             .split('')
-            .map((char) => (char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]))
+            .map((char) => (/\s/.test(char) ? char : chars[Math.floor(Math.random() * chars.length)]))
             .join('')
         )
       }, STEP_MS)

@@ -5,7 +5,8 @@ import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
-import type { CaseStudyContent } from '@norav/content-schema'
+import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
+import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 import type { FilterState, Product } from '@/types'
 import { ProductDetailModal } from './ProductDetailModal'
 
@@ -129,7 +130,7 @@ function FilterGraph({ filters }: { filters: FilterState }) {
 }
 
 export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<CaseStudyContent>('ecommerce')
+  const block = useBlock<CaseStudyContent, CaseStudySettings>('ecommerce')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('ecommerce', block?.content.sectionLabel ?? '')
@@ -211,7 +212,8 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
   const paginatedProducts = filteredProducts.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
+  const screenshots = content.screenshots.map((s) => s.image).filter(Boolean)
 
   return (
     <section
@@ -454,6 +456,12 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
             )}
           </div>
         </div>
+
+        {screenshots.length > 0 && (
+          <div className="mt-10">
+            <GalleryVariant images={screenshots} variant={settings.galleryStyle} alt={content.title} />
+          </div>
+        )}
       </div>
       {selectedProduct && (
         <ProductDetailModal

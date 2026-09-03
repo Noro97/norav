@@ -3,6 +3,8 @@ import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } fr
 import { useBlock } from '@/content/ContentProvider'
 import { StarBorderButton } from '@/components/ui/effects/StarBorderButton'
 import { ClickSpark } from '@/components/ui/effects/ClickSpark'
+import { OrbBackground } from '@/components/ui/effects/OrbBackground'
+import { ParticlesBackground } from '@/components/ui/effects/ParticlesBackground'
 import type { ContactCtaContent, ContactCtaSettings } from '@norav/content-schema'
 
 /** The social icons the CMS offers, resolved to components. */
@@ -35,6 +37,9 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
         <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-crimson-500/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {/* Ambient glow */}
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl pointer-events-none bg-crimson-500/10" />
+
+          {settings.background === 'orb' && <OrbBackground />}
+          {settings.background === 'particles' && <ParticlesBackground />}
 
           <div className="relative">
             {settings.showAvailability && (

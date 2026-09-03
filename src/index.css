@@ -291,6 +291,15 @@
   100% { opacity: 0; transform: rotate(var(--spark-angle, 0rad)) translateX(16px) scaleX(0.4); }
 }
 
+@keyframes beamsRotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.08); opacity: 0.25; }
+}
+
 /* ===== SCROLL CONTAINER =====
    Framer Motion's useScroll({ target }) measures the target against
    document.scrollingElement (<html>), and warns when that element is

@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { CTA_STYLE_OPTIONS, ctaStyle } from './shared'
+import { BACKGROUND_EFFECT_OPTIONS, CTA_STYLE_OPTIONS, backgroundEffect, ctaStyle } from './shared'
+
+/** Threads/Beams stay reserved for the workflow block — only Orb and Particles apply here. */
+const contactBackgroundOptions = BACKGROUND_EFFECT_OPTIONS.filter((o) => o.value !== 'threads' && o.value !== 'beams')
 
 const content = z.object({
   availability: z.string().max(60),
@@ -24,6 +27,7 @@ const settings = z.object({
   showAvailability: z.boolean(),
   ctaStyle: ctaStyle.default('solid'),
   clickSpark: z.boolean().default(true),
+  background: backgroundEffect.exclude(['threads', 'beams']).default('none'),
 })
 
 export const contactCtaBlock = defineBlock({
@@ -48,6 +52,7 @@ export const contactCtaBlock = defineBlock({
       showAvailability: true,
       ctaStyle: 'solid',
       clickSpark: true,
+      background: 'none',
     },
   },
   form: [
@@ -91,6 +96,14 @@ export const contactCtaBlock = defineBlock({
       options: CTA_STYLE_OPTIONS,
     },
     { field: 'clickSpark', control: 'boolean', label: 'Spark on click', source: 'settings', localized: false },
+    {
+      field: 'background',
+      control: 'select',
+      label: 'Background effect',
+      source: 'settings',
+      localized: false,
+      options: contactBackgroundOptions,
+    },
   ],
 })
 

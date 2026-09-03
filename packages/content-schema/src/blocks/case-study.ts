@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { defineBlock, type BlockDefinition, type FormField } from '../define-block'
+import { GALLERY_STYLE_OPTIONS, galleryStyle } from './shared'
 
 /**
  * The five case studies share a shape: an editorial header and a row of
@@ -15,11 +16,14 @@ const content = z.object({
   title: z.string().min(1).max(140),
   description: z.string().min(1).max(600),
   techStack: z.array(z.object({ name: z.string().min(1).max(40) })).max(12),
+  /** Optional — the widget's own demo is the primary visual; this is an add-on. */
+  screenshots: z.array(z.object({ image: z.string().default('') })).max(8).default([]),
 })
 
-const settings = z.object({})
+const settings = z.object({ galleryStyle: galleryStyle.default('grid') })
 
 export type CaseStudyContent = z.infer<typeof content>
+export type CaseStudySettings = z.infer<typeof settings>
 
 /** The logistics case study, which carries a fallback for its map. */
 export type LogisticsContent = CaseStudyContent & { mapFallback: string }
@@ -51,9 +55,10 @@ export function defineCaseStudy(
         title: defaults.title,
         description: '—',
         techStack: defaults.techStack.map((name) => ({ name })),
+        screenshots: [],
         ...Object.fromEntries(Object.keys(extra.schema).map((key) => [key, ''])),
       },
-      settings: {},
+      settings: { galleryStyle: 'grid' },
     },
     form: [
       ...extra.form,
@@ -73,6 +78,23 @@ export function defineCaseStudy(
         max: 12,
         help: 'Product names — edited once, shown in every language.',
         fields: [{ field: 'name', control: 'text', label: 'Name', localized: false }],
+      },
+      {
+        field: 'screenshots',
+        control: 'repeater',
+        label: 'Screenshots',
+        itemLabel: 'image',
+        max: 8,
+        help: 'Optional — shown as a gallery alongside the live demo. Leave empty for none.',
+        fields: [{ field: 'image', control: 'media', label: 'Image', localized: false }],
+      },
+      {
+        field: 'galleryStyle',
+        control: 'select',
+        label: 'Gallery style',
+        source: 'settings',
+        localized: false,
+        options: GALLERY_STYLE_OPTIONS,
       },
     ],
   }) as BlockDefinition
