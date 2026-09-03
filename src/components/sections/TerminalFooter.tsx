@@ -4,12 +4,13 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
-import type { TerminalFooterContent } from '@norav/content-schema'
+import type { TerminalFooterContent, TerminalFooterSettings } from '@norav/content-schema'
 import { useTerminal } from '@/hooks/useTerminal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { ScrambleText } from '@/components/ui/effects/ScrambleText'
 
 export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<TerminalFooterContent>('terminal_footer')
+  const block = useBlock<TerminalFooterContent, TerminalFooterSettings>('terminal_footer')
   const { t } = useTranslation(['terminal', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'terminal', sectionRef)
@@ -38,7 +39,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
   }, [lines])
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
 
   return (
     <section
@@ -86,7 +87,11 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
                   </div>
                 ) : (
                   <div className="text-white/50 whitespace-pre">
-                    {line.content}
+                    {settings.outputTextEffect === 'none' ? (
+                      line.content
+                    ) : (
+                      <ScrambleText text={line.content} variant={settings.outputTextEffect} />
+                    )}
                   </div>
                 )}
               </div>

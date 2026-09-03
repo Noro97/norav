@@ -4,12 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
-import type { SkillsContent } from '@norav/content-schema'
+import { CountUp } from '@/components/ui/effects/CountUp'
+import type { SkillsContent, SkillsSettings } from '@norav/content-schema'
 
 type SkillCategory = SkillsContent['categories'][number]
 type Skill = SkillCategory['skills'][number]
 
-function SkillBar({ skill, animate }: { skill: Skill; animate: boolean }) {
+function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boolean; showCounters: boolean }) {
   // The gradient spans the whole track, and the fill uncovers the part of it
   // the skill reaches — so the colour carries the same meaning as the length:
   // a bar that stops early stops in the red, one that runs on ends green.
@@ -26,7 +27,11 @@ function SkillBar({ skill, animate }: { skill: Skill; animate: boolean }) {
             {skill.years}y
           </span>
           <span className="font-mono text-xs text-white/45">
-            {skill.level}%
+            {showCounters ? (
+              <CountUp target={skill.level} run={animate} suffix="%" />
+            ) : (
+              `${skill.level}%`
+            )}
           </span>
         </div>
       </div>
@@ -161,7 +166,7 @@ function categoryGlow(index: number, count: number): string {
 }
 
 export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<SkillsContent>('skills')
+  const block = useBlock<SkillsContent, SkillsSettings>('skills')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'skills', sectionRef)
   const [animate, setAnimate] = useState(false)
@@ -195,7 +200,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
   }, { scope: sectionRef })
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
   const categories = content.categories
   const totalSkills = categories.reduce((sum, category) => sum + category.skills.length, 0)
 
@@ -257,6 +262,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                         key={skill.name}
                         skill={skill}
                         animate={animate}
+                        showCounters={settings.showCounters}
                       />
                     ))}
                   </div>

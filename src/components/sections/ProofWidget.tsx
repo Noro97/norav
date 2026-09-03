@@ -6,7 +6,8 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
-import type { CaseStudyContent } from '@norav/content-schema'
+import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
+import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 
 interface Activity {
   key: string
@@ -47,7 +48,7 @@ const STEP_DURATION = 800
 const REP_INTERVAL = 250
 
 export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<CaseStudyContent>('proof')
+  const block = useBlock<CaseStudyContent, CaseStudySettings>('proof')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('proof', block?.content.sectionLabel ?? '')
@@ -254,7 +255,8 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
   const activity = ACTIVITIES[selectedActivity]!
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
+  const screenshots = content.screenshots.map((s) => s.image).filter(Boolean)
 
   return (
     <section
@@ -508,6 +510,12 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
             </div>
           </div>
         </div>
+
+        {screenshots.length > 0 && (
+          <div className="mt-10">
+            <GalleryVariant images={screenshots} variant={settings.galleryStyle} alt={content.title} />
+          </div>
+        )}
       </div>
     </section>
   )

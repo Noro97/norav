@@ -1,5 +1,10 @@
+import type { ReactNode } from 'react'
 import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } from 'lucide-react'
 import { useBlock } from '@/content/ContentProvider'
+import { StarBorderButton } from '@/components/ui/effects/StarBorderButton'
+import { ClickSpark } from '@/components/ui/effects/ClickSpark'
+import { OrbBackground } from '@/components/ui/effects/OrbBackground'
+import { ParticlesBackground } from '@/components/ui/effects/ParticlesBackground'
 import type { ContactCtaContent, ContactCtaSettings } from '@norav/content-schema'
 
 /** The social icons the CMS offers, resolved to components. */
@@ -9,6 +14,16 @@ const ICONS: Record<string, LucideIcon> = {
   telegram: Send,
   email: Mail,
   website: Globe,
+}
+
+/** Wraps the CTA in ClickSpark only when the setting is on. */
+function MaybeSpark({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return enabled ? <ClickSpark>{children}</ClickSpark> : <>{children}</>
+}
+
+/** Wraps the CTA in the spinning star border only when that style is chosen. */
+function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return enabled ? <StarBorderButton className="rounded-full">{children}</StarBorderButton> : <>{children}</>
 }
 
 export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
@@ -22,6 +37,9 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
         <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-crimson-500/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {/* Ambient glow */}
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl pointer-events-none bg-crimson-500/10" />
+
+          {settings.background === 'orb' && <OrbBackground />}
+          {settings.background === 'particles' && <ParticlesBackground />}
 
           <div className="relative">
             {settings.showAvailability && (
@@ -46,14 +64,18 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
               {content.body}
             </p>
 
-            <a
-              href={`mailto:${settings.email}`}
-              className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
-            >
-              <Mail className="w-4 h-4" strokeWidth={2} />
-              {content.emailLabel}
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            <MaybeSpark enabled={settings.clickSpark}>
+              <MaybeStarBorder enabled={settings.ctaStyle === 'star-border'}>
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
+                >
+                  <Mail className="w-4 h-4" strokeWidth={2} />
+                  {content.emailLabel}
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              </MaybeStarBorder>
+            </MaybeSpark>
 
             <div className="flex items-center justify-center gap-3 mt-9">
               {content.socials.map((social) => {

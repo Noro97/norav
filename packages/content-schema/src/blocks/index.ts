@@ -28,6 +28,10 @@ import {
 } from './case-study-detail'
 import { vibeCodingBlock } from './vibecoding'
 import { workflowBlock } from './workflow'
+import { galleryBlock } from './gallery'
+import { ctaBannerBlock } from './cta-banner'
+import { testimonialsBlock } from './testimonials'
+import { metricsBlock } from './metrics'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -58,6 +62,14 @@ export const BLOCK_REGISTRY = {
   workflow: workflowBlock,
   contact_cta: contactCtaBlock,
   terminal_footer: terminalFooterBlock,
+
+  // Built out of the shared effects rather than around a bespoke widget, and
+  // none of them singletons: the point of each is to be usable on any page,
+  // more than once.
+  gallery: galleryBlock,
+  cta_banner: ctaBannerBlock,
+  testimonials: testimonialsBlock,
+  metrics: metricsBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -136,15 +148,19 @@ export {
 export type { HeroContent, HeroSettings } from './hero'
 export type { AboutContent, AboutSettings } from './about'
 export type { ImpactStripContent, ImpactStripSettings } from './impact-strip'
-export type { CapabilitiesContent } from './capabilities'
-export type { ExperienceBlockContent } from './experience'
-export type { SkillsContent } from './skills'
-export type { TechMarqueeContent } from './tech-marquee'
+export type { CapabilitiesContent, CapabilitiesSettings } from './capabilities'
+export type { ExperienceBlockContent, ExperienceSettings } from './experience'
+export type { SkillsContent, SkillsSettings } from './skills'
+export type { TechMarqueeContent, TechMarqueeSettings } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
 export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
-export type { WorkflowContent } from './workflow'
-export type { VibeCodingContent } from './vibecoding'
-export type { CaseStudyContent, LogisticsContent } from './case-study'
+export type { WorkflowContent, WorkflowSettings } from './workflow'
+export type { VibeCodingContent, VibeCodingSettings } from './vibecoding'
+export type { CaseStudyContent, CaseStudySettings, LogisticsContent } from './case-study'
 export type { CaseStudyDetailContent } from './case-study-detail'
-export type { BentoGridContent } from './bento-grid'
-export type { TerminalFooterContent } from './terminal-footer'
+export type { BentoGridContent, BentoGridSettings } from './bento-grid'
+export type { TerminalFooterContent, TerminalFooterSettings } from './terminal-footer'
+export type { GalleryContent, GallerySettings } from './gallery'
+export type { CtaBannerContent, CtaBannerSettings } from './cta-banner'
+export type { TestimonialsContent, TestimonialsSettings } from './testimonials'
+export type { MetricsContent, MetricsSettings } from './metrics'

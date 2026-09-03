@@ -14,7 +14,8 @@ import {
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
-import type { CaseStudyContent } from '@norav/content-schema'
+import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
+import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 import { useShipments } from './useShipments'
 import { OMNIGRID_COLUMNS, STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
 import type { ShipmentRecord, ShipmentStatus, ShipmentPriority } from './omnigrid.data'
@@ -32,7 +33,7 @@ const CACHE_COLORS: Record<string, string> = {
 
 
 function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<CaseStudyContent>('omnigrid')
+  const block = useBlock<CaseStudyContent, CaseStudySettings>('omnigrid')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('omnigrid', block?.content.sectionLabel ?? '')
@@ -101,7 +102,8 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
   }, [rows])
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
+  const screenshots = content.screenshots.map((s) => s.image).filter(Boolean)
 
   return (
     <section
@@ -316,6 +318,12 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
             </div>
           </div>
         </div>
+
+        {screenshots.length > 0 && (
+          <div className="mt-10">
+            <GalleryVariant images={screenshots} variant={settings.galleryStyle} alt={content.title} />
+          </div>
+        )}
       </div>
 
       {selectedRow && (

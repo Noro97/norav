@@ -51,3 +51,51 @@ export const SECTION_HEADER_FIELDS: FormField[] = [
   { field: 'title', control: 'text', label: 'Title' },
   { field: 'description', control: 'textarea', label: 'Description' },
 ]
+
+/**
+ * Shared animation-variant vocabularies.
+ *
+ * Each block that offers an effect picks from one of these enums rather than
+ * defining its own, so "spotlight" or "scramble" means the same thing (and is
+ * rendered by the same shared component under `src/components/ui/effects/`)
+ * everywhere it appears. All of these are `settings`, never `content` — a
+ * choice of visual treatment isn't copy, so it never differs per locale.
+ */
+
+export const CARD_EFFECT_OPTIONS: { value: string; label: string }[] = [
+  { value: 'none', label: 'None' },
+  { value: 'tilt', label: 'Tilt + glare' },
+  { value: 'spotlight', label: 'Cursor spotlight' },
+]
+export const cardEffect = z.enum(['none', 'tilt', 'spotlight'])
+
+export const TEXT_REVEAL_OPTIONS: { value: string; label: string }[] = [
+  { value: 'none', label: 'None' },
+  { value: 'scramble', label: 'Scramble' },
+  { value: 'decrypt', label: 'Decrypt' },
+  { value: 'glitch', label: 'Glitch' },
+]
+export const textReveal = z.enum(['none', 'scramble', 'decrypt', 'glitch'])
+
+export const GALLERY_STYLE_OPTIONS: { value: string; label: string }[] = [
+  { value: 'grid', label: 'Grid' },
+  { value: 'circular', label: 'Circular' },
+  { value: 'dome', label: 'Dome' },
+  { value: 'card-swap', label: 'Card swap' },
+]
+export const galleryStyle = z.enum(['grid', 'circular', 'dome', 'card-swap'])
+
+export const BACKGROUND_EFFECT_OPTIONS: { value: string; label: string }[] = [
+  { value: 'none', label: 'None' },
+  { value: 'threads', label: 'Threads' },
+  { value: 'beams', label: 'Beams' },
+  { value: 'orb', label: 'Orb' },
+  { value: 'particles', label: 'Particles' },
+]
+export const backgroundEffect = z.enum(['none', 'threads', 'beams', 'orb', 'particles'])
+
+export const CTA_STYLE_OPTIONS: { value: string; label: string }[] = [
+  { value: 'solid', label: 'Solid' },
+  { value: 'star-border', label: 'Star border' },
+]
+export const ctaStyle = z.enum(['solid', 'star-border'])

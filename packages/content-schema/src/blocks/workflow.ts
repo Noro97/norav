@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { SECTION_HEADER_FIELDS, sectionHeader } from './shared'
+import { BACKGROUND_EFFECT_OPTIONS, SECTION_HEADER_FIELDS, backgroundEffect, sectionHeader } from './shared'
+
+/** Only the two lightweight, code-drawn effects apply here — Orb and Particles stay reserved for contact_cta. */
+const workflowBackgroundOptions = BACKGROUND_EFFECT_OPTIONS.filter((o) => o.value !== 'orb' && o.value !== 'particles')
 
 /**
  * The node graphs themselves stay in code — they are diagrams with coordinates,
@@ -24,7 +27,7 @@ const content = sectionHeader.extend({
   techStack: z.array(z.object({ name: z.string().min(1).max(40) })).max(12),
 })
 
-const settings = z.object({})
+const settings = z.object({ background: backgroundEffect.exclude(['orb', 'particles']).default('none') })
 
 export const workflowBlock = defineBlock({
   type: 'workflow',
@@ -42,10 +45,18 @@ export const workflowBlock = defineBlock({
       workflows: [{ diagram: 'lead-pipeline', title: 'Lead Analysis Pipeline', description: '—' }],
       techStack: [],
     },
-    settings: {},
+    settings: { background: 'none' },
   },
   form: [
     ...SECTION_HEADER_FIELDS,
+    {
+      field: 'background',
+      control: 'select',
+      label: 'Background effect',
+      source: 'settings',
+      localized: false,
+      options: workflowBackgroundOptions,
+    },
     {
       field: 'workflows',
       control: 'repeater',
@@ -82,3 +93,4 @@ export const workflowBlock = defineBlock({
 })
 
 export type WorkflowContent = z.infer<typeof content>
+export type WorkflowSettings = z.infer<typeof settings>

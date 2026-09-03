@@ -1,5 +1,9 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
+import { BACKGROUND_EFFECT_OPTIONS, CTA_STYLE_OPTIONS, backgroundEffect, ctaStyle } from './shared'
+
+/** Threads/Beams stay reserved for the workflow block — only Orb and Particles apply here. */
+const contactBackgroundOptions = BACKGROUND_EFFECT_OPTIONS.filter((o) => o.value !== 'threads' && o.value !== 'beams')
 
 const content = z.object({
   availability: z.string().max(60),
@@ -21,6 +25,9 @@ const content = z.object({
 const settings = z.object({
   email: z.string().min(1),
   showAvailability: z.boolean(),
+  ctaStyle: ctaStyle.default('solid'),
+  clickSpark: z.boolean().default(true),
+  background: backgroundEffect.exclude(['threads', 'beams']).default('none'),
 })
 
 export const contactCtaBlock = defineBlock({
@@ -40,7 +47,13 @@ export const contactCtaBlock = defineBlock({
       emailLabel: 'Email me',
       socials: [],
     },
-    settings: { email: 'noroavetisyan@gmail.com', showAvailability: true },
+    settings: {
+      email: 'noroavetisyan@gmail.com',
+      showAvailability: true,
+      ctaStyle: 'solid',
+      clickSpark: true,
+      background: 'none',
+    },
   },
   form: [
     { field: 'availability', control: 'text', label: 'Availability badge' },
@@ -74,6 +87,23 @@ export const contactCtaBlock = defineBlock({
     },
     { field: 'email', control: 'text', label: 'Email address', source: 'settings' },
     { field: 'showAvailability', control: 'boolean', label: 'Show availability badge', source: 'settings' },
+    {
+      field: 'ctaStyle',
+      control: 'select',
+      label: 'Button style',
+      source: 'settings',
+      localized: false,
+      options: CTA_STYLE_OPTIONS,
+    },
+    { field: 'clickSpark', control: 'boolean', label: 'Spark on click', source: 'settings', localized: false },
+    {
+      field: 'background',
+      control: 'select',
+      label: 'Background effect',
+      source: 'settings',
+      localized: false,
+      options: contactBackgroundOptions,
+    },
   ],
 })
 

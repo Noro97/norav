@@ -273,6 +273,41 @@
   animation: cursor-blink 0.8s step-end infinite;
 }
 
+/* `settings.site.cursor` — CursorEffect (src/components/ui/effects/CursorEffect.tsx)
+   toggles this class on <html> while it's mounted, hiding the system cursor
+   everywhere so its own crosshair is the only one visible. */
+.cursor-effect-active,
+.cursor-effect-active * {
+  cursor: none !important;
+}
+
+/* Bento grid: `bento_grid.settings.glowBorder` makes every tile's border glow
+   permanently instead of only on hover. Cascaded from the grid container so no
+   individual tile component (there are eight) needs to know about it. */
+.bento-glow .bento-tile {
+  border-color: color-mix(in srgb, var(--color-crimson-500) 25%, transparent);
+  box-shadow: 0 0 24px -8px color-mix(in srgb, var(--color-crimson-500) 25%, transparent);
+}
+
+/* ===== SHARED EFFECT COMPONENTS (src/components/ui/effects) ===== */
+@keyframes starBorderSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes clickSparkRay {
+  0% { opacity: 1; transform: rotate(var(--spark-angle, 0rad)) translateX(0) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--spark-angle, 0rad)) translateX(16px) scaleX(0.4); }
+}
+
+@keyframes beamsRotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.08); opacity: 0.25; }
+}
+
 /* ===== SCROLL CONTAINER =====
    Framer Motion's useScroll({ target }) measures the target against
    document.scrollingElement (<html>), and warns when that element is

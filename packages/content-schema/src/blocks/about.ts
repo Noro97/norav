@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { SEGMENT_FIELDS, segments } from './shared'
+import { CARD_EFFECT_OPTIONS, SEGMENT_FIELDS, cardEffect, segments } from './shared'
 
 const content = z.object({
   sectionLabel: z.string().max(60),
@@ -28,6 +28,7 @@ const settings = z.object({
   photo: z.string().min(1),
   cvHref: z.string().min(1),
   showStatusBadge: z.boolean(),
+  cardEffect: cardEffect.default('tilt'),
 })
 
 export const aboutBlock = defineBlock({
@@ -52,7 +53,12 @@ export const aboutBlock = defineBlock({
       cvLabel: 'Download CV',
       socials: [],
     },
-    settings: { photo: '/assets/img/my-photo.jpg', cvHref: '/Norayr_Avetisyan_CV.pdf', showStatusBadge: true },
+    settings: {
+      photo: '/assets/img/my-photo.jpg',
+      cvHref: '/Norayr_Avetisyan_CV.pdf',
+      showStatusBadge: true,
+      cardEffect: 'tilt',
+    },
   },
   form: [
     { field: 'sectionLabel', control: 'text', label: 'Eyebrow' },
@@ -117,6 +123,14 @@ export const aboutBlock = defineBlock({
     { field: 'photo', control: 'media', label: 'Photo', source: 'settings' },
     { field: 'cvHref', control: 'text', label: 'CV file', source: 'settings' },
     { field: 'showStatusBadge', control: 'boolean', label: 'Show availability badge', source: 'settings' },
+    {
+      field: 'cardEffect',
+      control: 'select',
+      label: 'Photo card effect',
+      source: 'settings',
+      localized: false,
+      options: CARD_EFFECT_OPTIONS,
+    },
   ],
 })
 

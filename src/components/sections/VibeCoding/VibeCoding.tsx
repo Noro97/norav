@@ -6,7 +6,8 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { TerminalGhosting } from './TerminalGhosting'
 import { VibeSlider } from './VibeSlider'
 import { useBlock } from '@/content/ContentProvider'
-import type { VibeCodingContent } from '@norav/content-schema'
+import { ScrambleText } from '@/components/ui/effects/ScrambleText'
+import type { VibeCodingContent, VibeCodingSettings } from '@norav/content-schema'
 
 /** Tone names the CMS offers, resolved to the palette classes. */
 const TONE_CLASS: Record<string, string> = {
@@ -17,7 +18,7 @@ const TONE_CLASS: Record<string, string> = {
 }
 
 export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<VibeCodingContent>('vibecoding')
+  const block = useBlock<VibeCodingContent, VibeCodingSettings>('vibecoding')
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'vibecoding', sectionRef)
@@ -60,7 +61,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
   }, { scope: sectionRef })
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
   const nodeLabels = Object.fromEntries(content.archNodes.map((n) => [n.node, n.label]))
 
   return (
@@ -99,7 +100,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
             {/* Micro-copy */}
             <blockquote className="pl-5 border-l-2 border-crimson-500/40">
               <p className="font-mono text-sm md:text-base text-white/50 italic leading-relaxed">
-                {content.microCopy}
+                <ScrambleText text={content.microCopy} variant={settings.codeReveal} />
               </p>
             </blockquote>
 

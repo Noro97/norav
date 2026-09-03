@@ -11,6 +11,7 @@ import { Editor, type EditorBlock } from '@/components/Editor'
 import { CollectionEditor } from '@/components/CollectionEditor'
 import { ThemeEditor } from '@/components/ThemeEditor'
 import { MediaLibrary } from '@/components/MediaLibrary'
+import { SiteSettingsEditor } from '@/components/SiteSettingsEditor'
 import type { PageSummary, WorkspaceView } from '@/components/ViewSwitcher'
 import { ROOT_SLUG } from '@/lib/pages'
 import { PagesProvider } from '@/components/PagesContext'
@@ -136,6 +137,19 @@ export default function AdminPage() {
   if (view.kind === 'theme') {
     return withPages(
       <ThemeEditor
+        collections={loaded.collections}
+        userEmail={loaded.user.email}
+        environment={loaded.user.environment}
+        view={view}
+        onViewChange={changeView}
+        onSignOut={signOut}
+      />,
+    )
+  }
+
+  if (view.kind === 'site-effects') {
+    return withPages(
+      <SiteSettingsEditor
         collections={loaded.collections}
         userEmail={loaded.user.email}
         environment={loaded.user.environment}

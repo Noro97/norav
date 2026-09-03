@@ -51,4 +51,11 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   ),
   contact_cta: named(() => import('@/components/sections/ContactCTA'), 'ContactCTA'),
   terminal_footer: named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'),
+
+  // Assembled from the shared effects rather than built around a widget of
+  // their own, and usable on any page as many times as it needs them.
+  gallery: named(() => import('@/components/sections/GallerySection'), 'GallerySection'),
+  cta_banner: named(() => import('@/components/sections/CtaBanner'), 'CtaBanner'),
+  testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),
+  metrics: named(() => import('@/components/sections/MetricsSection'), 'MetricsSection'),
 }

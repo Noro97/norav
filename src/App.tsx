@@ -13,6 +13,13 @@ import { NotFound } from '@/components/NotFound'
 import { readPath } from '@/content/routing'
 import { useContent } from '@/content/ContentProvider'
 
+/** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
+interface SiteSettings {
+  cursor?: boolean
+  grain?: boolean
+  dynamicGrid?: boolean
+}
+
 const AnimatedGrain = lazy(() =>
   import('@/components/ui/AnimatedGrain').then((m) => ({ default: m.AnimatedGrain }))
 )
@@ -27,10 +34,14 @@ const SceneController = lazy(() =>
     default: m.SceneController,
   }))
 )
+const CursorEffect = lazy(() =>
+  import('@/components/ui/effects/CursorEffect').then((m) => ({ default: m.CursorEffect }))
+)
 
 function App() {
   const { slug } = readPath(useLocation().pathname)
   const { snapshot, isPreview } = useContent()
+  const siteSettings = (snapshot.settings.site as SiteSettings | undefined) ?? {}
   // A page with nothing on it is not a page. Hiding its last section in the CMS
   // leaves the row in the database and the slug in the snapshot, and rendering
   // that gives a reader a header above an empty screen — which reads as broken
@@ -78,11 +89,12 @@ function App() {
       <Suspense fallback={null}>
         {!prefersReducedMotion && (
           <>
-            <DynamicGrid />
+            {siteSettings.dynamicGrid !== false && <DynamicGrid />}
             <FloatingArtifacts />
-            <AnimatedGrain />
+            {siteSettings.grain !== false && <AnimatedGrain />}
           </>
         )}
+        {siteSettings.cursor !== false && <CursorEffect />}
       </Suspense>
 
       {/* The 3D mark belongs to the hero, so it goes where the hero goes.

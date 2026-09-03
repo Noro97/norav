@@ -6,12 +6,14 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { WorkflowDiagram } from './WorkflowDiagram'
 import { WORKFLOWS } from './workflow.data'
 import { useBlock } from '@/content/ContentProvider'
-import type { WorkflowContent } from '@norav/content-schema'
+import { ThreadsBackground } from '@/components/ui/effects/ThreadsBackground'
+import { BeamsBackground } from '@/components/ui/effects/BeamsBackground'
+import type { WorkflowContent, WorkflowSettings } from '@norav/content-schema'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<WorkflowContent>('workflow')
+  const block = useBlock<WorkflowContent, WorkflowSettings>('workflow')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'workflows', sectionRef)
   const [animate, setAnimate] = useState(false)
@@ -58,7 +60,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
   }, { scope: sectionRef })
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
 
   return (
     <section
@@ -66,6 +68,9 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative px-6 md:px-16 py-24"
     >
+      {settings.background === 'threads' && <ThreadsBackground />}
+      {settings.background === 'beams' && <BeamsBackground />}
+
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="wf-header">
           <span className="label-mono">{content.sectionLabel}</span>

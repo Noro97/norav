@@ -6,6 +6,7 @@ import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useAppStore } from '@/store/useAppStore'
 import { useBlock } from '@/content/ContentProvider'
 import { toneOf, type Tone } from '@/content/accent'
+import { ScrambleText } from '@/components/ui/effects/ScrambleText'
 import type { HeroContent, HeroSettings } from '@norav/content-schema'
 
 /** How a tagline segment is painted. */
@@ -127,7 +128,11 @@ export function HeroSection() {
           ref={subtitleRef}
           className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-crimson-500 mb-6"
         >
-          {content.subtitle}
+          {settings.subtitleReveal === 'none' ? (
+            content.subtitle
+          ) : (
+            <ScrambleText text={content.subtitle} variant={settings.subtitleReveal} />
+          )}
         </p>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>

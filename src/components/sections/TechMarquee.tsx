@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useBlock } from '@/content/ContentProvider'
-import type { TechMarqueeContent } from '@norav/content-schema'
+import type { TechMarqueeContent, TechMarqueeSettings } from '@norav/content-schema'
 
 /**
  * Full-width auto-scrolling tech ribbon — a creative transition band between
@@ -8,7 +8,7 @@ import type { TechMarqueeContent } from '@norav/content-schema'
  * animation (paused under prefers-reduced-motion).
  */
 export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<TechMarqueeContent>('tech_marquee')
+  const block = useBlock<TechMarqueeContent, TechMarqueeSettings>('tech_marquee')
   const trackRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -19,8 +19,32 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
   }, [])
 
   if (!block) return null
-  const { content } = block
+  const { content, settings } = block
   const names = content.items.map((item) => item.name)
+
+  if (settings.layout === 'logo-wall') {
+    return (
+      <section
+        {...(anchorId ? { id: anchorId } : {})}
+        className="relative py-10"
+        aria-label={content.label}
+      >
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <p className="text-center label-mono mb-6">{content.label}</p>
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 max-w-4xl mx-auto">
+          {names.map((tech, i) => (
+            <span
+              key={i}
+              className="font-display text-lg md:text-xl font-semibold text-white/25 hover:text-white/50 transition-colors duration-300 tracking-tight"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </section>
+    )
+  }
 
   // Triple for a seamless loop at any viewport width.
   const items = [...names, ...names, ...names]

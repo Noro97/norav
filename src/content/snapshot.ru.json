@@ -8,6 +8,9 @@
           "id": "3e022794-4c1d-4ed0-9582-9fe8815c2f6f",
           "type": "about",
           "content": {
+            "sectionLabel": "Обо мне",
+            "name": "Норайр Аветисян",
+            "role": "Frontend-focused fullstack-инженер",
             "bio": {
               "lead": [
                 {
@@ -40,8 +43,6 @@
                 }
               ]
             },
-            "name": "Норайр Аветисян",
-            "role": "Frontend-focused fullstack-инженер",
             "facts": [
               {
                 "label": "Локация",
@@ -60,65 +61,54 @@
                 "value": "Открыт к предложениям"
               }
             ],
+            "statusLabel": "Доступен",
             "cvLabel": "Скачать резюме",
             "socials": [
               {
-                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub"
+                "label": "GitHub",
+                "href": "https://github.com/Noro97"
               },
               {
-                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn"
+                "label": "LinkedIn",
+                "href": "https://www.linkedin.com/in/norayravetisyan/"
               },
               {
-                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram"
+                "label": "Telegram",
+                "href": "https://t.me/antarber"
               },
               {
-                "href": "mailto:noroavetisyan@gmail.com",
                 "icon": "email",
-                "label": "Почта"
+                "label": "Почта",
+                "href": "mailto:noroavetisyan@gmail.com"
               }
-            ],
-            "statusLabel": "Доступен",
-            "sectionLabel": "Обо мне"
+            ]
           },
           "anchorId": "about",
           "settings": {
             "photo": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4fac5a7-6cab-4b6e-8d3a-4aec50b3337c.jpg",
             "cvHref": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/acde6431-fbbe-4027-bf6d-8c1a239ae247.pdf",
-            "showStatusBadge": true
+            "showStatusBadge": true,
+            "cardEffect": "tilt"
           }
         },
         {
           "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
           "type": "vibecoding",
           "content": {
-            "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
-            "stats": [
-              {
-                "label": "Покрытие тестами",
-                "value": "92%"
-              },
-              {
-                "label": "Миграции БД",
-                "value": "27"
-              },
-              {
-                "label": "Системы",
-                "value": "3"
-              }
-            ],
+            "sectionLabel": "Философия",
             "title": "Vibe Coding: Высокоскоростная оркестровка",
+            "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
+            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
             "slider": {
               "lowVibe": "Low Vibe",
               "highVibe": "High Vibe",
-              "archLabel": "proof-architecture.svg",
-              "boringLabel": "basic-crud.ts"
+              "boringLabel": "basic-crud.ts",
+              "archLabel": "proof-architecture.svg"
             },
+            "systemsSyncedLabel": "Синхронизировано",
             "systems": [
               {
                 "name": "TON / Web3",
@@ -131,6 +121,20 @@
               {
                 "name": "Supabase",
                 "tone": "emerald"
+              }
+            ],
+            "stats": [
+              {
+                "value": "92%",
+                "label": "Покрытие тестами"
+              },
+              {
+                "value": "27",
+                "label": "Миграции БД"
+              },
+              {
+                "value": "3",
+                "label": "Системы"
               }
             ],
             "archNodes": [
@@ -162,18 +166,18 @@
                 "node": "feed",
                 "label": "Лента активности"
               }
-            ],
-            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
-            "sectionLabel": "Философия",
-            "systemsSyncedLabel": "Синхронизировано"
+            ]
           },
           "anchorId": "vibecoding",
-          "settings": {}
+          "settings": {
+            "codeReveal": "scramble"
+          }
         },
         {
           "id": "93802d8c-1b72-4d14-acac-952e923459a7",
           "type": "tech_marquee",
           "content": {
+            "label": "Инструменты и технологии",
             "items": [
               {
                 "name": "React"
@@ -229,11 +233,12 @@
               {
                 "name": "Claude Code"
               }
-            ],
-            "label": "Инструменты и технологии"
+            ]
           },
           "anchorId": null,
-          "settings": {}
+          "settings": {
+            "layout": "scroll"
+          }
         }
       ]
     },
@@ -245,7 +250,26 @@
           "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
           "type": "workflow",
           "content": {
+            "sectionLabel": "Автоматизация",
             "title": "AI-автоматизация процессов",
+            "description": "Продакшн-готовые n8n-воркфлоу с интеграцией Claude AI для интеллектуальной автоматизации — от анализа лидов до генерации контента и CI/CD-пайплайнов.",
+            "workflows": [
+              {
+                "diagram": "lead-pipeline",
+                "title": "Анализ лидов",
+                "description": "Входящие лиды анализируются Claude AI на предмет интента и квалификации, затем направляются в Slack для уведомления команды и CRM для отслеживания."
+              },
+              {
+                "diagram": "content-gen",
+                "title": "Генерация контента",
+                "description": "Генерация контента по расписанию через Claude API с human-in-the-loop ревью перед публикацией в блог, соцсети или документацию."
+              },
+              {
+                "diagram": "ci-cd",
+                "title": "CI/CD пайплайн",
+                "description": "Автоматизированный пайплайн сборки по GitHub-пушу — запускает тесты, собирает артефакты и деплоит на Cloudflare Pages с уведомлениями о статусе."
+              }
+            ],
             "techStack": [
               {
                 "name": "n8n"
@@ -265,29 +289,12 @@
               {
                 "name": "GitHub Actions"
               }
-            ],
-            "workflows": [
-              {
-                "title": "Анализ лидов",
-                "diagram": "lead-pipeline",
-                "description": "Входящие лиды анализируются Claude AI на предмет интента и квалификации, затем направляются в Slack для уведомления команды и CRM для отслеживания."
-              },
-              {
-                "title": "Генерация контента",
-                "diagram": "content-gen",
-                "description": "Генерация контента по расписанию через Claude API с human-in-the-loop ревью перед публикацией в блог, соцсети или документацию."
-              },
-              {
-                "title": "CI/CD пайплайн",
-                "diagram": "ci-cd",
-                "description": "Автоматизированный пайплайн сборки по GitHub-пушу — запускает тесты, собирает артефакты и деплоит на Cloudflare Pages с уведомлениями о статусе."
-              }
-            ],
-            "description": "Продакшн-готовые n8n-воркфлоу с интеграцией Claude AI для интеллектуальной автоматизации — от анализа лидов до генерации контента и CI/CD-пайплайнов.",
-            "sectionLabel": "Автоматизация"
+            ]
           },
           "anchorId": "workflows",
-          "settings": {}
+          "settings": {
+            "background": "none"
+          }
         }
       ]
     },
@@ -299,13 +306,14 @@
           "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
           "type": "experience",
           "content": {
+            "sectionLabel": "Карьера",
             "title": "Опыт работы",
-            "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе.",
-            "sectionLabel": "Карьера"
+            "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе."
           },
           "anchorId": "experience",
           "settings": {
-            "showImages": true
+            "showImages": true,
+            "imageEffect": "tilt"
           }
         }
       ]
@@ -327,14 +335,15 @@
           "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
           "type": "hero",
           "content": {
+            "subtitle": "fullstack-инженер",
             "name": {
-              "last": {
-                "rest": "етисян",
-                "highlight": "Ав"
-              },
               "first": {
-                "rest": "айр",
-                "highlight": "Нор"
+                "highlight": "Нор",
+                "rest": "айр"
+              },
+              "last": {
+                "highlight": "Ав",
+                "rest": "етисян"
               }
             },
             "tagline": [
@@ -359,13 +368,13 @@
                 "accent": "main"
               }
             ],
-            "subtitle": "fullstack-инженер",
             "scrollHint": "Прокрутите для навигации"
           },
           "anchorId": "hero",
           "settings": {
             "showScrollHint": true,
-            "enableParticleBurst": true
+            "enableParticleBurst": true,
+            "subtitleReveal": "none"
           }
         },
         {
@@ -375,28 +384,28 @@
             "label": "В цифрах",
             "stats": [
               {
-                "label": "Лет в продакшене",
                 "value": 6,
                 "prefix": "",
-                "suffix": "+"
+                "suffix": "+",
+                "label": "Лет в продакшене"
               },
               {
-                "label": "MAU охвачено",
                 "value": 10,
                 "prefix": "",
-                "suffix": "M+"
+                "suffix": "M+",
+                "label": "MAU охвачено"
               },
               {
-                "label": "Компаний",
                 "value": 6,
                 "prefix": "",
-                "suffix": ""
+                "suffix": "",
+                "label": "Компаний"
               },
               {
-                "label": "Одновременных сессий",
                 "value": 50,
                 "prefix": "",
-                "suffix": "K+"
+                "suffix": "K+",
+                "label": "Одновременных сессий"
               }
             ]
           },
@@ -409,33 +418,36 @@
           "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
           "type": "contact_cta",
           "content": {
-            "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
+            "availability": "Доступен для новых проектов",
             "label": "Связаться",
             "title": "Давайте создадим то, что дойдёт до релиза.",
+            "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
+            "emailLabel": "Написать на почту",
             "socials": [
               {
-                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub"
+                "label": "GitHub",
+                "href": "https://github.com/Noro97"
               },
               {
-                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn"
+                "label": "LinkedIn",
+                "href": "https://www.linkedin.com/in/norayravetisyan/"
               },
               {
-                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram"
+                "label": "Telegram",
+                "href": "https://t.me/antarber"
               }
-            ],
-            "emailLabel": "Написать на почту",
-            "availability": "Доступен для новых проектов"
+            ]
           },
           "anchorId": null,
           "settings": {
             "email": "noroavetisyan@gmail.com",
-            "showAvailability": true
+            "showAvailability": true,
+            "ctaStyle": "solid",
+            "clickSpark": true,
+            "background": "none"
           }
         }
       ]
@@ -448,21 +460,12 @@
           "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
           "type": "terminal_footer",
           "content": {
-            "hire": {
-              "burst": "  ✦ ВЗРЫВ ЧАСТИЦ АКТИВИРОВАН ✦",
-              "openTo": "  Открыт к: Senior / Staff позициям",
-              "message": "  Давайте создадим что-то великое.",
-              "niceTry": "Хорошая попытка. ;)",
-              "location": "  Локация: Ереван, Армения / Удалённо"
-            },
+            "sectionLabel": "Контакт",
             "title": "Терминал",
+            "subtitle": "$ взаимодействуйте с этим портфолио",
+            "titleBar": "visitor@portfolio ~ zsh",
             "prompt": "visitor@portfolio:~$",
-            "whoami": {
-              "hint": "  Попробуйте: cat about.txt, neofetch, sudo hire",
-              "visitor": "  visitor",
-              "welcome": "  Любознательные умы здесь всегда приветствуются.",
-              "exploring": "  Вы исследуете портфолио Норайра Аветисяна."
-            },
+            "placeholder": "введите команду...",
             "welcome": [
               {
                 "text": "Добро пожаловать в терминал портфолио Норайра Аветисяна."
@@ -471,14 +474,25 @@
                 "text": "Введите 'help' для списка доступных команд."
               }
             ],
-            "subtitle": "$ взаимодействуйте с этим портфолио",
-            "titleBar": "visitor@portfolio ~ zsh",
-            "placeholder": "введите команду...",
-            "sectionLabel": "Контакт",
+            "whoami": {
+              "visitor": "  visitor",
+              "exploring": "  Вы исследуете портфолио Норайра Аветисяна.",
+              "welcome": "  Любознательные умы здесь всегда приветствуются.",
+              "hint": "  Попробуйте: cat about.txt, neofetch, sudo hire"
+            },
+            "hire": {
+              "message": "  Давайте создадим что-то великое.",
+              "openTo": "  Открыт к: Senior / Staff позициям",
+              "location": "  Локация: Ереван, Армения / Удалённо",
+              "burst": "  ✦ ВЗРЫВ ЧАСТИЦ АКТИВИРОВАН ✦",
+              "niceTry": "Хорошая попытка. ;)"
+            },
             "commandNotFound": "команда не найдена: {{cmd}}. Введите 'help' для списка доступных команд."
           },
           "anchorId": "terminal",
-          "settings": {}
+          "settings": {
+            "outputTextEffect": "none"
+          }
         }
       ]
     },
@@ -490,40 +504,46 @@
           "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
           "type": "capabilities",
           "content": {
-            "cards": [
-              {
-                "body": "Масштабируемые архитектуры на React и TypeScript, микрофронтенды и стратегии рендеринга для высоконагруженных платформ.",
-                "icon": "Layers",
-                "title": "Фронтенд-архитектура"
-              },
-              {
-                "body": "Кастомные AI-агенты, LLM-конвейеры и воркфлоу на MCP, автоматизирующие реальную продуктовую и инженерную работу.",
-                "icon": "Bot",
-                "title": "AI и автоматизация"
-              },
-              {
-                "body": "Единые библиотеки компонентов и пайплайны токенов с синхронизацией Figma, удерживающие большие команды в едином стиле.",
-                "icon": "Component",
-                "title": "Дизайн-системы"
-              },
-              {
-                "body": "Core Web Vitals, бюджеты бандлов и инструменты, которые делают продукты быстрее — и команды тоже.",
-                "icon": "Gauge",
-                "title": "Производительность и DX"
-              }
-            ],
+            "sectionLabel": "Компетенции",
             "title": "Чем я занимаюсь",
             "description": "Четыре способа превращать сложные продуктовые требования в быстрый и надёжный софт.",
-            "sectionLabel": "Компетенции"
+            "cards": [
+              {
+                "icon": "Layers",
+                "title": "Фронтенд-архитектура",
+                "body": "Масштабируемые архитектуры на React и TypeScript, микрофронтенды и стратегии рендеринга для высоконагруженных платформ."
+              },
+              {
+                "icon": "Bot",
+                "title": "AI и автоматизация",
+                "body": "Кастомные AI-агенты, LLM-конвейеры и воркфлоу на MCP, автоматизирующие реальную продуктовую и инженерную работу."
+              },
+              {
+                "icon": "Component",
+                "title": "Дизайн-системы",
+                "body": "Единые библиотеки компонентов и пайплайны токенов с синхронизацией Figma, удерживающие большие команды в едином стиле."
+              },
+              {
+                "icon": "Gauge",
+                "title": "Производительность и DX",
+                "body": "Core Web Vitals, бюджеты бандлов и инструменты, которые делают продукты быстрее — и команды тоже."
+              }
+            ]
           },
           "anchorId": null,
-          "settings": {}
+          "settings": {
+            "cardEffect": "spotlight"
+          }
         },
         {
           "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
           "type": "skills",
           "content": {
+            "sectionLabel": "Экспертиза",
             "title": "Навыки и инструменты",
+            "description": "Техническая компетенция во всём спектре фронтенда — от базовых фреймворков и управления состоянием до дизайн-систем, инфраструктуры и платформенной инженерии.",
+            "proficiencyOverview": "Обзор компетенций",
+            "skillsTracked": "{{count}} навыков отслеживается",
             "categories": [
               {
                 "name": "Фронтенд-ядро",
@@ -680,14 +700,12 @@
                   }
                 ]
               }
-            ],
-            "description": "Техническая компетенция во всём спектре фронтенда — от базовых фреймворков и управления состоянием до дизайн-систем, инфраструктуры и платформенной инженерии.",
-            "sectionLabel": "Экспертиза",
-            "skillsTracked": "{{count}} навыков отслеживается",
-            "proficiencyOverview": "Обзор компетенций"
+            ]
           },
           "anchorId": "skills",
-          "settings": {}
+          "settings": {
+            "showCounters": true
+          }
         }
       ]
     },
@@ -699,7 +717,6 @@
           "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
           "type": "projects_intro",
           "content": {
-            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
             "label": "Selected Work · 2024 — 2026",
             "heading": [
               {
@@ -718,103 +735,91 @@
                 "lineBreakAfter": false
               }
             ],
-            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
+            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows",
+            "viewAllLabel": ""
           },
           "anchorId": "projects-intro",
           "settings": {
-            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
+            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp",
+            "headlineReveal": "none",
+            "ctaStyle": "solid"
           }
         },
         {
           "id": "603fc84f-3a9c-4ff1-be94-f025e51cb7b9",
           "type": "bento_grid",
           "content": {
+            "sectionLabel": "Подробнее",
+            "title": "Инженерное влияние",
+            "description": "Мини-кейсы и измеримые результаты из реальных проектов.",
+            "projects": [
+              {
+                "project": "nexusroute",
+                "title": "NexusRoute",
+                "description": "Платформа оптимизации логистики в реальном времени, обрабатывающая 50K+ WebSocket событий/сек по 18 глобальным хабам.",
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png"
+              },
+              {
+                "project": "merchforge",
+                "title": "MerchForge",
+                "description": "Дизайнер мерча на базе ИИ с синхронизацией состояния в реальном времени.",
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png"
+              },
+              {
+                "project": "filtergraph",
+                "title": "FilterGraph",
+                "description": "Фасетный поиск с отслеживанием зависимостей фильтров и архитектурой URL-как-состояние.",
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png"
+              },
+              {
+                "project": "omnigrid",
+                "title": "OmniGrid",
+                "description": "Оркестрация данных корпоративного уровня с headless-архитектурой таблиц и интеллектуальным управлением кэшем.",
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png"
+              },
+              {
+                "project": "proof",
+                "title": "Proof",
+                "description": "ИИ-платформа геймифицированных достижений в виде Telegram Mini App с детекцией присутствия, двойной экономикой наград и блокчейн-интеграцией.",
+                "cta": "Архитектура",
+                "image": ""
+              }
+            ],
             "tiles": [
               {
                 "slot": 0,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png",
                 "title": "Аудит производительности",
-                "description": "Стандартные маркеры Google Maps вызывали зависания основного потока при 500+ обновлениях. Перешли на Advanced Markers с буфером rAF — снижение нагрузки на 70%, стабильные 60 FPS."
+                "description": "Стандартные маркеры Google Maps вызывали зависания основного потока при 500+ обновлениях. Перешли на Advanced Markers с буфером rAF — снижение нагрузки на 70%, стабильные 60 FPS.",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png"
               },
               {
                 "slot": 1,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png",
                 "title": "Типобезопасная архитектура",
-                "description": "Сквозная система типов между бэкендом на Node.js и фронтендом на React, устранившая 99% ошибок API во время выполнения"
+                "description": "Сквозная система типов между бэкендом на Node.js и фронтендом на React, устранившая 99% ошибок API во время выполнения",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png"
               },
               {
                 "slot": 2,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png",
                 "title": "Пользовательский опыт",
-                "description": "Система предиктивного ввода для сложных форм, сократившая время создания отправления на 15 секунд"
+                "description": "Система предиктивного ввода для сложных форм, сократившая время создания отправления на 15 секунд",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png"
               },
               {
                 "slot": 3,
-                "image": "",
                 "title": "ИИ-детекция",
-                "description": "Мультимодальная ИИ-верификация с точностью 98.4% через анализ видеодоказательств пользователей с помощью Gemini."
+                "description": "Мультимодальная ИИ-верификация с точностью 98.4% через анализ видеодоказательств пользователей с помощью Gemini.",
+                "image": ""
               },
               {
                 "slot": 4,
-                "image": "",
                 "title": "Cache Hit-Rate",
-                "description": "Виртуализированная таблица на 10K+ строк с суб-миллисекундными кэш-запросами через стратегию TanStack Query stale-while-revalidate."
-              }
-            ],
-            "title": "Инженерное влияние",
-            "badges": [
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg",
-                "rarity": "common"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg",
-                "rarity": "rare"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg",
-                "rarity": "epic"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg",
-                "rarity": "legendary"
-              }
-            ],
-            "projects": [
-              {
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png",
-                "title": "NexusRoute",
-                "project": "nexusroute",
-                "description": "Платформа оптимизации логистики в реальном времени, обрабатывающая 50K+ WebSocket событий/сек по 18 глобальным хабам."
-              },
-              {
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png",
-                "title": "MerchForge",
-                "project": "merchforge",
-                "description": "Дизайнер мерча на базе ИИ с синхронизацией состояния в реальном времени."
-              },
-              {
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png",
-                "title": "FilterGraph",
-                "project": "filtergraph",
-                "description": "Фасетный поиск с отслеживанием зависимостей фильтров и архитектурой URL-как-состояние."
-              },
-              {
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
-                "title": "OmniGrid",
-                "project": "omnigrid",
-                "description": "Оркестрация данных корпоративного уровня с headless-архитектурой таблиц и интеллектуальным управлением кэшем."
-              },
-              {
-                "cta": "Архитектура",
-                "image": "",
-                "title": "Proof",
-                "project": "proof",
-                "description": "ИИ-платформа геймифицированных достижений в виде Telegram Mini App с детекцией присутствия, двойной экономикой наград и блокчейн-интеграцией."
+                "description": "Виртуализированная таблица на 10K+ строк с суб-миллисекундными кэш-запросами через стратегию TanStack Query stale-while-revalidate.",
+                "image": ""
               }
             ],
             "dashboard": {
@@ -822,39 +827,39 @@
               "metrics": [
                 {
                   "key": "lcp",
+                  "value": 1.2,
+                  "prefix": "<",
+                  "suffix": "s",
                   "color": "#22c55e",
                   "label": "LCP",
-                  "value": 1.2,
-                  "detail": "Отслеживание в реальном времени",
-                  "prefix": "<",
-                  "suffix": "s"
+                  "detail": "Отслеживание в реальном времени"
                 },
                 {
                   "key": "bundle",
+                  "value": 42,
+                  "prefix": "",
+                  "suffix": "kb",
                   "color": "#22c55e",
                   "label": "Размер бандла",
-                  "value": 42,
-                  "detail": "Gzipped (основной поток)",
-                  "prefix": "",
-                  "suffix": "kb"
+                  "detail": "Gzipped (основной поток)"
                 },
                 {
                   "key": "gpsNodes",
+                  "value": 50,
+                  "prefix": "",
+                  "suffix": "+",
                   "color": "#eab308",
                   "label": "GPS-узлы",
-                  "value": 50,
-                  "detail": "Активных за просмотр",
-                  "prefix": "",
-                  "suffix": "+"
+                  "detail": "Активных за просмотр"
                 },
                 {
                   "key": "testCoverage",
+                  "value": 92,
+                  "prefix": "",
+                  "suffix": "%",
                   "color": "#22c55e",
                   "label": "Покрытие тестами",
-                  "value": 92,
-                  "detail": "Unit / E2E",
-                  "prefix": "",
-                  "suffix": "%"
+                  "detail": "Unit / E2E"
                 }
               ]
             },
@@ -872,15 +877,33 @@
                 "text": "Доступность обязательна"
               }
             ],
-            "description": "Мини-кейсы и измеримые результаты из реальных проектов.",
-            "sectionLabel": "Подробнее",
             "illustrations": {
               "omnigrid": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
               "gamification": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4b1fe6c0-8cff-4517-9bf3-3624c7a382ef.png"
-            }
+            },
+            "badges": [
+              {
+                "rarity": "common",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg"
+              },
+              {
+                "rarity": "rare",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg"
+              },
+              {
+                "rarity": "epic",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg"
+              },
+              {
+                "rarity": "legendary",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg"
+              }
+            ]
           },
           "anchorId": "overview",
-          "settings": {}
+          "settings": {
+            "glowBorder": false
+          }
         }
       ]
     },
@@ -892,7 +915,9 @@
           "id": "9d32f989-6728-4650-8f23-9c1f893d7247",
           "type": "ecommerce",
           "content": {
+            "sectionLabel": "Кейс",
             "title": "FilterGraph",
+            "description": "Фасетный поиск с учётом зависимостей фильтров и архитектурой URL-как-состояние. Изменения фильтров двунаправленно синхронизируются с параметрами запроса.",
             "techStack": [
               {
                 "name": "URL State"
@@ -916,11 +941,12 @@
                 "name": "Confetti"
               }
             ],
-            "description": "Фасетный поиск с учётом зависимостей фильтров и архитектурой URL-как-состояние. Изменения фильтров двунаправленно синхронизируются с параметрами запроса.",
-            "sectionLabel": "Кейс"
+            "screenshots": []
           },
           "anchorId": "ecommerce",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -932,7 +958,9 @@
           "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
           "type": "logistics",
           "content": {
+            "sectionLabel": "Кейс",
             "title": "NexusRoute",
+            "description": "Платформа оптимизации логистики реального времени, обрабатывающая 50K+ WebSocket-событий/сек в 18 глобальных хабах. Потоковая передача GeoJSON с высокочастотной сверкой состояния.",
             "techStack": [
               {
                 "name": "Google Maps API"
@@ -950,12 +978,13 @@
                 "name": "Zustand"
               }
             ],
-            "description": "Платформа оптимизации логистики реального времени, обрабатывающая 50K+ WebSocket-событий/сек в 18 глобальных хабах. Потоковая передача GeoJSON с высокочастотной сверкой состояния.",
-            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
-            "sectionLabel": "Кейс"
+            "screenshots": [],
+            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp"
           },
           "anchorId": "logistics",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -967,7 +996,9 @@
           "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
           "type": "merch",
           "content": {
+            "sectionLabel": "Кейс",
             "title": "MerchForge",
+            "description": "Дизайнер мерча на основе ИИ с синхронизацией состояния в реальном времени. Каждое взаимодействие с интерфейсом мгновенно отражается в конфигурации.",
             "techStack": [
               {
                 "name": "React State"
@@ -982,11 +1013,12 @@
                 "name": "Typing Animation"
               }
             ],
-            "description": "Дизайнер мерча на основе ИИ с синхронизацией состояния в реальном времени. Каждое взаимодействие с интерфейсом мгновенно отражается в конфигурации.",
-            "sectionLabel": "Кейс"
+            "screenshots": []
           },
           "anchorId": "merch",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -998,7 +1030,9 @@
           "id": "50a345ad-b407-46be-9c8a-54fe88138bb6",
           "type": "omnigrid",
           "content": {
+            "sectionLabel": "Кейс",
             "title": "OmniGrid: Система управления данными",
+            "description": "Высокоплотная таблица данных с виртуализированным скроллом, headless-архитектурой и оркестрацией серверного кэша. Обработка массивных датасетов с нулевой задержкой UI и сложной синхронизацией серверного состояния.",
             "techStack": [
               {
                 "name": "TanStack Query"
@@ -1013,11 +1047,12 @@
                 "name": "Virtual Scroll"
               }
             ],
-            "description": "Высокоплотная таблица данных с виртуализированным скроллом, headless-архитектурой и оркестрацией серверного кэша. Обработка массивных датасетов с нулевой задержкой UI и сложной синхронизацией серверного состояния.",
-            "sectionLabel": "Кейс"
+            "screenshots": []
           },
           "anchorId": "omnigrid",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -1029,7 +1064,9 @@
           "id": "1c556cb2-aac0-4fb6-8e1f-b78371fb3967",
           "type": "proof",
           "content": {
+            "sectionLabel": "Кейс",
             "title": "Proof: ИИ-верификация фитнеса",
+            "description": "Telegram Mini App, геймифицирующее верификацию упражнений с помощью ИИ в реальном времени. Gemini 2.5 Flash считает повторения, проверяет форму, подтверждает живость — начисляя Physio/Neuro очки через 20 уровней прогрессии.",
             "techStack": [
               {
                 "name": "Supabase Edge Functions"
@@ -1047,11 +1084,12 @@
                 "name": "Telegram Mini App SDK"
               }
             ],
-            "description": "Telegram Mini App, геймифицирующее верификацию упражнений с помощью ИИ в реальном времени. Gemini 2.5 Flash считает повторения, проверяет форму, подтверждает живость — начисляя Physio/Neuro очки через 20 уровней прогрессии.",
-            "sectionLabel": "Кейс"
+            "screenshots": []
           },
           "anchorId": "proof",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     }
