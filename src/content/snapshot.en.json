@@ -8,6 +8,9 @@
           "id": "3e022794-4c1d-4ed0-9582-9fe8815c2f6f",
           "type": "about",
           "content": {
+            "sectionLabel": "About Me",
+            "name": "Norayr Avetisyan",
+            "role": "Frontend-Focused Fullstack Engineer",
             "bio": {
               "lead": [
                 {
@@ -40,8 +43,6 @@
                 }
               ]
             },
-            "name": "Norayr Avetisyan",
-            "role": "Frontend-Focused Fullstack Engineer",
             "facts": [
               {
                 "label": "Location",
@@ -60,65 +61,54 @@
                 "value": "Open to offers"
               }
             ],
+            "statusLabel": "Available",
             "cvLabel": "Download CV",
             "socials": [
               {
-                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub"
+                "label": "GitHub",
+                "href": "https://github.com/Noro97"
               },
               {
-                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn"
+                "label": "LinkedIn",
+                "href": "https://www.linkedin.com/in/norayravetisyan/"
               },
               {
-                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram"
+                "label": "Telegram",
+                "href": "https://t.me/antarber"
               },
               {
-                "href": "mailto:noroavetisyan@gmail.com",
                 "icon": "email",
-                "label": "Email"
+                "label": "Email",
+                "href": "mailto:noroavetisyan@gmail.com"
               }
-            ],
-            "statusLabel": "Available",
-            "sectionLabel": "About Me"
+            ]
           },
           "anchorId": "about",
           "settings": {
             "photo": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4fac5a7-6cab-4b6e-8d3a-4aec50b3337c.jpg",
             "cvHref": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/acde6431-fbbe-4027-bf6d-8c1a239ae247.pdf",
-            "showStatusBadge": true
+            "showStatusBadge": true,
+            "cardEffect": "tilt"
           }
         },
         {
           "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
           "type": "vibecoding",
           "content": {
-            "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
-            "stats": [
-              {
-                "label": "Test Coverage",
-                "value": "92%"
-              },
-              {
-                "label": "DB Migrations",
-                "value": "27"
-              },
-              {
-                "label": "Systems",
-                "value": "3"
-              }
-            ],
+            "sectionLabel": "Philosophy",
             "title": "Vibe Coding: High-Velocity Orchestration",
+            "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
+            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
             "slider": {
               "lowVibe": "Low Vibe",
               "highVibe": "High Vibe",
-              "archLabel": "proof-architecture.svg",
-              "boringLabel": "basic-crud.ts"
+              "boringLabel": "basic-crud.ts",
+              "archLabel": "proof-architecture.svg"
             },
+            "systemsSyncedLabel": "Systems Synced",
             "systems": [
               {
                 "name": "TON / Web3",
@@ -131,6 +121,20 @@
               {
                 "name": "Supabase",
                 "tone": "emerald"
+              }
+            ],
+            "stats": [
+              {
+                "value": "92%",
+                "label": "Test Coverage"
+              },
+              {
+                "value": "27",
+                "label": "DB Migrations"
+              },
+              {
+                "value": "3",
+                "label": "Systems"
               }
             ],
             "archNodes": [
@@ -162,18 +166,18 @@
                 "node": "feed",
                 "label": "Real-time Feed"
               }
-            ],
-            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
-            "sectionLabel": "Philosophy",
-            "systemsSyncedLabel": "Systems Synced"
+            ]
           },
           "anchorId": "vibecoding",
-          "settings": {}
+          "settings": {
+            "codeReveal": "scramble"
+          }
         },
         {
           "id": "93802d8c-1b72-4d14-acac-952e923459a7",
           "type": "tech_marquee",
           "content": {
+            "label": "Tools & Technologies",
             "items": [
               {
                 "name": "React"
@@ -229,11 +233,12 @@
               {
                 "name": "Claude Code"
               }
-            ],
-            "label": "Tools & Technologies"
+            ]
           },
           "anchorId": null,
-          "settings": {}
+          "settings": {
+            "layout": "scroll"
+          }
         }
       ]
     },
@@ -245,7 +250,26 @@
           "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
           "type": "workflow",
           "content": {
+            "sectionLabel": "Automation",
             "title": "AI Workflow Automation",
+            "description": "Production-ready n8n workflows integrating Claude AI for intelligent automation — from lead analysis to content generation and CI/CD pipelines.",
+            "workflows": [
+              {
+                "diagram": "lead-pipeline",
+                "title": "Lead Analysis Pipeline",
+                "description": "Incoming leads are analyzed by Claude AI for intent and qualification, then routed to Slack for immediate team notification and CRM for tracking."
+              },
+              {
+                "diagram": "content-gen",
+                "title": "Content Generation",
+                "description": "Scheduled content generation via Claude API with human-in-the-loop review before publishing to blog, social media, or documentation."
+              },
+              {
+                "diagram": "ci-cd",
+                "title": "CI/CD Pipeline",
+                "description": "Automated build pipeline triggered by GitHub push — runs tests, builds artifacts, and deploys to Cloudflare Pages with status notifications."
+              }
+            ],
             "techStack": [
               {
                 "name": "n8n"
@@ -265,29 +289,12 @@
               {
                 "name": "GitHub Actions"
               }
-            ],
-            "workflows": [
-              {
-                "title": "Lead Analysis Pipeline",
-                "diagram": "lead-pipeline",
-                "description": "Incoming leads are analyzed by Claude AI for intent and qualification, then routed to Slack for immediate team notification and CRM for tracking."
-              },
-              {
-                "title": "Content Generation",
-                "diagram": "content-gen",
-                "description": "Scheduled content generation via Claude API with human-in-the-loop review before publishing to blog, social media, or documentation."
-              },
-              {
-                "title": "CI/CD Pipeline",
-                "diagram": "ci-cd",
-                "description": "Automated build pipeline triggered by GitHub push — runs tests, builds artifacts, and deploys to Cloudflare Pages with status notifications."
-              }
-            ],
-            "description": "Production-ready n8n workflows integrating Claude AI for intelligent automation — from lead analysis to content generation and CI/CD pipelines.",
-            "sectionLabel": "Automation"
+            ]
           },
           "anchorId": "workflows",
-          "settings": {}
+          "settings": {
+            "background": "none"
+          }
         }
       ]
     },
@@ -299,13 +306,14 @@
           "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
           "type": "experience",
           "content": {
+            "sectionLabel": "Career",
             "title": "Experience",
-            "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale.",
-            "sectionLabel": "Career"
+            "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale."
           },
           "anchorId": "experience",
           "settings": {
-            "showImages": true
+            "showImages": true,
+            "imageEffect": "tilt"
           }
         }
       ]
@@ -327,14 +335,15 @@
           "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
           "type": "hero",
           "content": {
+            "subtitle": "Fullstack Engineer",
             "name": {
-              "last": {
-                "rest": "etisyan",
-                "highlight": "Av"
-              },
               "first": {
-                "rest": "ayr",
-                "highlight": "Nor"
+                "highlight": "Nor",
+                "rest": "ayr"
+              },
+              "last": {
+                "highlight": "Av",
+                "rest": "etisyan"
               }
             },
             "tagline": [
@@ -359,13 +368,13 @@
                 "accent": "main"
               }
             ],
-            "subtitle": "Fullstack Engineer",
             "scrollHint": "Scroll to explore"
           },
           "anchorId": "hero",
           "settings": {
             "showScrollHint": true,
-            "enableParticleBurst": true
+            "enableParticleBurst": true,
+            "subtitleReveal": "none"
           }
         },
         {
@@ -375,28 +384,28 @@
             "label": "By the numbers",
             "stats": [
               {
-                "label": "Years shipping",
                 "value": 6,
                 "prefix": "",
-                "suffix": "+"
+                "suffix": "+",
+                "label": "Years shipping"
               },
               {
-                "label": "MAU reached",
                 "value": 10,
                 "prefix": "",
-                "suffix": "M+"
+                "suffix": "M+",
+                "label": "MAU reached"
               },
               {
-                "label": "Companies",
                 "value": 6,
                 "prefix": "",
-                "suffix": ""
+                "suffix": "",
+                "label": "Companies"
               },
               {
-                "label": "Concurrent sessions",
                 "value": 50,
                 "prefix": "",
-                "suffix": "K+"
+                "suffix": "K+",
+                "label": "Concurrent sessions"
               }
             ]
           },
@@ -409,33 +418,36 @@
           "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
           "type": "contact_cta",
           "content": {
-            "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
+            "availability": "Available for new work",
             "label": "Get in touch",
             "title": "Let's build something that ships.",
+            "body": "I'm open to senior and staff-level frontend / fullstack roles — and the occasional ambitious product. The fastest way to reach me is email.",
+            "emailLabel": "Email me",
             "socials": [
               {
-                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub"
+                "label": "GitHub",
+                "href": "https://github.com/Noro97"
               },
               {
-                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn"
+                "label": "LinkedIn",
+                "href": "https://www.linkedin.com/in/norayravetisyan/"
               },
               {
-                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram"
+                "label": "Telegram",
+                "href": "https://t.me/antarber"
               }
-            ],
-            "emailLabel": "Email me",
-            "availability": "Available for new work"
+            ]
           },
           "anchorId": null,
           "settings": {
             "email": "noroavetisyan@gmail.com",
-            "showAvailability": true
+            "showAvailability": true,
+            "ctaStyle": "solid",
+            "clickSpark": true,
+            "background": "none"
           }
         }
       ]
@@ -448,21 +460,12 @@
           "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
           "type": "terminal_footer",
           "content": {
-            "hire": {
-              "burst": "  ✦ PARTICLE BURST ACTIVATED ✦",
-              "openTo": "  Open to: Senior / Staff roles",
-              "message": "  Let's build something great.",
-              "niceTry": "Nice try. ;)",
-              "location": "  Location: Yerevan, Armenia / Remote"
-            },
+            "sectionLabel": "Contact",
             "title": "The Terminal",
+            "subtitle": "$ interact with this portfolio",
+            "titleBar": "visitor@portfolio ~ zsh",
             "prompt": "visitor@portfolio:~$",
-            "whoami": {
-              "hint": "  Try: cat about.txt, neofetch, sudo hire",
-              "visitor": "  visitor",
-              "welcome": "  Curious minds are always welcome here.",
-              "exploring": "  You're exploring Norayr Avetisyan's portfolio."
-            },
+            "placeholder": "type a command...",
             "welcome": [
               {
                 "text": "Welcome to Norayr Avetisyan's portfolio terminal."
@@ -471,14 +474,25 @@
                 "text": "Type 'help' for available commands."
               }
             ],
-            "subtitle": "$ interact with this portfolio",
-            "titleBar": "visitor@portfolio ~ zsh",
-            "placeholder": "type a command...",
-            "sectionLabel": "Contact",
+            "whoami": {
+              "visitor": "  visitor",
+              "exploring": "  You're exploring Norayr Avetisyan's portfolio.",
+              "welcome": "  Curious minds are always welcome here.",
+              "hint": "  Try: cat about.txt, neofetch, sudo hire"
+            },
+            "hire": {
+              "message": "  Let's build something great.",
+              "openTo": "  Open to: Senior / Staff roles",
+              "location": "  Location: Yerevan, Armenia / Remote",
+              "burst": "  ✦ PARTICLE BURST ACTIVATED ✦",
+              "niceTry": "Nice try. ;)"
+            },
             "commandNotFound": "command not found: {{cmd}}. Type 'help' for available commands."
           },
           "anchorId": "terminal",
-          "settings": {}
+          "settings": {
+            "outputTextEffect": "none"
+          }
         }
       ]
     },
@@ -490,40 +504,46 @@
           "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
           "type": "capabilities",
           "content": {
-            "cards": [
-              {
-                "body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms.",
-                "icon": "Layers",
-                "title": "Frontend Architecture"
-              },
-              {
-                "body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work.",
-                "icon": "Bot",
-                "title": "AI & Automation"
-              },
-              {
-                "body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent.",
-                "icon": "Component",
-                "title": "Design Systems"
-              },
-              {
-                "body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them.",
-                "icon": "Gauge",
-                "title": "Performance & DX"
-              }
-            ],
+            "sectionLabel": "Capabilities",
             "title": "What I Do",
             "description": "Four ways I turn complex product requirements into fast, durable software.",
-            "sectionLabel": "Capabilities"
+            "cards": [
+              {
+                "icon": "Layers",
+                "title": "Frontend Architecture",
+                "body": "Scalable React & TypeScript architectures, micro-frontends, and rendering strategies built for high-traffic platforms."
+              },
+              {
+                "icon": "Bot",
+                "title": "AI & Automation",
+                "body": "Custom AI agents, LLM pipelines, and MCP-driven workflows that automate real product and engineering work."
+              },
+              {
+                "icon": "Component",
+                "title": "Design Systems",
+                "body": "Unified component libraries and Figma-synced token pipelines that keep large teams visually consistent."
+              },
+              {
+                "icon": "Gauge",
+                "title": "Performance & DX",
+                "body": "Core Web Vitals, bundle budgets, and tooling that make products faster — and the teams building them."
+              }
+            ]
           },
           "anchorId": null,
-          "settings": {}
+          "settings": {
+            "cardEffect": "spotlight"
+          }
         },
         {
           "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
           "type": "skills",
           "content": {
+            "sectionLabel": "Expertise",
             "title": "Skills & Tools",
+            "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
+            "proficiencyOverview": "Proficiency Overview",
+            "skillsTracked": "{{count}} skills tracked",
             "categories": [
               {
                 "name": "Frontend Core",
@@ -680,14 +700,12 @@
                   }
                 ]
               }
-            ],
-            "description": "Technical proficiency across the frontend spectrum — from core frameworks and state management to design systems, infrastructure, and platform engineering.",
-            "sectionLabel": "Expertise",
-            "skillsTracked": "{{count}} skills tracked",
-            "proficiencyOverview": "Proficiency Overview"
+            ]
           },
           "anchorId": "skills",
-          "settings": {}
+          "settings": {
+            "showCounters": true
+          }
         }
       ]
     },
@@ -699,7 +717,6 @@
           "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
           "type": "projects_intro",
           "content": {
-            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
             "label": "Selected Work · 2024 — 2026",
             "heading": [
               {
@@ -718,103 +735,91 @@
                 "lineBreakAfter": false
               }
             ],
-            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows"
+            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
+            "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows",
+            "viewAllLabel": ""
           },
           "anchorId": "projects-intro",
           "settings": {
-            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
+            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp",
+            "headlineReveal": "none",
+            "ctaStyle": "solid"
           }
         },
         {
           "id": "603fc84f-3a9c-4ff1-be94-f025e51cb7b9",
           "type": "bento_grid",
           "content": {
+            "sectionLabel": "Deep Dive",
+            "title": "Engineering Impact",
+            "description": "Micro case studies and measurable outcomes from real-world projects.",
+            "projects": [
+              {
+                "project": "nexusroute",
+                "title": "NexusRoute",
+                "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs.",
+                "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png"
+              },
+              {
+                "project": "merchforge",
+                "title": "MerchForge",
+                "description": "AI-powered merchandise designer with real-time state synchronization and live configuration output.",
+                "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png"
+              },
+              {
+                "project": "filtergraph",
+                "title": "FilterGraph",
+                "description": "Faceted search with dependency-aware filtering and URL-as-state architecture.",
+                "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png"
+              },
+              {
+                "project": "omnigrid",
+                "title": "OmniGrid",
+                "description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management.",
+                "cta": "View Case Study",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png"
+              },
+              {
+                "project": "proof",
+                "title": "Proof",
+                "description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, dual-economy reward system, and blockchain-integrated premium unlocks.",
+                "cta": "View Architecture",
+                "image": ""
+              }
+            ],
             "tiles": [
               {
                 "slot": 0,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png",
                 "title": "Performance Audit",
-                "description": "Standard Google Maps markers caused main-thread jank with 500+ real-time updates. Migrated to Advanced Markers with a rAF buffer — 70% scripting reduction, stable 60 FPS."
+                "description": "Standard Google Maps markers caused main-thread jank with 500+ real-time updates. Migrated to Advanced Markers with a rAF buffer — 70% scripting reduction, stable 60 FPS.",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png"
               },
               {
                 "slot": 1,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png",
                 "title": "Type-Safe Architecture",
-                "description": "End-to-end type system between Node.js backend and React frontend, eliminating 99% of runtime API errors"
+                "description": "End-to-end type system between Node.js backend and React frontend, eliminating 99% of runtime API errors",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png"
               },
               {
                 "slot": 2,
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png",
                 "title": "User Experience",
-                "description": "Predictive input system for complex forms, reducing shipment creation time by 15 seconds"
+                "description": "Predictive input system for complex forms, reducing shipment creation time by 15 seconds",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png"
               },
               {
                 "slot": 3,
-                "image": "",
                 "title": "AI Liveness",
-                "description": "Multi-modal AI verification pipeline achieving 98.4% confidence through Gemini vision analysis of user-submitted video proofs."
+                "description": "Multi-modal AI verification pipeline achieving 98.4% confidence through Gemini vision analysis of user-submitted video proofs.",
+                "image": ""
               },
               {
                 "slot": 4,
-                "image": "",
                 "title": "Cache Hit-Rate",
-                "description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy."
-              }
-            ],
-            "title": "Engineering Impact",
-            "badges": [
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg",
-                "rarity": "common"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg",
-                "rarity": "rare"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg",
-                "rarity": "epic"
-              },
-              {
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg",
-                "rarity": "legendary"
-              }
-            ],
-            "projects": [
-              {
-                "cta": "View Case Study",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png",
-                "title": "NexusRoute",
-                "project": "nexusroute",
-                "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs."
-              },
-              {
-                "cta": "View Case Study",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png",
-                "title": "MerchForge",
-                "project": "merchforge",
-                "description": "AI-powered merchandise designer with real-time state synchronization and live configuration output."
-              },
-              {
-                "cta": "View Case Study",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png",
-                "title": "FilterGraph",
-                "project": "filtergraph",
-                "description": "Faceted search with dependency-aware filtering and URL-as-state architecture."
-              },
-              {
-                "cta": "View Case Study",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
-                "title": "OmniGrid",
-                "project": "omnigrid",
-                "description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management."
-              },
-              {
-                "cta": "View Architecture",
-                "image": "",
-                "title": "Proof",
-                "project": "proof",
-                "description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, dual-economy reward system, and blockchain-integrated premium unlocks."
+                "description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy.",
+                "image": ""
               }
             ],
             "dashboard": {
@@ -822,39 +827,39 @@
               "metrics": [
                 {
                   "key": "lcp",
+                  "value": 1.2,
+                  "prefix": "<",
+                  "suffix": "s",
                   "color": "#22c55e",
                   "label": "LCP",
-                  "value": 1.2,
-                  "detail": "Real-time tracking",
-                  "prefix": "<",
-                  "suffix": "s"
+                  "detail": "Real-time tracking"
                 },
                 {
                   "key": "bundle",
+                  "value": 42,
+                  "prefix": "",
+                  "suffix": "kb",
                   "color": "#22c55e",
                   "label": "Bundle Size",
-                  "value": 42,
-                  "detail": "Gzipped (Main thread)",
-                  "prefix": "",
-                  "suffix": "kb"
+                  "detail": "Gzipped (Main thread)"
                 },
                 {
                   "key": "gpsNodes",
+                  "value": 50,
+                  "prefix": "",
+                  "suffix": "+",
                   "color": "#eab308",
                   "label": "GPS Nodes",
-                  "value": 50,
-                  "detail": "Active per view",
-                  "prefix": "",
-                  "suffix": "+"
+                  "detail": "Active per view"
                 },
                 {
                   "key": "testCoverage",
+                  "value": 92,
+                  "prefix": "",
+                  "suffix": "%",
                   "color": "#22c55e",
                   "label": "Test Coverage",
-                  "value": 92,
-                  "detail": "Unit / E2E",
-                  "prefix": "",
-                  "suffix": "%"
+                  "detail": "Unit / E2E"
                 }
               ]
             },
@@ -872,15 +877,33 @@
                 "text": "Accessibility is Mandatory"
               }
             ],
-            "description": "Micro case studies and measurable outcomes from real-world projects.",
-            "sectionLabel": "Deep Dive",
             "illustrations": {
               "omnigrid": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
               "gamification": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4b1fe6c0-8cff-4517-9bf3-3624c7a382ef.png"
-            }
+            },
+            "badges": [
+              {
+                "rarity": "common",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg"
+              },
+              {
+                "rarity": "rare",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg"
+              },
+              {
+                "rarity": "epic",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg"
+              },
+              {
+                "rarity": "legendary",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg"
+              }
+            ]
           },
           "anchorId": "overview",
-          "settings": {}
+          "settings": {
+            "glowBorder": false
+          }
         }
       ]
     },
@@ -892,7 +915,9 @@
           "id": "9d32f989-6728-4650-8f23-9c1f893d7247",
           "type": "ecommerce",
           "content": {
+            "sectionLabel": "Case Study",
             "title": "FilterGraph",
+            "description": "Faceted search with dependency-aware filtering and URL-as-state architecture. Filter changes sync bidirectionally with query parameters.",
             "techStack": [
               {
                 "name": "URL State"
@@ -916,11 +941,12 @@
                 "name": "Confetti"
               }
             ],
-            "description": "Faceted search with dependency-aware filtering and URL-as-state architecture. Filter changes sync bidirectionally with query parameters.",
-            "sectionLabel": "Case Study"
+            "screenshots": []
           },
           "anchorId": "ecommerce",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -932,7 +958,9 @@
           "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
           "type": "logistics",
           "content": {
+            "sectionLabel": "Case Study",
             "title": "NexusRoute",
+            "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs. GeoJSON streaming with high-frequency state reconciliation.",
             "techStack": [
               {
                 "name": "Google Maps API"
@@ -950,12 +978,13 @@
                 "name": "Zustand"
               }
             ],
-            "description": "Real-time logistics optimization platform processing 50K+ WebSocket events/sec across 18 global hubs. GeoJSON streaming with high-frequency state reconciliation.",
-            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
-            "sectionLabel": "Case Study"
+            "screenshots": [],
+            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp"
           },
           "anchorId": "logistics",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -967,7 +996,9 @@
           "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
           "type": "merch",
           "content": {
+            "sectionLabel": "Case Study",
             "title": "MerchForge",
+            "description": "AI-powered merchandise designer with real-time state synchronization. Every UI interaction instantly reflects in the live configuration output.",
             "techStack": [
               {
                 "name": "React State"
@@ -982,11 +1013,12 @@
                 "name": "Typing Animation"
               }
             ],
-            "description": "AI-powered merchandise designer with real-time state synchronization. Every UI interaction instantly reflects in the live configuration output.",
-            "sectionLabel": "Case Study"
+            "screenshots": []
           },
           "anchorId": "merch",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -998,7 +1030,9 @@
           "id": "50a345ad-b407-46be-9c8a-54fe88138bb6",
           "type": "omnigrid",
           "content": {
+            "sectionLabel": "Case Study",
             "title": "OmniGrid: Advanced Data Management System",
+            "description": "High-density data grid with virtualized scrolling, headless table architecture, and server-state cache orchestration. Handling massive datasets with zero-latency UI interactions and complex server-side state synchronization.",
             "techStack": [
               {
                 "name": "TanStack Query"
@@ -1013,11 +1047,12 @@
                 "name": "Virtual Scroll"
               }
             ],
-            "description": "High-density data grid with virtualized scrolling, headless table architecture, and server-state cache orchestration. Handling massive datasets with zero-latency UI interactions and complex server-side state synchronization.",
-            "sectionLabel": "Case Study"
+            "screenshots": []
           },
           "anchorId": "omnigrid",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     },
@@ -1029,7 +1064,9 @@
           "id": "1c556cb2-aac0-4fb6-8e1f-b78371fb3967",
           "type": "proof",
           "content": {
+            "sectionLabel": "Case Study",
             "title": "Proof: AI Fitness Verification",
+            "description": "Telegram Mini App that gamifies fitness verification with real-time AI analysis. Gemini 2.5 Flash counts reps, verifies form, checks liveness — awarding Physio/Neuro points across 20 progression levels.",
             "techStack": [
               {
                 "name": "Supabase Edge Functions"
@@ -1047,11 +1084,12 @@
                 "name": "Telegram Mini App SDK"
               }
             ],
-            "description": "Telegram Mini App that gamifies fitness verification with real-time AI analysis. Gemini 2.5 Flash counts reps, verifies form, checks liveness — awarding Physio/Neuro points across 20 progression levels.",
-            "sectionLabel": "Case Study"
+            "screenshots": []
           },
           "anchorId": "proof",
-          "settings": {}
+          "settings": {
+            "galleryStyle": "grid"
+          }
         }
       ]
     }
