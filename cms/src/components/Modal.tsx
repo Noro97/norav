@@ -35,6 +35,15 @@ export function Modal({
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
   const returnFocusTo = useRef<HTMLElement | null>(null)
+  // The caller's onClose is rarely memoized (`onClose={() => setX(null)}` is
+  // the natural way to write it) — reading it through a ref means a re-render
+  // that only changes onClose's identity doesn't re-run the effect below and
+  // re-steal focus back to the first focusable element on every keystroke.
+  const onCloseRef = useRef(onClose)
+
+  useEffect(() => {
+    onCloseRef.current = onClose
+  }, [onClose])
 
   const focusables = useCallback(
     () =>
@@ -58,7 +67,7 @@ export function Modal({
       if (!isInnermost()) return
       if (event.key === 'Escape') {
         event.preventDefault()
-        onClose()
+        onCloseRef.current()
         return
       }
       if (event.key !== 'Tab') return
@@ -87,7 +96,11 @@ export function Modal({
       if (at !== -1) open.splice(at, 1)
       returnFocusTo.current?.focus()
     }
-  }, [focusables, onClose])
+    // Deliberately not depending on `onClose` — see onCloseRef above. `focusables`
+    // is a `useCallback` with no deps of its own, so this still only runs once
+    // per dialog open/close, exactly as intended.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusables])
 
   return (
     <div
