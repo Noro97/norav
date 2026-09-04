@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import type { BentoVariant } from './bento.data'
-import { readToken, useThemeColor, withAlpha } from '@/content/theme'
+import { readToken, useAccentColor, withAlpha } from '@/content/theme'
 
 /**
  * Each tile is tinted by the project it stands for. The two that carry the
@@ -32,7 +32,7 @@ export function BentoVideoPlaceholder({ variant, active }: Props) {
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const rafRef = useRef(0)
   // Recomputed when the palette changes; the accent it depends on is a token.
-  useThemeColor('--color-crimson-500', '#B51A2B')
+  useAccentColor()
   const palette = variantColors(variant)
   const startTimeRef = useRef(0)
 

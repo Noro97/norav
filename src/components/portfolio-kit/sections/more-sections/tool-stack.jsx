@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headGlyph: '◇',
@@ -22,14 +23,14 @@ export function ToolStack({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section className="tools" data-screen-label="Tools">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headGlyph}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-        <h2 className="section-title">
-          {c.title}{" "}<em style={{ color: accent }}>{c.titleAccent}</em>{c.titleTail}
-        </h2>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headGlyph}
+        label={c.headLabel}
+        title={c.title}
+        titleAccent={c.titleAccent}
+        titleTail={c.titleTail}
+      />
       <div className="tools-grid">
         {c.tools.map((t, i) => (
           <div key={i} className="tool-cell">

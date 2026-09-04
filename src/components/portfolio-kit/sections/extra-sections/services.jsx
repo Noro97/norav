@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headNumber: '02',
@@ -38,14 +39,14 @@ export function Services({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section id="services" className="services" data-screen-label="03 Services">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headNumber}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-        <h2 className="section-title">
-          {c.title}{" "}<em style={{ color: accent }}>{c.titleAccent}</em>{c.titleTail}
-        </h2>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headNumber}
+        label={c.headLabel}
+        title={c.title}
+        titleAccent={c.titleAccent}
+        titleTail={c.titleTail}
+      />
       <div className="services-grid">
         {c.services.map((s, i) => (
           <div key={i} className="svc">

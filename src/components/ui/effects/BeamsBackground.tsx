@@ -1,4 +1,5 @@
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { BACKGROUND_LAYER } from './CanvasBackground'
 
 /**
  * A few soft rotating light beams. CSS-only (a conic gradient under a slow
@@ -9,7 +10,7 @@ export function BeamsBackground({ className }: { className?: string }) {
   if (reducedMotion) return null
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className ?? ''}`} aria-hidden="true">
+    <div className={`${BACKGROUND_LAYER} ${className ?? ''}`} aria-hidden="true">
       <div
         className="absolute left-1/2 top-1/2 w-[140%] aspect-square -translate-x-1/2 -translate-y-1/2 opacity-[0.08]"
         style={{

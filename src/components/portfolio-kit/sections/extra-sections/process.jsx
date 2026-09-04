@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headNumber: '04',
@@ -17,15 +18,13 @@ export function Process({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section className="process" data-screen-label="04 Process">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headNumber}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-        <h2 className="section-title">
-          {c.title}
-          {c.subtitle && <><br/><span className="muted">{c.subtitle}</span></>}
-        </h2>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headNumber}
+        label={c.headLabel}
+        title={c.title}
+        subtitle={c.subtitle}
+      />
       <div className="process-track">
         {c.steps.map((s, i) => (
           <div key={i} className="step">

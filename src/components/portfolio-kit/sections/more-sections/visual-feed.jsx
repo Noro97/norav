@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headGlyph: '◉',
@@ -19,11 +20,11 @@ export function VisualFeed({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section className="feed" data-screen-label="Feed">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headGlyph}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headGlyph}
+        label={c.headLabel}
+      />
       <div className="feed-row">
         {c.tiles.map((tile, i) => (
           <div key={i} className="feed-cell">

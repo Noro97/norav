@@ -5,7 +5,7 @@ import { kitFaqBlock, kitPricingBlock } from '@norav/content-schema'
 
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
-vi.mock('@/content/theme', () => ({ useThemeColor: () => '#00ff00' }))
+vi.mock('@/content/theme', () => ({ useAccentColor: () => '#00ff00' }))
 
 const Faq = defineKitSection('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ')
 const Pricing = defineKitSection(

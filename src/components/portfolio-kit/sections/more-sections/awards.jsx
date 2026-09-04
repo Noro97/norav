@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionEyebrow, SectionTitle } from '../../section-head';
 
 export const DEFAULTS = {
   headGlyph: '♢',
@@ -22,12 +23,13 @@ export function Awards({ accent, content }) {
     <section className="awards" data-screen-label="Awards">
       <div className="awards-inner">
         <div className="awards-side">
-          <div className="section-eyebrow">
-            <span>{c.headGlyph}</span><span className="bar"></span><span>{c.headLabel}</span>
-          </div>
-          <h2 className="section-title">
-            {c.title}{" "}<em style={{ color: accent }}>{c.titleAccent}</em>{c.titleTail}
-          </h2>
+          <SectionEyebrow lead={c.headGlyph} label={c.headLabel} />
+          <SectionTitle
+            accent={accent}
+            title={c.title}
+            titleAccent={c.titleAccent}
+            titleTail={c.titleTail}
+          />
           <p className="awards-blurb">{c.blurb}</p>
         </div>
         <div className="awards-list">

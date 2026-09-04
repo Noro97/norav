@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, type MouseEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface Props {
@@ -24,21 +24,35 @@ const SPARK_LIFETIME_MS = 500
 export function ClickSpark({ children, className = '', onClick }: Props) {
   const reducedMotion = useReducedMotion()
   const idRef = useRef(0)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const [sparks, setSparks] = useState<Spark[]>([])
+
+  useEffect(() => {
+    const timers = timersRef.current
+    return () => timers.forEach(clearTimeout)
+  }, [])
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLSpanElement>) => {
       onClick?.(e)
       if (reducedMotion) return
       const rect = e.currentTarget.getBoundingClientRect()
+      // `detail` is 0 for a click the keyboard synthesised, and its clientX/Y
+      // are 0 with it — bursting from there would put the sparks off the
+      // element entirely. Burst from the middle instead.
+      const fromKeyboard = e.detail === 0
       const id = idRef.current++
       setSparks((prev) => [
         ...prev,
-        { id, x: e.clientX - rect.left, y: e.clientY - rect.top },
+        fromKeyboard
+          ? { id, x: rect.width / 2, y: rect.height / 2 }
+          : { id, x: e.clientX - rect.left, y: e.clientY - rect.top },
       ])
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setSparks((prev) => prev.filter((spark) => spark.id !== id))
+        timersRef.current = timersRef.current.filter((t) => t !== timer)
       }, SPARK_LIFETIME_MS)
+      timersRef.current.push(timer)
     },
     [onClick, reducedMotion]
   )

@@ -1,5 +1,5 @@
 import { useRef, useEffect  } from 'react'
-import { useThemeColor, withAlpha } from '@/content/theme'
+import { useAccentColor, withAlpha } from '@/content/theme'
 
 interface Props {
   active: boolean
@@ -11,7 +11,7 @@ export function ProofScanOverlay({ active }: Props) {
   // A 2D context parses colour strings itself and knows nothing of CSS, so
   // the accent arrives already resolved — and re-arrives if the published
   // theme lands after the first paint.
-  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
+  const accent = useAccentColor()
   const rafRef = useRef(0)
   const startTimeRef = useRef(0)
 

@@ -3,10 +3,18 @@
 The sections from the `Noro97/portfolio` project, imported whole. Fifty-three of
 them, placeable from the CMS as the `portfolio_section` block.
 
-They are kept as they arrived — `.jsx`, semantic class names, their own copy —
-so that re-syncing from the source project stays a copy rather than a merge.
+The ones not yet promoted are kept as they arrived — `.jsx`, semantic class
+names, their own copy — so that re-syncing from the source project stays a copy
+rather than a merge. A promoted section is no longer a copy: its text has been
+lifted into a schema and its header now comes from `section-head.jsx` here, so a
+re-sync overwrites it and the promotion has to be redone. Promote a section
+only once you mean to own it.
+
 `sections/index.ts` and `tweaks/index.ts` are the source project's own typed
-barrels and give the rest of this repo a checked surface over them.
+barrels and give the rest of this repo a checked surface over them. Neither
+`tweaks/` nor `ui/reveal.tsx` is reachable from this site — they came with the
+import and nothing here calls them, so they cost a few files on disk and nothing
+in the bundle.
 
 ## Two ways a section reaches a page
 
@@ -54,8 +62,16 @@ edit the script, never the CSS.
 `'use client'` directives were dropped (Vite has no use for them, and Rollup
 warns on each).
 
+The stylesheet is imported by `KitFrame`, which every section reaches through a
+`lazy()` boundary. That placement is load-bearing: imported anywhere in the
+eager graph, its 92 kB lands in the entry bundle and every page pays for it,
+including the ones with no kit section on them.
+
 ## Re-syncing
 
+0. Note which sections have been promoted (`BLOCK_REGISTRY`, the `kit_*` types).
+   A straight copy overwrites them; re-apply the promotion afterwards, or copy
+   only the sections that have not been promoted.
 1. Copy `src/components/{sections,tweaks,ui/reveal.tsx}` and `src/types/index.ts`
    (as `types.ts`) over this directory, then strip `'use client'` and repoint the
    `@/types` import in `sections/index.ts`.

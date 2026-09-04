@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headGlyph: '⚖',
@@ -24,15 +25,13 @@ export function CompareTable({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section className="compare" data-screen-label="Compare">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headGlyph}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-        <h2 className="section-title">
-          {c.title}
-          {c.subtitle && <><br/><span className="muted">{c.subtitle}</span></>}
-        </h2>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headGlyph}
+        label={c.headLabel}
+        title={c.title}
+        subtitle={c.subtitle}
+      />
       <div className="compare-table">
         <div className="cmp-head">
           <div className="cmp-cell"></div>

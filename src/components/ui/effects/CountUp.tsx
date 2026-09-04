@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface Props {
@@ -33,28 +34,10 @@ export function CountUp({
   className,
 }: Props) {
   const reducedMotion = useReducedMotion()
-  const ref = useRef<HTMLSpanElement>(null)
   const frame = useRef(0)
-  const [observedRun, setObservedRun] = useState(false)
   const [n, setN] = useState(0)
-  const run = controlledRun ?? observedRun
-
-  useEffect(() => {
-    if (controlledRun !== undefined) return
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setObservedRun(true)
-          obs.disconnect()
-        }
-      },
-      { threshold: 0.3 }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [controlledRun])
+  const [ref, seen] = useInViewOnce<HTMLSpanElement>(0.3, controlledRun === undefined)
+  const run = controlledRun ?? seen
 
   useEffect(() => {
     if (!run || reducedMotion) return

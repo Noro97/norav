@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headNumber: '07',
@@ -22,14 +23,14 @@ export function FAQ({ accent, content }) {
   const [open, setOpen] = useState(0);
   return (
     <section id="faq" className="faq" data-screen-label="07 FAQ">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headNumber}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-        <h2 className="section-title">
-          {c.title}{" "}<em style={{ color: accent }}>{c.titleAccent}</em>{c.titleTail}
-        </h2>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headNumber}
+        label={c.headLabel}
+        title={c.title}
+        titleAccent={c.titleAccent}
+        titleTail={c.titleTail}
+      />
       <div className="faq-list">
         {c.items.map((it, i) => (
           <div key={i} className={`faq-item ${open === i ? "faq-open" : ""}`}>

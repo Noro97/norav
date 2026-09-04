@@ -87,6 +87,20 @@ export function useThemeColor(name: string, fallback: string): string {
   return value
 }
 
+/**
+ * The accent, live.
+ *
+ * The hook form of `readAccent`, and the same default. Ten components were
+ * spelling out the token name and the fallback hex, which is ten chances for
+ * one of them to fall back to a colour the site no longer uses.
+ */
+export function useAccentColor(): string {
+  return useThemeColor('--color-crimson-500', ACCENT_FALLBACK)
+}
+
+/** The shipped accent, for the moment before a published theme lands. */
+const ACCENT_FALLBACK = '#B51A2B'
+
 const REMEMBERED = 'norav:theme'
 
 /**
@@ -133,7 +147,7 @@ export function applyRememberedTheme(bakedVersion: number): void {
 }
 
 /** The accent, read back from the page, for the parts that cannot use CSS. */
-export function readAccent(fallback = '#B51A2B'): string {
+export function readAccent(fallback = ACCENT_FALLBACK): string {
   return readToken('--color-crimson-500', fallback)
 }
 
