@@ -132,14 +132,18 @@ const content = z.object({})
 const settings = z.object({
   variant: portfolioSectionVariant.default('stat-pills'),
   /**
-   * The kit paints its own highlights from a single colour, passed down as a
-   * prop rather than read from CSS. Defaults to the site's crimson so a section
-   * dropped in unedited already belongs.
+   * The kit paints its highlights from a single colour, passed down as a prop
+   * rather than read from CSS — so, unlike the rest of its palette, this one
+   * cannot simply be pointed at a token in the stylesheet.
+   *
+   * Empty means the published accent, which is what almost every section should
+   * be: change the theme in the CMS and these move with the site. A hex here is
+   * an override for the one section that wants to stand apart.
    */
   accent: z
     .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour, e.g. #B51A2B')
-    .default('#B51A2B'),
+    .regex(/^(#[0-9a-fA-F]{6})?$/, 'Leave empty for the site accent, or give a six-digit hex')
+    .default(''),
 })
 
 export const portfolioSectionBlock = defineBlock({
@@ -153,7 +157,7 @@ export const portfolioSectionBlock = defineBlock({
   settings,
   defaults: {
     content: {},
-    settings: { variant: 'stat-pills', accent: '#B51A2B' },
+    settings: { variant: 'stat-pills', accent: '' },
   },
   form: [
     {
@@ -170,8 +174,8 @@ export const portfolioSectionBlock = defineBlock({
       label: 'Accent colour',
       source: 'settings',
       localized: false,
-      placeholder: '#B51A2B',
-      help: 'Six-digit hex, used for every highlight inside the section.',
+      placeholder: 'Site accent',
+      help: 'Leave empty to follow the site theme. A six-digit hex overrides it for this section only.',
     },
   ],
 })

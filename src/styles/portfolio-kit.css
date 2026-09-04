@@ -7,24 +7,19 @@
  * the rest of the site.
  */
 .pf-kit {
-  --font-instrument-serif: 'Instrument Serif';
-  --font-inter: 'Inter';
-  --font-jetbrains-mono: 'JetBrains Mono';
-  --font-caveat: 'Caveat';
-  --bg: oklch(0.16 0.01 60);
-  --bg-2: oklch(0.20 0.012 60);
-  --bg-elev: oklch(0.22 0.012 60);
-  --fg: oklch(0.96 0.01 80);
-  --fg-muted: oklch(0.65 0.01 70);
-  --fg-dim: oklch(0.45 0.01 70);
-  --line: oklch(0.30 0.012 60);
-  --line-soft: oklch(0.24 0.012 60);
-  --accent: oklch(0.68 0.27 350);
-
-  --serif: var(--font-instrument-serif), "Cormorant Garamond", Georgia, serif;
-  --sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
-  --hand: var(--font-caveat), "Caveat", cursive;
+  --bg: var(--color-background) /* the page */;
+  --bg-2: var(--color-card) /* a card on it */;
+  --bg-elev: var(--color-secondary) /* a panel above that */;
+  --fg: var(--color-foreground);
+  --fg-muted: var(--color-muted-foreground);
+  --fg-dim: color-mix(in oklab, var(--color-muted-foreground) 62%, var(--color-background));
+  --line: var(--color-border);
+  --line-soft: var(--color-input);
+  --accent: var(--color-crimson-500) /* the published accent, not a fixed red */;
+  --serif: var(--font-family-display) /* headings */;
+  --sans: var(--font-family-sans) /* body */;
+  --mono: var(--font-family-mono) /* labels and code */;
+  --hand: var(--font-family-display);
 }
 
 .pf-kit, .pf-kit * { box-sizing: border-box; }
@@ -2516,4 +2511,9 @@
 .pf-kit .scratch-progress-track { flex: 1; height: 4px; background: var(--line); border-radius: 999px; overflow: hidden; }
 .pf-kit .scratch-progress-fill { height: 100%; transition: width 200ms; }
 .pf-kit .scratch-progress span { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+.pf-kit .section-title,
+.pf-kit .hero-headline {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
 

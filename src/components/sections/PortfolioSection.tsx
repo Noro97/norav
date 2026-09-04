@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { useBlock } from '@/content/ContentProvider'
+import { useThemeColor } from '@/content/theme'
 import { PORTFOLIO_KIT } from '@/components/portfolio-kit/registry'
 import type { PortfolioSectionSettings } from '@norav/content-schema'
 import '@/styles/portfolio-kit.css'
@@ -19,9 +20,15 @@ import '@/styles/portfolio-kit.css'
  */
 export function PortfolioSection({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
   const block = useBlock<Record<string, never>, PortfolioSectionSettings>('portfolio_section', blockId)
+  // The rest of the kit's palette is CSS and follows the theme on its own; the
+  // accent is a prop, so it has to be read back from the page. Re-read on a
+  // theme change, which is what makes the CMS's colour picker move these
+  // sections live rather than only after a rebuild.
+  const themeAccent = useThemeColor('--color-crimson-500', '#B51A2B')
   if (!block) return null
 
-  const { variant, accent } = block.settings
+  const { variant } = block.settings
+  const accent = block.settings.accent || themeAccent
   const Section = PORTFOLIO_KIT[variant]
   if (!Section) {
     // A variant this deployment does not know — the CMS shipped ahead of the

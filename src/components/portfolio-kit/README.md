@@ -18,6 +18,21 @@ tier 2, like the case-study widgets: placement is content, the insides are code.
 A section worth keeping is worth promoting later — lift its copy into a schema of
 its own and it becomes an ordinary tier-1 block.
 
+## The palette is this site's, not the one that came with them
+
+The kit paints from thirteen custom properties and nothing else, which is what
+makes it themeable at all: repoint those and all fifty-three sections follow with
+no component touched. So the port replaces the imported palette — a warm oklch
+dark, its own serif, its own accent — with this site's `--color-*` and
+`--font-family-*` tokens. Those are written onto `:root` at runtime by
+`applyTheme`, so changing the accent or background in the CMS moves these
+sections with the rest of the site.
+
+The one value that is not CSS is the `accent` prop the sections take for their
+inline highlights. `PortfolioSection` reads it back off the page with
+`useThemeColor`, so it follows the theme too; the block's `accent` setting is an
+override for a section that should stand apart, and empty means "the site's".
+
 ## Two things were changed on the way in
 
 The source stylesheet was written to be the only one on the page: it styled
@@ -28,8 +43,7 @@ which are Tailwind's. `scripts/port-portfolio-kit-css.mjs` moves every rule unde
 edit the script, never the CSS.
 
 `'use client'` directives were dropped (Vite has no use for them, and Rollup
-warns on each), and the four `next/font` families the palette referenced are
-declared on `.pf-kit` and loaded from `index.html`.
+warns on each).
 
 ## Re-syncing
 
@@ -37,8 +51,11 @@ declared on `.pf-kit` and loaded from `index.html`.
    (as `types.ts`) over this directory, then strip `'use client'` and repoint the
    `@/types` import in `sections/index.ts`.
 2. `node scripts/port-portfolio-kit-css.mjs <path>/src/app/globals.css`. It
-   reports any inline `style={{ animation: … }}` still naming an unprefixed
-   keyframe; fix those by hand.
+   re-applies the palette mapping and reports any inline
+   `style={{ animation: … }}` still naming an unprefixed keyframe; fix those by
+   hand. If the source gained a custom property, add it to `THEME` in the script
+   — one it does not know stays at the imported value and will not follow the
+   site.
 3. If sections were added or removed, update `registry.tsx` here and
    `PORTFOLIO_SECTION_OPTIONS` in
    `packages/content-schema/src/blocks/portfolio-section.ts`. `registry.test.ts`

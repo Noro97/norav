@@ -75,16 +75,50 @@ root.walkRules(SCOPE, (rule) => {
   rule.walkDecls('overflow-x', (decl) => decl.remove())
 })
 
-// The four families came from `next/font`, which is not how this site loads
-// fonts. Without these the `var(--font-…)` references are invalid, and a font
-// stack that fails to compute takes the whole `font-family` down with it.
+// The kit paints from thirteen custom properties and nothing else, which is
+// what makes it themeable at all: repoint them and all fifty-three sections
+// follow, with no component touched. So the imported palette — a warm oklch
+// dark, its own serif, its own accent — is replaced by this site's tokens.
+//
+// Those tokens are not fixed either. `--color-*` is written onto :root at
+// runtime by `applyTheme` from the published theme, so changing the accent or
+// background in the CMS moves the kit with the rest of the site.
+const THEME = [
+  ['--bg', 'var(--color-background)', 'the page'],
+  ['--bg-2', 'var(--color-card)', 'a card on it'],
+  ['--bg-elev', 'var(--color-secondary)', 'a panel above that'],
+  ['--fg', 'var(--color-foreground)', null],
+  ['--fg-muted', 'var(--color-muted-foreground)', null],
+  // The kit wants a third text tone between muted and invisible; this site
+  // publishes two, so the third is mixed rather than picked, and follows them.
+  ['--fg-dim', 'color-mix(in oklab, var(--color-muted-foreground) 62%, var(--color-background))', null],
+  ['--line', 'var(--color-border)', null],
+  ['--line-soft', 'var(--color-input)', null],
+  ['--accent', 'var(--color-crimson-500)', 'the published accent, not a fixed red'],
+  ['--serif', 'var(--font-family-display)', 'headings'],
+  ['--sans', 'var(--font-family-sans)', 'body'],
+  ['--mono', 'var(--font-family-mono)', 'labels and code'],
+  ['--hand', 'var(--font-family-display)', null],
+]
+
 const palette = root.nodes.find((node) => node.type === 'rule' && node.selector === SCOPE)
-palette?.prepend(
-  { prop: '--font-instrument-serif', value: "'Instrument Serif'" },
-  { prop: '--font-inter', value: "'Inter'" },
-  { prop: '--font-jetbrains-mono', value: "'JetBrains Mono'" },
-  { prop: '--font-caveat', value: "'Caveat'" },
-)
+if (!palette) throw new Error(`no ${SCOPE} rule to hold the palette — did :root move?`)
+palette.removeAll()
+for (const [prop, value, note] of THEME) {
+  palette.append({ prop, value, raws: note ? { before: '\n  ', value: { value, raw: `${value} /* ${note} */` } } : { before: '\n  ' } })
+}
+
+// The imported headings are set at 400 in a serif. Handed this site's display
+// family — which is loaded at its heading weight and not at 400 — that reads as
+// a fallback rather than as a decision, so they take the weight the rest of the
+// site sets its headings in.
+root.append(postcss.parse(`
+${SCOPE} .section-title,
+${SCOPE} .hero-headline {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+`))
 
 const banner = `/*
  * Imported from the portfolio project — generated, do not edit by hand.
