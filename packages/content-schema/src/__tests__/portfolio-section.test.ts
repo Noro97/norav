@@ -29,7 +29,14 @@ describe('portfolio_section', () => {
     expect(result.ok).toBe(false)
   })
 
-  it('refuses an accent that is not a six-digit hex', () => {
+  it('reads an empty accent as "follow the site theme"', () => {
+    // The default, and what almost every section should carry: the accent then
+    // comes from the published palette instead of being frozen at import time.
+    expect(validateBlockSettings('portfolio_section', { variant: 'faq', accent: '' }).ok).toBe(true)
+    expect(portfolioSectionBlock.defaults.settings.accent).toBe('')
+  })
+
+  it('refuses an accent that is neither empty nor a six-digit hex', () => {
     // It is handed to the sections as an inline `background`/`color`, so a
     // malformed value is silently dropped by the browser rather than reported.
     for (const accent of ['crimson', '#fff', 'B51A2B', '#B51A2BB']) {

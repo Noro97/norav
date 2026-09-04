@@ -66,6 +66,14 @@ export interface BlockDefinition<
   label: string
   tier: BlockTier
   description: string
+  /**
+   * Which heading this sits under in the admin's section picker.
+   *
+   * One flat list was right for the site's own two dozen sections. It stops
+   * being right at eighty, which is where the imported kit takes it — a picker
+   * you have to read end to end is a picker nobody reads.
+   */
+  group?: string
   /** A singleton block may appear at most once per page (hero, footer). */
   singleton: boolean
   /** Localized copy — one row per locale in `block_translations`. */
@@ -85,6 +93,9 @@ export type BlockDefinitionInput<
 > = Omit<BlockDefinition<ContentSchema, SettingsSchema>, 'singleton' | 'description'> &
   Partial<Pick<BlockDefinition<ContentSchema, SettingsSchema>, 'singleton' | 'description'>>
 
+/** Sections that come from this site's own design, not from an import. */
+export const HOUSE_GROUP = 'This site'
+
 export function defineBlock<ContentSchema extends z.ZodType, SettingsSchema extends z.ZodType>(
   definition: BlockDefinitionInput<ContentSchema, SettingsSchema>,
 ): BlockDefinition<ContentSchema, SettingsSchema> {
@@ -102,6 +113,7 @@ export interface SerializedBlockDefinition {
   label: string
   tier: BlockTier
   description: string
+  group: string
   singleton: boolean
   form: FormField[]
   defaults: { content: unknown; settings: unknown }
@@ -156,6 +168,6 @@ export function pickLocalized(fields: FormField[], content: unknown): unknown {
 }
 
 export function serializeBlockDefinition(definition: BlockDefinition): SerializedBlockDefinition {
-  const { type, label, tier, description, singleton, form, defaults } = definition
-  return { type, label, tier, description, singleton, form, defaults }
+  const { type, label, tier, description, group, singleton, form, defaults } = definition
+  return { type, label, tier, description, group: group ?? HOUSE_GROUP, singleton, form, defaults }
 }

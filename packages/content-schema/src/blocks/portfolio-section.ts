@@ -14,8 +14,14 @@ import { defineBlock } from '../define-block'
  * The values below are the module names under
  * `src/components/portfolio-kit/sections/`; `PORTFOLIO_KIT` on the site maps
  * each to its component, and a test holds the two lists to the same keys.
+ *
+ * Sections are being promoted out of here one at a time, each becoming a block
+ * of its own with an editable schema (`./kit/*`). A promoted section leaves the
+ * dropdown but stays in the enum: a block someone already placed keeps
+ * validating and keeps rendering, rather than breaking a published page to tidy
+ * up a list.
  */
-export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = [
+const ALL_SECTIONS: { value: string; label: string }[] = [
   { value: 'hero', label: 'Hero' },
   { value: 'about', label: 'Core · About' },
   { value: 'contact', label: 'Core · Contact' },
@@ -70,6 +76,29 @@ export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = [
   { value: 'spinning-sticker', label: 'Creative II · Spinning sticker' },
   { value: 'spotlight-section', label: 'Creative II · Spotlight section' },
 ]
+
+/** Promoted to a block of its own, so no longer offered here. */
+const PROMOTED = new Set([
+  'stats-marquee',
+  'services',
+  'process',
+  'pricing',
+  'press',
+  'faq',
+  'cta-banner',
+  'awards',
+  'big-marquee',
+  'compare-table',
+  'show-reel',
+  'timeline',
+  'tool-stack',
+  'visual-feed',
+  'writing',
+])
+
+export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = ALL_SECTIONS.filter(
+  (option) => !PROMOTED.has(option.value),
+)
 
 export const portfolioSectionVariant = z.enum([
   'hero',
@@ -132,14 +161,18 @@ const content = z.object({})
 const settings = z.object({
   variant: portfolioSectionVariant.default('stat-pills'),
   /**
-   * The kit paints its own highlights from a single colour, passed down as a
-   * prop rather than read from CSS. Defaults to the site's crimson so a section
-   * dropped in unedited already belongs.
+   * The kit paints its highlights from a single colour, passed down as a prop
+   * rather than read from CSS — so, unlike the rest of its palette, this one
+   * cannot simply be pointed at a token in the stylesheet.
+   *
+   * Empty means the published accent, which is what almost every section should
+   * be: change the theme in the CMS and these move with the site. A hex here is
+   * an override for the one section that wants to stand apart.
    */
   accent: z
     .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour, e.g. #B51A2B')
-    .default('#B51A2B'),
+    .regex(/^(#[0-9a-fA-F]{6})?$/, 'Leave empty for the site accent, or give a six-digit hex')
+    .default(''),
 })
 
 export const portfolioSectionBlock = defineBlock({
@@ -153,7 +186,7 @@ export const portfolioSectionBlock = defineBlock({
   settings,
   defaults: {
     content: {},
-    settings: { variant: 'stat-pills', accent: '#B51A2B' },
+    settings: { variant: 'stat-pills', accent: '' },
   },
   form: [
     {
@@ -170,8 +203,8 @@ export const portfolioSectionBlock = defineBlock({
       label: 'Accent colour',
       source: 'settings',
       localized: false,
-      placeholder: '#B51A2B',
-      help: 'Six-digit hex, used for every highlight inside the section.',
+      placeholder: 'Site accent',
+      help: 'Leave empty to follow the site theme. A six-digit hex overrides it for this section only.',
     },
   ],
 })

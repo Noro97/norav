@@ -4,6 +4,7 @@ import { PortfolioSection } from '../PortfolioSection'
 
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
+vi.mock('@/content/theme', () => ({ useThemeColor: () => '#00ff00' }))
 
 const withSettings = (settings: Record<string, unknown>) =>
   useBlock.mockReturnValue({ content: {}, settings, anchorId: null })
@@ -34,6 +35,16 @@ describe('PortfolioSection', () => {
     await screen.findByText('Talks given')
 
     expect(container.querySelector('.pf-kit')).not.toBeNull()
+  })
+
+  it('takes the published accent when the block does not override it', async () => {
+    // Empty is the default. A section that froze the accent at import time
+    // would stop following the palette the moment the theme changed.
+    withSettings({ variant: 'stat-pills', accent: '' })
+    const { container } = render(<PortfolioSection />)
+    await screen.findByText('Talks given')
+
+    expect(container.querySelector('.stat-pill-icon')).toHaveStyle({ background: '#00ff00' })
   })
 
   it('skips a section this deployment has no code for', () => {

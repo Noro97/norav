@@ -489,10 +489,19 @@ export function Editor({
             aria-label="Section to add"
           >
             <option value="">Add a section…</option>
-            {available.map((definition) => (
-              <option key={definition.type} value={definition.type}>
-                {definition.label}
-              </option>
+            {/* Grouped rather than listed: the imported kit takes this picker
+                past eighty entries, and a flat list that long is one nobody
+                reads to the end. */}
+            {[...new Map(available.map((d) => [d.group, true])).keys()].map((group) => (
+              <optgroup key={group} label={group}>
+                {available
+                  .filter((definition) => definition.group === group)
+                  .map((definition) => (
+                    <option key={definition.type} value={definition.type}>
+                      {definition.label}
+                    </option>
+                  ))}
+              </optgroup>
             ))}
           </select>
           <button

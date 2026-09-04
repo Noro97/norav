@@ -1,5 +1,23 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import { HeroSection } from '@/components/sections/HeroSection'
+import { defineKitSection } from '@/components/sections/kit/defineKitSection'
+import type {
+  KitStatsMarqueeContent,
+  KitServicesContent,
+  KitProcessContent,
+  KitPricingContent,
+  KitPressContent,
+  KitFaqContent,
+  KitCtaBannerContent,
+  KitAwardsContent,
+  KitBigMarqueeContent,
+  KitCompareTableContent,
+  KitShowReelContent,
+  KitTimelineContent,
+  KitToolStackContent,
+  KitVisualFeedContent,
+  KitWritingContent,
+} from '@norav/content-schema'
 
 /**
  * Which component renders which block type.
@@ -68,4 +86,23 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   // Any one of the 53 sections imported from the portfolio project, picked in
   // the CMS. One type, because the choice is a setting rather than a schema.
   portfolio_section: named(() => import('@/components/sections/PortfolioSection'), 'PortfolioSection'),
+
+  // The promoted kit sections: same components, now reading their copy from the
+  // CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
+  // every one of them needs, so a section is one line here.
+  kit_stats_marquee: defineKitSection<KitStatsMarqueeContent>('kit_stats_marquee', () => import('@/components/portfolio-kit/sections/extra-sections/stats-marquee'), 'StatsMarquee'),
+  kit_services: defineKitSection<KitServicesContent>('kit_services', () => import('@/components/portfolio-kit/sections/extra-sections/services'), 'Services'),
+  kit_process: defineKitSection<KitProcessContent>('kit_process', () => import('@/components/portfolio-kit/sections/extra-sections/process'), 'Process'),
+  kit_pricing: defineKitSection<KitPricingContent>('kit_pricing', () => import('@/components/portfolio-kit/sections/extra-sections/pricing'), 'Pricing'),
+  kit_press: defineKitSection<KitPressContent>('kit_press', () => import('@/components/portfolio-kit/sections/extra-sections/press'), 'Press'),
+  kit_faq: defineKitSection<KitFaqContent>('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ'),
+  kit_cta_banner: defineKitSection<KitCtaBannerContent>('kit_cta_banner', () => import('@/components/portfolio-kit/sections/extra-sections/cta-banner'), 'CTABanner'),
+  kit_awards: defineKitSection<KitAwardsContent>('kit_awards', () => import('@/components/portfolio-kit/sections/more-sections/awards'), 'Awards'),
+  kit_big_marquee: defineKitSection<KitBigMarqueeContent>('kit_big_marquee', () => import('@/components/portfolio-kit/sections/more-sections/big-marquee'), 'BigMarquee'),
+  kit_compare_table: defineKitSection<KitCompareTableContent>('kit_compare_table', () => import('@/components/portfolio-kit/sections/more-sections/compare-table'), 'CompareTable'),
+  kit_show_reel: defineKitSection<KitShowReelContent>('kit_show_reel', () => import('@/components/portfolio-kit/sections/more-sections/show-reel'), 'ShowReel'),
+  kit_timeline: defineKitSection<KitTimelineContent>('kit_timeline', () => import('@/components/portfolio-kit/sections/more-sections/timeline'), 'Timeline'),
+  kit_tool_stack: defineKitSection<KitToolStackContent>('kit_tool_stack', () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'), 'ToolStack'),
+  kit_visual_feed: defineKitSection<KitVisualFeedContent>('kit_visual_feed', () => import('@/components/portfolio-kit/sections/more-sections/visual-feed'), 'VisualFeed'),
+  kit_writing: defineKitSection<KitWritingContent>('kit_writing', () => import('@/components/portfolio-kit/sections/more-sections/writing'), 'Writing'),
 }
