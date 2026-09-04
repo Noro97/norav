@@ -15,7 +15,6 @@ import { useContent } from '@/content/ContentProvider'
 
 /** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
 interface SiteSettings {
-  cursor?: boolean
   grain?: boolean
   dynamicGrid?: boolean
 }
@@ -33,9 +32,6 @@ const SceneController = lazy(() =>
   import('@/components/canvas/SceneController').then((m) => ({
     default: m.SceneController,
   }))
-)
-const CursorEffect = lazy(() =>
-  import('@/components/ui/effects/CursorEffect').then((m) => ({ default: m.CursorEffect }))
 )
 
 function App() {
@@ -94,7 +90,6 @@ function App() {
             {siteSettings.grain !== false && <AnimatedGrain />}
           </>
         )}
-        {siteSettings.cursor !== false && <CursorEffect />}
       </Suspense>
 
       {/* The 3D mark belongs to the hero, so it goes where the hero goes.

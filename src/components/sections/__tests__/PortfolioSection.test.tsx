@@ -34,7 +34,11 @@ describe('PortfolioSection', () => {
     const { container } = render(<PortfolioSection />)
     await screen.findByText('Talks given')
 
-    expect(container.querySelector('.pf-kit')).not.toBeNull()
+    const wrapper = container.querySelector('.pf-kit')
+    expect(wrapper).not.toBeNull()
+    // A section, not a div: `main` switches pointer events off and its children
+    // switch them back on, and this wrapper is one of those children.
+    expect(wrapper?.tagName).toBe('SECTION')
   })
 
   it('takes the published accent when the block does not override it', async () => {

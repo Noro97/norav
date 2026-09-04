@@ -39,9 +39,9 @@ export function defineKitSection<TContent>(
       if (!block) return null
 
       return (
-        <div className="pf-kit" {...(anchorId ? { id: anchorId } : {})}>
+        <section className="pf-kit" {...(anchorId ? { id: anchorId } : {})}>
           <Section accent={block.settings.accent || themeAccent} content={block.content} />
-        </div>
+        </section>
       )
     }
 

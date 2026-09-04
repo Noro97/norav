@@ -68,6 +68,9 @@ describe('a promoted kit section', () => {
     const wrapper = container.querySelector('.pf-kit')
     expect(wrapper).not.toBeNull()
     expect(wrapper).toHaveAttribute('id', 'faq')
+    // A section, not a div: `main` switches pointer events off and its children
+    // switch them back on, and this wrapper is one of those children.
+    expect(wrapper?.tagName).toBe('SECTION')
   })
 
   it('asks for its own row, so a page can carry several', async () => {
