@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
-export type GalleryStyle = 'grid' | 'circular' | 'dome' | 'card-swap'
+type GalleryStyle = 'grid' | 'circular' | 'dome' | 'card-swap'
 
 interface Props {
   images: string[]
@@ -16,7 +16,7 @@ function GridGallery({ images, alt, className }: { images: string[]; alt: string
   return (
     <div className={`grid grid-cols-2 sm:grid-cols-3 gap-3 ${className ?? ''}`}>
       {images.map((src, i) => (
-        <div key={src} className="aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-white/[0.02]">
+        <div key={i} className="aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-white/[0.02]">
           <img src={src} alt={`${alt} ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ))}
@@ -38,7 +38,9 @@ function ArcGallery({
 }) {
   const count = images.length
   const radius = 120
-  const startDeg = sweep === 'half' ? -90 : -90
+  // Both sweeps start at the top; the full circle closes on itself, so it
+  // divides by the count rather than by the gaps between thumbnails.
+  const START_DEG = -90
   const spanDeg = sweep === 'half' ? 180 : 360
   const step = count > 1 ? spanDeg / (sweep === 'full' ? count : count - 1) : 0
 
@@ -48,15 +50,15 @@ function ArcGallery({
       style={{ height: sweep === 'half' ? radius + 70 : radius * 2 + 70 }}
     >
       {images.map((src, i) => {
-        const deg = startDeg + step * i
+        const deg = START_DEG + step * i
         const rad = (deg * Math.PI) / 180
         const x = Math.cos(rad) * radius
         const y = Math.sin(rad) * radius
         return (
           <div
-            key={src}
+            key={i}
             className="absolute top-1/2 left-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-white/[0.1] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:scale-110 hover:z-10"
-            style={{ transform: `translate(-50%, -50%) translate(${x}px, ${sweep === 'half' ? y : y}px)` }}
+            style={{ transform: `translate(-50%, -50%) translate(${x}px, ${y}px)` }}
           >
             <img src={src} alt={`${alt} ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
           </div>
@@ -82,7 +84,7 @@ function CardSwapGallery({ images, alt, className }: { images: string[]; alt: st
         const offset = (i - active + images.length) % images.length
         return (
           <div
-            key={src}
+            key={i}
             className="absolute inset-0 rounded-xl overflow-hidden border border-white/[0.1] bg-white/[0.02] shadow-xl transition-all duration-500 ease-out"
             style={{
               transform: `translateY(${offset * 8}px) scale(${1 - offset * 0.04})`,

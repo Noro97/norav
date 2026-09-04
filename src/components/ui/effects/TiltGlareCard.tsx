@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { TILT_MAX_DEG, TILT_GLARE_OPACITY } from '@/lib/constants'
 
@@ -44,6 +44,8 @@ export function TiltGlareCard({ children, className = '' }: Props) {
     },
     [reducedMotion]
   )
+
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), [])
 
   const handleMouseLeave = useCallback(() => {
     if (frameRef.current) {

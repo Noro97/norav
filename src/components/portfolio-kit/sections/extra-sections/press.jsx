@@ -1,4 +1,5 @@
 import { withDefaults } from '../../content';
+import { SectionHead } from '../../section-head';
 
 export const DEFAULTS = {
   headNumber: '06',
@@ -16,11 +17,11 @@ export function Press({ accent, content }) {
   const c = withDefaults(DEFAULTS, content);
   return (
     <section className="press" data-screen-label="06 Press">
-      <div className="section-head">
-        <div className="section-eyebrow">
-          <span>{c.headNumber}</span><span className="bar"></span><span>{c.headLabel}</span>
-        </div>
-      </div>
+      <SectionHead
+        accent={accent}
+        lead={c.headNumber}
+        label={c.headLabel}
+      />
       <div className="press-list">
         {c.features.map((f, i) => (
           <div key={i} className="press-row">

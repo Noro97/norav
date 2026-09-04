@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
-export type ScrambleVariant = 'scramble' | 'decrypt' | 'glitch'
+type ScrambleVariant = 'scramble' | 'decrypt' | 'glitch'
 
 interface Props {
   text: string
@@ -23,31 +24,15 @@ const STEP_MS = 30
  */
 export function ScrambleText({ text, variant = 'scramble', className }: Props) {
   const reducedMotion = useReducedMotion()
-  const ref = useRef<HTMLSpanElement>(null)
-  const [display, setDisplay] = useState(text)
-  const [run, setRun] = useState(false)
+  const [ref, seen] = useInViewOnce<HTMLSpanElement>()
+  // Null means "not mid-animation", so the real text is what renders. Deriving
+  // it that way rather than seeding state with `text` keeps the idle path free
+  // of a setState, which would otherwise run on every mount for nothing.
+  const [scrambled, setScrambled] = useState<string | null>(null)
+  const animating = seen && !reducedMotion
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setRun(true)
-          obs.disconnect()
-        }
-      },
-      { threshold: 0.3 }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!run || reducedMotion) {
-      setDisplay(text)
-      return
-    }
+    if (!animating) return
 
     const chars = variant === 'glitch' ? GLITCH_CHARS : SCRAMBLE_CHARS
     let frame = 0
@@ -57,7 +42,7 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
       intervalId = setInterval(() => {
         frame += 1
         const revealCount = Math.floor((frame * text.length) / 20)
-        setDisplay(
+        setScrambled(
           text
             .split('')
             .map((char, index) => {
@@ -68,7 +53,7 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
             .join('')
         )
         if (revealCount >= text.length) {
-          setDisplay(text)
+          setScrambled(null)
           clearInterval(intervalId)
         }
       }, STEP_MS)
@@ -77,11 +62,11 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
       intervalId = setInterval(() => {
         frame += 1
         if (frame >= totalTicks) {
-          setDisplay(text)
+          setScrambled(null)
           clearInterval(intervalId)
           return
         }
-        setDisplay(
+        setScrambled(
           text
             .split('')
             .map((char) => (/\s/.test(char) ? char : chars[Math.floor(Math.random() * chars.length)]))
@@ -91,11 +76,11 @@ export function ScrambleText({ text, variant = 'scramble', className }: Props) {
     }
 
     return () => clearInterval(intervalId)
-  }, [run, reducedMotion, text, variant])
+  }, [animating, text, variant])
 
   return (
     <span ref={ref} className={className}>
-      {display}
+      {scrambled ?? text}
     </span>
   )
 }

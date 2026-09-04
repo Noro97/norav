@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { useThemeColor, withAlpha } from '@/content/theme'
+import { useAccentColor, withAlpha } from '@/content/theme'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { GRID_SPACING, GRID_GLOW_RADIUS } from '@/lib/constants'
@@ -16,7 +16,7 @@ export function DynamicGrid() {
   const pointer = useRef({ x: -999, y: -999 })
   // A 2D canvas takes colour strings, not CSS variables, so the cursor glow
   // follows the accent through a subscription rather than a stylesheet.
-  const accent = useThemeColor('--color-crimson-500', '#B51A2B')
+  const accent = useAccentColor()
 
   const buildOffscreen = useCallback((width: number, height: number) => {
     const oc = document.createElement('canvas')

@@ -4,7 +4,7 @@ import { PortfolioSection } from '../PortfolioSection'
 
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
-vi.mock('@/content/theme', () => ({ useThemeColor: () => '#00ff00' }))
+vi.mock('@/content/theme', () => ({ useAccentColor: () => '#00ff00' }))
 
 const withSettings = (settings: Record<string, unknown>) =>
   useBlock.mockReturnValue({ content: {}, settings, anchorId: null })
