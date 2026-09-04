@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BLOCK_REGISTRY } from '@norav/content-schema'
 import { BLOCK_COMPONENTS } from '../blocks'
-import { BAKED_SNAPSHOTS, findBlock, HOME_SLUG } from '../index'
+import { BAKED_SNAPSHOTS, findBlock, findBlockById, HOME_SLUG } from '../index'
 
 describe('the site can render what the CMS can publish', () => {
   it('has a component for every registered block type', () => {
@@ -32,5 +32,35 @@ describe('the baked snapshots', () => {
 
   it('carries the hero the entry chunk renders eagerly', () => {
     expect(findBlock(BAKED_SNAPSHOTS.en, 'hero')).toBeDefined()
+  })
+})
+
+describe('finding one block among several of a type', () => {
+  const snapshot = {
+    pages: [
+      {
+        slug: 'home',
+        blocks: [
+          { id: 'a', type: 'metrics', anchorId: null, content: {}, settings: { countUp: true } },
+          { id: 'b', type: 'metrics', anchorId: null, content: {}, settings: { countUp: false } },
+        ],
+      },
+      { slug: 'work', blocks: [{ id: 'c', type: 'gallery', anchorId: null, content: {}, settings: {} }] },
+    ],
+  } as unknown as Parameters<typeof findBlock>[0]
+
+  it('reads the row it was asked for, not the first of the type', () => {
+    // Four galleries on a page used to render the first one four times over,
+    // because a type was assumed to name exactly one block.
+    expect(findBlockById(snapshot, 'b')?.settings).toEqual({ countUp: false })
+    expect(findBlock(snapshot, 'metrics')?.id).toBe('a')
+  })
+
+  it('looks across pages, the way finding by type does', () => {
+    expect(findBlockById(snapshot, 'c')?.type).toBe('gallery')
+  })
+
+  it('has no answer for an id that is not published', () => {
+    expect(findBlockById(snapshot, 'gone')).toBeUndefined()
   })
 })

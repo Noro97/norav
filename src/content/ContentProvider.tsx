@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
 import { readPath } from './routing'
 import type { Locale, Snapshot } from '@norav/content-schema'
-import { BAKED_SNAPSHOTS, findBlock } from './index'
+import { BAKED_SNAPSHOTS, findBlock, findBlockById } from './index'
 import { setCurrentSnapshots } from './current'
 import { applyTheme } from './theme'
 
@@ -332,17 +332,21 @@ export interface BlockView<TContent, TSettings> {
  */
 export function useBlock<TContent, TSettings = Record<string, unknown>>(
   type: string,
+  blockId?: string,
 ): BlockView<TContent, TSettings> | undefined {
   const { snapshot } = useContent()
   return useMemo(() => {
-    const block = findBlock(snapshot, type)
+    // A repeatable section is handed its own id by the renderer and asks for
+    // exactly that row; without one, the first block of the type is the answer,
+    // which is all a section that appears once ever needs.
+    const block = blockId ? findBlockById(snapshot, blockId) : findBlock(snapshot, type)
     if (!block) return undefined
     return {
       content: block.content as TContent,
       settings: block.settings as TSettings,
       anchorId: block.anchorId,
     }
-  }, [snapshot, type])
+  }, [snapshot, type, blockId])
 }
 
 /**

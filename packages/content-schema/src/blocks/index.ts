@@ -32,6 +32,7 @@ import { galleryBlock } from './gallery'
 import { ctaBannerBlock } from './cta-banner'
 import { testimonialsBlock } from './testimonials'
 import { metricsBlock } from './metrics'
+import { portfolioSectionBlock } from './portfolio-section'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -70,6 +71,10 @@ export const BLOCK_REGISTRY = {
   cta_banner: ctaBannerBlock,
   testimonials: testimonialsBlock,
   metrics: metricsBlock,
+
+  // Any one of the sections imported from the portfolio project. One type
+  // rather than fifty-three: the section is a setting, not a schema.
+  portfolio_section: portfolioSectionBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -164,3 +169,5 @@ export type { GalleryContent, GallerySettings } from './gallery'
 export type { CtaBannerContent, CtaBannerSettings } from './cta-banner'
 export type { TestimonialsContent, TestimonialsSettings } from './testimonials'
 export type { MetricsContent, MetricsSettings } from './metrics'
+export type { PortfolioSectionContent, PortfolioSectionSettings } from './portfolio-section'
+export { PORTFOLIO_SECTION_OPTIONS } from './portfolio-section'

@@ -60,7 +60,7 @@ export function BlockRenderer({ slug }: { slug: string }) {
 
         return (
           <Suspense key={block.id} fallback={<SectionLoader />}>
-            <Component anchorId={block.anchorId} />
+            <Component anchorId={block.anchorId} blockId={block.id} />
           </Suspense>
         )
       })}

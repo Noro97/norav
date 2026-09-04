@@ -5,8 +5,8 @@ import { useBlock } from '@/content/ContentProvider'
 import { CountUp } from '@/components/ui/effects/CountUp'
 import type { MetricsContent, MetricsSettings } from '@norav/content-schema'
 
-export function MetricsSection({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<MetricsContent, MetricsSettings>('metrics')
+export function MetricsSection({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+  const block = useBlock<MetricsContent, MetricsSettings>('metrics', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {

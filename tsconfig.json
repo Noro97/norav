@@ -14,6 +14,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* The portfolio kit under src/components/portfolio-kit is .jsx, kept that
+       way so a re-sync from the source project stays a copy. It is not type
+       checked (checkJs stays off); consumers go through its typed barrels. */
+    "allowJs": true,
+
     /* Path aliases */
     "baseUrl": ".",
     "paths": {

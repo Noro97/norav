@@ -5,8 +5,8 @@ import { useBlock } from '@/content/ContentProvider'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { TestimonialsContent, TestimonialsSettings } from '@norav/content-schema'
 
-export function Testimonials({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<TestimonialsContent, TestimonialsSettings>('testimonials')
+export function Testimonials({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+  const block = useBlock<TestimonialsContent, TestimonialsSettings>('testimonials', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {

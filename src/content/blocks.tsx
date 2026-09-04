@@ -12,6 +12,12 @@ import { HeroSection } from '@/components/sections/HeroSection'
  */
 export interface BlockComponentProps {
   anchorId?: string | null
+  /**
+   * Which row on the page this is. A section that may appear more than once
+   * passes it to `useBlock` so it reads its own settings instead of the first
+   * block of its type; the ones that appear once can ignore it.
+   */
+  blockId?: string
 }
 
 type BlockComponent = ComponentType<BlockComponentProps> | LazyExoticComponent<ComponentType<BlockComponentProps>>
@@ -58,4 +64,8 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   cta_banner: named(() => import('@/components/sections/CtaBanner'), 'CtaBanner'),
   testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),
   metrics: named(() => import('@/components/sections/MetricsSection'), 'MetricsSection'),
+
+  // Any one of the 53 sections imported from the portfolio project, picked in
+  // the CMS. One type, because the choice is a setting rather than a schema.
+  portfolio_section: named(() => import('@/components/sections/PortfolioSection'), 'PortfolioSection'),
 }

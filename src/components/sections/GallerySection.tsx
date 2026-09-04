@@ -5,8 +5,8 @@ import { useBlock } from '@/content/ContentProvider'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { GalleryContent, GallerySettings } from '@norav/content-schema'
 
-export function GallerySection({ anchorId }: { anchorId?: string | null }) {
-  const block = useBlock<GalleryContent, GallerySettings>('gallery')
+export function GallerySection({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+  const block = useBlock<GalleryContent, GallerySettings>('gallery', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {

@@ -105,7 +105,11 @@ export function Modal({
     // Deliberately not depending on `onClose` — see onCloseRef above. `focusables`
     // is a `useCallback` with no deps of its own, so this still only runs once
     // per dialog open/close, exactly as intended.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //
+    // No `eslint-disable` for `react-hooks/exhaustive-deps` here: this app has
+    // no ESLint config of its own, so `next build` runs one that never loaded
+    // the react-hooks plugin — and a directive naming a rule that does not
+    // exist is itself the error that fails the build.
   }, [focusables])
 
   return (
