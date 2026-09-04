@@ -42,6 +42,16 @@ import {
   kitFaqBlock,
   kitCtaBannerBlock,
 } from './kit/extra'
+import {
+  kitAwardsBlock,
+  kitBigMarqueeBlock,
+  kitCompareTableBlock,
+  kitShowReelBlock,
+  kitTimelineBlock,
+  kitToolStackBlock,
+  kitVisualFeedBlock,
+  kitWritingBlock,
+} from './kit/more'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -94,6 +104,14 @@ export const BLOCK_REGISTRY = {
   kit_press: kitPressBlock,
   kit_faq: kitFaqBlock,
   kit_cta_banner: kitCtaBannerBlock,
+  kit_awards: kitAwardsBlock,
+  kit_big_marquee: kitBigMarqueeBlock,
+  kit_compare_table: kitCompareTableBlock,
+  kit_show_reel: kitShowReelBlock,
+  kit_timeline: kitTimelineBlock,
+  kit_tool_stack: kitToolStackBlock,
+  kit_visual_feed: kitVisualFeedBlock,
+  kit_writing: kitWritingBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -178,6 +196,16 @@ export {
   kitFaqBlock,
   kitCtaBannerBlock,
 } from './kit/extra'
+export {
+  kitAwardsBlock,
+  kitBigMarqueeBlock,
+  kitCompareTableBlock,
+  kitShowReelBlock,
+  kitTimelineBlock,
+  kitToolStackBlock,
+  kitVisualFeedBlock,
+  kitWritingBlock,
+} from './kit/more'
 export type { HeroContent, HeroSettings } from './hero'
 export type { AboutContent, AboutSettings } from './about'
 export type { ImpactStripContent, ImpactStripSettings } from './impact-strip'
@@ -209,3 +237,13 @@ export type {
   KitFaqContent,
   KitCtaBannerContent,
 } from './kit/extra'
+export type {
+  KitAwardsContent,
+  KitBigMarqueeContent,
+  KitCompareTableContent,
+  KitShowReelContent,
+  KitTimelineContent,
+  KitToolStackContent,
+  KitVisualFeedContent,
+  KitWritingContent,
+} from './kit/more'

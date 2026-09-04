@@ -9,6 +9,14 @@ import type {
   KitPressContent,
   KitFaqContent,
   KitCtaBannerContent,
+  KitAwardsContent,
+  KitBigMarqueeContent,
+  KitCompareTableContent,
+  KitShowReelContent,
+  KitTimelineContent,
+  KitToolStackContent,
+  KitVisualFeedContent,
+  KitWritingContent,
 } from '@norav/content-schema'
 
 /**
@@ -89,4 +97,12 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   kit_press: defineKitSection<KitPressContent>('kit_press', () => import('@/components/portfolio-kit/sections/extra-sections/press'), 'Press'),
   kit_faq: defineKitSection<KitFaqContent>('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ'),
   kit_cta_banner: defineKitSection<KitCtaBannerContent>('kit_cta_banner', () => import('@/components/portfolio-kit/sections/extra-sections/cta-banner'), 'CTABanner'),
+  kit_awards: defineKitSection<KitAwardsContent>('kit_awards', () => import('@/components/portfolio-kit/sections/more-sections/awards'), 'Awards'),
+  kit_big_marquee: defineKitSection<KitBigMarqueeContent>('kit_big_marquee', () => import('@/components/portfolio-kit/sections/more-sections/big-marquee'), 'BigMarquee'),
+  kit_compare_table: defineKitSection<KitCompareTableContent>('kit_compare_table', () => import('@/components/portfolio-kit/sections/more-sections/compare-table'), 'CompareTable'),
+  kit_show_reel: defineKitSection<KitShowReelContent>('kit_show_reel', () => import('@/components/portfolio-kit/sections/more-sections/show-reel'), 'ShowReel'),
+  kit_timeline: defineKitSection<KitTimelineContent>('kit_timeline', () => import('@/components/portfolio-kit/sections/more-sections/timeline'), 'Timeline'),
+  kit_tool_stack: defineKitSection<KitToolStackContent>('kit_tool_stack', () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'), 'ToolStack'),
+  kit_visual_feed: defineKitSection<KitVisualFeedContent>('kit_visual_feed', () => import('@/components/portfolio-kit/sections/more-sections/visual-feed'), 'VisualFeed'),
+  kit_writing: defineKitSection<KitWritingContent>('kit_writing', () => import('@/components/portfolio-kit/sections/more-sections/writing'), 'Writing'),
 }

@@ -86,6 +86,14 @@ const PROMOTED = new Set([
   'press',
   'faq',
   'cta-banner',
+  'awards',
+  'big-marquee',
+  'compare-table',
+  'show-reel',
+  'timeline',
+  'tool-stack',
+  'visual-feed',
+  'writing',
 ])
 
 export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = ALL_SECTIONS.filter(

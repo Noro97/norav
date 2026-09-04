@@ -1,12 +1,13 @@
 import { z } from 'zod'
-import type { FormField } from '../../define-block'
 import {
   defineKitBlock,
   kitHead,
+  kitLabels,
   kitSettings,
   KIT_ACCENT_FIELD,
   KIT_DEFAULT_SETTINGS,
   KIT_HEAD_FIELDS,
+  KIT_LABEL_FIELDS,
 } from './shared'
 
 /**
@@ -17,10 +18,6 @@ import {
  * working section to rewrite rather than an empty form to fill in.
  */
 
-/** A short word on a chip. Its own row so the list can be reordered in the admin. */
-const labels = (max: number) => z.array(z.object({ label: z.string().min(1).max(40) })).max(max)
-const LABEL_FIELDS: FormField[] = [{ field: 'label', control: 'text', label: 'Text' }]
-
 // --- services ---------------------------------------------------------------
 
 const servicesContent = kitHead.extend({
@@ -30,7 +27,7 @@ const servicesContent = kitHead.extend({
         n: z.string().max(6),
         title: z.string().min(1).max(80),
         blurb: z.string().max(300),
-        tags: labels(8),
+        tags: kitLabels(8),
       }),
     )
     .min(1)
@@ -95,7 +92,7 @@ export const kitServicesBlock = defineKitBlock({
         { field: 'n', control: 'text', label: 'Number', localized: false },
         { field: 'title', control: 'text', label: 'Title' },
         { field: 'blurb', control: 'textarea', label: 'Blurb' },
-        { field: 'tags', control: 'repeater', label: 'Tags', itemLabel: 'label', max: 8, fields: LABEL_FIELDS },
+        { field: 'tags', control: 'repeater', label: 'Tags', itemLabel: 'label', max: 8, fields: KIT_LABEL_FIELDS },
       ],
     },
     KIT_ACCENT_FIELD,
@@ -313,7 +310,7 @@ const pricingContent = kitHead.extend({
         price: z.string().max(24),
         cycle: z.string().max(40),
         blurb: z.string().max(200),
-        features: labels(10),
+        features: kitLabels(10),
         cta: z.string().max(40),
         href: z.string().max(200),
         featured: z.boolean(),
@@ -407,7 +404,7 @@ export const kitPricingBlock = defineKitBlock({
         { field: 'price', control: 'text', label: 'Price', localized: false },
         { field: 'cycle', control: 'text', label: 'Terms' },
         { field: 'blurb', control: 'textarea', label: 'Blurb' },
-        { field: 'features', control: 'repeater', label: "What's included", itemLabel: 'label', max: 10, fields: LABEL_FIELDS },
+        { field: 'features', control: 'repeater', label: "What's included", itemLabel: 'label', max: 10, fields: KIT_LABEL_FIELDS },
         { field: 'cta', control: 'text', label: 'Button' },
         { field: 'href', control: 'text', label: 'Button link', localized: false, placeholder: '#contact' },
         { field: 'featured', control: 'boolean', label: 'Highlight this one', localized: false },
@@ -473,7 +470,7 @@ export const kitCtaBannerBlock = defineKitBlock({
 
 const statsMarqueeContent = z.object({
   glyph: z.string().max(4),
-  items: labels(60).min(1),
+  items: kitLabels(60).min(1),
 })
 
 export const kitStatsMarqueeBlock = defineKitBlock({
@@ -499,7 +496,7 @@ export const kitStatsMarqueeBlock = defineKitBlock({
   },
   form: [
     { field: 'glyph', control: 'text', label: 'Separator glyph', localized: false },
-    { field: 'items', control: 'repeater', label: 'Claims', itemLabel: 'label', min: 1, max: 60, fields: LABEL_FIELDS },
+    { field: 'items', control: 'repeater', label: 'Claims', itemLabel: 'label', min: 1, max: 60, fields: KIT_LABEL_FIELDS },
     KIT_ACCENT_FIELD,
   ],
 })

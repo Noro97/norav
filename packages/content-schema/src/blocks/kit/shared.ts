@@ -41,6 +41,29 @@ export const KIT_HEAD_FIELDS: FormField[] = [
 
 export type KitHead = z.infer<typeof kitHead>
 
+/** The same header, but opened by a glyph rather than a number. */
+export const kitGlyphHead = z.object({
+  headGlyph: z.string().max(4),
+  headLabel: z.string().max(80),
+  title: z.string().max(160),
+  titleAccent: z.string().max(90),
+  titleTail: z.string().max(60),
+})
+
+export const KIT_GLYPH_HEAD_FIELDS: FormField[] = [
+  { field: 'headGlyph', control: 'text', label: 'Glyph', localized: false, placeholder: '◇' },
+  { field: 'headLabel', control: 'text', label: 'Eyebrow' },
+  { field: 'title', control: 'text', label: 'Title' },
+  { field: 'titleAccent', control: 'text', label: 'Title — accented part' },
+  { field: 'titleTail', control: 'text', label: 'Title — after the accent', placeholder: '.' },
+]
+
+/** A row of short words: its own object so the admin can reorder the list. */
+export const kitLabels = (max: number) =>
+  z.array(z.object({ label: z.string().min(1).max(60) })).max(max)
+
+export const KIT_LABEL_FIELDS: FormField[] = [{ field: 'label', control: 'text', label: 'Text' }]
+
 /**
  * Every kit section takes the same one setting.
  *

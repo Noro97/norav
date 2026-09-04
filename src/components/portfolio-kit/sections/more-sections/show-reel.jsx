@@ -1,6 +1,19 @@
 import { useState } from 'react';
+import { withDefaults } from '../../content';
 
-export function ShowReel({ accent }) {
+export const DEFAULTS = {
+  eyebrow: '2026 SHOWREEL · 02:14',
+  title: 'A two-minute',
+  titleSecond: 'tour of the work.',
+  sub: 'Cut from 11 case studies. Soundtracked.',
+  cornerTopLeft: 'REEL · 04',
+  cornerBottomRight: 'SHOT IN BROOKLYN',
+  duration: '02:14',
+  elapsed: '00:32',
+};
+
+export function ShowReel({ accent, content }) {
+  const c = withDefaults(DEFAULTS, content);
   const [playing, setPlaying] = useState(false);
   return (
     <section className="reel" data-screen-label="Showreel">
@@ -18,7 +31,7 @@ export function ShowReel({ accent }) {
         <div className="reel-content">
           <div className="reel-eyebrow">
             <span className="dot" style={{ background: accent }}></span>
-            <span>2026 SHOWREEL · 02:14</span>
+            <span>{c.eyebrow}</span>
           </div>
           <button className={`reel-play ${playing ? "playing" : ""}`} style={{ background: accent }}>
             {playing ? (
@@ -32,13 +45,13 @@ export function ShowReel({ accent }) {
               </svg>
             )}
           </button>
-          <h2 className="reel-title">A two-minute<br/>tour of the work.</h2>
-          <p className="reel-sub">Cut from 11 case studies. Soundtracked.</p>
+          <h2 className="reel-title">{c.title}<br/>{c.titleSecond}</h2>
+          <p className="reel-sub">{c.sub}</p>
         </div>
-        <div className="reel-corner-tl">REEL · 04</div>
+        <div className="reel-corner-tl">{c.cornerTopLeft}</div>
         <div className="reel-corner-tr">{playing ? "● PLAYING" : "○ PAUSED"}</div>
-        <div className="reel-corner-bl">{playing ? "00:32" : "00:00"} / 02:14</div>
-        <div className="reel-corner-br">SHOT IN BROOKLYN</div>
+        <div className="reel-corner-bl">{playing ? c.elapsed : "00:00"} / {c.duration}</div>
+        <div className="reel-corner-br">{c.cornerBottomRight}</div>
       </div>
     </section>
   );
