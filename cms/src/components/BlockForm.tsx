@@ -34,7 +34,18 @@ function blankRow(fields: FormField[]): Record<string, unknown> {
   const row: Record<string, unknown> = {}
   for (const field of fields) {
     row[field.field] =
-      field.control === 'boolean' ? false : field.control === 'select' ? field.options?.[0]?.value ?? '' : ''
+      field.control === 'boolean'
+        ? false
+        : field.control === 'select'
+          ? (field.options?.[0]?.value ?? '')
+          : // A nested list starts empty, not as an empty string: `''` renders
+            // no rows either way, but it is the wrong type, so the row fails
+            // validation on save until someone adds a child to it.
+            field.control === 'repeater'
+            ? []
+            : field.control === 'group'
+              ? blankRow(field.fields ?? [])
+              : ''
   }
   return row
 }

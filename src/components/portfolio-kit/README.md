@@ -8,15 +8,24 @@ so that re-syncing from the source project stays a copy rather than a merge.
 `sections/index.ts` and `tweaks/index.ts` are the source project's own typed
 barrels and give the rest of this repo a checked surface over them.
 
-## What the CMS owns
+## Two ways a section reaches a page
 
-Which section, where on the page, and in what accent. Not the words inside it:
-each section arrived with its text baked in, and fifty-three different shapes
-would have meant fifty-three schemas — a rewrite, not an import. So the block is
-tier 2, like the case-study widgets: placement is content, the insides are code.
+**Promoted** — the section has a block type of its own (`kit_faq`,
+`kit_pricing`, …), a schema in `@norav/content-schema/blocks/kit`, and an
+editable form. Creating one pre-fills the form with the copy the section
+arrived with, so an editor rewrites rather than invents. The component reads
+`content` and falls back to its own `DEFAULTS` for anything left blank.
 
-A section worth keeping is worth promoting later — lift its copy into a schema of
-its own and it becomes an ordinary tier-1 block.
+**Not yet promoted** — the section is only reachable through the
+`portfolio_section` block, which can place it and colour it but cannot edit a
+word of it. That block is tier 2 for exactly that reason.
+
+Sections move from the second list to the first a folder at a time. Promoting
+one means: lift its literals into an exported `DEFAULTS`, have it read `content`
+through `withDefaults`, write its schema with `defineKitBlock`, register it in
+`BLOCK_REGISTRY` and in `BLOCK_COMPONENTS` via `defineKitSection`, and add its
+name to `PROMOTED` in `portfolio-section.ts` so it leaves the old dropdown. It
+stays in that block's enum, so a block someone already placed keeps working.
 
 ## The palette is this site's, not the one that came with them
 

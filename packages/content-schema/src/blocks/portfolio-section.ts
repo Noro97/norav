@@ -14,8 +14,14 @@ import { defineBlock } from '../define-block'
  * The values below are the module names under
  * `src/components/portfolio-kit/sections/`; `PORTFOLIO_KIT` on the site maps
  * each to its component, and a test holds the two lists to the same keys.
+ *
+ * Sections are being promoted out of here one at a time, each becoming a block
+ * of its own with an editable schema (`./kit/*`). A promoted section leaves the
+ * dropdown but stays in the enum: a block someone already placed keeps
+ * validating and keeps rendering, rather than breaking a published page to tidy
+ * up a list.
  */
-export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = [
+const ALL_SECTIONS: { value: string; label: string }[] = [
   { value: 'hero', label: 'Hero' },
   { value: 'about', label: 'Core · About' },
   { value: 'contact', label: 'Core · Contact' },
@@ -70,6 +76,21 @@ export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = [
   { value: 'spinning-sticker', label: 'Creative II · Spinning sticker' },
   { value: 'spotlight-section', label: 'Creative II · Spotlight section' },
 ]
+
+/** Promoted to a block of its own, so no longer offered here. */
+const PROMOTED = new Set([
+  'stats-marquee',
+  'services',
+  'process',
+  'pricing',
+  'press',
+  'faq',
+  'cta-banner',
+])
+
+export const PORTFOLIO_SECTION_OPTIONS: { value: string; label: string }[] = ALL_SECTIONS.filter(
+  (option) => !PROMOTED.has(option.value),
+)
 
 export const portfolioSectionVariant = z.enum([
   'hero',

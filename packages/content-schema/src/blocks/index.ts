@@ -33,6 +33,15 @@ import { ctaBannerBlock } from './cta-banner'
 import { testimonialsBlock } from './testimonials'
 import { metricsBlock } from './metrics'
 import { portfolioSectionBlock } from './portfolio-section'
+import {
+  kitStatsMarqueeBlock,
+  kitServicesBlock,
+  kitProcessBlock,
+  kitPricingBlock,
+  kitPressBlock,
+  kitFaqBlock,
+  kitCtaBannerBlock,
+} from './kit/extra'
 
 /**
  * Every block the CMS can create. The database stores `blocks.type` as free
@@ -75,6 +84,16 @@ export const BLOCK_REGISTRY = {
   // Any one of the sections imported from the portfolio project. One type
   // rather than fifty-three: the section is a setting, not a schema.
   portfolio_section: portfolioSectionBlock,
+
+  // The same sections, promoted: one block type each, with their copy lifted
+  // out of the component and into a schema an editor can reach.
+  kit_stats_marquee: kitStatsMarqueeBlock,
+  kit_services: kitServicesBlock,
+  kit_process: kitProcessBlock,
+  kit_pricing: kitPricingBlock,
+  kit_press: kitPressBlock,
+  kit_faq: kitFaqBlock,
+  kit_cta_banner: kitCtaBannerBlock,
 } satisfies Record<string, BlockDefinition<z.ZodType, z.ZodType>>
 
 export type BlockType = keyof typeof BLOCK_REGISTRY
@@ -150,6 +169,15 @@ export {
   techMarqueeBlock,
   contactCtaBlock,
 }
+export {
+  kitStatsMarqueeBlock,
+  kitServicesBlock,
+  kitProcessBlock,
+  kitPricingBlock,
+  kitPressBlock,
+  kitFaqBlock,
+  kitCtaBannerBlock,
+} from './kit/extra'
 export type { HeroContent, HeroSettings } from './hero'
 export type { AboutContent, AboutSettings } from './about'
 export type { ImpactStripContent, ImpactStripSettings } from './impact-strip'
@@ -170,4 +198,14 @@ export type { CtaBannerContent, CtaBannerSettings } from './cta-banner'
 export type { TestimonialsContent, TestimonialsSettings } from './testimonials'
 export type { MetricsContent, MetricsSettings } from './metrics'
 export type { PortfolioSectionContent, PortfolioSectionSettings } from './portfolio-section'
-export { PORTFOLIO_SECTION_OPTIONS } from './portfolio-section'
+export { PORTFOLIO_SECTION_OPTIONS, portfolioSectionVariant } from './portfolio-section'
+export { KIT_GROUP } from './kit/shared'
+export type {
+  KitStatsMarqueeContent,
+  KitServicesContent,
+  KitProcessContent,
+  KitPricingContent,
+  KitPressContent,
+  KitFaqContent,
+  KitCtaBannerContent,
+} from './kit/extra'

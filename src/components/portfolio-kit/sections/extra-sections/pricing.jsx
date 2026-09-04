@@ -1,48 +1,81 @@
-export function Pricing({ accent }) {
-  const tiers = [
+import { withDefaults } from '../../content';
+
+export const DEFAULTS = {
+  headNumber: '05',
+  headLabel: 'Engagement & pricing',
+  title: 'Honest pricing.',
+  titleAccent: 'No hourly games.',
+  titleTail: '',
+  featuredTag: 'MOST CHOSEN',
+  tiers: [
     {
-      n: "PKG/01",
-      name: "Audit",
-      price: "$4,800",
-      cycle: "fixed · 5 days",
-      blurb: "A full review of one product surface with prioritized fixes.",
-      features: ["Up to 30 screens reviewed", "Heuristic write-up + Loom walkthrough", "10 prioritized mockups", "60-min handoff call"],
-      cta: "Book audit",
+      n: 'PKG/01',
+      name: 'Audit',
+      price: '$4,800',
+      cycle: 'fixed · 5 days',
+      blurb: 'A full review of one product surface with prioritized fixes.',
+      features: [
+        { label: 'Up to 30 screens reviewed' },
+        { label: 'Heuristic write-up + Loom walkthrough' },
+        { label: '10 prioritized mockups' },
+        { label: '60-min handoff call' },
+      ],
+      cta: 'Book audit',
+      href: '#contact',
+      featured: false,
     },
     {
-      n: "PKG/02",
-      name: "Sprint",
-      price: "$22,000",
-      cycle: "fixed · 4 weeks",
-      blurb: "Ship one significant feature or surface, end-to-end.",
-      features: ["Discovery + research", "Full IxD + visual design", "Motion prototype", "Engineering handoff doc", "Two weeks Slack support"],
-      cta: "Reserve sprint",
+      n: 'PKG/02',
+      name: 'Sprint',
+      price: '$22,000',
+      cycle: 'fixed · 4 weeks',
+      blurb: 'Ship one significant feature or surface, end-to-end.',
+      features: [
+        { label: 'Discovery + research' },
+        { label: 'Full IxD + visual design' },
+        { label: 'Motion prototype' },
+        { label: 'Engineering handoff doc' },
+        { label: 'Two weeks Slack support' },
+      ],
+      cta: 'Reserve sprint',
+      href: '#contact',
       featured: true,
     },
     {
-      n: "PKG/03",
-      name: "Fractional",
-      price: "$12k/mo",
-      cycle: "monthly · 3-month min",
-      blurb: "Embedded design lead, two days a week.",
-      features: ["Hiring + interviewing", "Weekly design crit", "Roadmap + system work", "Anything else you need"],
-      cta: "Start retainer",
+      n: 'PKG/03',
+      name: 'Fractional',
+      price: '$12k/mo',
+      cycle: 'monthly · 3-month min',
+      blurb: 'Embedded design lead, two days a week.',
+      features: [
+        { label: 'Hiring + interviewing' },
+        { label: 'Weekly design crit' },
+        { label: 'Roadmap + system work' },
+        { label: 'Anything else you need' },
+      ],
+      cta: 'Start retainer',
+      href: '#contact',
+      featured: false,
     },
-  ];
+  ],
+};
+
+export function Pricing({ accent, content }) {
+  const c = withDefaults(DEFAULTS, content);
   return (
     <section id="pricing" className="pricing" data-screen-label="05 Pricing">
       <div className="section-head">
         <div className="section-eyebrow">
-          <span>05</span><span className="bar"></span><span>Engagement &amp; pricing</span>
+          <span>{c.headNumber}</span><span className="bar"></span><span>{c.headLabel}</span>
         </div>
         <h2 className="section-title">
-          Honest pricing. <em style={{ color: accent }}>No hourly games.</em>
+          {c.title}{" "}<em style={{ color: accent }}>{c.titleAccent}</em>{c.titleTail}
         </h2>
       </div>
       <div className="pricing-grid">
-        {tiers.map((t) => (
-          <div key={t.n} className={`tier ${t.featured ? "tier-featured" : ""}`}>
-            {t.featured && <div className="tier-tag" style={{ background: accent }}>MOST CHOSEN</div>}
+        {c.tiers.map((t, i) => (
+          <div key={i} className={`tier ${t.featured ? "tier-featured" : ""}`}>
+            {t.featured && c.featuredTag && <div className="tier-tag" style={{ background: accent }}>{c.featuredTag}</div>}
             <div className="tier-meta">
               <span className="tier-n">{t.n}</span>
               <span className="tier-cycle">{t.cycle}</span>
@@ -51,11 +84,11 @@ export function Pricing({ accent }) {
             <div className="tier-price" style={t.featured ? { color: accent } : {}}>{t.price}</div>
             <p className="tier-blurb">{t.blurb}</p>
             <ul className="tier-features">
-              {t.features.map((f) => (
-                <li key={f}><span className="tick" style={{ color: accent }}>✓</span>{f}</li>
+              {(t.features ?? []).map((f, j) => (
+                <li key={j}><span className="tick" style={{ color: accent }}>✓</span>{f.label}</li>
               ))}
             </ul>
-            <a href="#contact" className={`btn ${t.featured ? "btn-primary" : "btn-secondary"}`} style={t.featured ? { background: accent } : {}}>
+            <a href={t.href || '#contact'} className={`btn ${t.featured ? "btn-primary" : "btn-secondary"}`} style={t.featured ? { background: accent } : {}}>
               {t.cta} →
             </a>
           </div>

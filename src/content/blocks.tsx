@@ -1,5 +1,15 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import { HeroSection } from '@/components/sections/HeroSection'
+import { defineKitSection } from '@/components/sections/kit/defineKitSection'
+import type {
+  KitStatsMarqueeContent,
+  KitServicesContent,
+  KitProcessContent,
+  KitPricingContent,
+  KitPressContent,
+  KitFaqContent,
+  KitCtaBannerContent,
+} from '@norav/content-schema'
 
 /**
  * Which component renders which block type.
@@ -68,4 +78,15 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   // Any one of the 53 sections imported from the portfolio project, picked in
   // the CMS. One type, because the choice is a setting rather than a schema.
   portfolio_section: named(() => import('@/components/sections/PortfolioSection'), 'PortfolioSection'),
+
+  // The promoted kit sections: same components, now reading their copy from the
+  // CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
+  // every one of them needs, so a section is one line here.
+  kit_stats_marquee: defineKitSection<KitStatsMarqueeContent>('kit_stats_marquee', () => import('@/components/portfolio-kit/sections/extra-sections/stats-marquee'), 'StatsMarquee'),
+  kit_services: defineKitSection<KitServicesContent>('kit_services', () => import('@/components/portfolio-kit/sections/extra-sections/services'), 'Services'),
+  kit_process: defineKitSection<KitProcessContent>('kit_process', () => import('@/components/portfolio-kit/sections/extra-sections/process'), 'Process'),
+  kit_pricing: defineKitSection<KitPricingContent>('kit_pricing', () => import('@/components/portfolio-kit/sections/extra-sections/pricing'), 'Pricing'),
+  kit_press: defineKitSection<KitPressContent>('kit_press', () => import('@/components/portfolio-kit/sections/extra-sections/press'), 'Press'),
+  kit_faq: defineKitSection<KitFaqContent>('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ'),
+  kit_cta_banner: defineKitSection<KitCtaBannerContent>('kit_cta_banner', () => import('@/components/portfolio-kit/sections/extra-sections/cta-banner'), 'CTABanner'),
 }
