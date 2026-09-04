@@ -40,10 +40,10 @@ export function PortfolioSection({ anchorId, blockId }: { anchorId?: string | nu
   }
 
   return (
-    <div className="pf-kit" {...(anchorId ? { id: anchorId } : {})}>
+    <section className="pf-kit" {...(anchorId ? { id: anchorId } : {})}>
       <Suspense fallback={<div className="min-h-[40vh]" />}>
         <Section accent={accent} />
       </Suspense>
-    </div>
+    </section>
   )
 }

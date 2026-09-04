@@ -273,13 +273,6 @@
   animation: cursor-blink 0.8s step-end infinite;
 }
 
-/* `settings.site.cursor` — CursorEffect (src/components/ui/effects/CursorEffect.tsx)
-   toggles this class on <html> while it's mounted, hiding the system cursor
-   everywhere so its own crosshair is the only one visible. */
-.cursor-effect-active,
-.cursor-effect-active * {
-  cursor: none !important;
-}
 
 /* Bento grid: `bento_grid.settings.glowBorder` makes every tile's border glow
    permanently instead of only on hover. Cascaded from the grid container so no
@@ -316,13 +309,16 @@
 html { position: relative; }
 
 /* The scene is drawn on a canvas behind the content, so anything on the content
-   layer that answers the pointer hides it. Sections take events back one at a
+   layer that answers the pointer hides it. Blocks take events back one at a
    time, and the hero opts out again with a utility class.
+   `main > *`, not `main > section`: a block whose root happens to be a div —
+   the imported kit's wrapper was one — inherited `none` from main and every
+   button inside it went dead, with nothing on the page to show why.
    In `base` deliberately: an unlayered rule beats every Tailwind utility no
    matter how specific the utility is, so written plainly these two would win
    against the class and the mark would stay unclickable. */
 @layer base {
   main { pointer-events: none; }
-  main > section { pointer-events: auto; }
+  main > * { pointer-events: auto; }
 }
 

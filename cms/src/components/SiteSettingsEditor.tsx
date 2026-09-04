@@ -7,13 +7,12 @@ import { Workspace, FeedbackBanner, PreviewButton, type Feedback } from './Works
 import type { EnvironmentInfo } from '@/lib/environment'
 
 interface SiteSettings {
-  cursor: boolean
   grain: boolean
   dynamicGrid: boolean
   navIndicator: 'dot' | 'gooey'
 }
 
-const DEFAULT_SETTINGS: SiteSettings = { cursor: true, grain: true, dynamicGrid: true, navIndicator: 'dot' }
+const DEFAULT_SETTINGS: SiteSettings = { grain: true, dynamicGrid: true, navIndicator: 'dot' }
 
 interface SiteSettingsEditorProps {
   collections: SerializedCollectionDefinition[]
@@ -25,7 +24,7 @@ interface SiteSettingsEditorProps {
 }
 
 /**
- * Chrome that isn't a block — the grain, the dynamic grid, the custom cursor,
+ * Chrome that isn't a block — the grain, the dynamic grid,
  * and how the nav marks the active link. One row per key in `settings`,
  * carried into the published snapshot the same way the palette is.
  */
@@ -153,14 +152,6 @@ export function SiteSettingsEditor({
               disabled={busy !== null}
               onChange={(dynamicGrid) => setSettings({ ...settings, dynamicGrid })}
             />
-            <BoolField
-              label="Custom cursor"
-              help="Replaces the system cursor with a crosshair."
-              value={settings.cursor}
-              disabled={busy !== null}
-              onChange={(cursor) => setSettings({ ...settings, cursor })}
-            />
-
             <div className="field">
               <label htmlFor="nav-indicator">Nav active-link style</label>
               <select
