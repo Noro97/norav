@@ -1,6 +1,7 @@
 import { useRef, useCallback } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate, type AnimationPlaybackControls } from 'framer-motion'
 import { BORING_CODE, ARCHITECTURE_NODES } from './vibecoding.data'
+import { SPRING, VelocityTracker, project } from '@/lib/motion'
 
 // Token-based syntax highlighting — avoids regex cascade corruption
 const KEYWORDS = new Set(['async', 'function', 'const', 'await', 'return', 'throw', 'new', 'if'])
@@ -59,6 +60,12 @@ const HIGHLIGHTED_CODE = BORING_CODE.split('\n').map(highlightLine).join('\n')
 
 const NODE_HEIGHT = 48
 
+// Slower than this at release (in % of track per second) is a thumb set down,
+// not thrown: it stays where the finger left it.
+const FLICK_THRESHOLD = 30
+
+const clamp = (v: number) => Math.max(0, Math.min(100, v))
+
 export interface VibeSliderCopy {
   lowVibe: string
   highVibe: string
@@ -71,32 +78,42 @@ export interface VibeSliderCopy {
 export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
+  const velocity = useRef(new VelocityTracker())
+  const settling = useRef<AnimationPlaybackControls | null>(null)
   const vibeValue = useMotionValue(0) // 0–100
 
   // Derived transforms
   const rotateY = useTransform(vibeValue, [0, 50, 100], [0, 90, 180])
   const codeOpacity = useTransform(vibeValue, [0, 40, 50], [1, 1, 0])
   const archOpacity = useTransform(vibeValue, [50, 60, 100], [0, 1, 1])
-  const thumbLeft = useTransform(vibeValue, (v) => `${v}%`)
+  // Clamped: a throw that lands on an end may rebound a hair past it, and the
+  // flip absorbs that (useTransform clamps by default) but the thumb would
+  // poke out of the track.
+  const thumbLeft = useTransform(vibeValue, (v) => `${clamp(v)}%`)
   const filenameOpacity = useTransform(vibeValue, [40, 60], [1, 0])
   const archFilenameOpacity = useTransform(vibeValue, [40, 60], [0, 1])
 
   const updateValue = useCallback(
-    (clientX: number) => {
+    (clientX: number): number => {
       const track = trackRef.current
-      if (!track) return
+      if (!track) return vibeValue.get()
       const rect = track.getBoundingClientRect()
-      const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100))
+      const pct = clamp(((clientX - rect.left) / rect.width) * 100)
       vibeValue.set(pct)
+      return pct
     },
     [vibeValue]
   )
 
+  // Grabbing the thumb while it is still settling from a throw takes it from
+  // wherever it is on screen at that instant — the animation stops, the value
+  // is whatever it had reached, and the finger owns it from there.
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
+      settling.current?.stop()
       dragging.current = true
       ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-      updateValue(e.clientX)
+      velocity.current.reset(e.timeStamp, updateValue(e.clientX))
     },
     [updateValue]
   )
@@ -104,19 +121,31 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (!dragging.current) return
-      updateValue(e.clientX)
+      velocity.current.push(e.timeStamp, updateValue(e.clientX))
     },
     [updateValue]
   )
 
-  const onPointerUp = useCallback(() => {
-    dragging.current = false
-  }, [])
+  // A thrown thumb keeps going at the speed the finger left it with and
+  // decelerates the way a scroll view does, so a flick from the left carries
+  // the flip all the way over instead of stopping dead at the release point.
+  // The spring is handed the same velocity, so there is no seam between the
+  // drag and the animation.
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      dragging.current = false
+      const v = velocity.current.velocity(e.timeStamp)
+      if (Math.abs(v) < FLICK_THRESHOLD) return
+      const target = clamp(vibeValue.get() + project(v))
+      settling.current = animate(vibeValue, target, { ...SPRING.momentum, velocity: v })
+    },
+    [vibeValue]
+  )
 
   // Snap to ends on double-click
   const onDoubleClick = useCallback(() => {
     const current = vibeValue.get()
-    animate(vibeValue, current < 50 ? 100 : 0, { duration: 0.6, ease: [0.16, 1, 0.3, 1] })
+    settling.current = animate(vibeValue, current < 50 ? 100 : 0, SPRING.settle)
   }, [vibeValue])
 
   return (
@@ -208,6 +237,7 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
           onDoubleClick={onDoubleClick}
         >
           {/* Track background */}
