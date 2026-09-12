@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, type ReactNode } from 'react'
+import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { SPRING_VALUE } from '@/lib/motion'
 import { TILT_MAX_DEG, TILT_GLARE_OPACITY } from '@/lib/constants'
 
 interface Props {
@@ -9,71 +11,66 @@ interface Props {
 
 /**
  * A 3D tilt + cursor-glare wrapper, generalized from the tilt cards hand-rolled
- * separately in AboutHero, ExperienceTimeline and BentoGrid. Mouse position is
- * batched to one re-render per frame (a raw mousemove fires several times per
- * frame, and each write would otherwise force a layout flush).
+ * separately in AboutHero, ExperienceTimeline and BentoGrid.
+ *
+ * The pointer writes targets into springs, and the springs write the element:
+ * nothing here goes through React state, and a pointer that comes back while
+ * the card is still settling flat simply retargets the springs mid-flight —
+ * they carry their velocity into the new target instead of restarting, which
+ * a CSS transition cannot do. Touch is ignored: a finger covering the card has
+ * no hover position to speak of, and tilting under it only fights the scroll.
  */
 export function TiltGlareCard({ children, className = '' }: Props) {
-  const cardRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
-  const [transform, setTransform] = useState('perspective(800px) rotateX(0deg) rotateY(0deg)')
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 })
 
-  const frameRef = useRef(0)
-  const latest = useRef({ x: 0.5, y: 0.5 })
+  const rotateX = useSpring(0, SPRING_VALUE.follow)
+  const rotateY = useSpring(0, SPRING_VALUE.follow)
+  const scale = useSpring(1, SPRING_VALUE.follow)
+  const glareX = useMotionValue(50)
+  const glareY = useMotionValue(50)
+  const glareOpacity = useSpring(0, SPRING_VALUE.follow)
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (reducedMotion) return
-      const card = cardRef.current
-      if (!card) return
-      const rect = card.getBoundingClientRect()
-      latest.current = {
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      }
-      if (frameRef.current) return
-      frameRef.current = requestAnimationFrame(() => {
-        frameRef.current = 0
-        const { x, y } = latest.current
-        setTransform(
-          `perspective(800px) rotateX(${(y - 0.5) * -TILT_MAX_DEG}deg) rotateY(${(x - 0.5) * TILT_MAX_DEG}deg) scale3d(1.03,1.03,1.03)`
-        )
-        setGlare({ x: x * 100, y: y * 100, opacity: TILT_GLARE_OPACITY })
-      })
+  const transform = useMotionTemplate`perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${scale}, ${scale}, ${scale})`
+  const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (reducedMotion || e.pointerType === 'touch') return
+      const rect = e.currentTarget.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = (e.clientY - rect.top) / rect.height
+      rotateX.set((y - 0.5) * -TILT_MAX_DEG)
+      rotateY.set((x - 0.5) * TILT_MAX_DEG)
+      scale.set(1.03)
+      glareX.set(x * 100)
+      glareY.set(y * 100)
+      glareOpacity.set(TILT_GLARE_OPACITY)
     },
-    [reducedMotion]
+    [reducedMotion, rotateX, rotateY, scale, glareX, glareY, glareOpacity]
   )
 
-  useEffect(() => () => cancelAnimationFrame(frameRef.current), [])
-
-  const handleMouseLeave = useCallback(() => {
-    if (frameRef.current) {
-      cancelAnimationFrame(frameRef.current)
-      frameRef.current = 0
-    }
-    setTransform('perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)')
-    setGlare({ x: 50, y: 50, opacity: 0 })
-  }, [])
+  const handlePointerLeave = useCallback(() => {
+    rotateX.set(0)
+    rotateY.set(0)
+    scale.set(1)
+    glareOpacity.set(0)
+  }, [rotateX, rotateY, scale, glareOpacity])
 
   return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    <motion.div
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       className={`relative will-change-transform ${className}`}
-      style={reducedMotion ? undefined : { transform, transition: 'transform 0.15s ease-out' }}
+      style={reducedMotion ? undefined : { transform }}
     >
       {children}
       {!reducedMotion && (
-        <div
+        <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}), transparent 60%)`,
-          }}
+          className="pointer-events-none absolute inset-0"
+          style={{ background: glare }}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
