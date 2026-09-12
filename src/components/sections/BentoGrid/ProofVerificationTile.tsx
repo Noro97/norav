@@ -2,11 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useBlock } from '@/content/ContentProvider'
 import type { BentoGridContent } from '@norav/content-schema'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { MagneticButton } from '@/components/ui/MagneticButton'
 import { BentoVideoPlaceholder } from './BentoVideoPlaceholder'
 import { ProofScanOverlay } from './ProofScanOverlay'
 import { ProofArchitectureModal } from './ProofArchitectureModal'
+import { originOf } from '@/lib/motion'
+import type { ModalOrigin } from '@/components/ui/ModalShell'
 import { PROOF_PROJECT } from './bento.data'
 
 interface Props {
@@ -29,7 +31,8 @@ export function ProofVerificationTile({ className = '' }: Props) {
   const copy = block?.content.projects.find((candidate) => candidate.project === 'proof')
   const tileRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
-  const [showArchModal, setShowArchModal] = useState(false)
+  // The click point, or null while closed — the modal grows out of the button.
+  const [archModalOrigin, setArchModalOrigin] = useState<ModalOrigin | null>(null)
   const [logLines, setLogLines] = useState<{ text: string; done: boolean }[]>([])
   const abortRef = useRef(false)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -188,7 +191,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
 
           {/* CTA */}
           <MagneticButton
-            onClick={() => setShowArchModal(true)}
+            onClick={(e) => setArchModalOrigin(originOf(e))}
             aria-label={copy?.cta ?? ''}
             className="type-label inline-flex items-center gap-2.5 text-primary-400/80 group/btn hover:text-primary-300 transition-colors duration-300"
           >
@@ -216,9 +219,11 @@ export function ProofVerificationTile({ className = '' }: Props) {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/0 to-transparent group-hover:via-primary-500/30 transition-all duration-700" />
       </div>
 
-      {showArchModal && (
-        <ProofArchitectureModal onClose={() => setShowArchModal(false)} />
-      )}
+      <AnimatePresence>
+        {archModalOrigin && (
+          <ProofArchitectureModal origin={archModalOrigin} onClose={() => setArchModalOrigin(null)} />
+        )}
+      </AnimatePresence>
     </>
   )
 }

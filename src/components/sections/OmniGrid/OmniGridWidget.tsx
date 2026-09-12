@@ -19,6 +19,9 @@ import { useShipments } from './useShipments'
 import { OMNIGRID_COLUMNS, STATUS_COLORS, PRIORITY_COLORS } from './omnigrid.data'
 import type { ShipmentRecord, ShipmentStatus, ShipmentPriority } from './omnigrid.data'
 import { ShipmentDetailModal } from './ShipmentDetailModal'
+import { AnimatePresence } from 'framer-motion'
+import { originOf } from '@/lib/motion'
+import type { ModalOrigin } from '@/components/ui/ModalShell'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 30_000, gcTime: 5 * 60_000 } },
@@ -43,6 +46,8 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [selectedRow, setSelectedRow] = useState<ShipmentRecord | null>(null)
+  // Where the row was clicked — the modal grows out of that point.
+  const [modalOrigin, setModalOrigin] = useState<ModalOrigin | null>(null)
   const [showLightning, setShowLightning] = useState(false)
 
   const { data: shipments = [], cacheStatus, dataUpdatedAt } = useShipments()
@@ -69,7 +74,8 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
     if (lightningTimerRef.current) clearTimeout(lightningTimerRef.current)
   }, [])
 
-  const handleRowClick = useCallback((record: ShipmentRecord) => {
+  const handleRowClick = useCallback((record: ShipmentRecord, origin: ModalOrigin) => {
+    setModalOrigin(origin)
     setSelectedRow(record)
     setShowLightning(true)
     if (lightningTimerRef.current) clearTimeout(lightningTimerRef.current)
@@ -251,7 +257,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
             </div>
 
             {/* Table */}
-            <div className="case-study-card max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden" data-lenis-prevent>
+            <div className="case-study-card max-h-[600px] overflow-y-auto overflow-x-auto scrollbar-hidden">
               {/* Table header */}
               <div className="flex items-center border-b border-tertiary-ink/[0.06] sticky top-0 z-10 bg-tertiary-card min-w-[1060px]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
@@ -275,7 +281,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                 {rows.map((row) => (
                   <div
                     key={row.id}
-                    onClick={() => handleRowClick(row.original)}
+                    onClick={(e) => handleRowClick(row.original, originOf(e))}
                     className="flex items-center border-b border-tertiary-ink/[0.03] hover:bg-secondary-500/[0.04] transition-colors cursor-pointer min-w-[1060px]"
                   >
                     {row.getVisibleCells().map((cell) => {
@@ -309,12 +315,15 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
         )}
       </div>
 
-      {selectedRow && (
-        <ShipmentDetailModal
-          shipment={selectedRow}
-          onClose={() => setSelectedRow(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedRow && (
+          <ShipmentDetailModal
+            shipment={selectedRow}
+            origin={modalOrigin}
+            onClose={() => setSelectedRow(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
