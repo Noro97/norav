@@ -171,7 +171,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         </div>
 
         {/* Mini Bloomberg table */}
-        <div className="mb-5 rounded-lg bg-tertiary-shade/40 border border-tertiary-ink/[0.08] overflow-x-auto scrollbar-hidden" data-lenis-prevent>
+        <div className="mb-5 rounded-lg bg-tertiary-shade/40 border border-tertiary-ink/[0.08] overflow-x-auto scrollbar-hidden">
           <table className="w-full min-w-[450px] text-caption font-mono">
             <thead>
               <tr className="border-b border-tertiary-ink/[0.06]">

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { useAppStore } from '@/store/useAppStore'
 import { useContent } from '@/content/ContentProvider'
@@ -7,6 +8,7 @@ import { useNavigation } from '@/content/navigation'
 import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
+import { SPRING } from '@/lib/motion'
 
 /** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
 interface SiteSettings {
@@ -56,8 +58,11 @@ export function Navigation() {
       const el = document.getElementById(id)
       if (!el) return
       event.preventDefault()
-      // Native scroll — Lenis intercepts this automatically.
-      el.scrollIntoView()
+      // Smooth, so the reader sees the distance and the direction; the setting
+      // that asks for less motion turns it into a jump (index.css). It used to
+      // say Lenis would smooth this — Lenis left, the comment stayed, and every
+      // menu click has been a teleport since.
+      el.scrollIntoView({ behavior: 'smooth' })
       // And the address follows. Scrolling without it left every section of a
       // page at the same URL, so a reader looking at one could neither send it
       // to anyone nor come back to it. replace rather than push: reading down a
@@ -89,7 +94,10 @@ export function Navigation() {
   }, [dropdownOpen])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 backdrop-blur-md bg-tertiary-bg/60 border-b border-tertiary-ink/5">
+    <nav
+      data-surface="chrome"
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 backdrop-blur-md bg-tertiary-bg/60 border-b border-tertiary-ink/5"
+    >
       {/* Logo */}
       <Link
         to={hrefFor(HOME_SLUG, locale)}
@@ -167,8 +175,20 @@ export function Navigation() {
             />
           </button>
 
+          {/* Grows out of its top-right corner, where the button that opened
+              it sits, and shrinks back into it — so the menu and the button
+              read as one thing. */}
+          <AnimatePresence>
           {dropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-tertiary-ink/10 bg-tertiary-bg/90 backdrop-blur-md py-1.5 shadow-xl">
+            <motion.div
+              data-surface="chrome"
+              className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-tertiary-ink/10 bg-tertiary-bg/90 backdrop-blur-md py-1.5 shadow-xl"
+              style={{ originX: 1, originY: 0 }}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={SPRING.settle}
+            >
               {sections.map((section) => {
                 const isActive = section.anchor !== null && activeSection === section.anchor
                 return (
@@ -201,8 +221,9 @@ export function Navigation() {
                   </Link>
                 )
               })}
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
         </div>
 
         <Link

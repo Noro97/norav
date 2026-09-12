@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { SPRING } from '@/lib/motion'
 
 /**
  * A shared-layout blob that morphs between nav links as the active section
@@ -12,7 +13,7 @@ export function GooeyNavIndicator({ className = '' }: { className?: string }) {
     <motion.span
       layoutId="nav-gooey-indicator"
       className={`absolute inset-0 -z-10 rounded-full bg-primary-500/15 ${className}`}
-      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+      transition={SPRING.settle}
     />
   )
 }

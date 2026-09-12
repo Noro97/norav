@@ -62,7 +62,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                   <StarBorderButton className="rounded-full">
                     <Link
                       to={hrefFor('work', locale)}
-                      className="type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-tertiary-bg text-tertiary-ink/80 hover:text-tertiary-ink transition-colors duration-300"
+                      className="press type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-tertiary-bg text-tertiary-ink/80 hover:text-tertiary-ink transition-colors duration-300"
                     >
                       {content.viewAllLabel}
                       <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -71,7 +71,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                 ) : (
                   <Link
                     to={hrefFor('work', locale)}
-                    className="type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-tertiary-ink/[0.08] text-tertiary-ink/60 hover:text-tertiary-ink hover:border-secondary-500/30 transition-colors duration-300"
+                    className="press type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-tertiary-ink/[0.08] text-tertiary-ink/60 hover:text-tertiary-ink hover:border-secondary-500/30 transition-colors duration-300"
                   >
                     {content.viewAllLabel}
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
