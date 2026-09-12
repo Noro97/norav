@@ -18,6 +18,72 @@
   }
 }
 
+/* ===== MOTION FOUNDATIONS =====
+   The site's motion answers to three OS settings, not one. Reduced motion is
+   the vestibular one: anything that slides, spins or rises stops doing so, and
+   what remains is a change of state you can still see happen. Reduced
+   transparency and increased contrast are the legibility ones: the floating
+   chrome goes solid and its edges get drawn. None of them switches feedback
+   off — a pressed button still presses. */
+
+/* A menu click glides to its section so the reader sees how far they went
+   and in which direction; arriving from another page lands instantly (see
+   useHashScroll) because there is nothing to have travelled from. */
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Near zero rather than zero, so `transitionend` and `animationend` still
+     fire for anything waiting on them. Covers every Tailwind transition and
+     the whole imported kit — 24 keyframes and 90 transitions that never heard
+     of the setting — without touching either. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* The kit's arrival reveal keeps its fade and loses its rise: the fade is
+     what tells the reader a section has loaded, the 24px climb is what makes
+     someone motion-sensitive close the tab. */
+  .pf-kit .reveal.will-animate {
+    transform: none;
+    transition-duration: 200ms !important;
+    transition-property: opacity;
+  }
+}
+
+/* Translucent chrome — the nav, a dropdown, a modal panel — reads its
+   background through a blur. Asked for less transparency, it goes solid, and
+   the decorative blurs on cards drop too: they cost GPU for a hint of depth
+   the reader has said they do not want. */
+@media (prefers-reduced-transparency: reduce) {
+  [class*="backdrop-blur"],
+  .case-study-card,
+  .pf-kit .nav-scrolled,
+  .pf-kit .mobile-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  [data-surface="chrome"] { background-color: var(--color-background) !important; }
+  [data-surface="panel"] { background: var(--color-card) !important; }
+}
+
+/* The hairlines that separate a floating surface from the page are drawn at
+   5–8% white, which is a hint, not an edge. Asked for more contrast, they
+   become one, and the surface behind them goes opaque. */
+@media (prefers-contrast: more) {
+  [data-surface],
+  .case-study-card {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+  [data-surface="chrome"] { background-color: var(--color-background) !important; }
+  [data-surface="panel"] { background: var(--color-card) !important; }
+}
+
 /* ===== THEME ===== */
 @theme {
   --font-family-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
@@ -320,5 +386,28 @@ html { position: relative; }
 @layer base {
   main { pointer-events: none; }
   main > * { pointer-events: auto; }
+
+  /* Feedback lives on the press, not the release. Every button on the site
+     — and the kit's, and any link that has taken `press` to say it acts like
+     one — gives a little the instant the pointer goes down, and eases back
+     more slowly once it lifts. `scale` rather than `transform`, so it stacks
+     with the translate a magnetic button or a tilt card is already writing
+     to `transform` inline. Under reduced motion the clamp above makes the
+     press instant; it does not remove it. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  .press,
+  .pf-kit .btn,
+  .pf-kit .nav-cta {
+    transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  button:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active,
+  .press:active,
+  .pf-kit .btn:active,
+  .pf-kit .nav-cta:active {
+    scale: 0.97;
+    transition-duration: 100ms;
+  }
 }
 

@@ -68,7 +68,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
               <MaybeStarBorder enabled={settings.ctaStyle === 'star-border'}>
                 <a
                   href={`mailto:${settings.email}`}
-                  className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
+                  className="press group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
                 >
                   <Mail className="w-4 h-4" strokeWidth={2} />
                   {content.emailLabel}
@@ -87,7 +87,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-11 h-11 rounded-full border border-white/[0.08] bg-white/[0.02] flex items-center justify-center text-white/45 hover:text-crimson-400 hover:border-crimson-500/30 transition-all duration-300"
+                  className="press w-11 h-11 rounded-full border border-white/[0.08] bg-white/[0.02] flex items-center justify-center text-white/45 hover:text-crimson-400 hover:border-crimson-500/30 transition-all duration-300"
                 >
                   <Icon className="w-[18px] h-[18px]" strokeWidth={1.75} />
                 </a>

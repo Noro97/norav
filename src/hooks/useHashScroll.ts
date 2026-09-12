@@ -22,8 +22,11 @@ export function useHashScroll() {
     arrivedFrom.current = pathname
     if (!arriving) return
 
+    // Instant, both of these: the page is smooth-scrolled (index.css), but a
+    // reader who has just arrived has nowhere to have come from, and watching
+    // the page glide past on the way to an anchor is motion with no meaning.
     if (!hash) {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'instant' })
       return
     }
 
@@ -36,7 +39,7 @@ export function useHashScroll() {
     const look = () => {
       const el = document.getElementById(id)
       if (el) {
-        el.scrollIntoView()
+        el.scrollIntoView({ behavior: 'instant' })
         return
       }
       if (Date.now() < deadline) frame = requestAnimationFrame(look)

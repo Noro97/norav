@@ -21,7 +21,7 @@ function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: Re
 }
 
 const BUTTON_CLASS =
-  'group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
+  'press group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
 
 export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
   const block = useBlock<CtaBannerContent, CtaBannerSettings>('cta_banner', blockId)
