@@ -157,6 +157,13 @@ throwing, which is what lets the CMS ship a block type before the site that
 renders it. The hero stays in the entry chunk because it is the LCP element;
 every other section is a lazy import.
 
+**Colour is a role, type is a scale.** A component names one of three colour
+roles — `primary-*`, `secondary-*`, `tertiary-*` — or `status-*` for state,
+and one size from the display/body scale; Tailwind's own palette and sizes are
+switched off and the lint rule says so aloud. The roles are aliases onto the
+palette the CMS publishes, which is how a theme change repaints the site
+without a component knowing. [docs/DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md).
+
 **Copy lives in two places, deliberately.** Section content — headings, project
 descriptions, the terminal's narrative — comes from the CMS. Interface chrome
 that has no editorial meaning stays in `src/i18n/locales`. If a non-developer
