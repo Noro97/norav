@@ -102,7 +102,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'about'}
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
+      className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
@@ -132,7 +132,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                   {/* Status badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-tertiary-shade/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-status-success/20">
                     <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
-                    <span className="font-mono text-body-xs text-status-success/80">{content.statusLabel}</span>
+                    <span className="font-mono text-caption text-status-success/80">{content.statusLabel}</span>
                   </div>
                 </div>
 
@@ -198,16 +198,16 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
           <div className="about-content space-y-6">
             {/* Visually the name, but not a heading — the hero <h1> already owns that role, and repeating it confuses screen readers. */}
             <p
-              className="font-display text-display-lg font-black text-tertiary-ink"
+              className="font-display text-heading-large font-black text-tertiary-ink"
               aria-hidden="true"
             >
               {content.name}
             </p>
-            <p className="font-mono text-body-sm text-primary-400 tracking-wider">
+            <p className="font-mono text-body-small text-primary-400 tracking-wider">
               {content.role}
             </p>
 
-            <div className="space-y-4 text-tertiary-ink/50 text-body-md leading-relaxed max-w-2xl">
+            <div className="space-y-4 text-tertiary-ink/50 text-body-regular leading-relaxed max-w-2xl">
               <p>
                 {content.bio.lead.map((run, index) => (
                   <Fragment key={index}>
@@ -228,7 +228,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                   <span className="type-label text-tertiary-ink/30 block">
                     {fact.label}
                   </span>
-                  <span className="font-mono text-body-sm text-tertiary-ink/80 mt-1 block">{fact.value}</span>
+                  <span className="font-mono text-body-small text-tertiary-ink/80 mt-1 block">{fact.value}</span>
                 </div>
               ))}
             </div>
@@ -240,7 +240,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
       {emailCopied && (
         <span
           key={`${emailCopied.x}-${emailCopied.y}`}
-          className="fixed z-50 font-mono text-body-xs font-semibold text-primary-400 pointer-events-none animate-[copiedPop_0.5s_ease-out_forwards]"
+          className="fixed z-50 font-mono text-caption font-semibold text-primary-400 pointer-events-none animate-[copiedPop_0.5s_ease-out_forwards]"
           style={{ left: emailCopied.x, top: emailCopied.y, transform: 'translate(-50%, -50%)' }}
         >
           Copied!

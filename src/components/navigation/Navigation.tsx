@@ -96,7 +96,7 @@ export function Navigation() {
         onClick={(event) => here === HOME_SLUG && handleClick(event, 'hero')}
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
-        <span className="hidden sm:inline font-mono text-body-sm font-semibold tracking-widest uppercase">
+        <span className="hidden sm:inline font-mono text-body-small font-semibold tracking-widest uppercase">
           <span className="text-primary-500">nor</span><span className="text-primary-500">av</span><span className="text-tertiary-ink/45">.</span><span className="text-primary-500">dev</span>
         </span>
       </Link>

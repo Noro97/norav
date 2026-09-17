@@ -58,16 +58,16 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
     <section
       ref={sectionRef}
       {...(anchorId ? { id: anchorId } : {})}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-4xl mx-auto">
         {sectionLabel && <span className="label-mono">{sectionLabel}</span>}
         {title && (
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
             {title}
           </h2>
         )}
-        {intro && <p className="text-tertiary-ink/40 text-body-md max-w-2xl leading-relaxed">{intro}</p>}
+        {intro && <p className="text-tertiary-ink/40 text-body-regular max-w-2xl leading-relaxed">{intro}</p>}
 
         {metrics.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
@@ -76,10 +76,10 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
                 key={index}
                 className="detail-item rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-5 py-6"
               >
-                <div className="font-mono text-display-md text-primary-400 tabular-nums">
+                <div className="font-mono text-heading-medium text-primary-400 tabular-nums">
                   {metric.value}
                 </div>
-                <div className="text-tertiary-ink/40 text-body-xs mt-2 leading-snug">{metric.label}</div>
+                <div className="text-tertiary-ink/40 text-caption mt-2 leading-snug">{metric.label}</div>
               </div>
             ))}
           </div>
@@ -97,10 +97,10 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <h3 className="text-tertiary-ink font-semibold text-body-md md:text-body-lg">
+                    <h3 className="text-tertiary-ink font-semibold text-body-regular md:text-body-large">
                       {decision.title}
                     </h3>
-                    <p className="text-tertiary-ink/40 text-body-sm md:text-body-md leading-relaxed mt-2">
+                    <p className="text-tertiary-ink/40 text-body-small md:text-body-regular leading-relaxed mt-2">
                       {decision.body}
                     </p>
                   </div>

@@ -133,7 +133,7 @@ function ArchitectureModalContent({ onClose }: Props) {
             <div className="mt-6 grid grid-cols-5 gap-2">
               {['1. Upload', '2. Store', '3. Process', '4. Analyze', '5. Update'].map((step, i) => (
                 <div key={i} className="text-center">
-                  <span className="font-mono text-body-xs text-primary-400/50 tracking-wide">{step}</span>
+                  <span className="font-mono text-caption text-primary-400/50 tracking-wide">{step}</span>
                 </div>
               ))}
             </div>

@@ -126,7 +126,7 @@ export function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto pt-[28vh]">
         <p
           ref={subtitleRef}
-          className="type-label md:text-body-sm text-primary-500 mb-6"
+          className="type-label md:text-body-small text-primary-500 mb-6"
         >
           {settings.subtitleReveal === 'none' ? (
             content.subtitle
@@ -135,7 +135,7 @@ export function HeroSection() {
           )}
         </p>
 
-        <h1 className="font-display text-display-2xl font-black text-tertiary-ink mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
+        <h1 className="font-display text-heading-display font-black text-tertiary-ink mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
           {nameParts.map((part, partIdx) => {
             const elements = part.text.split('').map((char, i) => {
               const idx = (charBaseOffsets[partIdx] ?? 0) + i
@@ -158,7 +158,7 @@ export function HeroSection() {
 
         <p
           ref={taglineRef}
-          className="text-body-lg text-tertiary-ink/50 max-w-2xl mx-auto leading-relaxed font-normal"
+          className="text-body-large text-tertiary-ink/50 max-w-2xl mx-auto leading-relaxed font-normal"
         >
           {content.tagline.map((segment, index) => (
             <Fragment key={index}>

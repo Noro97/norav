@@ -29,21 +29,21 @@ export function MetricsSection({ anchorId, blockId }: { anchorId?: string | null
     <section
       ref={sectionRef}
       {...(anchorId ? { id: anchorId } : {})}
-      className="relative px-6 md:px-16 py-20"
+      className="relative px-gutter-x py-20"
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+        <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
           {content.title}
         </h2>
         {content.description && (
-          <p className="text-tertiary-ink/40 text-body-md max-w-xl mb-12">{content.description}</p>
+          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
           {content.metrics.map((metric, index) => (
             <div key={index} className="metric-item flex flex-col items-center text-center gap-2">
-              <span className="font-display text-display-lg font-black text-tertiary-ink">
+              <span className="font-display text-heading-large font-black text-tertiary-ink">
                 {settings.countUp ? (
                   <CountUp target={metric.value} prefix={metric.prefix} suffix={metric.suffix} />
                 ) : (

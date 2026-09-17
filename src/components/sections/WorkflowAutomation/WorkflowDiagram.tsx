@@ -68,7 +68,7 @@ function NodeBox({ node, isActive }: { node: WorkflowNode; isActive: boolean }) 
         return Icon ? <Icon size={18} className="shrink-0" /> : null
       })()}
       <span
-        className={`font-mono text-body-sm transition-colors duration-300 ${
+        className={`font-mono text-body-small transition-colors duration-300 ${
           isActive ? 'text-tertiary-ink/90' : 'text-tertiary-ink/40'
         }`}
       >

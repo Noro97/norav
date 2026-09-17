@@ -66,7 +66,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'workflows'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       {settings.background === 'threads' && <ThreadsBackground />}
       {settings.background === 'beams' && <BeamsBackground />}
@@ -74,10 +74,10 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="wf-header">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/40 text-body-md max-w-xl mb-12">{content.description}</p>
+          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -94,7 +94,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
               {/* n8n badge */}
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-6 h-6 rounded bg-secondary-500/15 flex items-center justify-center">
-                  <span className="text-body-xs font-semibold text-secondary-500">n8n</span>
+                  <span className="text-caption font-semibold text-secondary-500">n8n</span>
                 </div>
                 <h3 className="type-label text-tertiary-ink/60">
                   {card.title}
@@ -107,7 +107,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
               </div>
 
               {/* Description */}
-              <p className="font-mono text-body-sm text-tertiary-ink/40 leading-relaxed mt-auto pt-4">
+              <p className="font-mono text-body-small text-tertiary-ink/40 leading-relaxed mt-auto pt-4">
                 {card.description}
               </p>
             </div>
@@ -120,7 +120,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
           {content.techStack.map((tech) => (
             <span
               key={tech.name}
-              className="px-3 py-1.5 rounded-full border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] font-mono text-body-xs text-tertiary-ink/30"
+              className="px-3 py-1.5 rounded-full border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] font-mono text-caption text-tertiary-ink/30"
             >
               {tech.name}
             </span>

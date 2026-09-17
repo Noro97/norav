@@ -211,20 +211,20 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'merch'}
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
+      className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/50 text-body-lg max-w-2xl mt-4">
+          <p className="text-tertiary-ink/50 text-body-large max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-body-xs font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
                 {tag.name}
               </span>
             ))}
@@ -238,8 +238,8 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
               <div className="w-3 h-3 rounded-full bg-primary-500/60" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
-              <span className="ml-3 font-mono text-body-xs text-tertiary-ink/45">constructor.ui</span>
-              <span className="ml-auto font-mono text-body-xs text-tertiary-ink/40">{changeCount} {t('common:labels.changes')}</span>
+              <span className="ml-3 font-mono text-caption text-tertiary-ink/45">constructor.ui</span>
+              <span className="ml-auto font-mono text-caption text-tertiary-ink/40">{changeCount} {t('common:labels.changes')}</span>
             </div>
 
             {/* Product Type */}
@@ -252,7 +252,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={type}
                     onClick={() => selectProduct(type)}
-                    className={`px-3 py-1.5 text-body-xs font-mono rounded border transition-all ${
+                    className={`px-3 py-1.5 text-caption font-mono rounded border transition-all ${
                       config.productType === type ? CHOSEN : UNCHOSEN
                     }`}
                   >
@@ -282,7 +282,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                   />
                 ))}
               </div>
-              <span className="font-mono text-body-xs text-tertiary-ink/40 mt-1 block">
+              <span className="font-mono text-caption text-tertiary-ink/40 mt-1 block">
                 {t(`projects:${COLOR_KEYS[COLOR_VALUES.indexOf(config.color)]}`)}
               </span>
             </div>
@@ -297,7 +297,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={s}
                     onClick={() => updateConfig('size', s)}
-                    className={`h-10 min-w-10 px-2 text-body-xs font-mono rounded border transition-all ${
+                    className={`h-10 min-w-10 px-2 text-caption font-mono rounded border transition-all ${
                       config.size === s ? CHOSEN : UNCHOSEN
                     }`}
                   >
@@ -317,10 +317,10 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                 value={config.text}
                 onChange={(e) => updateConfig('text', e.target.value)}
                 maxLength={30}
-                className="w-full bg-tertiary-ink/5 border border-tertiary-ink/10 rounded px-3 py-2 text-body-sm text-tertiary-ink/80 font-mono focus:outline-none focus:border-primary-500/50 transition-colors"
+                className="w-full bg-tertiary-ink/5 border border-tertiary-ink/10 rounded px-3 py-2 text-body-small text-tertiary-ink/80 font-mono focus:outline-none focus:border-primary-500/50 transition-colors"
                 placeholder={t('projects:merch.placeholder.enterText')}
               />
-              <span className="font-mono text-body-xs text-tertiary-ink/35 mt-1 block">{config.text.length}/30</span>
+              <span className="font-mono text-caption text-tertiary-ink/35 mt-1 block">{config.text.length}/30</span>
             </div>
 
             {/* Quantity + Premium */}
@@ -332,14 +332,14 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => updateConfig('quantity', Math.max(1, config.quantity - 1))}
-                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-sm hover:border-tertiary-ink/20 transition-colors"
+                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
                   >
                     −
                   </button>
-                  <span className="font-mono text-tertiary-ink/80 w-10 text-center text-body-lg">{config.quantity}</span>
+                  <span className="font-mono text-tertiary-ink/80 w-10 text-center text-body-large">{config.quantity}</span>
                   <button
                     onClick={() => updateConfig('quantity', Math.min(99, config.quantity + 1))}
-                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-sm hover:border-tertiary-ink/20 transition-colors"
+                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
                   >
                     +
                   </button>
@@ -367,7 +367,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
               {/* Price preview */}
               <div className="ml-auto text-right">
                 <span className="type-label text-secondary-300 block">{t('common:labels.total')}</span>
-                <span className="font-mono text-display-sm text-secondary-300 font-black">
+                <span className="font-mono text-heading-small text-secondary-300 font-black">
                   ${(fullOutput.pricing.total).toFixed(2)}
                 </span>
               </div>
@@ -384,12 +384,12 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
                 />
               </div>
               <div>
-                <span className="font-mono text-body-xs text-tertiary-ink/45 block">{t('common:labels.sku')}</span>
-                <span className="font-mono text-body-xs text-tertiary-ink/60">{generateSKU(config)}</span>
+                <span className="font-mono text-caption text-tertiary-ink/45 block">{t('common:labels.sku')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/60">{generateSKU(config)}</span>
               </div>
               <div className="ml-auto">
-                <span className="font-mono text-body-xs text-tertiary-ink/45 block">{t('common:labels.delivery')}</span>
-                <span className="font-mono text-body-xs text-tertiary-ink/60">{config.premium ? t('projects:merch.delivery.days3') : t('projects:merch.delivery.days7')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/45 block">{t('common:labels.delivery')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/60">{config.premium ? t('projects:merch.delivery.days3') : t('projects:merch.delivery.days7')}</span>
               </div>
             </div>
           </div>
@@ -398,7 +398,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
           <div className="merch-right bg-tertiary-bg p-6 md:p-8 border-l border-tertiary-ink/5 relative">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-secondary-500/40" />
-              <span className="font-mono text-body-xs text-tertiary-ink/45">output.json</span>
+              <span className="font-mono text-caption text-tertiary-ink/45">output.json</span>
               <span
                 className={`type-label ml-auto ${
                   isTyping ? 'text-primary-400' : 'text-status-success/50'
@@ -410,7 +410,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
 
             <pre
               ref={jsonRef}
-              className="font-mono text-body-sm leading-relaxed whitespace-pre-wrap break-words overflow-auto max-h-[500px]"
+              className="font-mono text-body-small leading-relaxed whitespace-pre-wrap break-words overflow-auto max-h-[500px]"
               dangerouslySetInnerHTML={{
                 __html:
                   syntaxHighlight(displayedJson) +

@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       '@norav/content-schema': resolve(__dirname, './packages/content-schema/src'),
+      '@norav/design-tokens': resolve(__dirname, './packages/design-tokens/src'),
     },
   },
   test: {

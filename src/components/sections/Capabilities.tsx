@@ -32,14 +32,14 @@ export function Capabilities({ anchorId }: { anchorId?: string | null }) {
     <section
       ref={sectionRef}
       {...(anchorId ? { id: anchorId } : {})}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+        <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
           {content.title}
         </h2>
-        <p className="text-tertiary-ink/40 text-body-md max-w-xl mb-12">{content.description}</p>
+        <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {content.cards.map((card, index) => {
@@ -55,8 +55,8 @@ export function Capabilities({ anchorId }: { anchorId?: string | null }) {
                 <div className="w-11 h-11 rounded-xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center mb-5">
                   <Icon className="w-5 h-5 text-primary-400" strokeWidth={1.75} />
                 </div>
-                <h3 className="text-tertiary-ink font-semibold text-body-md mb-2">{card.title}</h3>
-                <p className="text-tertiary-ink/40 text-body-sm leading-relaxed">{card.body}</p>
+                <h3 className="text-tertiary-ink font-semibold text-body-regular mb-2">{card.title}</h3>
+                <p className="text-tertiary-ink/40 text-body-small leading-relaxed">{card.body}</p>
               </div>
             </EffectCard>
             )

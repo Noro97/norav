@@ -6,6 +6,7 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { useAppStore } from '@/store/useAppStore'
 import { useBlock } from '@/content/ContentProvider'
 import { readToken, useAccentColor } from '@/content/theme'
+import { defaults, tokenNames } from '@norav/design-tokens'
 
 const SHARD_COUNT = 40
 const SHARD_SIZE = 0.05
@@ -298,7 +299,7 @@ export function HeroMonolith() {
       onPointerOut={() => setHovering(false)}
     >
       <Environment preset="city" />
-      <pointLight position={[2, 2, 4]} intensity={0.8} color={readToken('--color-ink', '#ffffff')} />
+      <pointLight position={[2, 2, 4]} intensity={0.8} color={readToken(tokenNames.color.tertiary.ink, defaults[tokenNames.color.tertiary.ink]!)} />
       <pointLight position={[-2, -1, 3]} intensity={0.4} color={accent} />
 
       {/* SVG logo extruded into 3D with glass material */}

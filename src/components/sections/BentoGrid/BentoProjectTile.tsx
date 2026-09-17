@@ -126,12 +126,12 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         </div>
 
         {/* Title */}
-        <h3 className="font-display text-display-sm font-black text-tertiary-ink mb-3 group-hover:text-primary-50 transition-colors duration-300">
+        <h3 className="font-display text-heading-small font-black text-tertiary-ink mb-3 group-hover:text-primary-50 transition-colors duration-300">
           {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
-        <p className="text-body-sm text-tertiary-ink/60 leading-relaxed mb-6 max-w-lg">
+        <p className="text-body-small text-tertiary-ink/60 leading-relaxed mb-6 max-w-lg">
           {copy?.description ?? ''}
         </p>
 
@@ -140,7 +140,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/50 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/50 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>

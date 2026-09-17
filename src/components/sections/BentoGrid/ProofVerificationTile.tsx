@@ -139,28 +139,28 @@ export function ProofVerificationTile({ className = '' }: Props) {
           </div>
 
           {/* Title */}
-          <h3 className="font-display text-display-sm font-black text-tertiary-ink mb-2 group-hover:text-primary-50 transition-colors duration-300">
+          <h3 className="font-display text-heading-small font-black text-tertiary-ink mb-2 group-hover:text-primary-50 transition-colors duration-300">
             {copy?.title ?? ''}
-            <span className="text-primary-400/60 text-body-md font-normal ml-2">
+            <span className="text-primary-400/60 text-body-regular font-normal ml-2">
               — {t('proof.verification.subtitle')}
             </span>
           </h3>
 
           {/* Description */}
-          <p className="text-body-sm text-tertiary-ink/60 leading-relaxed mb-2 max-w-lg">
+          <p className="text-body-small text-tertiary-ink/60 leading-relaxed mb-2 max-w-lg">
             {copy?.description ?? ''}
           </p>
 
           {/* Challenge & Complexity */}
-          <p className="text-body-xs text-tertiary-ink/40 leading-relaxed mb-1 max-w-lg italic">
+          <p className="text-caption text-tertiary-ink/40 leading-relaxed mb-1 max-w-lg italic">
             {t('projects.proof.challenge')}
           </p>
-          <p className="text-body-xs text-tertiary-ink/40 leading-relaxed mb-6 max-w-lg italic">
+          <p className="text-caption text-tertiary-ink/40 leading-relaxed mb-6 max-w-lg italic">
             {t('projects.proof.complexity')}
           </p>
 
           {/* AI Analysis Logs */}
-          <div className="mb-6 min-h-[80px] rounded-lg bg-tertiary-shade/40 border border-primary-500/10 p-3 font-mono text-body-xs leading-relaxed">
+          <div className="mb-6 min-h-[80px] rounded-lg bg-tertiary-shade/40 border border-primary-500/10 p-3 font-mono text-caption leading-relaxed">
             {logLines.map((line, i) => (
               <div key={i} className="text-primary-400/80">
                 {line.text}
@@ -179,7 +179,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
             {PROOF_PROJECT.techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
+                className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
               >
                 {tech}
               </span>

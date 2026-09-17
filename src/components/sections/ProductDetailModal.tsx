@@ -74,7 +74,7 @@ function StarRating({ rating }: { rating: number }) {
           </svg>
         )
       })}
-      <span className="ml-1.5 font-mono text-body-xs text-tertiary-ink/40">
+      <span className="ml-1.5 font-mono text-caption text-tertiary-ink/40">
         {rating.toFixed(1)}
       </span>
     </div>
@@ -277,20 +277,20 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <span className="type-label text-tertiary-ink/40">
                         {product.category}
                       </span>
-                      <span className="font-mono text-body-sm text-tertiary-ink/50">
+                      <span className="font-mono text-body-small text-tertiary-ink/50">
                         {product.subcategory}
                       </span>
                     </div>
 
                     {/* Product info */}
-                    <h3 className="font-mono text-body-lg text-tertiary-ink/90 font-medium">
+                    <h3 className="font-mono text-body-large text-tertiary-ink/90 font-medium">
                       {product.name}
                     </h3>
                     <div className="flex items-center gap-3 mt-1.5">
-                      <span className="font-mono text-display-sm font-medium text-primary-400">
+                      <span className="font-mono text-heading-small font-medium text-primary-400">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className={`font-mono text-body-xs px-2 py-0.5 rounded-full ${
+                      <span className={`font-mono text-caption px-2 py-0.5 rounded-full ${
                         stock > 10
                           ? 'text-status-success/80 bg-status-success/10 border border-status-success/20'
                           : stock > 0
@@ -311,7 +311,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     </div>
 
                     {/* Description */}
-                    <p className="mt-3 font-mono text-body-xs text-tertiary-ink/40 leading-relaxed">
+                    <p className="mt-3 font-mono text-caption text-tertiary-ink/40 leading-relaxed">
                       {description}
                     </p>
 
@@ -323,16 +323,16 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <div className="flex items-center gap-0">
                         <button
                           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                          className="w-8 h-8 rounded-l-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-sm"
+                          className="w-8 h-8 rounded-l-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
                         >
                           -
                         </button>
-                        <div className="w-10 h-8 border-y border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center font-mono text-body-sm text-tertiary-ink/70">
+                        <div className="w-10 h-8 border-y border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center font-mono text-body-small text-tertiary-ink/70">
                           {quantity}
                         </div>
                         <button
                           onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
-                          className="w-8 h-8 rounded-r-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-sm"
+                          className="w-8 h-8 rounded-r-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
                         >
                           +
                         </button>
@@ -343,13 +343,13 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     <div className="mt-5 flex gap-3">
                       <button
                         onClick={handleAddToCart}
-                        className="flex-1 h-10 rounded-lg border border-tertiary-ink/[0.1] bg-tertiary-ink/[0.03] font-mono text-body-xs text-tertiary-ink/60 hover:text-tertiary-ink/80 hover:border-tertiary-ink/20 transition-all"
+                        className="flex-1 h-10 rounded-lg border border-tertiary-ink/[0.1] bg-tertiary-ink/[0.03] font-mono text-caption text-tertiary-ink/60 hover:text-tertiary-ink/80 hover:border-tertiary-ink/20 transition-all"
                       >
                         {t('projects:ecommerce.modal.addToCart')}
                       </button>
                       <button
                         onClick={() => goTo('checkout')}
-                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
+                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-caption text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
                       >
                         {t('projects:ecommerce.modal.buyNow')}
                       </button>
@@ -371,10 +371,10 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     <div className="rounded-xl border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] p-3 mb-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="font-mono text-body-xs text-tertiary-ink/70">{product.name}</span>
-                          <span className="font-mono text-body-xs text-tertiary-ink/45 ml-2">x{quantity}</span>
+                          <span className="font-mono text-caption text-tertiary-ink/70">{product.name}</span>
+                          <span className="font-mono text-caption text-tertiary-ink/45 ml-2">x{quantity}</span>
                         </div>
-                        <span className="font-mono text-body-sm text-primary-400 font-medium">${total}</span>
+                        <span className="font-mono text-body-small text-primary-400 font-medium">${total}</span>
                       </div>
                     </div>
 
@@ -390,7 +390,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           onChange={(e) => setForm((f) => ({ ...f, cardNumber: formatCardNumber(e.target.value) }))}
                           placeholder="0000 0000 0000 0000"
                           maxLength={19}
-                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div>
@@ -402,7 +402,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           value={form.cardName}
                           onChange={(e) => setForm((f) => ({ ...f, cardName: e.target.value }))}
                           placeholder="John Doe"
-                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
@@ -416,7 +416,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, expiry: formatExpiry(e.target.value) }))}
                             placeholder="MM/YY"
                             maxLength={5}
-                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                         <div>
@@ -429,7 +429,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, cvv: e.target.value.replace(/\D/g, '').slice(0, 3) }))}
                             placeholder="***"
                             maxLength={3}
-                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                       </div>
@@ -439,7 +439,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     <div className="mt-5 flex gap-3">
                       <button
                         onClick={() => goTo('detail')}
-                        className="h-10 px-4 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] font-mono text-body-xs text-tertiary-ink/50 hover:text-tertiary-ink/70 hover:border-tertiary-ink/15 transition-all flex items-center gap-1.5"
+                        className="h-10 px-4 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] font-mono text-caption text-tertiary-ink/50 hover:text-tertiary-ink/70 hover:border-tertiary-ink/15 transition-all flex items-center gap-1.5"
                       >
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="m15 18-6-6 6-6" />
@@ -449,7 +449,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <button
                         onClick={handlePay}
                         disabled={!isFormValid || isProcessing}
-                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
+                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-caption text-tertiary-ink font-medium hover:bg-primary-600 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
                       >
                         {isProcessing ? (
                           <>
@@ -537,10 +537,10 @@ function ConfirmationStep({
         </motion.svg>
       </div>
 
-      <h3 className="font-mono text-body-lg text-tertiary-ink/90 font-medium">
+      <h3 className="font-mono text-body-large text-tertiary-ink/90 font-medium">
         {t('projects:ecommerce.modal.orderConfirmed')}
       </h3>
-      <p className="font-mono text-body-xs text-tertiary-ink/45 mt-1 tracking-wider">
+      <p className="font-mono text-caption text-tertiary-ink/45 mt-1 tracking-wider">
         {t('projects:ecommerce.modal.orderId', { id: orderId })}
       </p>
 
@@ -548,22 +548,22 @@ function ConfirmationStep({
       <div className="w-full rounded-xl border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] p-3 mt-5">
         <div className="flex items-center justify-between">
           <div className="text-left">
-            <span className="font-mono text-body-xs text-tertiary-ink/70 block">{product.name}</span>
-            <span className="font-mono text-body-xs text-tertiary-ink/45">
+            <span className="font-mono text-caption text-tertiary-ink/70 block">{product.name}</span>
+            <span className="font-mono text-caption text-tertiary-ink/45">
               {quantity} {t('projects:ecommerce.modal.items', { count: quantity })}
             </span>
           </div>
-          <span className="font-mono text-body-sm text-primary-400 font-medium">${total}</span>
+          <span className="font-mono text-body-small text-primary-400 font-medium">${total}</span>
         </div>
       </div>
 
-      <p className="font-mono text-body-xs text-tertiary-ink/45 mt-4">
+      <p className="font-mono text-caption text-tertiary-ink/45 mt-4">
         {t('projects:ecommerce.modal.thankYou')}
       </p>
 
       <button
         onClick={onClose}
-        className="mt-5 w-full h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
+        className="mt-5 w-full h-10 rounded-lg bg-primary-500 font-mono text-caption text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
       >
         {t('projects:ecommerce.modal.close')}
       </button>

@@ -54,17 +54,17 @@ export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProp
       </div>
 
       {/* Hero stat — the number that pops */}
-      <span className="font-mono text-display-sm font-black text-tertiary-ink/90 mb-1">
+      <span className="font-mono text-heading-small font-black text-tertiary-ink/90 mb-1">
         {HERO_STATS[index]}
       </span>
 
       {/* Title */}
-      <h3 className="text-body-xs font-semibold text-tertiary-ink/70 uppercase tracking-wide mb-2">
+      <h3 className="text-caption font-semibold text-tertiary-ink/70 uppercase tracking-wide mb-2">
         {tile?.title ?? ''}
       </h3>
 
       {/* Description */}
-      <p className="text-body-xs text-tertiary-ink/50 leading-relaxed mt-auto">
+      <p className="text-caption text-tertiary-ink/50 leading-relaxed mt-auto">
         {tile?.description ?? ''}
       </p>
       </motion.div>
