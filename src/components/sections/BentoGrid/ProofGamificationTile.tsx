@@ -17,10 +17,10 @@ const TIERS = ['common', 'rare', 'epic', 'legendary'] as const
 
 
 const RARITY_STYLES: Record<string, string> = {
-  common: 'border-white/10 text-white/40',
-  rare: 'border-white/15 text-white/50',
-  epic: 'border-crimson-500/25 text-crimson-400/50',
-  legendary: 'border-crimson-500/40 text-crimson-400/70 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)]',
+  common: 'border-tertiary-ink/10 text-tertiary-ink/40',
+  rare: 'border-tertiary-ink/15 text-tertiary-ink/50',
+  epic: 'border-primary-500/25 text-primary-400/50',
+  legendary: 'border-primary-500/40 text-primary-400/70 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-primary-500)_15%,_transparent)]',
 }
 
 
@@ -48,10 +48,10 @@ function AnimatedXP() {
 
   return (
     <div ref={ref} className="flex items-baseline gap-1.5">
-      <motion.span className="font-mono text-2xl font-black text-white tabular-nums tracking-tight">
+      <motion.span className="font-mono text-display-sm font-black text-tertiary-ink tabular-nums">
         {display}
       </motion.span>
-      <span className="font-mono text-xs text-white/40 font-medium">XP</span>
+      <span className="font-mono text-body-xs text-tertiary-ink/40 font-medium">XP</span>
     </div>
   )
 }
@@ -71,14 +71,14 @@ export function ProofGamificationTile({ className = '' }: Props) {
   return (
     <div
       ref={tileRef}
-      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/15 ${className}`}
+      className={`bento-tile group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-primary-500/15 ${className}`}
     >
       {/* Gradient mesh */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
           background:
-            'radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--color-crimson-500) 50%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 30% 70%, color-mix(in srgb, var(--color-crimson-700) 30%, transparent) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--color-primary-500) 50%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 30% 70%, color-mix(in srgb, var(--color-primary-700) 30%, transparent) 0%, transparent 60%)',
         }}
       />
 
@@ -86,10 +86,10 @@ export function ProofGamificationTile({ className = '' }: Props) {
         {/* Header */}
         <div className="flex items-center gap-2.5 mb-5">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-50" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
           </span>
-          <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+          <h3 className="type-label text-tertiary-ink/60">
             {t('proof.gamification.label')}
           </h3>
         </div>
@@ -97,19 +97,19 @@ export function ProofGamificationTile({ className = '' }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Left: Dual Points + Level */}
           <div>
-            <p className="font-mono text-xs text-white/40 uppercase tracking-wider mb-3">
+            <p className="type-label text-tertiary-ink/40 mb-3">
               {t('proof.gamification.dualPoints')}
             </p>
 
             {/* Physio bar */}
             <div className="mb-2.5">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-xs text-white/50">{t('proof.gamification.physio')}</span>
-                <span className="font-mono text-xs text-white/45">72%</span>
+                <span className="font-mono text-body-xs text-tertiary-ink/50">{t('proof.gamification.physio')}</span>
+                <span className="font-mono text-body-xs text-tertiary-ink/45">72%</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-white/30 to-white/50"
+                  className="h-full rounded-full bg-gradient-to-r from-tertiary-ink/30 to-tertiary-ink/50"
                   initial={{ width: 0 }}
                   animate={isInView ? { width: '72%' } : {}}
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
@@ -120,12 +120,12 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Neuro bar */}
             <div className="mb-4">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-xs text-crimson-400/60">{t('proof.gamification.neuro')}</span>
-                <span className="font-mono text-xs text-white/45">58%</span>
+                <span className="font-mono text-body-xs text-primary-400/60">{t('proof.gamification.neuro')}</span>
+                <span className="font-mono text-body-xs text-tertiary-ink/45">58%</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-crimson-500 to-crimson-400"
+                  className="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-400"
                   initial={{ width: 0 }}
                   animate={isInView ? { width: '58%' } : {}}
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
@@ -136,11 +136,11 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Level bar */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-xs text-white/50">{t('proof.gamification.level')}</span>
+                <span className="font-mono text-body-xs text-tertiary-ink/50">{t('proof.gamification.level')}</span>
               </div>
-              <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-1.5 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-crimson-600 to-crimson-400"
+                  className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
                   initial={{ width: 0 }}
                   animate={isInView ? { width: '70%' } : {}}
                   transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
@@ -150,21 +150,21 @@ export function ProofGamificationTile({ className = '' }: Props) {
 
             {/* XP Counter */}
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-white/45 uppercase tracking-wider">{t('proof.gamification.xpLabel')}</span>
+              <span className="type-label text-tertiary-ink/45">{t('proof.gamification.xpLabel')}</span>
               <AnimatedXP />
             </div>
           </div>
 
           {/* Right: Badge grid */}
           <div>
-            <p className="font-mono text-xs text-white/40 uppercase tracking-wider mb-3">
+            <p className="type-label text-tertiary-ink/40 mb-3">
               {t('proof.gamification.badges')}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {badges.map((badge, i) => (
                 <div
                   key={i}
-                  className={`group/badge flex flex-col items-center justify-center w-full aspect-square rounded-lg border bg-black/30 transition-all duration-300 hover:scale-105 overflow-hidden ${RARITY_STYLES[badge.rarity]}`}
+                  className={`group/badge flex flex-col items-center justify-center w-full aspect-square rounded-lg border bg-tertiary-shade/30 transition-all duration-300 hover:scale-105 overflow-hidden ${RARITY_STYLES[badge.rarity]}`}
                 >
                   {badge.image && (
                     <img
@@ -174,7 +174,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
                       className="w-3/4 h-3/4 object-contain transition-transform duration-300 group-hover/badge:scale-110"
                     />
                   )}
-                  <span className="font-mono text-[9px] mt-1 opacity-60">
+                  <span className="font-mono text-body-xs mt-1 opacity-60">
                     {t(`proof.gamification.badge${badge.rarity.charAt(0).toUpperCase() + badge.rarity.slice(1)}`)}
                   </span>
                 </div>
@@ -184,13 +184,13 @@ export function ProofGamificationTile({ className = '' }: Props) {
         </div>
 
         {/* Description */}
-        <p className="font-mono text-xs text-white/45 mt-4 tracking-wide uppercase">
+        <p className="type-label text-tertiary-ink/45 mt-4">
           {t('proof.gamification.description')}
         </p>
       </div>
 
       {/* Bottom glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-crimson-500/2 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-primary-500/2 to-transparent pointer-events-none" />
     </div>
   )
 }

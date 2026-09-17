@@ -6,7 +6,7 @@ export function ScrollProgress() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-transparent">
       <div
-        className="h-full bg-crimson-500/80 origin-left transition-none"
+        className="h-full bg-primary-500/80 origin-left transition-none"
         style={{ transform: `scaleX(${progress})` }}
       />
     </div>

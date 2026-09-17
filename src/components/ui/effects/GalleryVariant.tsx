@@ -16,7 +16,7 @@ function GridGallery({ images, alt, className }: { images: string[]; alt: string
   return (
     <div className={`grid grid-cols-2 sm:grid-cols-3 gap-3 ${className ?? ''}`}>
       {images.map((src, i) => (
-        <div key={i} className="aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-white/[0.02]">
+        <div key={i} className="aspect-video rounded-lg overflow-hidden border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02]">
           <img src={src} alt={`${alt} ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ))}
@@ -57,7 +57,7 @@ function ArcGallery({
         return (
           <div
             key={i}
-            className="absolute top-1/2 left-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-white/[0.1] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:scale-110 hover:z-10"
+            className="absolute top-1/2 left-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-tertiary-ink/[0.1] bg-tertiary-ink/[0.02] shadow-lg transition-transform duration-300 hover:scale-110 hover:z-10"
             style={{ transform: `translate(-50%, -50%) translate(${x}px, ${y}px)` }}
           >
             <img src={src} alt={`${alt} ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
@@ -85,7 +85,7 @@ function CardSwapGallery({ images, alt, className }: { images: string[]; alt: st
         return (
           <div
             key={i}
-            className="absolute inset-0 rounded-xl overflow-hidden border border-white/[0.1] bg-white/[0.02] shadow-xl transition-all duration-500 ease-out"
+            className="absolute inset-0 rounded-xl overflow-hidden border border-tertiary-ink/[0.1] bg-tertiary-ink/[0.02] shadow-xl transition-all duration-500 ease-out"
             style={{
               transform: `translateY(${offset * 8}px) scale(${1 - offset * 0.04})`,
               opacity: offset === 0 ? 1 : offset === 1 ? 0.5 : 0,

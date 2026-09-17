@@ -27,7 +27,7 @@ export function StarBorderButton({ children, className = '' }: Props) {
         className="absolute inset-[-1000%]"
         style={{
           background:
-            'conic-gradient(from 90deg at 50% 50%, transparent, var(--color-crimson-500), transparent 25%)',
+            'conic-gradient(from 90deg at 50% 50%, transparent, var(--color-primary-500), transparent 25%)',
           animation: reducedMotion ? undefined : 'starBorderSpin 3s linear infinite',
         }}
       />

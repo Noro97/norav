@@ -13,7 +13,7 @@ export function OrbBackground({ className }: { className?: string }) {
       <div
         className="w-2/3 aspect-square rounded-full opacity-20"
         style={{
-          background: 'radial-gradient(circle, var(--color-crimson-500), transparent 70%)',
+          background: 'radial-gradient(circle, var(--color-primary-500), transparent 70%)',
           filter: 'blur(40px)',
           animation: reducedMotion ? undefined : 'orbPulse 6s ease-in-out infinite',
         }}

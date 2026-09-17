@@ -50,22 +50,22 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-3xl mx-auto">
         <div className="mb-8 text-center">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
+          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-white/40 text-sm mt-2 font-mono">
+          <p className="text-tertiary-ink/40 text-body-sm mt-2 font-mono">
             {content.subtitle}
           </p>
         </div>
 
         {/* Terminal window */}
-        <div className="terminal-window rounded-xl overflow-hidden border border-white/10 bg-background shadow-2xl shadow-black/50">
+        <div className="terminal-window rounded-xl overflow-hidden border border-tertiary-ink/10 bg-tertiary-bg shadow-2xl shadow-tertiary-shade/50">
           {/* Title bar */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/5" aria-hidden="true">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-            <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-            <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-            <span className="ml-3 font-mono text-xs text-white/40">
+          <div className="flex items-center gap-2 px-4 py-3 bg-tertiary-ink/[0.03] border-b border-tertiary-ink/5" aria-hidden="true">
+            <div className="w-3 h-3 rounded-full bg-tertiary-ink/20" />
+            <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
+            <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
+            <span className="ml-3 font-mono text-body-xs text-tertiary-ink/40">
               {content.titleBar}
             </span>
           </div>
@@ -77,16 +77,16 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
             data-lenis-prevent
           >
             {lines.map((line, i) => (
-              <div key={i} className="font-mono text-sm leading-relaxed">
+              <div key={i} className="font-mono text-body-sm leading-relaxed">
                 {line.type === 'input' ? (
                   <div className="flex gap-2">
-                    <span className="text-crimson-500 shrink-0">
+                    <span className="text-primary-500 shrink-0">
                       {content.prompt}
                     </span>
-                    <span className="text-white/80">{line.content}</span>
+                    <span className="text-tertiary-ink/80">{line.content}</span>
                   </div>
                 ) : (
-                  <div className="text-white/50 whitespace-pre">
+                  <div className="text-tertiary-ink/50 whitespace-pre">
                     {settings.outputTextEffect === 'none' ? (
                       line.content
                     ) : (
@@ -98,8 +98,8 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
             ))}
 
             {/* Current input line */}
-            <div className="flex gap-2 font-mono text-sm items-center mt-1">
-              <span className="text-crimson-500 shrink-0">
+            <div className="flex gap-2 font-mono text-body-sm items-center mt-1">
+              <span className="text-primary-500 shrink-0">
                 {content.prompt}
               </span>
               <div className="relative flex-1">
@@ -110,7 +110,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   aria-label={content.title}
-                  className="w-full bg-transparent text-white/80 outline-none caret-crimson-500 font-mono text-sm focus:ring-1 focus:ring-crimson-500/40 focus:rounded-sm"
+                  className="w-full bg-transparent text-tertiary-ink/80 outline-none caret-primary-500 font-mono text-body-sm focus:ring-1 focus:ring-primary-500/40 focus:rounded-sm"
                   spellCheck={false}
                   autoComplete="off"
                   placeholder={content.placeholder}
@@ -120,18 +120,18 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
           </div>
 
           {/* Status bar */}
-          <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-t border-white/5">
-            <span className="font-mono text-xs text-white/40">
+          <div className="flex items-center justify-between px-4 py-2 bg-tertiary-ink/[0.02] border-t border-tertiary-ink/5">
+            <span className="font-mono text-body-xs text-tertiary-ink/40">
               {lines.filter((l) => l.type === 'input').length} {t('common:labels.commands')}
             </span>
-            <span className="font-mono text-xs text-crimson-500/40">
+            <span className="font-mono text-body-xs text-primary-500/40">
               zsh 5.9
             </span>
           </div>
         </div>
 
         <div className="mt-8 text-center">
-          <p className="font-mono text-xs text-white/35">
+          <p className="font-mono text-body-xs text-tertiary-ink/35">
             {t('common:footer.builtWith')}
           </p>
         </div>

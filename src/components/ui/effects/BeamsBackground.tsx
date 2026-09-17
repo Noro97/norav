@@ -15,7 +15,7 @@ export function BeamsBackground({ className }: { className?: string }) {
         className="absolute left-1/2 top-1/2 w-[140%] aspect-square -translate-x-1/2 -translate-y-1/2 opacity-[0.08]"
         style={{
           background:
-            'conic-gradient(from 0deg, transparent 0deg, var(--color-crimson-500) 8deg, transparent 20deg, transparent 180deg, var(--color-cyan-500) 188deg, transparent 200deg, transparent 360deg)',
+            'conic-gradient(from 0deg, transparent 0deg, var(--color-primary-500) 8deg, transparent 20deg, transparent 180deg, var(--color-secondary-500) 188deg, transparent 200deg, transparent 360deg)',
           animation: 'beamsRotate 40s linear infinite',
           filter: 'blur(60px)',
         }}

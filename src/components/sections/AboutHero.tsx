@@ -8,6 +8,9 @@ import { toneOf, type Tone } from '@/content/accent'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { AboutContent, AboutSettings } from '@norav/content-schema'
 
+// Third-party brand marks. A GitHub icon in GitHub's colour is content, like a
+// product's garment colour — the one place a hex that is not a token belongs.
+/* eslint-disable no-restricted-syntax -- brand colours, not the palette */
 const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
   github: {
     color: '#8b5cf6',
@@ -34,7 +37,7 @@ const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
     ),
   },
   email: {
-    color: 'var(--color-crimson-500)',
+    color: 'var(--color-primary-500)',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -43,11 +46,12 @@ const SOCIAL_ART: Record<string, { color: string; icon: React.ReactNode }> = {
     ),
   },
 }
+/* eslint-enable no-restricted-syntax */
 
 /** How an accented run of the biography is painted. */
 const TONE_CLASS: Record<Tone, string> = {
   main: '',
-  highlight: 'text-crimson-400',
+  highlight: 'text-primary-400',
 }
 
 function needsLeadingSpace(text: string): boolean {
@@ -108,11 +112,11 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
           <div className="flex flex-col items-center lg:items-start">
             <div className="about-avatar relative w-full">
               {/* Ambient glow behind card */}
-              <div className="absolute -inset-4 rounded-3xl bg-crimson-500/[0.06] blur-2xl pointer-events-none transition-opacity duration-500" />
+              <div className="absolute -inset-4 rounded-3xl bg-primary-500/[0.06] blur-2xl pointer-events-none transition-opacity duration-500" />
 
               <EffectCard
                 effect={settings.cardEffect}
-                className="rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl overflow-hidden"
+                className="rounded-2xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-tertiary-ink/[0.04] to-tertiary-ink/[0.01] backdrop-blur-xl overflow-hidden"
               >
                 {/* Photo */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden">
@@ -123,12 +127,12 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                     loading="lazy"
                   />
                   {/* Gradient overlay at bottom */}
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-tertiary-bg via-tertiary-bg/60 to-transparent" />
 
                   {/* Status badge */}
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-green-400/20">
-                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="font-mono text-xs text-green-400/80">{content.statusLabel}</span>
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-tertiary-shade/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-status-success/20">
+                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+                    <span className="font-mono text-body-xs text-status-success/80">{content.statusLabel}</span>
                   </div>
                 </div>
 
@@ -154,7 +158,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                             setEmailCopied({ x: e.clientX, y: e.clientY })
                             setTimeout(() => setEmailCopied(null), 600)
                           } : undefined}
-                          className={`group relative w-11 h-11 rounded-xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${isMail ? 'cursor-pointer' : ''}`}
+                          className={`group relative w-11 h-11 rounded-xl border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${isMail ? 'cursor-pointer' : ''}`}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.borderColor = `${art.color}40`
                             e.currentTarget.style.color = art.color
@@ -178,7 +182,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                     href={settings.cvHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-crimson-500/10 border border-crimson-500/20 text-crimson-400 font-mono text-xs tracking-wider uppercase rounded-xl hover:bg-crimson-500/20 hover:border-crimson-500/40 hover:shadow-[0_0_30px_-5px_color-mix(in_srgb,_var(--color-crimson-500)_30%,_transparent)] transition-all duration-300"
+                    className="type-label group w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-primary-500/10 border border-primary-500/20 text-primary-400 rounded-xl hover:bg-primary-500/20 hover:border-primary-500/40 hover:shadow-[0_0_30px_-5px_color-mix(in_srgb,_var(--color-primary-500)_30%,_transparent)] transition-all duration-300"
                   >
                     <svg viewBox="0 0 16 16" className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M3 13h10" />
@@ -194,16 +198,16 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
           <div className="about-content space-y-6">
             {/* Visually the name, but not a heading — the hero <h1> already owns that role, and repeating it confuses screen readers. */}
             <p
-              className="text-3xl md:text-5xl font-bold text-white leading-tight"
+              className="font-display text-display-lg font-black text-tertiary-ink"
               aria-hidden="true"
             >
               {content.name}
             </p>
-            <p className="font-mono text-sm text-crimson-400 tracking-wider">
+            <p className="font-mono text-body-sm text-primary-400 tracking-wider">
               {content.role}
             </p>
 
-            <div className="space-y-4 text-white/50 text-base leading-relaxed max-w-2xl">
+            <div className="space-y-4 text-tertiary-ink/50 text-body-md leading-relaxed max-w-2xl">
               <p>
                 {content.bio.lead.map((run, index) => (
                   <Fragment key={index}>
@@ -221,10 +225,10 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
             <div className="about-facts grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
               {content.facts.map((fact) => (
                 <div key={fact.label} className="glass-card p-3">
-                  <span className="font-mono text-xs text-white/30 tracking-wider uppercase block">
+                  <span className="type-label text-tertiary-ink/30 block">
                     {fact.label}
                   </span>
-                  <span className="font-mono text-sm text-white/80 mt-1 block">{fact.value}</span>
+                  <span className="font-mono text-body-sm text-tertiary-ink/80 mt-1 block">{fact.value}</span>
                 </div>
               ))}
             </div>
@@ -236,7 +240,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
       {emailCopied && (
         <span
           key={`${emailCopied.x}-${emailCopied.y}`}
-          className="fixed z-50 font-mono text-xs font-bold text-crimson-400 pointer-events-none animate-[copiedPop_0.5s_ease-out_forwards]"
+          className="fixed z-50 font-mono text-body-xs font-semibold text-primary-400 pointer-events-none animate-[copiedPop_0.5s_ease-out_forwards]"
           style={{ left: emailCopied.x, top: emailCopied.y, transform: 'translate(-50%, -50%)' }}
         >
           Copied!

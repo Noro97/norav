@@ -60,21 +60,21 @@ function StarRating({ rating }: { rating: number }) {
           <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="none">
             <defs>
               <linearGradient id={`star-fill-${i}`}>
-                <stop offset={`${fill * 100}%`} stopColor="var(--color-crimson-500)" />
-                <stop offset={`${fill * 100}%`} stopColor="rgba(255,255,255,0.1)" />
+                <stop offset={`${fill * 100}%`} stopColor="var(--color-primary-500)" />
+                <stop offset={`${fill * 100}%`} stopColor="color-mix(in srgb, var(--color-tertiary-ink) 10%, transparent)" />
               </linearGradient>
             </defs>
             <path
               d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
               fill={`url(#star-fill-${i})`}
-              stroke="var(--color-crimson-500)"
+              stroke="var(--color-primary-500)"
               strokeWidth="1"
               strokeOpacity="0.4"
             />
           </svg>
         )
       })}
-      <span className="ml-1.5 font-mono text-xs text-white/40">
+      <span className="ml-1.5 font-mono text-body-xs text-tertiary-ink/40">
         {rating.toFixed(1)}
       </span>
     </div>
@@ -98,12 +98,12 @@ function StepIndicator({ current }: { current: Step }) {
             <div
               className={`w-2.5 h-2.5 rounded-full border transition-all duration-300 ${
                 i <= stepIndex
-                  ? 'bg-crimson-500 border-crimson-500'
-                  : 'bg-white/5 border-white/10'
+                  ? 'bg-primary-500 border-primary-500'
+                  : 'bg-tertiary-ink/5 border-tertiary-ink/10'
               }`}
             />
-            <span className={`font-mono text-xs tracking-wider uppercase ${
-              i <= stepIndex ? 'text-crimson-400/70' : 'text-white/40'
+            <span className={`type-label ${
+              i <= stepIndex ? 'text-primary-400/70' : 'text-tertiary-ink/40'
             }`}>
               {labels[i]}
             </span>
@@ -111,7 +111,7 @@ function StepIndicator({ current }: { current: Step }) {
           {i < STEP_LIST.length - 1 && (
             <div
               className={`w-12 h-px mb-3.5 transition-all duration-300 ${
-                i < stepIndex ? 'bg-crimson-500/40' : 'bg-white/8'
+                i < stepIndex ? 'bg-primary-500/40' : 'bg-tertiary-ink/8'
               }`}
             />
           )}
@@ -184,7 +184,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
       particleCount: 30,
       spread: 50,
       origin: { x: 0.5, y: 0.6 },
-      colors: ['var(--color-crimson-500)', 'var(--color-crimson-400)', 'var(--color-crimson-700)', '#f7a0a6'],
+      colors: ['var(--color-primary-500)', 'var(--color-primary-400)', 'var(--color-primary-700)', 'var(--color-primary-300)'],
       ticks: 150,
       gravity: 1.2,
       decay: 0.94,
@@ -218,36 +218,36 @@ function ProductDetailModalContent({ product, onClose }: Props) {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          className="absolute inset-0 bg-tertiary-shade/80 backdrop-blur-md"
           onClick={onClose}
         />
 
         {/* Content */}
         <motion.div
-          className="relative max-w-lg w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-background backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
+          className="relative max-w-lg w-full rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-card to-tertiary-bg backdrop-blur-xl overflow-hidden max-h-[90vh] flex flex-col"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Top accent */}
-          <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent shrink-0" />
+          <div className="h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent shrink-0" />
 
           <div className="p-5 md:p-6 overflow-y-auto" data-lenis-prevent>
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2.5">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-50" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
                 </span>
-                <span className="font-mono text-xs text-white/45 uppercase tracking-[0.15em]">
+                <span className="type-label text-tertiary-ink/45">
                   #{String(product.id).padStart(3, '0')}
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-lg border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white/60 hover:border-white/15 transition-all duration-200"
+                className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
                 aria-label="Close"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -273,29 +273,29 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     {/* Product gradient area */}
-                    <div className={`aspect-[5/2] rounded-xl mb-4 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}>
-                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
+                    <div className={`aspect-[5/2] rounded-xl mb-4 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-tertiary-ink/5 to-transparent'} border border-tertiary-ink/[0.04]`}>
+                      <span className="type-label text-tertiary-ink/40">
                         {product.category}
                       </span>
-                      <span className="font-mono text-sm text-white/50">
+                      <span className="font-mono text-body-sm text-tertiary-ink/50">
                         {product.subcategory}
                       </span>
                     </div>
 
                     {/* Product info */}
-                    <h3 className="font-mono text-lg text-white/90 font-medium">
+                    <h3 className="font-mono text-body-lg text-tertiary-ink/90 font-medium">
                       {product.name}
                     </h3>
                     <div className="flex items-center gap-3 mt-1.5">
-                      <span className="font-mono text-2xl font-medium text-crimson-400">
+                      <span className="font-mono text-display-sm font-medium text-primary-400">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className={`font-mono text-xs px-2 py-0.5 rounded-full ${
+                      <span className={`font-mono text-body-xs px-2 py-0.5 rounded-full ${
                         stock > 10
-                          ? 'text-emerald-400/80 bg-emerald-500/10 border border-emerald-500/20'
+                          ? 'text-status-success/80 bg-status-success/10 border border-status-success/20'
                           : stock > 0
-                            ? 'text-amber-400/80 bg-amber-500/10 border border-amber-500/20'
-                            : 'text-red-400/80 bg-red-500/10 border border-red-500/20'
+                            ? 'text-status-warning/80 bg-status-warning/10 border border-status-warning/20'
+                            : 'text-status-danger/80 bg-status-danger/10 border border-status-danger/20'
                       }`}>
                         {stock > 10
                           ? t('projects:ecommerce.modal.inStock', { count: stock })
@@ -311,28 +311,28 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     </div>
 
                     {/* Description */}
-                    <p className="mt-3 font-mono text-xs text-white/40 leading-relaxed">
+                    <p className="mt-3 font-mono text-body-xs text-tertiary-ink/40 leading-relaxed">
                       {description}
                     </p>
 
                     {/* Quantity */}
                     <div className="mt-5 flex items-center gap-3">
-                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
+                      <span className="type-label text-tertiary-ink/40">
                         {t('projects:ecommerce.modal.quantity')}
                       </span>
                       <div className="flex items-center gap-0">
                         <button
                           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                          className="w-8 h-8 rounded-l-lg border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white/60 hover:bg-white/[0.06] transition-all font-mono text-sm"
+                          className="w-8 h-8 rounded-l-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-sm"
                         >
                           -
                         </button>
-                        <div className="w-10 h-8 border-y border-white/[0.08] bg-white/[0.02] flex items-center justify-center font-mono text-sm text-white/70">
+                        <div className="w-10 h-8 border-y border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center font-mono text-body-sm text-tertiary-ink/70">
                           {quantity}
                         </div>
                         <button
                           onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
-                          className="w-8 h-8 rounded-r-lg border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white/60 hover:bg-white/[0.06] transition-all font-mono text-sm"
+                          className="w-8 h-8 rounded-r-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-sm"
                         >
                           +
                         </button>
@@ -343,13 +343,13 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     <div className="mt-5 flex gap-3">
                       <button
                         onClick={handleAddToCart}
-                        className="flex-1 h-10 rounded-lg border border-white/[0.1] bg-white/[0.03] font-mono text-xs text-white/60 hover:text-white/80 hover:border-white/20 transition-all"
+                        className="flex-1 h-10 rounded-lg border border-tertiary-ink/[0.1] bg-tertiary-ink/[0.03] font-mono text-body-xs text-tertiary-ink/60 hover:text-tertiary-ink/80 hover:border-tertiary-ink/20 transition-all"
                       >
                         {t('projects:ecommerce.modal.addToCart')}
                       </button>
                       <button
                         onClick={() => goTo('checkout')}
-                        className="flex-1 h-10 rounded-lg bg-crimson-500 font-mono text-xs text-white font-medium hover:bg-crimson-600 transition-all"
+                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
                       >
                         {t('projects:ecommerce.modal.buyNow')}
                       </button>
@@ -368,20 +368,20 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     {/* Order summary */}
-                    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 mb-5">
+                    <div className="rounded-xl border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] p-3 mb-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="font-mono text-xs text-white/70">{product.name}</span>
-                          <span className="font-mono text-xs text-white/45 ml-2">x{quantity}</span>
+                          <span className="font-mono text-body-xs text-tertiary-ink/70">{product.name}</span>
+                          <span className="font-mono text-body-xs text-tertiary-ink/45 ml-2">x{quantity}</span>
                         </div>
-                        <span className="font-mono text-sm text-crimson-400 font-medium">${total}</span>
+                        <span className="font-mono text-body-sm text-primary-400 font-medium">${total}</span>
                       </div>
                     </div>
 
                     {/* Payment form */}
                     <div className="space-y-3">
                       <div>
-                        <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
+                        <label className="type-label block text-tertiary-ink/45 mb-1.5">
                           {t('projects:ecommerce.modal.cardNumber')}
                         </label>
                         <input
@@ -390,11 +390,11 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           onChange={(e) => setForm((f) => ({ ...f, cardNumber: formatCardNumber(e.target.value) }))}
                           placeholder="0000 0000 0000 0000"
                           maxLength={19}
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
+                        <label className="type-label block text-tertiary-ink/45 mb-1.5">
                           {t('projects:ecommerce.modal.cardName')}
                         </label>
                         <input
@@ -402,12 +402,12 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                           value={form.cardName}
                           onChange={(e) => setForm((f) => ({ ...f, cardName: e.target.value }))}
                           placeholder="John Doe"
-                          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                          className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
+                          <label className="type-label block text-tertiary-ink/45 mb-1.5">
                             {t('projects:ecommerce.modal.expiry')}
                           </label>
                           <input
@@ -416,11 +416,11 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, expiry: formatExpiry(e.target.value) }))}
                             placeholder="MM/YY"
                             maxLength={5}
-                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                         <div>
-                          <label className="block font-mono text-xs text-white/45 uppercase tracking-wider mb-1.5">
+                          <label className="type-label block text-tertiary-ink/45 mb-1.5">
                             {t('projects:ecommerce.modal.cvv')}
                           </label>
                           <input
@@ -429,7 +429,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                             onChange={(e) => setForm((f) => ({ ...f, cvv: e.target.value.replace(/\D/g, '').slice(0, 3) }))}
                             placeholder="***"
                             maxLength={3}
-                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2.5 font-mono text-sm text-white/80 placeholder:text-white/45 focus:border-crimson-500/40 focus:outline-none transition-colors"
+                            className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-sm text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
                           />
                         </div>
                       </div>
@@ -439,7 +439,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                     <div className="mt-5 flex gap-3">
                       <button
                         onClick={() => goTo('detail')}
-                        className="h-10 px-4 rounded-lg border border-white/[0.08] bg-white/[0.03] font-mono text-xs text-white/50 hover:text-white/70 hover:border-white/15 transition-all flex items-center gap-1.5"
+                        className="h-10 px-4 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] font-mono text-body-xs text-tertiary-ink/50 hover:text-tertiary-ink/70 hover:border-tertiary-ink/15 transition-all flex items-center gap-1.5"
                       >
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="m15 18-6-6 6-6" />
@@ -449,7 +449,7 @@ function ProductDetailModalContent({ product, onClose }: Props) {
                       <button
                         onClick={handlePay}
                         disabled={!isFormValid || isProcessing}
-                        className="flex-1 h-10 rounded-lg bg-crimson-500 font-mono text-xs text-white font-medium hover:bg-crimson-600 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
+                        className="flex-1 h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
                       >
                         {isProcessing ? (
                           <>
@@ -498,7 +498,7 @@ function ConfirmationStep({
       particleCount: 80,
       spread: 70,
       origin: { x: 0.5, y: 0.4 },
-      colors: ['var(--color-crimson-500)', 'var(--color-crimson-400)', 'var(--color-crimson-700)', '#f7a0a6'],
+      colors: ['var(--color-primary-500)', 'var(--color-primary-400)', 'var(--color-primary-700)', 'var(--color-primary-300)'],
       ticks: 200,
       gravity: 1.2,
       decay: 0.94,
@@ -517,13 +517,13 @@ function ConfirmationStep({
       className="flex flex-col items-center text-center"
     >
       {/* Animated checkmark */}
-      <div className="w-16 h-16 rounded-full border-2 border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center mb-4">
+      <div className="w-16 h-16 rounded-full border-2 border-status-success/40 bg-status-success/10 flex items-center justify-center mb-4">
         <motion.svg
           width="28"
           height="28"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#34d399"
+          stroke="var(--color-status-success)"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -537,33 +537,33 @@ function ConfirmationStep({
         </motion.svg>
       </div>
 
-      <h3 className="font-mono text-lg text-white/90 font-medium">
+      <h3 className="font-mono text-body-lg text-tertiary-ink/90 font-medium">
         {t('projects:ecommerce.modal.orderConfirmed')}
       </h3>
-      <p className="font-mono text-xs text-white/45 mt-1 tracking-wider">
+      <p className="font-mono text-body-xs text-tertiary-ink/45 mt-1 tracking-wider">
         {t('projects:ecommerce.modal.orderId', { id: orderId })}
       </p>
 
       {/* Order summary */}
-      <div className="w-full rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 mt-5">
+      <div className="w-full rounded-xl border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] p-3 mt-5">
         <div className="flex items-center justify-between">
           <div className="text-left">
-            <span className="font-mono text-xs text-white/70 block">{product.name}</span>
-            <span className="font-mono text-xs text-white/45">
+            <span className="font-mono text-body-xs text-tertiary-ink/70 block">{product.name}</span>
+            <span className="font-mono text-body-xs text-tertiary-ink/45">
               {quantity} {t('projects:ecommerce.modal.items', { count: quantity })}
             </span>
           </div>
-          <span className="font-mono text-sm text-crimson-400 font-medium">${total}</span>
+          <span className="font-mono text-body-sm text-primary-400 font-medium">${total}</span>
         </div>
       </div>
 
-      <p className="font-mono text-xs text-white/45 mt-4">
+      <p className="font-mono text-body-xs text-tertiary-ink/45 mt-4">
         {t('projects:ecommerce.modal.thankYou')}
       </p>
 
       <button
         onClick={onClose}
-        className="mt-5 w-full h-10 rounded-lg bg-crimson-500 font-mono text-xs text-white font-medium hover:bg-crimson-600 transition-all"
+        className="mt-5 w-full h-10 rounded-lg bg-primary-500 font-mono text-body-xs text-tertiary-ink font-medium hover:bg-primary-600 transition-all"
       >
         {t('projects:ecommerce.modal.close')}
       </button>

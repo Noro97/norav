@@ -29,7 +29,7 @@ function Counter({ stat, run }: { stat: Stat; run: boolean }) {
   const display = reduced ? stat.value : n
 
   return (
-    <span className="font-display text-4xl md:text-5xl font-bold text-white tabular-nums">
+    <span className="font-display text-display-lg font-black text-tertiary-ink tabular-nums">
       {stat.prefix}{display}{stat.suffix}
     </span>
   )
@@ -67,13 +67,13 @@ export function ImpactStrip({ anchorId }: { anchorId?: string | null }) {
       aria-label={content.label}
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
-        <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl px-6 py-10 md:py-12">
+        <div className="rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-6 py-10 md:py-12">
           <p className="text-center label-mono mb-8">{content.label}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {content.stats.map((stat, index) => (
               <div key={index} className="flex flex-col items-center text-center gap-2">
                 <Counter stat={stat} run={run && settings.animateCounters} />
-                <span className="font-mono text-xs text-white/40 tracking-wider uppercase">
+                <span className="type-label text-tertiary-ink/40">
                   {stat.label}
                 </span>
               </div>

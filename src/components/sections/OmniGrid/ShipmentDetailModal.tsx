@@ -49,7 +49,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
         onClick={onClose}
       >
         {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-tertiary-shade/70 backdrop-blur-sm" />
 
         {/* Modal */}
         <motion.div
@@ -58,26 +58,26 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="case-study-card relative w-full max-w-lg bg-background/95 shadow-2xl overflow-hidden"
+          className="case-study-card relative w-full max-w-lg bg-tertiary-bg/95 shadow-2xl overflow-hidden"
         >
           {/* Top accent */}
-          <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+          <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/40 to-transparent" />
 
           <div className="p-6 md:p-8">
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
-                <div className="label-mono-gold mb-2">
+                <div className="type-label text-secondary-300 mb-2">
                   Shipment Details
                 </div>
-                <h3 className="text-display-sm font-bold text-white tracking-tight">
+                <h3 className="font-display text-display-sm font-black text-tertiary-ink">
                   {shipment.id}
-                  <span className="text-white/45 text-sm font-normal ml-2">({shipment.code})</span>
+                  <span className="text-tertiary-ink/45 text-body-sm font-normal ml-2">({shipment.code})</span>
                 </h3>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/40 hover:text-white/70"
+                className="p-1.5 rounded-lg hover:bg-tertiary-ink/[0.06] transition-colors text-tertiary-ink/40 hover:text-tertiary-ink/70"
                 aria-label="Close"
               >
                 <X size={16} />
@@ -91,7 +91,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
               <DetailField label="Carrier" value={shipment.carrier} />
               <DetailField label="ETD" value={shipment.etd} />
               <DetailField label="Weight" value={`${shipment.weight.toLocaleString()} kg`} />
-              <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} valueClass="text-gold-400 font-semibold" />
+              <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} valueClass="text-secondary-300 font-semibold" />
               <DetailField
                 label="Status"
                 value={shipment.status}
@@ -106,7 +106,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
 
             {/* Tracking timeline */}
             <div className="mb-2">
-              <div className="font-mono text-xs text-white/45 uppercase tracking-wider mb-4">
+              <div className="type-label text-tertiary-ink/45 mb-4">
                 Tracking Timeline
               </div>
               <div className="flex items-center gap-1">
@@ -117,12 +117,12 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                     <div key={step.label} className="flex items-center flex-1">
                       <div className="flex flex-col items-center">
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm border transition-all ${
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-body-sm border transition-all ${
                             isCurrent
-                              ? 'border-cyan-500/50 bg-cyan-500/20 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-cyan-500)_30%,_transparent)]'
+                              ? 'border-secondary-500/50 bg-secondary-500/20 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-secondary-500)_30%,_transparent)]'
                               : isActive
-                                ? 'border-emerald-500/30 bg-emerald-500/10'
-                                : 'border-white/[0.06] bg-white/[0.02]'
+                                ? 'border-status-success/30 bg-status-success/10'
+                                : 'border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02]'
                           }`}
                         >
                           {(() => {
@@ -130,15 +130,15 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                             return Icon ? <Icon size={16} className={isActive ? '' : 'opacity-30'} /> : null
                           })()}
                         </div>
-                        <span className={`text-xs font-mono mt-1.5 text-center leading-tight ${
-                          isActive ? 'text-white/50' : 'text-white/35'
+                        <span className={`text-body-xs font-mono mt-1.5 text-center leading-tight ${
+                          isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/35'
                         }`}>
                           {step.label}
                         </span>
                       </div>
                       {i < TRACKING_STEPS.length - 1 && (
                         <div className={`h-px flex-1 mx-1 ${
-                          i < progress - 1 ? 'bg-emerald-500/30' : 'bg-white/[0.06]'
+                          i < progress - 1 ? 'bg-status-success/30' : 'bg-tertiary-ink/[0.06]'
                         }`} />
                       )}
                     </div>
@@ -149,7 +149,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
           </div>
 
           {/* Bottom glow */}
-          <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+          <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/20 to-transparent" />
         </motion.div>
       </motion.div>
     </AnimatePresence>,
@@ -157,11 +157,11 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
   )
 }
 
-function DetailField({ label, value, valueClass = 'text-white/70' }: { label: string; value: string; valueClass?: string }) {
+function DetailField({ label, value, valueClass = 'text-tertiary-ink/70' }: { label: string; value: string; valueClass?: string }) {
   return (
-    <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-3">
-      <div className="text-xs font-mono text-white/40 uppercase tracking-wider mb-1">{label}</div>
-      <div className={`text-sm font-mono ${valueClass}`}>{value}</div>
+    <div className="rounded-xl bg-tertiary-ink/[0.02] border border-tertiary-ink/[0.06] p-3">
+      <div className="type-label text-tertiary-ink/40 mb-1">{label}</div>
+      <div className={`text-body-sm font-mono ${valueClass}`}>{value}</div>
     </div>
   )
 }

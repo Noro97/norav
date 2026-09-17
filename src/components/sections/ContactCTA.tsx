@@ -34,9 +34,9 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
   return (
     <section {...(anchorId ? { id: anchorId } : {})} className="relative px-6 md:px-16 py-24">
       <div className="relative z-10 w-full max-w-4xl mx-auto">
-        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-crimson-500/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {/* Ambient glow */}
-          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl pointer-events-none bg-crimson-500/10" />
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl pointer-events-none bg-primary-500/10" />
 
           {settings.background === 'orb' && <OrbBackground />}
           {settings.background === 'particles' && <ParticlesBackground />}
@@ -45,10 +45,10 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
             {settings.showAvailability && (
               <div className="inline-flex items-center gap-2 mb-5">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/60 animate-ping" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-status-success/60 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-status-success" />
                 </span>
-                <span className="font-mono text-xs text-white/50 tracking-[0.2em] uppercase">
+                <span className="type-label text-tertiary-ink/50">
                   {content.availability}
                 </span>
               </div>
@@ -57,10 +57,10 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
             {/* block: the availability badge above is inline-flex, and an inline
                 eyebrow would share its line. */}
             <span className="label-mono block">{content.label}</span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-5">
+            <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-5">
               {content.title}
             </h2>
-            <p className="text-white/45 text-base max-w-xl mx-auto mb-9 leading-relaxed">
+            <p className="text-tertiary-ink/45 text-body-md max-w-xl mx-auto mb-9 leading-relaxed">
               {content.body}
             </p>
 
@@ -68,7 +68,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
               <MaybeStarBorder enabled={settings.ctaStyle === 'star-border'}>
                 <a
                   href={`mailto:${settings.email}`}
-                  className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-crimson-500/90 hover:bg-crimson-500 text-white font-medium text-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
+                  className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-500/90 hover:bg-primary-500 text-tertiary-ink font-medium text-body-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]"
                 >
                   <Mail className="w-4 h-4" strokeWidth={2} />
                   {content.emailLabel}
@@ -87,7 +87,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-11 h-11 rounded-full border border-white/[0.08] bg-white/[0.02] flex items-center justify-center text-white/45 hover:text-crimson-400 hover:border-crimson-500/30 transition-all duration-300"
+                  className="w-11 h-11 rounded-full border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center text-tertiary-ink/45 hover:text-primary-400 hover:border-primary-500/30 transition-all duration-300"
                 >
                   <Icon className="w-[18px] h-[18px]" strokeWidth={1.75} />
                 </a>

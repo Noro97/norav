@@ -86,7 +86,7 @@ export function FloatingArtifacts() {
       span.style.position = 'absolute'
       span.style.fontFamily = 'monospace'
       span.style.fontSize = '10px'
-      span.style.color = 'rgba(255, 255, 255, 0.08)'
+      span.style.color = 'color-mix(in srgb, var(--color-tertiary-ink) 8%, transparent)'
       span.style.whiteSpace = 'nowrap'
       span.style.userSelect = 'none'
       span.style.transform = `translate(${a.x}px, ${a.y}px)`
