@@ -53,13 +53,19 @@ are one value under two names, and a theme change in the CMS repaints both.
 <p className="text-body-regular text-tertiary-ink/60">
 <span className="type-label text-tertiary-ink/40">Status</span>
 <section className="px-gutter-x py-24">           // gutter follows the tier by itself
-<div className="rounded-2xl border border-tertiary-line bg-tertiary-card p-card-padding">
+<div className="rounded-2xl border border-tertiary-line bg-tertiary-card p-card-padding gap-4">
 <button className="bg-primary-500 hover:bg-primary-400 active:bg-primary-600 text-primary-fg">
 <span className="bg-status-success/20 text-status-success">Delivered</span>
 ```
 
 `md:` and `lg:` in a class are `breakpoint-md` and `breakpoint-lg`; use them
 for layout, and the tiered tokens for size and space.
+
+The named steps (`spacing-md`, `spacing-lg`, …) are deliberately **not**
+utilities: in Tailwind 4 a `--spacing-md` in `@theme` is what `max-w-md`
+and `w-md` resolve to, ahead of the container scale — every `max-w-md` on
+the site became 16 px the one time it was tried. In a class, use the
+numeric scale (`gap-4`, `p-6`); in CSS and code, the named token.
 
 ### In CSS
 

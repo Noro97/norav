@@ -172,8 +172,10 @@ Give it a tone: `type-label text-tertiary-ink/40` for a table header,
 
 A 4 px base, with named steps for the gaps a design decides:
 `spacing-2xs` 4 · `xs` 8 · `sm` 12 · `md` 16 · `lg` 24 · `xl` 32 · `2xl` 48 ·
-`3xl` 64 · `4xl` 96. Tailwind's numeric scale stays for the rest (`gap-2`,
-`p-4`).
+`3xl` 64 · `4xl` 96 — as CSS variables and in the TypeScript tokens. In a
+class, Tailwind's numeric scale (`gap-2`, `p-4`): the named steps are kept out
+of `@theme` on purpose, because `max-w-md` would resolve to `--spacing-md`
+ahead of the container scale.
 
 Four spacings change with the viewport and carry a value per tier:
 

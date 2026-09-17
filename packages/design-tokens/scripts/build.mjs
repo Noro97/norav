@@ -154,9 +154,14 @@ function generateCss(tokens) {
     line(`  --breakpoint-${name}: ${t.$value};`)
   }
   line()
+  // Only the responsive spacings go through Tailwind. A named step in
+  // `--spacing-*` would be found by `max-w-md` and `w-xl` before Tailwind's
+  // own container scale — `max-w-md` became 16px and every paragraph wrapped
+  // one word per line. The static scale is on :root below, for CSS and code.
+  line('  /* Responsive spacing — the live variable; it switches at the tier boundaries further down. */')
   for (const { path, token } of walk(tokens.spacing, ['spacing'])) {
-    const v = token.$value
-    line(`  ${cssVar(path)}: ${typeof v === 'string' ? v : v.mobile};`)
+    if (typeof token.$value === 'string') continue
+    line(`  ${cssVar(path)}: ${token.$value.mobile};`)
   }
   line()
   for (const { path, token } of walk(tokens.radius, ['radius'])) {
@@ -202,7 +207,11 @@ function generateCss(tokens) {
     }
   }
   line()
-  line('  /* Responsive spacing: the static value per tier. The live variable is in @theme and switches below. */')
+  line('  /* Spacing. The named steps are for CSS and code; in a class use Tailwind\'s numeric scale (they would')
+  line('     shadow the container sizes in max-w-* if they went through @theme). Then the responsive ones, per tier. */')
+  for (const { path, token } of walk(tokens.spacing, ['spacing'])) {
+    if (typeof token.$value === 'string') line(`  ${cssVar(path)}: ${token.$value};`)
+  }
   for (const { path, token } of walk(tokens.spacing, ['spacing'])) {
     if (typeof token.$value === 'string') continue
     for (const [tier, value] of Object.entries(token.$value)) line(`  ${cssVar(path)}-${tier}: ${value};`)

@@ -99,15 +99,7 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
 
-  --spacing-2xs: 4px;
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  --spacing-3xl: 64px;
-  --spacing-4xl: 96px;
+  /* Responsive spacing — the live variable; it switches at the tier boundaries further down. */
   --spacing-gutter-x: 24px;
   --spacing-section-y: 80px;
   --spacing-card-padding: 24px;
@@ -285,7 +277,17 @@
   --typography-label-font-size-tablet: 11.2px;
   --typography-label-font-size-desktop: 11.2px;
 
-  /* Responsive spacing: the static value per tier. The live variable is in @theme and switches below. */
+  /* Spacing. The named steps are for CSS and code; in a class use Tailwind's numeric scale (they would
+     shadow the container sizes in max-w-* if they went through @theme). Then the responsive ones, per tier. */
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
   --spacing-gutter-x-mobile: 24px;
   --spacing-gutter-x-tablet: 40px;
   --spacing-gutter-x-desktop: 64px;
