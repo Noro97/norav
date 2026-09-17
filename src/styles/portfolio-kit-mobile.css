@@ -1,0 +1,62 @@
+/*
+ * The kit on a phone.
+ *
+ * The imported sections were laid out for a desktop and a lighter serif;
+ * here their headings are set in Inter Tight, which ships at 900 only, and
+ * a 24px line of that in a 200px column is a wall. This file is the
+ * hand-written counterpart to the generated portfolio-kit.css — that one is
+ * never edited, so anything this site adds on top of the kit lives here and
+ * is imported after it. Every rule is scoped to `.pf-kit` and to the kit's
+ * own phone breakpoint, 720px.
+ */
+@media (max-width: 720px) {
+  /* Every section: a smaller title and less air above and below it. */
+  .pf-kit .section-title { font-size: clamp(28px, 8vw, 40px); margin-bottom: 32px; line-height: 1.05; }
+  .pf-kit .section-eyebrow { margin-bottom: 20px; }
+  .pf-kit .timeline,
+  .pf-kit .tools,
+  .pf-kit .compare,
+  .pf-kit .awards,
+  .pf-kit .writing,
+  .pf-kit .feed { padding-top: 64px; padding-bottom: 56px; }
+
+  /* Timeline: the year column was a third of the screen. */
+  .pf-kit .tl-row { grid-template-columns: 52px 20px 1fr; gap: 12px; padding: 20px 0; }
+  .pf-kit .tl-row:hover { padding-left: 0; }
+  .pf-kit .tl-year { font-size: 11px; }
+  .pf-kit .tl-bullet span { width: 8px; height: 8px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent); }
+  .pf-kit .tl-body h3 { font-size: 18px; line-height: 1.2; }
+  .pf-kit .tl-body p { font-size: 13px; }
+
+  /* Compare table: three columns still, but each cell earns its width. */
+  .pf-kit .compare-table { padding: 0 max(16px, 4vw); }
+  .pf-kit .cmp-head, .pf-kit .cmp-row { grid-template-columns: 1.3fr 1fr 1fr; }
+  .pf-kit .cmp-cell, .pf-kit .cmp-head .cmp-cell { padding: 14px 10px; gap: 8px; }
+  .pf-kit .cmp-head h4 { font-size: 15px; line-height: 1.2; }
+  .pf-kit .cmp-feat { font-size: 13px; line-height: 1.35; }
+  .pf-kit .cmp-tag { left: 10px; font-size: 8px; padding: 3px 7px; }
+  .pf-kit .yes, .pf-kit .no { font-size: 15px; }
+
+  /* Showreel: a taller frame so the play button has a band of its own between
+     the eyebrow and the title, and the corner labels stay out of the copy. */
+  .pf-kit .reel { padding: 56px max(16px, 4vw); }
+  .pf-kit .reel-frame { aspect-ratio: 4 / 3; max-height: none; border-radius: 12px; }
+  /* The frame's children are spaced evenly, which puts the title in the
+     middle — under the button. Pin the eyebrow to the top and the copy to the
+     bottom instead, and the button sits in the band between them. */
+  .pf-kit .reel-content { padding: 44px 20px; justify-content: flex-end; gap: 6px; }
+  .pf-kit .reel-eyebrow { font-size: 10px; margin-bottom: auto; }
+  .pf-kit .reel-play { width: 60px; height: 60px; top: 40%; }
+  .pf-kit .reel-play svg { width: 20px; height: 20px; }
+  .pf-kit .reel-title { font-size: clamp(20px, 6.4vw, 26px); line-height: 1.1; }
+  .pf-kit .reel-sub { font-size: 13px; margin-top: 4px; }
+  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-tr, .pf-kit .reel-corner-bl, .pf-kit .reel-corner-br { font-size: 9px; }
+  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-bl { left: 16px; }
+  .pf-kit .reel-corner-tr, .pf-kit .reel-corner-br { right: 16px; }
+  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-tr { top: 16px; }
+  .pf-kit .reel-corner-bl, .pf-kit .reel-corner-br { bottom: 16px; }
+}
+
+@media (max-width: 480px) {
+  .pf-kit .reel-frame { aspect-ratio: 1 / 1; }
+}

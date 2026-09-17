@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useAccentColor } from '@/content/theme'
 import '@/styles/portfolio-kit.css'
+import '@/styles/portfolio-kit-mobile.css'
 
 /**
  * The wrapper every imported kit section renders inside.
@@ -11,9 +12,10 @@ import '@/styles/portfolio-kit.css'
  * from. A `section` rather than a `div` because `main` switches pointer events
  * off and its children switch them back on.
  *
- * This module owns the stylesheet import, and is only ever reached through a
- * `lazy()` boundary — 92 kB of CSS should not be on a page with no kit section
- * on it.
+ * This module owns the stylesheet imports — the generated kit stylesheet and
+ * the hand-written phone overrides on top of it — and is only ever reached
+ * through a `lazy()` boundary: 92 kB of CSS should not be on a page with no
+ * kit section on it.
  */
 export function KitFrame({ anchorId, children }: { anchorId?: string | null; children: ReactNode }) {
   return (
