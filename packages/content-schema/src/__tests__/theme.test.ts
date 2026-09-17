@@ -36,6 +36,9 @@ describe('the palette', () => {
     expect(light['--color-foreground']).toBe('#14141c')
     expect(dark['--color-border']).toContain('255, 255, 255')
     expect(light['--color-border']).toContain('0, 0, 0')
+    // The pole the neutral alphas mix from flips with them.
+    expect(dark['--color-ink']).toBe('#ffffff')
+    expect(light['--color-ink']).toBe('#000000')
   })
 
   it('refuses anything that is not a six-digit hex', () => {
