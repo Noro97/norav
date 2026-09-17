@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useAccentColor } from '@/content/theme'
 import '@/styles/portfolio-kit.css'
+import '@/styles/portfolio-kit-laptop.css'
 import '@/styles/portfolio-kit-mobile.css'
 
 /**
@@ -12,8 +13,9 @@ import '@/styles/portfolio-kit-mobile.css'
  * from. A `section` rather than a `div` because `main` switches pointer events
  * off and its children switch them back on.
  *
- * This module owns the stylesheet imports — the generated kit stylesheet and
- * the hand-written phone overrides on top of it — and is only ever reached
+ * This module owns the stylesheet imports — the generated kit stylesheet, the
+ * laptop breakpoint generated from it, and the hand-written phone overrides
+ * on top of both, in that order so each smaller screen wins — and is only ever reached
  * through a `lazy()` boundary: 92 kB of CSS should not be on a page with no
  * kit section on it.
  */
