@@ -43,10 +43,11 @@
   .pf-kit .reel-frame { aspect-ratio: 4 / 3; max-height: none; border-radius: 12px; }
   /* The frame's children are spaced evenly, which puts the title in the
      middle — under the button. Pin the eyebrow to the top and the copy to the
-     bottom instead, and the button sits in the band between them. */
+     bottom instead, and the button keeps the centre of the frame, which is
+     where the rings are drawn from. */
   .pf-kit .reel-content { padding: 44px 20px; justify-content: flex-end; gap: 6px; }
   .pf-kit .reel-eyebrow { font-size: 10px; margin-bottom: auto; }
-  .pf-kit .reel-play { width: 60px; height: 60px; top: 40%; }
+  .pf-kit .reel-play { width: 60px; height: 60px; }
   .pf-kit .reel-play svg { width: 20px; height: 20px; }
   .pf-kit .reel-title { font-size: clamp(20px, 6.4vw, 26px); line-height: 1.1; }
   .pf-kit .reel-sub { font-size: 13px; margin-top: 4px; }
