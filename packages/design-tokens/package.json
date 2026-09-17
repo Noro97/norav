@@ -1,0 +1,17 @@
+{
+  "name": "@norav/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The design tokens — one JSON file, and the CSS and TypeScript generated from it",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens.css",
+    "./tokens.json": "./tokens.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  }
+}
