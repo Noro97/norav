@@ -28,6 +28,16 @@
   .pf-kit .tl-body h3 { font-size: 18px; line-height: 1.2; }
   .pf-kit .tl-body p { font-size: 13px; }
 
+  /* Awards: the count was a 56px numeral beside a 24px name, in a column
+     100px wide — on a phone the count is a badge, not a headline. */
+  .pf-kit .awards-inner { gap: 24px; padding: 0 max(16px, 4vw); }
+  .pf-kit .awards-blurb { font-size: 14px; }
+  .pf-kit .award-row { grid-template-columns: 56px 1fr; gap: 16px; padding: 18px 0; }
+  .pf-kit .award-row:hover { padding-left: 0; }
+  .pf-kit .award-count { font-size: 30px; }
+  .pf-kit .award-org { font-size: 18px; line-height: 1.2; }
+  .pf-kit .award-label { font-size: 10px; }
+
   /* Compare table: three columns still, but each cell earns its width. */
   .pf-kit .compare-table { padding: 0 max(16px, 4vw); }
   .pf-kit .cmp-head, .pf-kit .cmp-row { grid-template-columns: 1.3fr 1fr 1fr; }
