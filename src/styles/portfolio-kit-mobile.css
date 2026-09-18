@@ -20,6 +20,47 @@
   .pf-kit .writing,
   .pf-kit .feed { padding-top: 64px; padding-bottom: 56px; }
 
+  /* Buttons: a pill that was a thumb-and-a-half tall. */
+  .pf-kit .btn { padding: 11px 18px; font-size: 11px; gap: 8px; }
+  .pf-kit .btn-lg { padding: 13px 20px; font-size: 12px; }
+
+  /* FAQ: the question was 26px in the display face with a 60px number
+     column and 28px of padding — one question per screen. */
+  .pf-kit .faq { padding: 64px 0 56px; }
+  .pf-kit .faq-list { margin: 0 max(16px, 4vw); }
+  .pf-kit .faq-q { grid-template-columns: 28px 1fr 20px; gap: 12px; padding: 18px 0; font-size: 18px; line-height: 1.25; }
+  .pf-kit .faq-q:hover { padding-left: 0; }
+  .pf-kit .faq-num { font-size: 10px; }
+  .pf-kit .faq-toggle { font-size: 20px; }
+  .pf-kit .faq-a > p { padding: 0 20px 0 40px; font-size: 14px; }
+  .pf-kit .faq-open .faq-a > p { padding-bottom: 18px; }
+
+  /* Services: a 320px minimum height stacked one card under another leaves
+     a screen of nothing between the blurb and the tags. */
+  .pf-kit .services { padding: 64px 0 56px; }
+  .pf-kit .svc { padding: 28px max(16px, 4vw); min-height: 0; gap: 12px; }
+  .pf-kit .svc-title { font-size: 24px; line-height: 1.15; }
+  .pf-kit .svc-blurb { font-size: 14px; }
+  .pf-kit .svc-tags { margin-top: 4px; padding-top: 12px; }
+  .pf-kit .svc-arrow { display: none; }
+
+  /* Pricing: a 56px price and a 40px name in a card a phone wide. */
+  .pf-kit .pricing { padding: 64px 0 56px; }
+  .pf-kit .pricing-grid { padding: 0 max(16px, 4vw); gap: 12px; }
+  .pf-kit .tier { padding: 28px 20px 24px; gap: 10px; }
+  .pf-kit .tier-name { font-size: 26px; }
+  .pf-kit .tier-price { font-size: 36px; }
+  .pf-kit .tier-features { font-size: 13px; gap: 8px; }
+  .pf-kit .tier .btn { margin-top: 8px; }
+
+  /* CTA banner: 140px above and below, a 112px headline, and a 360px
+     watermark the copy floats over. */
+  .pf-kit .cta-banner { padding: 72px max(16px, 4vw) 88px; }
+  .pf-kit .cta-headline { font-size: clamp(34px, 9.5vw, 48px); margin-bottom: 16px; }
+  .pf-kit .cta-sub { font-size: 15px; margin-bottom: 24px; }
+  .pf-kit .cta-row { gap: 10px; }
+  .pf-kit .cta-bg-text { font-size: 96px; bottom: -14px; }
+
   /* Timeline: the year column was a third of the screen. */
   .pf-kit .tl-row { grid-template-columns: 52px 20px 1fr; gap: 12px; padding: 20px 0; }
   .pf-kit .tl-row:hover { padding-left: 0; }
