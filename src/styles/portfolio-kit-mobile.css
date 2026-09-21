@@ -8,10 +8,15 @@
  * never edited, so anything this site adds on top of the kit lives here and
  * is imported after it. Every rule is scoped to `.pf-kit` and to the kit's
  * own phone breakpoint, 720px.
+ *
+ * Type is not set here. The kit's sizes are mapped onto the site's fluid
+ * scale by the port script, and a fluid size already knows what a phone is;
+ * a pixel size written here would only fight it. Layout — columns, gaps,
+ * paddings the kit sized for a desktop — is what this file is for.
  */
 @media (max-width: 720px) {
   /* Every section: a smaller title and less air above and below it. */
-  .pf-kit .section-title { font-size: clamp(28px, 8vw, 40px); margin-bottom: 32px; line-height: 1.05; }
+  .pf-kit .section-title { margin-bottom: 32px; }
   .pf-kit .section-eyebrow { margin-bottom: 20px; }
   .pf-kit .timeline,
   .pf-kit .tools,
@@ -21,26 +26,22 @@
   .pf-kit .feed { padding-top: 64px; padding-bottom: 56px; }
 
   /* Buttons: a pill that was a thumb-and-a-half tall. */
-  .pf-kit .btn { padding: 11px 18px; font-size: 11px; gap: 8px; }
-  .pf-kit .btn-lg { padding: 13px 20px; font-size: 12px; }
+  .pf-kit .btn { padding: 11px 18px; gap: 8px; }
+  .pf-kit .btn-lg { padding: 13px 20px; }
 
   /* FAQ: the question was 26px in the display face with a 60px number
      column and 28px of padding — one question per screen. */
   .pf-kit .faq { padding: 64px 0 56px; }
   .pf-kit .faq-list { margin: 0 max(16px, 4vw); }
-  .pf-kit .faq-q { grid-template-columns: 28px 1fr 20px; gap: 12px; padding: 18px 0; font-size: 18px; line-height: 1.25; }
+  .pf-kit .faq-q { grid-template-columns: 28px 1fr 20px; gap: 12px; padding: 18px 0; }
   .pf-kit .faq-q:hover { padding-left: 0; }
-  .pf-kit .faq-num { font-size: 10px; }
-  .pf-kit .faq-toggle { font-size: 20px; }
-  .pf-kit .faq-a > p { padding: 0 20px 0 40px; font-size: 14px; }
+  .pf-kit .faq-a > p { padding: 0 20px 0 40px; }
   .pf-kit .faq-open .faq-a > p { padding-bottom: 18px; }
 
   /* Services: a 320px minimum height stacked one card under another leaves
      a screen of nothing between the blurb and the tags. */
   .pf-kit .services { padding: 64px 0 56px; }
   .pf-kit .svc { padding: 28px max(16px, 4vw); min-height: 0; gap: 12px; }
-  .pf-kit .svc-title { font-size: 24px; line-height: 1.15; }
-  .pf-kit .svc-blurb { font-size: 14px; }
   .pf-kit .svc-tags { margin-top: 4px; padding-top: 12px; }
   .pf-kit .svc-arrow { display: none; }
 
@@ -48,45 +49,33 @@
   .pf-kit .pricing { padding: 64px 0 56px; }
   .pf-kit .pricing-grid { padding: 0 max(16px, 4vw); gap: 12px; }
   .pf-kit .tier { padding: 28px 20px 24px; gap: 10px; }
-  .pf-kit .tier-name { font-size: 26px; }
-  .pf-kit .tier-price { font-size: 36px; }
-  .pf-kit .tier-features { font-size: 13px; gap: 8px; }
+  .pf-kit .tier-features { gap: 8px; }
   .pf-kit .tier .btn { margin-top: 8px; }
 
   /* CTA banner: 140px above and below, a 112px headline, and a 360px
      watermark the copy floats over. */
   .pf-kit .cta-banner { padding: 72px max(16px, 4vw) 88px; }
-  .pf-kit .cta-headline { font-size: clamp(34px, 9.5vw, 48px); margin-bottom: 16px; }
-  .pf-kit .cta-sub { font-size: 15px; margin-bottom: 24px; }
+  .pf-kit .cta-headline { margin-bottom: 16px; }
+  .pf-kit .cta-sub { margin-bottom: 24px; }
   .pf-kit .cta-row { gap: 10px; }
-  .pf-kit .cta-bg-text { font-size: 96px; bottom: -14px; }
+  .pf-kit .cta-bg-text { bottom: -14px; }
 
   /* Timeline: the year column was a third of the screen. */
   .pf-kit .tl-row { grid-template-columns: 52px 20px 1fr; gap: 12px; padding: 20px 0; }
   .pf-kit .tl-row:hover { padding-left: 0; }
-  .pf-kit .tl-year { font-size: 11px; }
   .pf-kit .tl-bullet span { width: 8px; height: 8px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent); }
-  .pf-kit .tl-body h3 { font-size: 18px; line-height: 1.2; }
-  .pf-kit .tl-body p { font-size: 13px; }
 
   /* Awards: the count was a 56px numeral beside a 24px name, in a column
      100px wide — on a phone the count is a badge, not a headline. */
   .pf-kit .awards-inner { gap: 24px; padding: 0 max(16px, 4vw); }
-  .pf-kit .awards-blurb { font-size: 14px; }
   .pf-kit .award-row { grid-template-columns: 56px 1fr; gap: 16px; padding: 18px 0; }
   .pf-kit .award-row:hover { padding-left: 0; }
-  .pf-kit .award-count { font-size: 30px; }
-  .pf-kit .award-org { font-size: 18px; line-height: 1.2; }
-  .pf-kit .award-label { font-size: 10px; }
 
   /* Compare table: three columns still, but each cell earns its width. */
   .pf-kit .compare-table { padding: 0 max(16px, 4vw); }
   .pf-kit .cmp-head, .pf-kit .cmp-row { grid-template-columns: 1.3fr 1fr 1fr; }
   .pf-kit .cmp-cell, .pf-kit .cmp-head .cmp-cell { padding: 14px 10px; gap: 8px; }
-  .pf-kit .cmp-head h4 { font-size: 15px; line-height: 1.2; }
-  .pf-kit .cmp-feat { font-size: 13px; line-height: 1.35; }
-  .pf-kit .cmp-tag { left: 10px; font-size: 8px; padding: 3px 7px; }
-  .pf-kit .yes, .pf-kit .no { font-size: 15px; }
+  .pf-kit .cmp-tag { left: 10px; padding: 3px 7px; }
 
   /* Showreel: a taller frame so the play button has a band of its own between
      the eyebrow and the title, and the corner labels stay out of the copy. */
@@ -97,12 +86,10 @@
      bottom instead, and the button keeps the centre of the frame, which is
      where the rings are drawn from. */
   .pf-kit .reel-content { padding: 44px 20px; justify-content: flex-end; gap: 6px; }
-  .pf-kit .reel-eyebrow { font-size: 10px; margin-bottom: auto; }
+  .pf-kit .reel-eyebrow { margin-bottom: auto; }
   .pf-kit .reel-play { width: 60px; height: 60px; }
   .pf-kit .reel-play svg { width: 20px; height: 20px; }
-  .pf-kit .reel-title { font-size: clamp(20px, 6.4vw, 26px); line-height: 1.1; }
-  .pf-kit .reel-sub { font-size: 13px; margin-top: 4px; }
-  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-tr, .pf-kit .reel-corner-bl, .pf-kit .reel-corner-br { font-size: 9px; }
+  .pf-kit .reel-sub { margin-top: 4px; }
   .pf-kit .reel-corner-tl, .pf-kit .reel-corner-bl { left: 16px; }
   .pf-kit .reel-corner-tr, .pf-kit .reel-corner-br { right: 16px; }
   .pf-kit .reel-corner-tl, .pf-kit .reel-corner-tr { top: 16px; }

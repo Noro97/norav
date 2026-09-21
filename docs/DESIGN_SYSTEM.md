@@ -168,6 +168,35 @@ label-mono   type-label in primary-500 — the section eyebrow
 Give it a tone: `type-label text-tertiary-ink/40` for a table header,
 `type-label text-secondary-400` for a badge on a widget.
 
+### The imported kit
+
+The fifty-three sections imported from the portfolio project arrive with type
+in pixels of their own — a 66px section title, 700-weight headings, ten sizes
+under 16px. They are put on this scale by `scripts/port-portfolio-kit-css.mjs`
+when the stylesheet is generated, so `src/styles/portfolio-kit.css` never holds
+a pixel size: each one is mapped to a token by where it sits, a fixed size by
+its value and a `clamp()` by its ceiling.
+
+| The kit wrote | It becomes |
+| --- | --- |
+| ≤ 11.5px | `--text-label` |
+| ≤ 12.5px | `--text-caption` |
+| ≤ 14.5px | `--text-body-small` |
+| ≤ 16.5px | `--text-body-regular` |
+| ≤ 20.5px | `--text-body-large` |
+| ≤ 33px | `--text-heading-small` — a card title |
+| ≤ 45px | `--text-heading-medium` — a sub-heading, a big number |
+| ≤ 80px (its section titles) | `--text-heading-large` — the section heading |
+| ≤ 130px (its banner headlines) | `--text-heading-xlarge` — a page title |
+| past 130px | kept — the marquee's words and the letters behind a banner are decoration, not hierarchy |
+
+A heading size brings the heading's line-height, letter-spacing and the 900
+weight with it; 700 and 800 become 900 everywhere. The scale is fluid, so the
+mapped sizes are responsive on their own: the laptop scaler leaves them alone
+(it scales pixels), and `portfolio-kit-mobile.css` sets no type at all.
+`src/components/portfolio-kit/__tests__/type-scale.test.ts` fails if a re-sync
+puts a pixel size back.
+
 ## Spacing, breakpoints, radius
 
 A 4 px base, with named steps for the gaps a design decides:
