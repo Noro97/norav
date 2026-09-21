@@ -656,6 +656,45 @@ await expectError(
   check('in both languages', copy.length === 2)
 }
 
+{
+  // 0025 places five sections on home and about and hides the logo marquee.
+  // Home did not exist when the migration set ran, so the file is replayed.
+  const {
+    rows: [aboutPage],
+  } = await db.query(`select id from pages where slug = 'about'`)
+  await db.query(`insert into blocks (page_id, type, position) values ($1, 'tech_marquee', 3000)`, [aboutPage.id])
+  const file = readFileSync(join(root, 'migrations', '0025_home_and_about_say_more.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const placed = async (slug) => {
+    const { rows } = await db.query(
+      `select b.type from blocks b join pages p on p.id = b.page_id
+        where p.slug = $1 and b.deleted_at is null and b.is_visible and b.type like 'kit_%' order by b.position`,
+      [slug],
+    )
+    return rows.map((row) => row.type).join(',')
+  }
+  check('home gets the band and the services, once', (await placed('home')) === 'kit_big_marquee,kit_services')
+  check('about gets process, tools and questions, once', (await placed('about')) === 'kit_process,kit_tool_stack,kit_faq')
+  const { rows: marquee } = await db.query(
+    `select is_visible, deleted_at from blocks where page_id = $1 and type = 'tech_marquee'`,
+    [aboutPage.id],
+  )
+  check('the logo marquee is hidden, not deleted', marquee[0].is_visible === false && marquee[0].deleted_at === null)
+  const { rows: copy } = await db.query(
+    `select b.type, t.locale, t.status, t.content from block_translations t join blocks b on b.id = t.block_id
+      where b.type in ('kit_big_marquee','kit_services','kit_process','kit_tool_stack','kit_faq')`,
+  )
+  check('every section is written in both languages', copy.length === 10)
+  check('the questions are drafts — two answers are placeholders', copy.filter((row) => row.type === 'kit_faq').every((row) => row.status === 'draft'))
+  check('everything else is ready', copy.filter((row) => row.type !== 'kit_faq').every((row) => row.status === 'ready'))
+  check(
+    'every placeholder says it is one',
+    copy.filter((row) => row.type === 'kit_faq').every((row) => row.content.items.filter((item) => /Placeholder|Заглушка/.test(item.a)).length === 3),
+  )
+  check('sixteen tools, the schema ceiling', copy.find((row) => row.type === 'kit_tool_stack')?.content.tools.length === 16)
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
