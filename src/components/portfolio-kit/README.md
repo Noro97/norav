@@ -59,12 +59,19 @@ which are Tailwind's. `scripts/port-portfolio-kit-css.mjs` moves every rule unde
 `pfk-`. Its output, `src/styles/portfolio-kit.css`, is generated and committed;
 edit the script, never the CSS.
 
+The same script puts the kit's type on the site's scale: every `font-size` is
+mapped to a `--text-*` token from `packages/design-tokens` (the bands are in
+`docs/DESIGN_SYSTEM.md`, "The imported kit"), heading sizes bring the heading
+weight and line-height with them, and only decorative type past 130px keeps its
+own size. `__tests__/type-scale.test.ts` holds it to that.
+
 Two more stylesheets load after it, in this order. `portfolio-kit-laptop.css`
 is generated from it by `scripts/scale-portfolio-kit-for-laptop.mjs` — the kit
-was designed on a large display, and under 1536px every type size of 20px and
-up and every spacing of 32px and up is scaled to 0.8; re-run the script after
-a re-sync. `portfolio-kit-mobile.css` is hand-written: what this site adds to
-the kit under its 720px breakpoint lives there, never in the generated files.
+was designed on a large display, and under 1536px every spacing of 32px and up
+is scaled to 0.8 (type is fluid already and is not touched); re-run the script
+after a re-sync. `portfolio-kit-mobile.css` is hand-written: the layout this
+site changes under the kit's 720px breakpoint lives there, never in the
+generated files — and never type, which the scale handles.
 
 `'use client'` directives were dropped (Vite has no use for them, and Rollup
 warns on each).
