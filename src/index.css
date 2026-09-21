@@ -6,6 +6,35 @@
    docs/DESIGN_SYSTEM.md; the tokens' README says how to read them from code. */
 @import "@norav/design-tokens/tokens.css";
 
+/* ===== THE PAGE =====
+   The body paints the published background and foreground — `--color-background`
+   and `--color-foreground` are physical tokens the theme writes onto :root, not
+   roles, so no utility reaches them. In `base` so a utility still wins. */
+@layer base {
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--color-background) 80%, transparent);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+}
+
 
 /* ===== VIEW TRANSITIONS (cross-document opt-in) ===== */
 @view-transition {
@@ -86,6 +115,34 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-primary-500), transparent);
   margin: 0 auto 2rem;
+}
+
+/* ===== GLASS CARD — the about facts and the experience entries ===== */
+.glass-card {
+  backdrop-filter: blur(20px);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-tertiary-ink) 3%, transparent) 0%, color-mix(in srgb, var(--color-tertiary-ink) 1%, transparent) 100%);
+  border: 1px solid color-mix(in srgb, var(--color-tertiary-ink) 10%, transparent);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-tertiary-ink) 4%, transparent);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.glass-card:hover {
+  border-color: color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--color-tertiary-shade) 30%, transparent), 0 0 40px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
+}
+
+/* Scrolls without showing it — the data tables. */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* The "copied" mark floating off the about page's contact line. */
+@keyframes copiedPop {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-30px) scale(0.7); }
 }
 
 /* ===== CASE STUDY CARD — shared surface treatment for all project widgets ===== */

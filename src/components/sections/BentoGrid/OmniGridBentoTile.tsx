@@ -74,6 +74,8 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
   const cacheStatus = CACHE_CYCLE[cacheIdx]!
 
+  // The compiler cannot memoise TanStack Table's returned functions and says so; it skips this component, which is fine.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: MINI_DATA,
     columns: MINI_COLUMNS,

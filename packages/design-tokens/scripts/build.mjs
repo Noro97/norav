@@ -269,7 +269,6 @@ function generateTs(tokens) {
   const line = (s = '') => out.push(s)
 
   line('// Generated from packages/design-tokens/tokens.json by `npm run tokens` — do not edit.')
-  line('/* eslint-disable */')
   line()
   line('/**')
   line(' * The design tokens, for code that cannot use a class: a style object, a')

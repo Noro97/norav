@@ -1,16 +1,22 @@
 {
   "pages": [
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "About — Norayr Avetisyan, Fullstack Engineer",
+          "description": "Engineering rigor, visual craft and scalable architecture — from enterprise UI systems and generative AI platforms to high-load fintech and Telegram Mini Apps."
+        },
+        "ru": {
+          "title": "Обо мне — Норайр Аветисян, fullstack-инженер",
+          "description": "Инженерная строгость, визуальное мастерство и масштабируемая архитектура — от enterprise UI-систем и AI-платформ до высоконагруженного финтеха и Telegram Mini Apps."
+        }
+      },
       "slug": "about",
       "blocks": [
         {
           "id": "3e022794-4c1d-4ed0-9582-9fe8815c2f6f",
           "type": "about",
           "content": {
-            "sectionLabel": "Обо мне",
-            "name": "Норайр Аветисян",
-            "role": "Frontend-focused fullstack-инженер",
             "bio": {
               "lead": [
                 {
@@ -43,6 +49,8 @@
                 }
               ]
             },
+            "name": "Норайр Аветисян",
+            "role": "Frontend-focused fullstack-инженер",
             "facts": [
               {
                 "label": "Локация",
@@ -61,54 +69,65 @@
                 "value": "Открыт к предложениям"
               }
             ],
-            "statusLabel": "Доступен",
             "cvLabel": "Скачать резюме",
             "socials": [
               {
+                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub",
-                "href": "https://github.com/Noro97"
+                "label": "GitHub"
               },
               {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn",
-                "href": "https://www.linkedin.com/in/norayravetisyan/"
+                "label": "LinkedIn"
               },
               {
+                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram",
-                "href": "https://t.me/antarber"
+                "label": "Telegram"
               },
               {
+                "href": "mailto:noroavetisyan@gmail.com",
                 "icon": "email",
-                "label": "Почта",
-                "href": "mailto:noroavetisyan@gmail.com"
+                "label": "Почта"
               }
-            ]
+            ],
+            "statusLabel": "Доступен",
+            "sectionLabel": "Обо мне"
           },
           "anchorId": "about",
           "settings": {
             "photo": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4fac5a7-6cab-4b6e-8d3a-4aec50b3337c.jpg",
             "cvHref": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/acde6431-fbbe-4027-bf6d-8c1a239ae247.pdf",
-            "showStatusBadge": true,
-            "cardEffect": "tilt"
+            "showStatusBadge": true
           }
         },
         {
           "id": "8e81801d-1907-4220-b35b-524319d6a3e8",
           "type": "vibecoding",
           "content": {
-            "sectionLabel": "Философия",
-            "title": "Vibe Coding: Высокоскоростная оркестровка",
             "body": "Я использую AI не как замену мышлению, а как инструмент для борьбы с энтропией. В проекте 'Proof' это позволило синхронизировать Web3 (TON), AI (Gemini) и Backend (Supabase) в кратчайшие сроки, сохраняя 92% покрытия тестами.",
-            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+            "stats": [
+              {
+                "label": "Покрытие тестами",
+                "value": "92%"
+              },
+              {
+                "label": "Миграции БД",
+                "value": "27"
+              },
+              {
+                "label": "Системы",
+                "value": "3"
+              }
+            ],
+            "title": "Vibe Coding: Высокоскоростная оркестровка",
             "slider": {
               "lowVibe": "Low Vibe",
               "highVibe": "High Vibe",
-              "boringLabel": "basic-crud.ts",
-              "archLabel": "proof-architecture.svg"
+              "archLabel": "proof-architecture.svg",
+              "boringLabel": "basic-crud.ts"
             },
-            "systemsSyncedLabel": "Синхронизировано",
             "systems": [
               {
                 "name": "TON / Web3",
@@ -121,20 +140,6 @@
               {
                 "name": "Supabase",
                 "tone": "emerald"
-              }
-            ],
-            "stats": [
-              {
-                "value": "92%",
-                "label": "Покрытие тестами"
-              },
-              {
-                "value": "27",
-                "label": "Миграции БД"
-              },
-              {
-                "value": "3",
-                "label": "Системы"
               }
             ],
             "archNodes": [
@@ -166,18 +171,18 @@
                 "node": "feed",
                 "label": "Лента активности"
               }
-            ]
+            ],
+            "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
+            "sectionLabel": "Философия",
+            "systemsSyncedLabel": "Синхронизировано"
           },
           "anchorId": "vibecoding",
-          "settings": {
-            "codeReveal": "scramble"
-          }
+          "settings": {}
         },
         {
           "id": "93802d8c-1b72-4d14-acac-952e923459a7",
           "type": "tech_marquee",
           "content": {
-            "label": "Инструменты и технологии",
             "items": [
               {
                 "name": "React"
@@ -233,43 +238,32 @@
               {
                 "name": "Claude Code"
               }
-            ]
+            ],
+            "label": "Инструменты и технологии"
           },
           "anchorId": null,
-          "settings": {
-            "layout": "scroll"
-          }
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "AI Workflow Automation — Norayr Avetisyan",
+          "description": "Production n8n workflows built around Claude — lead analysis, content generation and CI/CD pipelines, with a human in the loop where a mistake would ship."
+        },
+        "ru": {
+          "title": "AI-автоматизация процессов — Норайр Аветисян",
+          "description": "Продакшн-воркфлоу на n8n вокруг Claude — анализ лидов, генерация контента и CI/CD-пайплайны, с проверкой человеком там, где ошибка уедет в продакшен."
+        }
+      },
       "slug": "automation",
       "blocks": [
         {
           "id": "0d7ec861-341f-4d63-b7e6-a0a8cbb9c004",
           "type": "workflow",
           "content": {
-            "sectionLabel": "Автоматизация",
             "title": "AI-автоматизация процессов",
-            "description": "Продакшн-готовые n8n-воркфлоу с интеграцией Claude AI для интеллектуальной автоматизации — от анализа лидов до генерации контента и CI/CD-пайплайнов.",
-            "workflows": [
-              {
-                "diagram": "lead-pipeline",
-                "title": "Анализ лидов",
-                "description": "Входящие лиды анализируются Claude AI на предмет интента и квалификации, затем направляются в Slack для уведомления команды и CRM для отслеживания."
-              },
-              {
-                "diagram": "content-gen",
-                "title": "Генерация контента",
-                "description": "Генерация контента по расписанию через Claude API с human-in-the-loop ревью перед публикацией в блог, соцсети или документацию."
-              },
-              {
-                "diagram": "ci-cd",
-                "title": "CI/CD пайплайн",
-                "description": "Автоматизированный пайплайн сборки по GitHub-пушу — запускает тесты, собирает артефакты и деплоит на Cloudflare Pages с уведомлениями о статусе."
-              }
-            ],
             "techStack": [
               {
                 "name": "n8n"
@@ -289,31 +283,56 @@
               {
                 "name": "GitHub Actions"
               }
-            ]
+            ],
+            "workflows": [
+              {
+                "title": "Анализ лидов",
+                "diagram": "lead-pipeline",
+                "description": "Входящие лиды анализируются Claude AI на предмет интента и квалификации, затем направляются в Slack для уведомления команды и CRM для отслеживания."
+              },
+              {
+                "title": "Генерация контента",
+                "diagram": "content-gen",
+                "description": "Генерация контента по расписанию через Claude API с human-in-the-loop ревью перед публикацией в блог, соцсети или документацию."
+              },
+              {
+                "title": "CI/CD пайплайн",
+                "diagram": "ci-cd",
+                "description": "Автоматизированный пайплайн сборки по GitHub-пушу — запускает тесты, собирает артефакты и деплоит на Cloudflare Pages с уведомлениями о статусе."
+              }
+            ],
+            "description": "Продакшн-готовые n8n-воркфлоу с интеграцией Claude AI для интеллектуальной автоматизации — от анализа лидов до генерации контента и CI/CD-пайплайнов.",
+            "sectionLabel": "Автоматизация"
           },
           "anchorId": "workflows",
-          "settings": {
-            "background": "none"
-          }
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "Experience — Norayr Avetisyan",
+          "description": "A timeline of roles and impact — from first lines of code to founding a product and leading frontend architecture at scale."
+        },
+        "ru": {
+          "title": "Опыт работы — Норайр Аветисян",
+          "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе."
+        }
+      },
       "slug": "experience",
       "blocks": [
         {
           "id": "1a9770ce-1b12-4ac5-bb01-7c4b72b120d4",
           "type": "experience",
           "content": {
-            "sectionLabel": "Карьера",
             "title": "Опыт работы",
-            "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе."
+            "description": "Хронология ролей и результатов — от первых строк кода до запуска собственного продукта и руководства фронтенд-архитектурой в масштабе.",
+            "sectionLabel": "Карьера"
           },
           "anchorId": "experience",
           "settings": {
-            "showImages": true,
-            "imageEffect": "tilt"
+            "showImages": true
           }
         }
       ]
@@ -335,15 +354,14 @@
           "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
           "type": "hero",
           "content": {
-            "subtitle": "fullstack-инженер",
             "name": {
-              "first": {
-                "highlight": "Нор",
-                "rest": "айр"
-              },
               "last": {
-                "highlight": "Ав",
-                "rest": "етисян"
+                "rest": "етисян",
+                "highlight": "Ав"
+              },
+              "first": {
+                "rest": "айр",
+                "highlight": "Нор"
               }
             },
             "tagline": [
@@ -368,13 +386,13 @@
                 "accent": "main"
               }
             ],
+            "subtitle": "fullstack-инженер",
             "scrollHint": "Прокрутите для навигации"
           },
           "anchorId": "hero",
           "settings": {
             "showScrollHint": true,
-            "enableParticleBurst": true,
-            "subtitleReveal": "none"
+            "enableParticleBurst": true
           }
         },
         {
@@ -384,28 +402,28 @@
             "label": "В цифрах",
             "stats": [
               {
+                "label": "Лет в продакшене",
                 "value": 6,
                 "prefix": "",
-                "suffix": "+",
-                "label": "Лет в продакшене"
+                "suffix": "+"
               },
               {
+                "label": "MAU охвачено",
                 "value": 10,
                 "prefix": "",
-                "suffix": "M+",
-                "label": "MAU охвачено"
+                "suffix": "M+"
               },
               {
+                "label": "Компаний",
                 "value": 6,
                 "prefix": "",
-                "suffix": "",
-                "label": "Компаний"
+                "suffix": ""
               },
               {
+                "label": "Одновременных сессий",
                 "value": 50,
                 "prefix": "",
-                "suffix": "K+",
-                "label": "Одновременных сессий"
+                "suffix": "K+"
               }
             ]
           },
@@ -418,36 +436,33 @@
           "id": "67369beb-80ad-4f29-a9ab-7b7603e5aa73",
           "type": "contact_cta",
           "content": {
-            "availability": "Доступен для новых проектов",
+            "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
             "label": "Связаться",
             "title": "Давайте создадим то, что дойдёт до релиза.",
-            "body": "Открыт к senior- и staff-ролям во фронтенде / фуллстеке — и к амбициозным продуктам. Быстрее всего со мной связаться по почте.",
-            "emailLabel": "Написать на почту",
             "socials": [
               {
+                "href": "https://github.com/Noro97",
                 "icon": "github",
-                "label": "GitHub",
-                "href": "https://github.com/Noro97"
+                "label": "GitHub"
               },
               {
+                "href": "https://www.linkedin.com/in/norayravetisyan/",
                 "icon": "linkedin",
-                "label": "LinkedIn",
-                "href": "https://www.linkedin.com/in/norayravetisyan/"
+                "label": "LinkedIn"
               },
               {
+                "href": "https://t.me/antarber",
                 "icon": "telegram",
-                "label": "Telegram",
-                "href": "https://t.me/antarber"
+                "label": "Telegram"
               }
-            ]
+            ],
+            "emailLabel": "Написать на почту",
+            "availability": "Доступен для новых проектов"
           },
           "anchorId": null,
           "settings": {
             "email": "noroavetisyan@gmail.com",
-            "showAvailability": true,
-            "ctaStyle": "solid",
-            "clickSpark": true,
-            "background": "none"
+            "showAvailability": true
           }
         }
       ]
@@ -460,12 +475,21 @@
           "id": "84ef23ef-74d2-4da6-a15c-8a9ad4080e4a",
           "type": "terminal_footer",
           "content": {
-            "sectionLabel": "Контакт",
+            "hire": {
+              "burst": "  ✦ ВЗРЫВ ЧАСТИЦ АКТИВИРОВАН ✦",
+              "openTo": "  Открыт к: Senior / Staff позициям",
+              "message": "  Давайте создадим что-то великое.",
+              "niceTry": "Хорошая попытка. ;)",
+              "location": "  Локация: Ереван, Армения / Удалённо"
+            },
             "title": "Терминал",
-            "subtitle": "$ взаимодействуйте с этим портфолио",
-            "titleBar": "visitor@portfolio ~ zsh",
             "prompt": "visitor@portfolio:~$",
-            "placeholder": "введите команду...",
+            "whoami": {
+              "hint": "  Попробуйте: cat about.txt, neofetch, sudo hire",
+              "visitor": "  visitor",
+              "welcome": "  Любознательные умы здесь всегда приветствуются.",
+              "exploring": "  Вы исследуете портфолио Норайра Аветисяна."
+            },
             "welcome": [
               {
                 "text": "Добро пожаловать в терминал портфолио Норайра Аветисяна."
@@ -474,76 +498,68 @@
                 "text": "Введите 'help' для списка доступных команд."
               }
             ],
-            "whoami": {
-              "visitor": "  visitor",
-              "exploring": "  Вы исследуете портфолио Норайра Аветисяна.",
-              "welcome": "  Любознательные умы здесь всегда приветствуются.",
-              "hint": "  Попробуйте: cat about.txt, neofetch, sudo hire"
-            },
-            "hire": {
-              "message": "  Давайте создадим что-то великое.",
-              "openTo": "  Открыт к: Senior / Staff позициям",
-              "location": "  Локация: Ереван, Армения / Удалённо",
-              "burst": "  ✦ ВЗРЫВ ЧАСТИЦ АКТИВИРОВАН ✦",
-              "niceTry": "Хорошая попытка. ;)"
-            },
+            "subtitle": "$ взаимодействуйте с этим портфолио",
+            "titleBar": "visitor@portfolio ~ zsh",
+            "placeholder": "введите команду...",
+            "sectionLabel": "Контакт",
             "commandNotFound": "команда не найдена: {{cmd}}. Введите 'help' для списка доступных команд."
           },
           "anchorId": "terminal",
-          "settings": {
-            "outputTextEffect": "none"
-          }
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "Skills & Tools — Norayr Avetisyan",
+          "description": "Frontend architecture, AI and automation, design systems and performance — React, TypeScript, Next.js, Vue, Three.js, Supabase and the tooling around them."
+        },
+        "ru": {
+          "title": "Навыки и инструменты — Норайр Аветисян",
+          "description": "Фронтенд-архитектура, AI и автоматизация, дизайн-системы и производительность — React, TypeScript, Next.js, Vue, Three.js, Supabase и инструменты вокруг них."
+        }
+      },
       "slug": "skills",
       "blocks": [
         {
           "id": "4e247427-e6af-4fde-b4f5-bb5234331b66",
           "type": "capabilities",
           "content": {
-            "sectionLabel": "Компетенции",
-            "title": "Чем я занимаюсь",
-            "description": "Четыре способа превращать сложные продуктовые требования в быстрый и надёжный софт.",
             "cards": [
               {
+                "body": "Масштабируемые архитектуры на React и TypeScript, микрофронтенды и стратегии рендеринга для высоконагруженных платформ.",
                 "icon": "Layers",
-                "title": "Фронтенд-архитектура",
-                "body": "Масштабируемые архитектуры на React и TypeScript, микрофронтенды и стратегии рендеринга для высоконагруженных платформ."
+                "title": "Фронтенд-архитектура"
               },
               {
+                "body": "Кастомные AI-агенты, LLM-конвейеры и воркфлоу на MCP, автоматизирующие реальную продуктовую и инженерную работу.",
                 "icon": "Bot",
-                "title": "AI и автоматизация",
-                "body": "Кастомные AI-агенты, LLM-конвейеры и воркфлоу на MCP, автоматизирующие реальную продуктовую и инженерную работу."
+                "title": "AI и автоматизация"
               },
               {
+                "body": "Единые библиотеки компонентов и пайплайны токенов с синхронизацией Figma, удерживающие большие команды в едином стиле.",
                 "icon": "Component",
-                "title": "Дизайн-системы",
-                "body": "Единые библиотеки компонентов и пайплайны токенов с синхронизацией Figma, удерживающие большие команды в едином стиле."
+                "title": "Дизайн-системы"
               },
               {
+                "body": "Core Web Vitals, бюджеты бандлов и инструменты, которые делают продукты быстрее — и команды тоже.",
                 "icon": "Gauge",
-                "title": "Производительность и DX",
-                "body": "Core Web Vitals, бюджеты бандлов и инструменты, которые делают продукты быстрее — и команды тоже."
+                "title": "Производительность и DX"
               }
-            ]
+            ],
+            "title": "Чем я занимаюсь",
+            "description": "Четыре способа превращать сложные продуктовые требования в быстрый и надёжный софт.",
+            "sectionLabel": "Компетенции"
           },
           "anchorId": null,
-          "settings": {
-            "cardEffect": "spotlight"
-          }
+          "settings": {}
         },
         {
           "id": "f8f55ed3-c8a1-4701-ae30-203092d7f86d",
           "type": "skills",
           "content": {
-            "sectionLabel": "Экспертиза",
             "title": "Навыки и инструменты",
-            "description": "Техническая компетенция во всём спектре фронтенда — от базовых фреймворков и управления состоянием до дизайн-систем, инфраструктуры и платформенной инженерии.",
-            "proficiencyOverview": "Обзор компетенций",
-            "skillsTracked": "{{count}} навыков отслеживается",
             "categories": [
               {
                 "name": "Фронтенд-ядро",
@@ -700,23 +716,35 @@
                   }
                 ]
               }
-            ]
+            ],
+            "description": "Техническая компетенция во всём спектре фронтенда — от базовых фреймворков и управления состоянием до дизайн-систем, инфраструктуры и платформенной инженерии.",
+            "sectionLabel": "Экспертиза",
+            "skillsTracked": "{{count}} навыков отслеживается",
+            "proficiencyOverview": "Обзор компетенций"
           },
           "anchorId": "skills",
-          "settings": {
-            "showCounters": true
-          }
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "Selected Work — Norayr Avetisyan",
+          "description": "Shipped products — real-time logistics, faceted commerce search, an AI merch configurator, a virtualised operations console and a Telegram-native fitness platform."
+        },
+        "ru": {
+          "title": "Избранные работы — Норайр Аветисян",
+          "description": "Выпущенные продукты — логистика реального времени, фасетный поиск, AI-конфигуратор мерча, операционная консоль с виртуализацией и фитнес-платформа в Telegram."
+        }
+      },
       "slug": "work",
       "blocks": [
         {
           "id": "6aac914b-807e-4d55-aa81-5c3fac8d9b02",
           "type": "projects_intro",
           "content": {
+            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
             "label": "Selected Work · 2024 — 2026",
             "heading": [
               {
@@ -735,91 +763,104 @@
                 "lineBreakAfter": false
               }
             ],
-            "body": "Five years, six shipped products — logistics, commerce, merch AI, and an ops console powering thousands of daily users.",
             "imageAlt": "A collage of shipped case studies — dashboards, mobile ops consoles, and commerce flows",
             "viewAllLabel": ""
           },
           "anchorId": "projects-intro",
           "settings": {
-            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp",
-            "headlineReveal": "none",
-            "ctaStyle": "solid"
+            "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/44b1ead5-9e25-4bc3-8a47-304cee739635.webp"
           }
         },
         {
           "id": "603fc84f-3a9c-4ff1-be94-f025e51cb7b9",
           "type": "bento_grid",
           "content": {
-            "sectionLabel": "Подробнее",
-            "title": "Инженерное влияние",
-            "description": "Мини-кейсы и измеримые результаты из реальных проектов.",
-            "projects": [
-              {
-                "project": "nexusroute",
-                "title": "NexusRoute",
-                "description": "Платформа оптимизации логистики в реальном времени, обрабатывающая 50K+ WebSocket событий/сек по 18 глобальным хабам.",
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png"
-              },
-              {
-                "project": "merchforge",
-                "title": "MerchForge",
-                "description": "Дизайнер мерча на базе ИИ с синхронизацией состояния в реальном времени.",
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png"
-              },
-              {
-                "project": "filtergraph",
-                "title": "FilterGraph",
-                "description": "Фасетный поиск с отслеживанием зависимостей фильтров и архитектурой URL-как-состояние.",
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png"
-              },
-              {
-                "project": "omnigrid",
-                "title": "OmniGrid",
-                "description": "Оркестрация данных корпоративного уровня с headless-архитектурой таблиц и интеллектуальным управлением кэшем.",
-                "cta": "Смотреть кейс",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png"
-              },
-              {
-                "project": "proof",
-                "title": "Proof",
-                "description": "ИИ-платформа геймифицированных достижений в виде Telegram Mini App с детекцией присутствия, двойной экономикой наград и блокчейн-интеграцией.",
-                "cta": "Архитектура",
-                "image": ""
-              }
-            ],
             "tiles": [
               {
                 "slot": 0,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png",
                 "title": "Аудит производительности",
-                "description": "Стандартные маркеры Google Maps вызывали зависания основного потока при 500+ обновлениях. Перешли на Advanced Markers с буфером rAF — снижение нагрузки на 70%, стабильные 60 FPS.",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/26394992-1a6f-4ffc-bce7-4a8e161e60a2.png"
+                "description": "Стандартные маркеры Google Maps вызывали зависания основного потока при 500+ обновлениях. Перешли на Advanced Markers с буфером rAF — снижение нагрузки на 70%, стабильные 60 FPS."
               },
               {
                 "slot": 1,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png",
                 "title": "Типобезопасная архитектура",
-                "description": "Сквозная система типов между бэкендом на Node.js и фронтендом на React, устранившая 99% ошибок API во время выполнения",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/63d3cac5-4814-4c9c-b293-205c3ddad28b.png"
+                "description": "Сквозная система типов между бэкендом на Node.js и фронтендом на React, устранившая 99% ошибок API во время выполнения"
               },
               {
                 "slot": 2,
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png",
                 "title": "Пользовательский опыт",
-                "description": "Система предиктивного ввода для сложных форм, сократившая время создания отправления на 15 секунд",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/30c43378-d6fd-4c4d-968e-6cdd3f3de349.png"
+                "description": "Система предиктивного ввода для сложных форм, сократившая время создания отправления на 15 секунд"
               },
               {
                 "slot": 3,
+                "image": "",
                 "title": "ИИ-детекция",
-                "description": "Мультимодальная ИИ-верификация с точностью 98.4% через анализ видеодоказательств пользователей с помощью Gemini.",
-                "image": ""
+                "description": "Мультимодальная ИИ-верификация с точностью 98.4% через анализ видеодоказательств пользователей с помощью Gemini."
               },
               {
                 "slot": 4,
+                "image": "",
                 "title": "Cache Hit-Rate",
-                "description": "Виртуализированная таблица на 10K+ строк с суб-миллисекундными кэш-запросами через стратегию TanStack Query stale-while-revalidate.",
-                "image": ""
+                "description": "Виртуализированная таблица на 10K+ строк с суб-миллисекундными кэш-запросами через стратегию TanStack Query stale-while-revalidate."
+              }
+            ],
+            "title": "Инженерное влияние",
+            "badges": [
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg",
+                "rarity": "common"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg",
+                "rarity": "rare"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg",
+                "rarity": "epic"
+              },
+              {
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg",
+                "rarity": "legendary"
+              }
+            ],
+            "projects": [
+              {
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/65b68898-b1dc-4b69-a0e8-ea05285e213d.png",
+                "title": "NexusRoute",
+                "project": "nexusroute",
+                "description": "Платформа оптимизации логистики в реальном времени, обрабатывающая 50K+ WebSocket событий/сек по 18 глобальным хабам."
+              },
+              {
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/c0994a73-6348-4135-bff9-bcf287491fd9.png",
+                "title": "MerchForge",
+                "project": "merchforge",
+                "description": "Дизайнер мерча на базе ИИ с синхронизацией состояния в реальном времени."
+              },
+              {
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4bdefcea-78f9-47ea-ade5-9bfd0bfc7bf7.png",
+                "title": "FilterGraph",
+                "project": "filtergraph",
+                "description": "Фасетный поиск с отслеживанием зависимостей фильтров и архитектурой URL-как-состояние."
+              },
+              {
+                "cta": "Смотреть кейс",
+                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
+                "title": "OmniGrid",
+                "project": "omnigrid",
+                "description": "Оркестрация данных корпоративного уровня с headless-архитектурой таблиц и интеллектуальным управлением кэшем."
+              },
+              {
+                "cta": "Архитектура",
+                "image": "",
+                "title": "Proof",
+                "project": "proof",
+                "description": "ИИ-платформа геймифицированных достижений в виде Telegram Mini App с детекцией присутствия, двойной экономикой наград и блокчейн-интеграцией."
               }
             ],
             "dashboard": {
@@ -827,39 +868,39 @@
               "metrics": [
                 {
                   "key": "lcp",
-                  "value": 1.2,
-                  "prefix": "<",
-                  "suffix": "s",
                   "color": "#22c55e",
                   "label": "LCP",
-                  "detail": "Отслеживание в реальном времени"
+                  "value": 1.2,
+                  "detail": "Отслеживание в реальном времени",
+                  "prefix": "<",
+                  "suffix": "s"
                 },
                 {
                   "key": "bundle",
-                  "value": 42,
-                  "prefix": "",
-                  "suffix": "kb",
                   "color": "#22c55e",
                   "label": "Размер бандла",
-                  "detail": "Gzipped (основной поток)"
+                  "value": 42,
+                  "detail": "Gzipped (основной поток)",
+                  "prefix": "",
+                  "suffix": "kb"
                 },
                 {
                   "key": "gpsNodes",
-                  "value": 50,
-                  "prefix": "",
-                  "suffix": "+",
                   "color": "#eab308",
                   "label": "GPS-узлы",
-                  "detail": "Активных за просмотр"
+                  "value": 50,
+                  "detail": "Активных за просмотр",
+                  "prefix": "",
+                  "suffix": "+"
                 },
                 {
                   "key": "testCoverage",
-                  "value": 92,
-                  "prefix": "",
-                  "suffix": "%",
                   "color": "#22c55e",
                   "label": "Покрытие тестами",
-                  "detail": "Unit / E2E"
+                  "value": 92,
+                  "detail": "Unit / E2E",
+                  "prefix": "",
+                  "suffix": "%"
                 }
               ]
             },
@@ -877,47 +918,36 @@
                 "text": "Доступность обязательна"
               }
             ],
+            "description": "Мини-кейсы и измеримые результаты из реальных проектов.",
+            "sectionLabel": "Подробнее",
             "illustrations": {
               "omnigrid": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/e145c603-2e81-4a0e-963c-efda3c53074d.png",
               "gamification": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/4b1fe6c0-8cff-4517-9bf3-3624c7a382ef.png"
-            },
-            "badges": [
-              {
-                "rarity": "common",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/085b5c9e-bfdd-4bf7-89b9-099dea82bfcc.svg"
-              },
-              {
-                "rarity": "rare",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/ac556b39-b82f-4218-81a1-5e7f26734186.svg"
-              },
-              {
-                "rarity": "epic",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/00b664e8-7833-426c-84cd-c9842da836b9.svg"
-              },
-              {
-                "rarity": "legendary",
-                "image": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/b5e839d6-5e23-4163-a2d0-527b0a5711e7.svg"
-              }
-            ]
+            }
           },
           "anchorId": "overview",
-          "settings": {
-            "glowBorder": false
-          }
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "FilterGraph — faceted commerce search",
+          "description": "Dependency-aware faceted filtering with URL-as-state: filters and query parameters stay in step in both directions, so any view is a link worth sending."
+        },
+        "ru": {
+          "title": "FilterGraph — фасетный поиск для коммерции",
+          "description": "Фасетная фильтрация с учётом зависимостей и URL как состояние: фильтры и параметры запроса синхронны в обе стороны, поэтому любой вид — готовая ссылка."
+        }
+      },
       "slug": "work/ecommerce",
       "blocks": [
         {
           "id": "9d32f989-6728-4650-8f23-9c1f893d7247",
           "type": "ecommerce",
           "content": {
-            "sectionLabel": "Кейс",
             "title": "FilterGraph",
-            "description": "Фасетный поиск с учётом зависимостей фильтров и архитектурой URL-как-состояние. Изменения фильтров двунаправленно синхронизируются с параметрами запроса.",
             "techStack": [
               {
                 "name": "URL State"
@@ -941,26 +971,46 @@
                 "name": "Confetti"
               }
             ],
-            "screenshots": []
+            "description": "Фасетный поиск с учётом зависимостей фильтров и архитектурой URL-как-состояние. Изменения фильтров двунаправленно синхронизируются с параметрами запроса.",
+            "screenshots": [],
+            "sectionLabel": "Кейс"
           },
           "anchorId": "ecommerce",
-          "settings": {
-            "galleryStyle": "grid"
-          }
+          "settings": {}
+        },
+        {
+          "id": "c4202939-19a1-4bf6-94f7-ad576ae7b391",
+          "type": "ecommerce_detail",
+          "content": {
+            "intro": "",
+            "title": "",
+            "metrics": [],
+            "decisions": [],
+            "sectionLabel": ""
+          },
+          "anchorId": null,
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "NexusRoute — real-time logistics platform",
+          "description": "50K+ WebSocket events per second across 18 hubs, GeoJSON streaming and high-frequency state reconciliation, drawn with Advanced Markers at a stable 60 FPS."
+        },
+        "ru": {
+          "title": "NexusRoute — платформа логистики реального времени",
+          "description": "50K+ WebSocket-событий в секунду в 18 хабах, потоковый GeoJSON и высокочастотная сверка состояния, отрисованные Advanced Markers на стабильных 60 FPS."
+        }
+      },
       "slug": "work/logistics",
       "blocks": [
         {
           "id": "6b172e1f-594a-4ec1-8574-a1f23b5af6c0",
           "type": "logistics",
           "content": {
-            "sectionLabel": "Кейс",
             "title": "NexusRoute",
-            "description": "Платформа оптимизации логистики реального времени, обрабатывающая 50K+ WebSocket-событий/сек в 18 глобальных хабах. Потоковая передача GeoJSON с высокочастотной сверкой состояния.",
             "techStack": [
               {
                 "name": "Google Maps API"
@@ -978,27 +1028,47 @@
                 "name": "Zustand"
               }
             ],
+            "description": "Платформа оптимизации логистики реального времени, обрабатывающая 50K+ WebSocket-событий/сек в 18 глобальных хабах. Потоковая передача GeoJSON с высокочастотной сверкой состояния.",
+            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp",
             "screenshots": [],
-            "mapFallback": "https://r36fhmjhstommjeh.public.blob.vercel-storage.com/media/d4e8bbca-ebc9-4791-9f0f-6267ced14648.webp"
+            "sectionLabel": "Кейс"
           },
           "anchorId": "logistics",
-          "settings": {
-            "galleryStyle": "grid"
-          }
+          "settings": {}
+        },
+        {
+          "id": "fe3760b7-2c0d-42c3-89c0-366d4c060d6c",
+          "type": "logistics_detail",
+          "content": {
+            "intro": "",
+            "title": "",
+            "metrics": [],
+            "decisions": [],
+            "sectionLabel": ""
+          },
+          "anchorId": null,
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "MerchForge — AI merchandise configurator",
+          "description": "A merch designer where every interaction is reflected instantly in the live configuration output. React state, JSON synchronisation, derived data."
+        },
+        "ru": {
+          "title": "MerchForge — AI-конфигуратор мерча",
+          "description": "Дизайнер мерча, где каждое действие мгновенно отражается в живой конфигурации. React-состояние, JSON-синхронизация, производные данные."
+        }
+      },
       "slug": "work/merch",
       "blocks": [
         {
           "id": "9cc60d2c-f540-46d6-94b0-31388192f281",
           "type": "merch",
           "content": {
-            "sectionLabel": "Кейс",
             "title": "MerchForge",
-            "description": "Дизайнер мерча на основе ИИ с синхронизацией состояния в реальном времени. Каждое взаимодействие с интерфейсом мгновенно отражается в конфигурации.",
             "techStack": [
               {
                 "name": "React State"
@@ -1013,26 +1083,46 @@
                 "name": "Typing Animation"
               }
             ],
-            "screenshots": []
+            "description": "Дизайнер мерча на основе ИИ с синхронизацией состояния в реальном времени. Каждое взаимодействие с интерфейсом мгновенно отражается в конфигурации.",
+            "screenshots": [],
+            "sectionLabel": "Кейс"
           },
           "anchorId": "merch",
-          "settings": {
-            "galleryStyle": "grid"
-          }
+          "settings": {}
+        },
+        {
+          "id": "33426484-4d2d-4b6e-8e13-db875e24756c",
+          "type": "merch_detail",
+          "content": {
+            "intro": "",
+            "title": "",
+            "metrics": [],
+            "decisions": [],
+            "sectionLabel": ""
+          },
+          "anchorId": null,
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "OmniGrid — a virtualised operations console",
+          "description": "A high-density data grid: virtual scrolling, headless table architecture and server-state cache orchestration over TanStack Query, TanStack Table and Zod."
+        },
+        "ru": {
+          "title": "OmniGrid — операционная консоль с виртуализацией",
+          "description": "Высокоплотная таблица данных: виртуальный скролл, headless-архитектура и оркестрация серверного кэша на TanStack Query, TanStack Table и Zod."
+        }
+      },
       "slug": "work/omnigrid",
       "blocks": [
         {
           "id": "50a345ad-b407-46be-9c8a-54fe88138bb6",
           "type": "omnigrid",
           "content": {
-            "sectionLabel": "Кейс",
             "title": "OmniGrid: Система управления данными",
-            "description": "Высокоплотная таблица данных с виртуализированным скроллом, headless-архитектурой и оркестрацией серверного кэша. Обработка массивных датасетов с нулевой задержкой UI и сложной синхронизацией серверного состояния.",
             "techStack": [
               {
                 "name": "TanStack Query"
@@ -1047,26 +1137,46 @@
                 "name": "Virtual Scroll"
               }
             ],
-            "screenshots": []
+            "description": "Высокоплотная таблица данных с виртуализированным скроллом, headless-архитектурой и оркестрацией серверного кэша. Обработка массивных датасетов с нулевой задержкой UI и сложной синхронизацией серверного состояния.",
+            "screenshots": [],
+            "sectionLabel": "Кейс"
           },
           "anchorId": "omnigrid",
-          "settings": {
-            "galleryStyle": "grid"
-          }
+          "settings": {}
+        },
+        {
+          "id": "5682d977-71d4-49e1-819a-596e7c994074",
+          "type": "omnigrid_detail",
+          "content": {
+            "intro": "",
+            "title": "",
+            "metrics": [],
+            "decisions": [],
+            "sectionLabel": ""
+          },
+          "anchorId": null,
+          "settings": {}
         }
       ]
     },
     {
-      "seo": {},
+      "seo": {
+        "en": {
+          "title": "Proof — AI fitness verification in Telegram",
+          "description": "A Telegram Mini App where Gemini 2.5 Flash counts reps, verifies form and checks liveness, awarding Physio and Neuro points across 20 progression levels."
+        },
+        "ru": {
+          "title": "Proof — ИИ-верификация фитнеса в Telegram",
+          "description": "Telegram Mini App, где Gemini 2.5 Flash считает повторения, проверяет технику и подтверждает живость, начисляя Physio- и Neuro-очки на 20 уровнях."
+        }
+      },
       "slug": "work/proof",
       "blocks": [
         {
           "id": "1c556cb2-aac0-4fb6-8e1f-b78371fb3967",
           "type": "proof",
           "content": {
-            "sectionLabel": "Кейс",
             "title": "Proof: ИИ-верификация фитнеса",
-            "description": "Telegram Mini App, геймифицирующее верификацию упражнений с помощью ИИ в реальном времени. Gemini 2.5 Flash считает повторения, проверяет форму, подтверждает живость — начисляя Physio/Neuro очки через 20 уровней прогрессии.",
             "techStack": [
               {
                 "name": "Supabase Edge Functions"
@@ -1084,19 +1194,32 @@
                 "name": "Telegram Mini App SDK"
               }
             ],
-            "screenshots": []
+            "description": "Telegram Mini App, геймифицирующее верификацию упражнений с помощью ИИ в реальном времени. Gemini 2.5 Flash считает повторения, проверяет форму, подтверждает живость — начисляя Physio/Neuro очки через 20 уровней прогрессии.",
+            "screenshots": [],
+            "sectionLabel": "Кейс"
           },
           "anchorId": "proof",
-          "settings": {
-            "galleryStyle": "grid"
-          }
+          "settings": {}
+        },
+        {
+          "id": "580c9286-ba8a-41a1-b7a5-062f42792e3b",
+          "type": "proof_detail",
+          "content": {
+            "intro": "",
+            "title": "",
+            "metrics": [],
+            "decisions": [],
+            "sectionLabel": ""
+          },
+          "anchorId": null,
+          "settings": {}
         }
       ]
     }
   ],
   "locale": "ru",
-  "version": 21,
-  "checksum": "a74b2532f1476c88a30f4a3761632d0b3891f138146b703170572e9f7d5680df",
+  "version": 25,
+  "checksum": "bb4cce73295927f957df573e84c1d972246adbc08add0ce56d80bc68fc91ec58",
   "settings": {
     "site": {
       "grain": true,
@@ -1104,50 +1227,50 @@
       "dynamicGrid": true
     },
     "theme": {
-      "accent": "#0A7B1D",
+      "accent": "#9ae600",
       "tokens": {
-        "--color-card": "#0f0e0f",
+        "--color-card": "#011c3d",
         "--color-info": "#38bdf8",
-        "--color-ring": "#0A7B1D",
+        "--color-ring": "#9ae600",
         "--color-input": "rgba(255, 255, 255, 0.06)",
-        "--color-muted": "#1d1b1d",
-        "--color-accent": "#0A7B1D",
+        "--color-muted": "#0f294a",
+        "--color-accent": "#9ae600",
         "--color-border": "rgba(255, 255, 255, 0.08)",
         "--color-danger": "#ef4444",
-        "--color-cyan-50": "#f8f8fb",
-        "--color-primary": "#0A7B1D",
+        "--color-cyan-50": "#fdf7f5",
+        "--color-primary": "#9ae600",
         "--color-success": "#22c55e",
         "--color-warning": "#eab308",
-        "--color-cyan-100": "#f0f1f8",
-        "--color-cyan-200": "#e2e3f1",
-        "--color-cyan-300": "#cccfe6",
-        "--color-cyan-400": "#7d87cf",
-        "--color-cyan-500": "#636EC5",
-        "--color-cyan-600": "#3f4aa8",
-        "--color-cyan-700": "#2b3374",
-        "--color-cyan-800": "#272b4c",
-        "--color-cyan-900": "#1b1e34",
-        "--color-secondary": "#1d1b1d",
-        "--color-background": "#0D0C0D",
-        "--color-crimson-50": "#effcf1",
+        "--color-cyan-100": "#fbefea",
+        "--color-cyan-200": "#f7ded6",
+        "--color-cyan-300": "#f1c6b7",
+        "--color-cyan-400": "#f66e41",
+        "--color-cyan-500": "#F4511A",
+        "--color-cyan-600": "#c93a0a",
+        "--color-cyan-700": "#76321a",
+        "--color-cyan-800": "#562413",
+        "--color-cyan-900": "#3b190d",
+        "--color-secondary": "#0f294a",
+        "--color-background": "#001a3a",
+        "--color-crimson-50": "#fafdf3",
         "--color-foreground": "#e0e0e0",
-        "--color-crimson-100": "#e0f8e4",
-        "--color-crimson-200": "#c0f1c8",
-        "--color-crimson-300": "#91e7a0",
-        "--color-crimson-400": "#0fb62b",
-        "--color-crimson-500": "#0A7B1D",
-        "--color-crimson-600": "#15531f",
-        "--color-crimson-700": "#0e3916",
-        "--color-crimson-800": "#0b2910",
-        "--color-crimson-900": "#071c0b",
+        "--color-crimson-100": "#f4fbe6",
+        "--color-crimson-200": "#eaf8cd",
+        "--color-crimson-300": "#daf3a8",
+        "--color-crimson-400": "#b2ff16",
+        "--color-crimson-500": "#9ae600",
+        "--color-crimson-600": "#78b400",
+        "--color-crimson-700": "#4c6913",
+        "--color-crimson-800": "#384c0d",
+        "--color-crimson-900": "#263409",
         "--color-card-foreground": "#e0e0e0",
         "--color-muted-foreground": "#888888",
-        "--color-accent-foreground": "#ffffff",
-        "--color-primary-foreground": "#ffffff",
+        "--color-accent-foreground": "#14141c",
+        "--color-primary-foreground": "#14141c",
         "--color-secondary-foreground": "#e0e0e0"
       },
-      "secondary": "#636EC5",
-      "background": "#0D0C0D"
+      "secondary": "#F4511A",
+      "background": "#001a3a"
     }
   },
   "collections": {
@@ -1455,5 +1578,5 @@
       }
     ]
   },
-  "publishedAt": "2026-09-01T11:08:14.554Z"
+  "publishedAt": "2026-09-11T11:49:18.122Z"
 }

@@ -35,7 +35,6 @@ const COLOR_VALUES = ['Midnight Black', 'Arctic White', 'Crimson Red', 'Navy Blu
 // swatch labelled "Crimson Red" turned green when the palette did — while its
 // neighbours, navy and forest, stayed put. Muted to sit with them.
 // Garment colours — what the product comes in, not what the site paints with.
-// eslint-disable-next-line no-restricted-syntax -- content, not the palette
 const COLOR_HEXES = ['#1a1a1a', '#f0f0f0', '#7d1f2b', '#1e3a5f', '#2d5a3d']
 
 /**

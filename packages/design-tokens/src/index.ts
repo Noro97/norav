@@ -1,5 +1,4 @@
 // Generated from packages/design-tokens/tokens.json by `npm run tokens` — do not edit.
-/* eslint-disable */
 
 /**
  * The design tokens, for code that cannot use a class: a style object, a

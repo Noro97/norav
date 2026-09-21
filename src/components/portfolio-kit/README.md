@@ -10,11 +10,10 @@ lifted into a schema and its header now comes from `section-head.jsx` here, so a
 re-sync overwrites it and the promotion has to be redone. Promote a section
 only once you mean to own it.
 
-`sections/index.ts` and `tweaks/index.ts` are the source project's own typed
-barrels and give the rest of this repo a checked surface over them. Neither
-`tweaks/` nor `ui/reveal.tsx` is reachable from this site — they came with the
-import and nothing here calls them, so they cost a few files on disk and nothing
-in the bundle.
+The source project's barrels, its tweaks panel and its `reveal` helper did not
+make the trip: `registry.tsx` and `blocks.tsx` import each section's file
+directly, so nothing here read them. A re-sync copies section files, not the
+glue around them.
 
 ## Two ways a section reaches a page
 
