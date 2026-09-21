@@ -196,6 +196,57 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 5b. 0022 rewrites the hero and the bio — only the copy that shipped
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0022_the_site_speaks_in_the_readme_voice.sql'), 'utf8')
+  const {
+    rows: [about],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, anchor_id) values ($1, 'about', 9500, 'about-copy') returning id`,
+    [page.id],
+  )
+  const shipped = {
+    bio: {
+      lead: [{ text: 'I build interfaces that feel alive — and think.', accent: 'main' }],
+      paragraphs: [{ text: 'With 7+ years of experience' }, { text: 'Currently seeking senior or staff-level roles' }],
+    },
+    role: 'Frontend-Focused Fullstack Engineer',
+    facts: [{ label: 'Location', value: 'Yerevan, Armenia' }, { label: 'Status', value: 'Open to offers' }],
+    socials: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/Noro97' }],
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [about.id, JSON.stringify(shipped)],
+  )
+  await db.query(`update block_translations set content = '{"subtitle":"Fullstack Engineer","scrollHint":"Scroll"}'::jsonb where block_id = $1`, [hero.id])
+
+  await db.exec(file)
+  await db.exec(file)
+
+  const contentOf = async (id) => {
+    const { rows } = await db.query(`select content from block_translations where block_id = $1 and locale = 'en'`, [id])
+    return rows[0].content
+  }
+  const heroCopy = await contentOf(hero.id)
+  check('the hero subtitle is rewritten', heroCopy.subtitle === 'Fullstack Engineer, frontend-focused')
+  check('with a number in the tagline', heroCopy.tagline?.some((run) => run.text.includes('50K')))
+  check('and the scroll hint left alone', heroCopy.scrollHint === 'Scroll')
+
+  const aboutCopy = await contentOf(about.id)
+  check('the role line reads as the hero does', aboutCopy.role === 'Fullstack Engineer, frontend-focused')
+  check('the bio lead is rewritten', aboutCopy.bio.lead[0].text.startsWith('I build interfaces that hold up'))
+  check('the first paragraph is rewritten', aboutCopy.bio.paragraphs[0].text.includes('production incident'))
+  check('the second paragraph is kept', aboutCopy.bio.paragraphs[1].text === 'Currently seeking senior or staff-level roles')
+  check('the status fact is narrowed, found by value', aboutCopy.facts[1].value === 'Open to senior/staff roles')
+  check('the other facts and the socials are untouched', aboutCopy.facts[0].value === 'Yerevan, Armenia' && aboutCopy.socials.length === 1)
+
+  await db.query(`update block_translations set content = '{"subtitle":"Reworded by hand"}'::jsonb where block_id = $1`, [hero.id])
+  await db.exec(file)
+  check('copy reworded in the admin is left alone', (await contentOf(hero.id)).subtitle === 'Reworded by hand')
+}
+
+// ---------------------------------------------------------------------------
 // 6. Publishing
 // ---------------------------------------------------------------------------
 {
