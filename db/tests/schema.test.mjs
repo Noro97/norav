@@ -782,6 +782,35 @@ await expectError(
   check('sixteen tools, the schema ceiling', copy.find((row) => row.type === 'kit_tool_stack')?.content.tools.length === 16)
 }
 
+{
+  // 0026 places the last seven promoted sections on work, skills and
+  // experience. All three pages come from 0012, so the migration set already
+  // placed them; the replay proves it is placed once.
+  await db.exec(readFileSync(join(root, 'migrations', '0026_work_skills_and_experience_say_more.sql'), 'utf8'))
+  const placed = async (slug) => {
+    const { rows } = await db.query(
+      `select b.type from blocks b join pages p on p.id = b.page_id
+        where p.slug = $1 and b.deleted_at is null and b.type like 'kit_%' order by b.position`,
+      [slug],
+    )
+    return rows.map((row) => row.type).join(',')
+  }
+  check('work gets the band, the feed, press, awards and the reel, in that order', (await placed('work')) === 'kit_stats_marquee,kit_visual_feed,kit_press,kit_awards,kit_show_reel')
+  check('skills gets the comparison', (await placed('skills')) === 'kit_compare_table')
+  check('experience gets the milestones', (await placed('experience')) === 'kit_timeline')
+  const { rows: copy } = await db.query(
+    `select b.type, t.locale, t.status, t.content from block_translations t join blocks b on b.id = t.block_id
+      where b.type in ('kit_stats_marquee','kit_visual_feed','kit_press','kit_awards','kit_show_reel','kit_compare_table','kit_timeline')`,
+  )
+  check('seven sections, two languages each', copy.length === 14)
+  const drafts = copy.filter((row) => ['kit_press', 'kit_awards', 'kit_show_reel'].includes(row.type))
+  check('press, awards and the reel are drafts', drafts.every((row) => row.status === 'draft'))
+  check('and say so in their own text', drafts.every((row) => /Placeholder|PLACEHOLDER|Заглушка|ЗАГЛУШКА/.test(JSON.stringify(row.content))))
+  check('the rest are ready', copy.filter((row) => !drafts.includes(row)).every((row) => row.status === 'ready'))
+  check('every feed tile is a drawn illustration', copy.filter((row) => row.type === 'kit_visual_feed').every((row) => row.content.tiles.every((tile) => tile.image.startsWith('/assets/illustrations/'))))
+  check('the comparison never marks the other column as lacking what this profile lacks', copy.filter((row) => row.type === 'kit_compare_table').every((row) => row.content.rows.every((r) => r.a === true)))
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------

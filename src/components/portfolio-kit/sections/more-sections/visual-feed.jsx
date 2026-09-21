@@ -28,9 +28,18 @@ export function VisualFeed({ accent, content }) {
       <div className="feed-row">
         {c.tiles.map((tile, i) => (
           <div key={i} className="feed-cell">
-            {/* Placeholder art rather than a photo: the shape is picked by
-                position so a feed of any length stays visually varied. */}
+            {/* A picture when the tile has one; otherwise placeholder art,
+                its shape picked by position so a feed of any length stays
+                visually varied. */}
             <div className="feed-thumb" style={{ background: tile.color }}>
+              {tile.image ? (
+                <img
+                  src={tile.image}
+                  alt={tile.caption || ''}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              ) : (
               <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
                 <rect width="100" height="100" fill={tile.color}/>
                 {i % 3 === 0 && <circle cx="50" cy="50" r="28" fill="rgba(0,0,0,0.7)"/>}
@@ -42,11 +51,18 @@ export function VisualFeed({ accent, content }) {
                   </g>
                 )}
               </svg>
+              )}
             </div>
             <div className="feed-meta">
-              <span>♡ {tile.likes}</span>
-              <span className="dot-sep">·</span>
-              <span>{tile.age}</span>
+              {tile.caption ? (
+                <span>{tile.caption}</span>
+              ) : (
+                <>
+                  <span>♡ {tile.likes}</span>
+                  <span className="dot-sep">·</span>
+                  <span>{tile.age}</span>
+                </>
+              )}
             </div>
           </div>
         ))}
