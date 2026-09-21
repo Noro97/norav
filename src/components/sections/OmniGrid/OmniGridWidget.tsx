@@ -68,6 +68,8 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
     }
   }, { scope: sectionRef })
 
+  // The compiler cannot memoise TanStack Table's returned functions and says so; it skips this component, which is fine.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: shipments,
     columns: OMNIGRID_COLUMNS,

@@ -210,7 +210,7 @@ more.
 ## Checks
 
 ```bash
-npm run lint          # eslint over src packages server api and the configs
+npm run lint          # eslint over src packages server api and the configs; a warning fails it
 npx tsc --noEmit      # the build runs this first anyway
 npm test              # vitest + jsdom
 npm --prefix db test  # every migration applied to an ephemeral PGlite, invariants asserted
