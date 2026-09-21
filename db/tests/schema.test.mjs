@@ -523,6 +523,34 @@ await expectError(
   check('deleting a user cascades to their sessions', sessionRows.length === 0)
 }
 
+{
+  // 0019 hides the Vibe Coding section on About and places a card under the
+  // Experience timeline. No such section existed when the migration set ran,
+  // so one is planted and the file replayed.
+  const {
+    rows: [about],
+  } = await db.query(`select id from pages where slug = 'about'`)
+  const {
+    rows: [vibe],
+  } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'vibecoding', 2000) returning id`,
+    [about.id],
+  )
+  const file = readFileSync(join(root, 'migrations', '0019_the_founder_story_is_evidence.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: hidden } = await db.query(`select is_visible, deleted_at from blocks where id = $1`, [vibe.id])
+  check('the founder section is hidden, not deleted', hidden[0].is_visible === false && hidden[0].deleted_at === null)
+  const { rows: cards } = await db.query(
+    `select b.id, b.position, b.settings from blocks b join pages p on p.id = b.page_id
+      where p.slug = 'experience' and b.type = 'cta_banner' and b.anchor_id = 'proof-app' and b.deleted_at is null`,
+  )
+  check('one card under the timeline, however often the file runs', cards.length === 1 && Number(cards[0].position) === 2000)
+  check('it points at the case study', cards[0]?.settings.href === '/work/proof')
+  const { rows: copy } = await db.query(`select locale from block_translations where block_id = $1`, [cards[0]?.id])
+  check('in both languages', copy.length === 2)
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
