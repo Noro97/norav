@@ -31,36 +31,36 @@ function ArchitectureModalContent({ onClose }: Props) {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          className="absolute inset-0 bg-tertiary-shade/80 backdrop-blur-md"
           onClick={onClose}
         />
 
         {/* Content */}
         <motion.div
-          className="relative max-w-3xl w-full rounded-2xl border border-white/[0.06] bg-gradient-to-br from-card to-background backdrop-blur-xl overflow-hidden"
+          className="relative max-w-3xl w-full rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-card to-tertiary-bg backdrop-blur-xl overflow-hidden"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Top accent */}
-          <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent" />
+          <div className="h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent" />
 
           <div className="p-6 md:p-8">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2.5">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-50" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
                 </span>
-                <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+                <h3 className="type-label text-tertiary-ink/60">
                   {t('proof.architecture.title')}
                 </h3>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-lg border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white/60 hover:border-white/15 transition-all duration-200"
+                className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
                 aria-label={t('proof.architecture.close')}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -81,17 +81,17 @@ function ArchitectureModalContent({ onClose }: Props) {
                       width={node.width}
                       height={60}
                       rx={8}
-                      fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
-                      stroke="color-mix(in srgb, var(--color-crimson-500) 25%, transparent)"
+                      fill="color-mix(in srgb, var(--color-primary-500) 8%, transparent)"
+                      stroke="color-mix(in srgb, var(--color-primary-500) 25%, transparent)"
                       strokeWidth={1}
                     />
                     <text
                       x={node.x + node.width / 2}
                       y={65}
                       textAnchor="middle"
-                      fill="rgba(255,255,255,0.6)"
+                      fill="color-mix(in srgb, var(--color-tertiary-ink) 60%, transparent)"
                       fontSize={11}
-                      fontFamily="'JetBrains Mono', monospace"
+                      fontFamily="var(--font-mono)"
                     >
                       {t(node.key)}
                     </text>
@@ -112,7 +112,7 @@ function ArchitectureModalContent({ onClose }: Props) {
                         y1={midY}
                         x2={x2 - 4}
                         y2={midY}
-                        stroke="color-mix(in srgb, var(--color-crimson-500) 35%, transparent)"
+                        stroke="color-mix(in srgb, var(--color-primary-500) 35%, transparent)"
                         strokeWidth={1.5}
                         strokeDasharray="8 8"
                         className="animate-dash-flow"
@@ -121,7 +121,7 @@ function ArchitectureModalContent({ onClose }: Props) {
                       {/* Arrowhead */}
                       <polygon
                         points={`${x2 - 4},${midY - 4} ${x2 - 4},${midY + 4} ${x2},${midY}`}
-                        fill="color-mix(in srgb, var(--color-crimson-500) 40%, transparent)"
+                        fill="color-mix(in srgb, var(--color-primary-500) 40%, transparent)"
                       />
                     </g>
                   )
@@ -133,7 +133,7 @@ function ArchitectureModalContent({ onClose }: Props) {
             <div className="mt-6 grid grid-cols-5 gap-2">
               {['1. Upload', '2. Store', '3. Process', '4. Analyze', '5. Update'].map((step, i) => (
                 <div key={i} className="text-center">
-                  <span className="font-mono text-[11px] text-crimson-400/50 tracking-wide">{step}</span>
+                  <span className="font-mono text-body-xs text-primary-400/50 tracking-wide">{step}</span>
                 </div>
               ))}
             </div>

@@ -11,10 +11,10 @@ import type { VibeCodingContent, VibeCodingSettings } from '@norav/content-schem
 
 /** Tone names the CMS offers, resolved to the palette classes. */
 const TONE_CLASS: Record<string, string> = {
-  sky: 'border-sky-500/30 text-sky-400/70',
-  violet: 'border-violet-500/30 text-violet-400/70',
-  emerald: 'border-emerald-500/30 text-emerald-400/70',
-  crimson: 'border-crimson-500/30 text-crimson-400/70',
+  sky: 'border-secondary-500/30 text-secondary-400/70',
+  violet: 'border-secondary-700/40 text-secondary-300/70',
+  emerald: 'border-tertiary-ink/20 text-tertiary-ink/60',
+  crimson: 'border-primary-500/30 text-primary-400/70',
 }
 
 export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
@@ -74,23 +74,23 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
       <TerminalGhosting active={isInView} />
 
       {/* Soft fade edges for ghosting — transparent so page body shows through */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background/60 to-transparent pointer-events-none z-1" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background/60 to-transparent pointer-events-none z-1" />
+      <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-tertiary-bg/60 to-transparent pointer-events-none z-1" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-tertiary-bg/60 to-transparent pointer-events-none z-1" />
 
       {/* Section ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-crimson-500/[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary-500/[0.03] blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto">
         {/* Header */}
         <div className="vc-header mb-16">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
+          <h2 className="font-display text-display-xl font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
           </h2>
-          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-tertiary-ink/45 text-body-md md:text-body-lg max-w-xl leading-relaxed">
             {content.body}
           </p>
-          <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
+          <div className="h-px w-24 bg-gradient-to-r from-primary-500/50 to-transparent mt-8" />
         </div>
 
         {/* Two-column layout */}
@@ -98,22 +98,22 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
           {/* Left: Manifesto content */}
           <div className="flex flex-col gap-10">
             {/* Micro-copy */}
-            <blockquote className="pl-5 border-l-2 border-crimson-500/40">
-              <p className="font-mono text-sm md:text-base text-white/50 italic leading-relaxed">
+            <blockquote className="pl-5 border-l-2 border-primary-500/40">
+              <p className="font-mono text-body-sm md:text-body-md text-tertiary-ink/50 italic leading-relaxed">
                 <ScrambleText text={content.microCopy} variant={settings.codeReveal} />
               </p>
             </blockquote>
 
             {/* Systems synced */}
             <div>
-              <span className="font-mono text-xs text-white/40 uppercase tracking-[0.2em] block mb-3">
+              <span className="type-label text-tertiary-ink/40 block mb-3">
                 {content.systemsSyncedLabel}
               </span>
               <div className="flex flex-wrap gap-2">
                 {content.systems.map((system) => (
                   <span
                     key={system.name}
-                    className={`font-mono text-xs px-3 py-1.5 rounded-lg border bg-white/[0.02] ${TONE_CLASS[system.tone] ?? ''}`}
+                    className={`font-mono text-body-xs px-3 py-1.5 rounded-lg border bg-tertiary-ink/[0.02] ${TONE_CLASS[system.tone] ?? ''}`}
                   >
                     {system.name}
                   </span>
@@ -125,10 +125,10 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
             <div className="grid grid-cols-3 gap-4">
               {content.stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="font-display text-2xl md:text-3xl font-bold text-white/80 tracking-tight">
+                  <div className="font-display text-display-md font-black text-tertiary-ink/80">
                     {stat.value}
                   </div>
-                  <div className="font-mono text-xs text-white/40 uppercase tracking-wider mt-1">
+                  <div className="type-label text-tertiary-ink/40 mt-1">
                     {stat.label}
                   </div>
                 </div>

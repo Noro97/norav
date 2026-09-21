@@ -11,7 +11,7 @@ export function GooeyNavIndicator({ className = '' }: { className?: string }) {
   return (
     <motion.span
       layoutId="nav-gooey-indicator"
-      className={`absolute inset-0 -z-10 rounded-full bg-crimson-500/15 ${className}`}
+      className={`absolute inset-0 -z-10 rounded-full bg-primary-500/15 ${className}`}
       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
     />
   )

@@ -29,19 +29,19 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
         className="relative py-10"
         aria-label={content.label}
       >
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
         <p className="text-center label-mono mb-6">{content.label}</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 max-w-4xl mx-auto">
           {names.map((tech, i) => (
             <span
               key={i}
-              className="font-display text-lg md:text-xl font-semibold text-white/25 hover:text-white/50 transition-colors duration-300 tracking-tight"
+              className="font-display text-body-lg font-semibold text-tertiary-ink/25 hover:text-tertiary-ink/50 transition-colors duration-300 tracking-tight"
             >
               {tech}
             </span>
           ))}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
       </section>
     )
   }
@@ -55,13 +55,13 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
       className="relative py-10 overflow-hidden"
       aria-label={content.label}
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
 
       <p className="text-center label-mono mb-6">{content.label}</p>
 
       {/* Fade edges */}
-      <div className="absolute left-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-r from-tertiary-bg to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 bottom-0 top-[3.25rem] w-32 bg-gradient-to-l from-tertiary-bg to-transparent z-10 pointer-events-none" />
 
       <span className="sr-only">{names.join(', ')}</span>
 
@@ -72,15 +72,15 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
       >
         {items.map((tech, i) => (
           <span key={i} className="flex items-center shrink-0">
-            <span className="font-display text-2xl md:text-3xl font-semibold text-white/15 hover:text-white/40 transition-colors duration-300 px-7 tracking-tight">
+            <span className="font-display text-display-md font-black text-tertiary-ink/15 hover:text-tertiary-ink/40 transition-colors duration-300 px-7">
               {tech}
             </span>
-            <span className="text-crimson-500/40 text-xs">&#9670;</span>
+            <span className="text-primary-500/40 text-body-xs">&#9670;</span>
           </span>
         ))}
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
     </section>
   )
 }

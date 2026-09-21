@@ -63,23 +63,23 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
       <div className="relative z-10 w-full max-w-4xl mx-auto">
         {sectionLabel && <span className="label-mono">{sectionLabel}</span>}
         {title && (
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
             {title}
           </h2>
         )}
-        {intro && <p className="text-white/40 text-base max-w-2xl leading-relaxed">{intro}</p>}
+        {intro && <p className="text-tertiary-ink/40 text-body-md max-w-2xl leading-relaxed">{intro}</p>}
 
         {metrics.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
             {metrics.map((metric, index) => (
               <div
                 key={index}
-                className="detail-item rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl px-5 py-6"
+                className="detail-item rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-5 py-6"
               >
-                <div className="font-mono text-2xl md:text-3xl text-crimson-400 tabular-nums">
+                <div className="font-mono text-display-md text-primary-400 tabular-nums">
                   {metric.value}
                 </div>
-                <div className="text-white/40 text-xs mt-2 leading-snug">{metric.label}</div>
+                <div className="text-tertiary-ink/40 text-body-xs mt-2 leading-snug">{metric.label}</div>
               </div>
             ))}
           </div>
@@ -90,17 +90,17 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
             {decisions.map((decision, index) => (
               <li
                 key={index}
-                className="detail-item group relative border-t border-white/[0.06] py-7 transition-colors duration-300 hover:border-crimson-500/20 last:border-b"
+                className="detail-item group relative border-t border-tertiary-ink/[0.06] py-7 transition-colors duration-300 hover:border-primary-500/20 last:border-b"
               >
                 <div className="flex gap-5 md:gap-8">
-                  <span className="label-mono shrink-0 pt-1 text-crimson-400/50 tabular-nums">
+                  <span className="label-mono shrink-0 pt-1 text-primary-400/50 tabular-nums">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <h3 className="text-white font-semibold text-base md:text-lg">
+                    <h3 className="text-tertiary-ink font-semibold text-body-md md:text-body-lg">
                       {decision.title}
                     </h3>
-                    <p className="text-white/40 text-sm md:text-base leading-relaxed mt-2">
+                    <p className="text-tertiary-ink/40 text-body-sm md:text-body-md leading-relaxed mt-2">
                       {decision.body}
                     </p>
                   </div>

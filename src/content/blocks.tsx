@@ -44,32 +44,32 @@ const named = <T extends string>(loader: () => Promise<Record<T, ComponentType<B
   lazy(() => loader().then((module) => ({ default: module[name] })))
 
 export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
-  // The hero is the LCP element: it stays in the entry chunk.
-  hero: HeroSection,
+ // The hero is the LCP element: it stays in the entry chunk.
+ hero: HeroSection,
 
-  about: named(() => import('@/components/sections/AboutHero'), 'AboutHero'),
+ about: named(() => import('@/components/sections/AboutHero'), 'AboutHero'),
   impact_strip: named(() => import('@/components/sections/ImpactStrip'), 'ImpactStrip'),
-  capabilities: named(() => import('@/components/sections/Capabilities'), 'Capabilities'),
-  experience: named(() => import('@/components/sections/ExperienceTimeline'), 'ExperienceTimeline'),
-  skills: named(() => import('@/components/sections/SkillsMatrix'), 'SkillsMatrix'),
+ capabilities: named(() => import('@/components/sections/Capabilities'), 'Capabilities'),
+ experience: named(() => import('@/components/sections/ExperienceTimeline'), 'ExperienceTimeline'),
+ skills: named(() => import('@/components/sections/SkillsMatrix'), 'SkillsMatrix'),
   tech_marquee: named(() => import('@/components/sections/TechMarquee'), 'TechMarquee'),
   bento_grid: named(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'),
-  vibecoding: named(() => import('@/components/sections/VibeCoding/VibeCoding'), 'VibeCoding'),
+ vibecoding: named(() => import('@/components/sections/VibeCoding/VibeCoding'), 'VibeCoding'),
   projects_intro: named(() => import('@/components/sections/ProjectsIntro'), 'ProjectsIntro'),
-  logistics: named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'),
-  merch: named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'),
-  ecommerce: named(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'),
-  omnigrid: named(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'),
-  proof: named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'),
+ logistics: named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'),
+ merch: named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'),
+ ecommerce: named(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'),
+ omnigrid: named(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'),
+ proof: named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'),
 
-  // The reasoning under each demo. One component, five types — a type names
-  // exactly one block, so each study needs its own.
+ // The reasoning under each demo. One component, five types — a type names
+ // exactly one block, so each study needs its own.
   logistics_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'LogisticsDetail'),
   merch_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'MerchDetail'),
   ecommerce_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'EcommerceDetail'),
   omnigrid_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'OmniGridDetail'),
   proof_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'ProofDetail'),
-  workflow: named(
+ workflow: named(
     () => import('@/components/sections/WorkflowAutomation/WorkflowAutomation'),
     'WorkflowAutomation',
   ),
@@ -78,20 +78,20 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   terminal_footer: named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'),
   site_footer: named(() => import('@/components/sections/SiteFooter'), 'SiteFooter'),
 
-  // Assembled from the shared effects rather than built around a widget of
-  // their own, and usable on any page as many times as it needs them.
-  gallery: named(() => import('@/components/sections/GallerySection'), 'GallerySection'),
+ // Assembled from the shared effects rather than built around a widget of
+ // their own, and usable on any page as many times as it needs them.
+ gallery: named(() => import('@/components/sections/GallerySection'), 'GallerySection'),
   cta_banner: named(() => import('@/components/sections/CtaBanner'), 'CtaBanner'),
-  testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),
-  metrics: named(() => import('@/components/sections/MetricsSection'), 'MetricsSection'),
+ testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),
+ metrics: named(() => import('@/components/sections/MetricsSection'), 'MetricsSection'),
 
-  // Any one of the 53 sections imported from the portfolio project, picked in
-  // the CMS. One type, because the choice is a setting rather than a schema.
+ // Any one of the 53 sections imported from the portfolio project, picked in
+ // the CMS. One type, because the choice is a setting rather than a schema.
   portfolio_section: named(() => import('@/components/sections/PortfolioSection'), 'PortfolioSection'),
 
-  // The promoted kit sections: same components, now reading their copy from the
-  // CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
-  // every one of them needs, so a section is one line here.
+ // The promoted kit sections: same components, now reading their copy from the
+ // CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
+ // every one of them needs, so a section is one line here.
   kit_stats_marquee: defineKitSection<KitStatsMarqueeContent>('kit_stats_marquee', () => import('@/components/portfolio-kit/sections/extra-sections/stats-marquee'), 'StatsMarquee'),
   kit_services: defineKitSection<KitServicesContent>('kit_services', () => import('@/components/portfolio-kit/sections/extra-sections/services'), 'Services'),
   kit_process: defineKitSection<KitProcessContent>('kit_process', () => import('@/components/portfolio-kit/sections/extra-sections/process'), 'Process'),

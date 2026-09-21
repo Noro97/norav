@@ -18,13 +18,13 @@ interface WorkflowDiagramProps {
 }
 
 const NODE_STYLES: Record<WorkflowNode['type'], { border: string; glow: string }> = {
-  trigger: { border: 'border-violet-500/40', glow: 'shadow-[0_0_12px_rgba(108,58,237,0.3)]' },
-  action: { border: 'border-crimson-500/40', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_30%,_transparent)]' },
-  ai: { border: 'border-violet-500/50', glow: 'shadow-[0_0_12px_rgba(108,58,237,0.4)]' },
-  output: { border: 'border-emerald-500/40', glow: 'shadow-[0_0_12px_rgba(34,197,94,0.3)]' },
+  trigger: { border: 'border-secondary-500/40', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-secondary-500)_30%,_transparent)]' },
+  action: { border: 'border-primary-500/40', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-primary-500)_30%,_transparent)]' },
+  ai: { border: 'border-secondary-500/50', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-secondary-500)_40%,_transparent)]' },
+  output: { border: 'border-tertiary-ink/40', glow: 'shadow-[0_0_12px_color-mix(in_srgb,_var(--color-tertiary-ink)_20%,_transparent)]' },
 }
 
-const NODE_INACTIVE = 'border-white/[0.06]'
+const NODE_INACTIVE = 'border-tertiary-ink/[0.06]'
 
 export function WorkflowDiagram({ workflow, animate }: WorkflowDiagramProps) {
   const [activeNode, setActiveNode] = useState<number>(-1)
@@ -59,7 +59,7 @@ function NodeBox({ node, isActive }: { node: WorkflowNode; isActive: boolean }) 
   const styles = NODE_STYLES[node.type]
   return (
     <div
-      className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border bg-white/[0.02] transition-all duration-300 ${
+      className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border bg-tertiary-ink/[0.02] transition-all duration-300 ${
         isActive ? `${styles.border} ${styles.glow}` : NODE_INACTIVE
       }`}
     >
@@ -68,8 +68,8 @@ function NodeBox({ node, isActive }: { node: WorkflowNode; isActive: boolean }) 
         return Icon ? <Icon size={18} className="shrink-0" /> : null
       })()}
       <span
-        className={`font-mono text-sm transition-colors duration-300 ${
-          isActive ? 'text-white/90' : 'text-white/40'
+        className={`font-mono text-body-sm transition-colors duration-300 ${
+          isActive ? 'text-tertiary-ink/90' : 'text-tertiary-ink/40'
         }`}
       >
         {node.label}
@@ -83,7 +83,7 @@ function VerticalArrow({ active }: { active: boolean }) {
     <div className="flex flex-col items-center shrink-0 py-0.5">
       <div
         className={`w-px h-4 transition-colors duration-500 ${
-          active ? 'bg-violet-500/60' : 'bg-white/10'
+          active ? 'bg-secondary-500/60' : 'bg-tertiary-ink/10'
         }`}
       />
       <div

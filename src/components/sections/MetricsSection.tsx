@@ -33,24 +33,24 @@ export function MetricsSection({ anchorId, blockId }: { anchorId?: string | null
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+        <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
           {content.title}
         </h2>
         {content.description && (
-          <p className="text-white/40 text-base max-w-xl mb-12">{content.description}</p>
+          <p className="text-tertiary-ink/40 text-body-md max-w-xl mb-12">{content.description}</p>
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
           {content.metrics.map((metric, index) => (
             <div key={index} className="metric-item flex flex-col items-center text-center gap-2">
-              <span className="font-display text-4xl md:text-5xl font-bold text-white">
+              <span className="font-display text-display-lg font-black text-tertiary-ink">
                 {settings.countUp ? (
                   <CountUp target={metric.value} prefix={metric.prefix} suffix={metric.suffix} />
                 ) : (
                   `${metric.prefix}${metric.value}${metric.suffix}`
                 )}
               </span>
-              <span className="font-mono text-xs text-white/40 tracking-wider uppercase">
+              <span className="type-label text-tertiary-ink/40">
                 {metric.label}
               </span>
             </div>

@@ -24,9 +24,9 @@ type CacheStatus = 'FRESH' | 'STALE' | 'FETCHING'
 
 const CACHE_CYCLE: CacheStatus[] = ['FRESH', 'FRESH', 'FRESH', 'STALE', 'FETCHING', 'FRESH']
 const CACHE_COLORS: Record<CacheStatus, string> = {
-  FRESH: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  STALE: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  FETCHING: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+  FRESH: 'bg-status-success/20 text-status-success border-status-success/30',
+  STALE: 'bg-status-warning/20 text-status-warning border-status-warning/30',
+  FETCHING: 'bg-secondary-500/20 text-secondary-400 border-secondary-500/30',
 }
 
 // Only use first 50 rows for the mini table
@@ -96,25 +96,25 @@ export function OmniGridBentoTile({ className = '' }: Props) {
       ref={tileRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-cyan-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-cyan-500)_15%,_transparent)] ${className}`}
+      className={`bento-tile group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-secondary-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-secondary-500)_15%,_transparent)] ${className}`}
     >
       {/* Gradient mesh — cyan/teal */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
           background:
-            'radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--color-cyan-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(8,145,178,0.3) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--color-secondary-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, color-mix(in srgb, var(--color-secondary-600) 30%, transparent) 0%, transparent 60%)',
         }}
       />
 
       <BentoVideoPlaceholder variant="omnigrid" active={isHovered} />
 
       {/* Top accent line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/40 to-transparent" />
 
       <motion.div className="relative p-6 md:p-8" style={{ y }}>
         {/* Case study watermark */}
-        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-white/[0.02] select-none pointer-events-none tracking-tighter">
+        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-tertiary-ink/[0.02] select-none pointer-events-none tracking-tighter">
           04
         </div>
 
@@ -125,7 +125,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="text-cyan-400"
+              className="text-secondary-400"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -133,7 +133,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             </motion.div>
           )}
           <span
-            className={`px-2 py-0.5 text-[11px] font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
+            className={`px-2 py-0.5 text-body-xs font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
           >
             {cacheStatus}
           </span>
@@ -141,19 +141,19 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-xs text-cyan-400/70 tracking-[0.25em] uppercase">
+          <span className="type-label text-secondary-400/70">
             Case Study 04
           </span>
-          <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
         </div>
 
         {/* Title */}
-        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-cyan-50 transition-colors duration-300">
+        <h3 className="font-display text-display-sm font-black text-tertiary-ink mb-2 group-hover:text-secondary-50 transition-colors duration-300">
           {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-white/60 leading-relaxed mb-4 max-w-lg">
+        <p className="text-body-sm text-tertiary-ink/60 leading-relaxed mb-4 max-w-lg">
           {copy?.description ?? ''}
         </p>
 
@@ -164,25 +164,25 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Filter..."
-            className="w-full max-w-[200px] px-2.5 py-1 text-xs font-mono text-white/70 bg-black/40 border border-white/[0.08] rounded-md placeholder:text-white/35 focus:outline-none focus:border-cyan-500/30 transition-colors"
+            className="w-full max-w-[200px] px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/70 bg-tertiary-shade/40 border border-tertiary-ink/[0.08] rounded-md placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors"
           />
         </div>
 
         {/* Mini Bloomberg table */}
-        <div className="mb-5 rounded-lg bg-black/40 border border-white/[0.08] overflow-x-auto scrollbar-hidden" data-lenis-prevent>
-          <table className="w-full min-w-[450px] text-xs font-mono">
+        <div className="mb-5 rounded-lg bg-tertiary-shade/40 border border-tertiary-ink/[0.08] overflow-x-auto scrollbar-hidden" data-lenis-prevent>
+          <table className="w-full min-w-[450px] text-body-xs font-mono">
             <thead>
-              <tr className="border-b border-white/[0.06]">
+              <tr className="border-b border-tertiary-ink/[0.06]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="px-2 py-1.5 text-left text-white/40 font-normal tracking-wider uppercase cursor-pointer hover:text-cyan-400/80 transition-colors select-none"
+                    className="px-2 py-1.5 text-left text-tertiary-ink/40 font-normal tracking-wider uppercase cursor-pointer hover:text-secondary-400/80 transition-colors select-none"
                   >
                     <span className="flex items-center gap-1">
                       {flexRender(header.column.columnDef.header, header.getContext())}
-                      {header.column.getIsSorted() === 'asc' && <span className="text-cyan-400">↑</span>}
-                      {header.column.getIsSorted() === 'desc' && <span className="text-cyan-400">↓</span>}
+                      {header.column.getIsSorted() === 'asc' && <span className="text-secondary-400">↑</span>}
+                      {header.column.getIsSorted() === 'desc' && <span className="text-secondary-400">↓</span>}
                     </span>
                   </th>
                 ))}
@@ -192,15 +192,15 @@ export function OmniGridBentoTile({ className = '' }: Props) {
               {visibleRows.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors"
+                  className="border-b border-tertiary-ink/[0.03] hover:bg-tertiary-ink/[0.02] transition-colors"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
                       className={`px-2 py-1 ${
                         cell.column.id === 'status'
-                          ? STATUS_COLORS[cell.getValue() as ShipmentStatus] ?? 'text-white/50'
-                          : 'text-white/50'
+                          ? STATUS_COLORS[cell.getValue() as ShipmentStatus] ?? 'text-tertiary-ink/50'
+                          : 'text-tertiary-ink/50'
                       }`}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -217,7 +217,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
           {OMNIGRID_PROJECT.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-xs font-mono text-white/45 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>
@@ -228,11 +228,11 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         <MagneticButton
           onClick={handleScrollTo}
           aria-label={copy?.cta ?? ''}
-          className="inline-flex items-center gap-2.5 text-xs font-mono text-cyan-400/80 uppercase tracking-[0.15em] group/btn hover:text-cyan-300 transition-colors duration-300"
+          className="type-label inline-flex items-center gap-2.5 text-secondary-400/80 group/btn hover:text-secondary-300 transition-colors duration-300"
         >
           <span className="relative">
             {copy?.cta ?? ''}
-            <span className="absolute -bottom-px left-0 w-0 h-px bg-cyan-500/50 group-hover/btn:w-full transition-all duration-300" />
+            <span className="absolute -bottom-px left-0 w-0 h-px bg-secondary-500/50 group-hover/btn:w-full transition-all duration-300" />
           </span>
           <svg
             width="12"
@@ -251,7 +251,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
       </motion.div>
 
       {/* Bottom edge glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-500/30 transition-all duration-700" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary-500/0 to-transparent group-hover:via-secondary-500/30 transition-all duration-700" />
     </div>
   )
 }

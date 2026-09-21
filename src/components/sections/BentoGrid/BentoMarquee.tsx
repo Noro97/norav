@@ -21,11 +21,11 @@ export function BentoMarquee() {
   return (
     <div className="relative mt-12 py-5 overflow-hidden">
       {/* Top rule */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
 
       {/* Fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-tertiary-bg to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-tertiary-bg to-transparent z-10 pointer-events-none" />
 
       {/* Screen reader text */}
       <span className="sr-only">
@@ -40,16 +40,16 @@ export function BentoMarquee() {
       >
         {items.map((principle, i) => (
           <span key={i} className="flex items-center shrink-0">
-            <span className="font-mono text-sm text-white/45 uppercase tracking-[0.2em] px-6">
+            <span className="font-mono text-body-sm text-tertiary-ink/45 uppercase tracking-[0.2em] px-6">
               {principle}
             </span>
-            <span className="text-crimson-500/40 text-xs">&#9670;</span>
+            <span className="text-primary-500/40 text-body-xs">&#9670;</span>
           </span>
         ))}
       </div>
 
       {/* Bottom rule */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
     </div>
   )
 }

@@ -18,12 +18,27 @@
   }
 }
 
-/* ===== THEME ===== */
-@theme {
-  --font-family-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
-  --font-family-sans: 'Inter', system-ui, sans-serif;
-  --font-family-mono: 'JetBrains Mono', monospace;
+/* ===== THE DESIGN SYSTEM =====
+   Three colour roles, one type scale. Everything a component paints or sets
+   type with is one of the names below; the full account is in
+   docs/DESIGN_SYSTEM.md.
 
+   Two layers. The *physical* palette lives on :root, in the names the
+   published theme writes (`--color-crimson-*`, `--color-cyan-*`, the
+   surfaces derived from the background). Those names are an implementation
+   detail: a snapshot published last year carries them, so they cannot change,
+   and no component uses them. The *semantic* layer below is what components
+   use — three roles, each an alias onto the physical layer, so a theme
+   change in the CMS repaints the roles without the components knowing.
+
+   `initial` on the colour, type and font namespaces removes Tailwind's own
+   palette and scale: `bg-emerald-500`, `text-white`, `text-xs` and
+   `font-serif` do not compile here. A class that is not in the system is not
+   a slightly-off colour; it is nothing, and the lint rule says so aloud. */
+
+/* ---------- Physical palette — written by the published theme, read by
+   nothing but the aliases below and the kit's stylesheet. ---------- */
+:root {
   --color-background: #0a0a1a;
   --color-foreground: #e0e0e0;
   --color-card: #0d0d1f;
@@ -39,8 +54,13 @@
   --color-border: rgba(255, 255, 255, 0.08);
   --color-input: rgba(255, 255, 255, 0.06);
   --color-ring: #B51A2B;
+  /* The pole the neutral alphas are mixed from: white on a dark background,
+     black on a light one. Written by the theme since the same publish that
+     introduced it; older snapshots fall back to this, and every theme
+     published so far is dark. */
+  --color-ink: #ffffff;
 
-  /* Crimson scale — primary accent */
+  /* Accent scale — step 500 is the accent verbatim, the rest derived. */
   --color-crimson-50: #fef2f3;
   --color-crimson-100: #fde6e8;
   --color-crimson-200: #fbc9cd;
@@ -52,9 +72,7 @@
   --color-crimson-800: #3d1322;
   --color-crimson-900: #2a0e17;
 
-  /* Cyan scale — the second accent: case studies and the interactive widgets.
-     Named after Tailwind's own cyan so the utilities already in the codebase
-     follow the theme without the components being touched. */
+  /* Second accent — case studies and the interactive widgets. */
   --color-cyan-50: #f5fcfd;
   --color-cyan-100: #ebf9fb;
   --color-cyan-200: #d7f2f6;
@@ -66,39 +84,48 @@
   --color-cyan-800: #154c55;
   --color-cyan-900: #0f353a;
 
-  /* Status colours — meaning, not brand, so they do not follow the accent.
+  /* Status — meaning, not brand, so it does not follow the accent.
      "Delayed" stays red on a green-accented site. */
   --color-success: #22c55e;
   --color-warning: #eab308;
   --color-danger: #ef4444;
   --color-info: #38bdf8;
+}
 
-  /* Gold scale — secondary accent, used for highlight/emphasis hierarchy */
-  --color-gold-50: #fdf8ec;
-  --color-gold-100: #faeecb;
-  --color-gold-200: #f3dc98;
-  --color-gold-300: #e9c364;
-  --color-gold-400: #dcaa42;
-  --color-gold-500: #c4922f;
-  --color-gold-600: #9c7325;
-  --color-gold-700: #715421;
-  --color-gold-800: #4a381c;
-  --color-gold-900: #2c2211;
+@theme {
+  /* Tailwind's own palette, type scale, families and weights: gone. What
+     follows is the whole vocabulary. */
+  --color-*: initial;
+  --text-*: initial;
+  --font-*: initial;
+  --font-weight-*: initial;
 
-  /* Radius scale */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
-  --radius-2xl: 28px;
-  --radius-3xl: 36px;
-  --radius-full: 9999px;
+  /* ---------- Type ----------
+     Three families. `--font-family-*` were the only names defined before,
+     and they are not Tailwind's namespace — so `font-mono` compiled to the
+     Menlo stack and `font-display` to nothing at all. Both names are kept:
+     the short ones make the utilities, the long ones are what the kit's
+     stylesheet and the theme reach for. */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-family-sans: var(--font-sans);
+  --font-family-display: var(--font-display);
+  --font-family-mono: var(--font-mono);
 
-  /* Type scale — fluid, clamp-based. Use via text-display-* and text-body-* utilities. */
+  /* Four weights. Display is Inter Tight, which ships at 900 only; 600 is
+     the heaviest body weight — 700 read as a second, softer headline. */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-black: 900;
+
+  /* Fluid display scale for Inter Tight. Tracking tightens and leading
+     closes as the size grows — one value of each per size, never one for
+     all. */
   --text-display-2xl: clamp(3.5rem, 5vw + 2rem, 7rem);
   --text-display-2xl--line-height: 0.98;
-  --text-display-2xl--letter-spacing: -0.02em;
+  --text-display-2xl--letter-spacing: -0.03em;
   --text-display-xl: clamp(2.75rem, 4vw + 1.5rem, 5rem);
   --text-display-xl--line-height: 1.02;
   --text-display-xl--letter-spacing: -0.02em;
@@ -112,6 +139,7 @@
   --text-display-sm--line-height: 1.2;
   --text-display-sm--letter-spacing: -0.01em;
 
+  /* Body scale for Inter. Leading opens as the size shrinks. */
   --text-body-lg: clamp(1.0625rem, 0.4vw + 1rem, 1.25rem);
   --text-body-lg--line-height: 1.6;
   --text-body-md: 1rem;
@@ -121,8 +149,81 @@
   --text-body-xs: 0.75rem;
   --text-body-xs--line-height: 1.5;
 
+  /* The one size for labels, eyebrows and table headings — always mono,
+     always uppercase, always tracked wide (see `.type-label` below). */
+  --text-label: 0.7rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.2em;
+
+  /* Radius scale */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-3xl: 36px;
+  --radius-full: 9999px;
+
   --animate-glitch: glitch 0.4s infinite alternate;
   --animate-shift: shift 1s ease-in-out infinite alternate;
+}
+
+/* ---------- Semantic roles — the only colours a component may name. ----------
+   `inline` so a utility carries the physical variable itself
+   (`background-color: var(--color-crimson-500)`), which the theme repaints. */
+@theme inline {
+  /* PRIMARY — the brand. The accent the owner chose in the CMS, and the one
+     colour of emphasis on the page: the active nav item, the primary button,
+     the highlighted word in a heading, the glow. Use it once per view. */
+  --color-primary-50: var(--color-crimson-50);
+  --color-primary-100: var(--color-crimson-100);
+  --color-primary-200: var(--color-crimson-200);
+  --color-primary-300: var(--color-crimson-300);
+  --color-primary-400: var(--color-crimson-400);
+  --color-primary-500: var(--color-crimson-500);
+  --color-primary-600: var(--color-crimson-600);
+  --color-primary-700: var(--color-crimson-700);
+  --color-primary-800: var(--color-crimson-800);
+  --color-primary-900: var(--color-crimson-900);
+  --color-primary-fg: var(--color-primary-foreground);
+
+  /* SECONDARY — the supporting accent: the case studies, the interactive
+     widgets, a second thing that wants attention next to a primary one.
+     Also the categorical colour — a tag, a chart series, a node type — where
+     the old code reached for a random Tailwind hue. */
+  --color-secondary-50: var(--color-cyan-50);
+  --color-secondary-100: var(--color-cyan-100);
+  --color-secondary-200: var(--color-cyan-200);
+  --color-secondary-300: var(--color-cyan-300);
+  --color-secondary-400: var(--color-cyan-400);
+  --color-secondary-500: var(--color-cyan-500);
+  --color-secondary-600: var(--color-cyan-600);
+  --color-secondary-700: var(--color-cyan-700);
+  --color-secondary-800: var(--color-cyan-800);
+  --color-secondary-900: var(--color-cyan-900);
+
+  /* TERTIARY — the neutral role: every surface, every hairline, every tone
+     of text that is not an accent, every disabled state. Named by what it
+     is for, not by a step number, because the same name is white on a dark
+     theme and black on a light one. */
+  --color-tertiary-bg: var(--color-background);        /* the page */
+  --color-tertiary-card: var(--color-card);            /* a card on it */
+  --color-tertiary-raised: var(--color-muted);         /* a panel above that */
+  --color-tertiary-fg: var(--color-foreground);        /* body text */
+  --color-tertiary-muted: var(--color-muted-foreground); /* secondary text */
+  --color-tertiary-line: var(--color-border);          /* hairlines, 8% */
+  --color-tertiary-line-soft: var(--color-input);      /* inputs, 6% */
+  --color-tertiary-ink: var(--color-ink);              /* the pole: `ink/40` is 40% text, `ink/[0.03]` a tint */
+  --color-tertiary-shade: #000000;                     /* the other pole: scrims, code panels — always dark */
+
+  /* STATUS — the one set outside the three roles. Meaning, not brand: a
+     delayed shipment is red whatever the accent is. Only for state that a
+     reader has to read correctly — never as decoration. */
+  --color-status-success: var(--color-success);
+  --color-status-warning: var(--color-warning);
+  --color-status-danger: var(--color-danger);
+  --color-status-info: var(--color-info);
 }
 
 @keyframes glitch {
@@ -146,7 +247,34 @@
 }
 
 
-/* ===== CRIMSON GLOW ===== */
+/* ===== TYPE ROLES =====
+   The four things text on this site is. Sizes and families come from the
+   scale above; these name the combinations so a component says what a run
+   of text *is* rather than restating five utilities. */
+
+/* A label: an eyebrow over a heading, a table header, a badge, a caption.
+   No colour of its own — pair it with a tertiary tone or an accent. */
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+}
+
+/* The label in the brand colour — the section eyebrow. */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-500);
+}
+
+/* ===== PRIMARY GLOW ===== */
 .crimson-glow::before {
   content: '';
   position: absolute;
@@ -155,45 +283,25 @@
   transform: translate(-50%, -50%);
   width: 60%;
   height: 60%;
-  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--color-crimson-500) 8%, transparent) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
-}
-
-/* ===== LABEL STYLE ===== */
-.label-mono {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-crimson-500);
-  font-weight: 500;
 }
 
 /* ===== SECTION DIVIDER ===== */
 .section-divider {
   width: 60px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-crimson-500), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-primary-500), transparent);
   margin: 0 auto 2rem;
-}
-
-/* ===== LABEL STYLE — gold variant, for secondary emphasis ===== */
-.label-mono-gold {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #dcaa42;
-  font-weight: 500;
 }
 
 /* ===== CASE STUDY CARD — shared surface treatment for all project widgets ===== */
 .case-study-card {
   position: relative;
   border-radius: var(--radius-2xl);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  border: 1px solid var(--color-tertiary-line);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-tertiary-ink) 3%, transparent), transparent);
   backdrop-filter: blur(20px);
 }
 
@@ -202,8 +310,8 @@
   align-items: center;
   gap: 0.375rem;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid color-mix(in srgb, var(--color-tertiary-ink) 10%, transparent);
+  background: color-mix(in srgb, var(--color-tertiary-ink) 4%, transparent);
   padding: 0.25rem 0.75rem;
 }
 
@@ -233,7 +341,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-crimson-500) 40%, transparent) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-500) 40%, transparent) 0%, transparent 70%);
   animation: gmap-pulse 2s ease-in-out infinite;
   animation-delay: calc(var(--intensity) * -2s);
 }
@@ -245,8 +353,8 @@
   height: calc(3px + var(--intensity) * 4px);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--color-crimson-500) 80%, transparent);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--color-crimson-500) 50%, transparent);
+  background: color-mix(in srgb, var(--color-primary-500) 80%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-primary-500) 50%, transparent);
 }
 @keyframes gmap-pulse {
   0%, 100% { transform: scale(0.7); opacity: 0.5; }
@@ -278,8 +386,8 @@
    permanently instead of only on hover. Cascaded from the grid container so no
    individual tile component (there are eight) needs to know about it. */
 .bento-glow .bento-tile {
-  border-color: color-mix(in srgb, var(--color-crimson-500) 25%, transparent);
-  box-shadow: 0 0 24px -8px color-mix(in srgb, var(--color-crimson-500) 25%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+  box-shadow: 0 0 24px -8px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
 /* ===== SHARED EFFECT COMPONENTS (src/components/ui/effects) ===== */

@@ -89,15 +89,15 @@ export function Navigation() {
   }, [dropdownOpen])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 backdrop-blur-md bg-background/60 border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 backdrop-blur-md bg-tertiary-bg/60 border-b border-tertiary-ink/5">
       {/* Logo */}
       <Link
         to={hrefFor(HOME_SLUG, locale)}
         onClick={(event) => here === HOME_SLUG && handleClick(event, 'hero')}
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
-        <span className="hidden sm:inline font-mono text-sm font-semibold tracking-widest uppercase">
-          <span className="text-crimson-500">nor</span><span className="text-crimson-500">av</span><span className="text-white/45">.</span><span className="text-crimson-500">dev</span>
+        <span className="hidden sm:inline font-mono text-body-sm font-semibold tracking-widest uppercase">
+          <span className="text-primary-500">nor</span><span className="text-primary-500">av</span><span className="text-tertiary-ink/45">.</span><span className="text-primary-500">dev</span>
         </span>
       </Link>
 
@@ -114,8 +114,8 @@ export function Navigation() {
                 relative flex items-center gap-2 px-3 py-2 rounded-full
                 transition-all duration-300 ease-out
                 ${isActive && navIndicator === 'dot'
-                  ? 'bg-crimson-500/10'
-                  : 'hover:bg-white/5'
+                  ? 'bg-primary-500/10'
+                  : 'hover:bg-tertiary-ink/5'
                 }
               `}
             >
@@ -125,18 +125,16 @@ export function Navigation() {
                   block w-1.5 h-1.5 rounded-full shrink-0
                   transition-all duration-300
                   ${isActive
-                    ? 'bg-crimson-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
-                    : 'bg-white/25 group-hover:bg-white/40'
+                    ? 'bg-primary-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
+                    : 'bg-tertiary-ink/25 group-hover:bg-tertiary-ink/40'
                   }
                 `}
               />
               <span
-                className={`
-                  text-xs font-mono tracking-wider uppercase
-                  transition-all duration-300
+                className={`type-label transition-all duration-300
                   ${isActive
-                    ? 'text-crimson-400'
-                    : 'text-white/40 hover:text-white/60'
+                    ? 'text-primary-400'
+                    : 'text-tertiary-ink/40 hover:text-tertiary-ink/60'
                   }
                 `}
               >
@@ -147,7 +145,7 @@ export function Navigation() {
         })}
         <Link
           to={hrefFor(here, otherLocale(locale))}
-          className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          className="type-label px-3 py-2 rounded-full text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/5 transition-all duration-300"
           aria-label="Switch language"
           hrefLang={otherLocale(locale)}
         >
@@ -160,7 +158,7 @@ export function Navigation() {
         <div className="relative">
           <button
             onClick={() => setDropdownOpen((v) => !v)}
-            className="flex items-center gap-1.5 font-mono text-xs text-white/40 tracking-widest uppercase"
+            className="type-label flex items-center gap-1.5 text-tertiary-ink/40"
           >
             {sections.find((item) => item.anchor === activeSection)?.label ?? ''}
             <ChevronDown
@@ -170,7 +168,7 @@ export function Navigation() {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-white/10 bg-background/90 backdrop-blur-md py-1.5 shadow-xl">
+            <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-tertiary-ink/10 bg-tertiary-bg/90 backdrop-blur-md py-1.5 shadow-xl">
               {sections.map((section) => {
                 const isActive = section.anchor !== null && activeSection === section.anchor
                 return (
@@ -181,13 +179,12 @@ export function Navigation() {
                       if (section.anchor) handleClick(event, section.anchor)
                       setDropdownOpen(false)
                     }}
-                    className={`
-                      flex items-center gap-2.5 w-full px-4 py-2.5 text-left
-                      font-mono text-xs tracking-wider uppercase
+                    className={`type-label flex items-center gap-2.5 w-full px-4 py-2.5 text-left
+                     
                       transition-colors duration-150
                       ${isActive
-                        ? 'text-crimson-400'
-                        : 'text-white/40 hover:text-white/60 hover:bg-white/5'
+                        ? 'text-primary-400'
+                        : 'text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/5'
                       }
                     `}
                   >
@@ -195,8 +192,8 @@ export function Navigation() {
                       className={`
                         block w-1.5 h-1.5 rounded-full shrink-0
                         ${isActive
-                          ? 'bg-crimson-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]'
-                          : 'bg-white/20'
+                          ? 'bg-primary-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
+                          : 'bg-tertiary-ink/20'
                         }
                       `}
                     />
@@ -210,7 +207,7 @@ export function Navigation() {
 
         <Link
           to={hrefFor(here, otherLocale(locale))}
-          className="font-mono text-xs tracking-wider uppercase px-3 py-2 rounded-full text-white/40 hover:text-white/60 hover:bg-white/5 transition-all duration-300"
+          className="type-label px-3 py-2 rounded-full text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/5 transition-all duration-300"
           aria-label="Switch language"
           hrefLang={otherLocale(locale)}
         >

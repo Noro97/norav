@@ -223,6 +223,10 @@ export function deriveThemeTokens(theme: Theme): ThemeTokens {
   const line = isDark ? '255, 255, 255' : '0, 0, 0'
   tokens['--color-border'] = `rgba(${line}, 0.08)`
   tokens['--color-input'] = `rgba(${line}, 0.06)`
+  // The pole every neutral alpha on the site is mixed from — `ink/40` is 40%
+  // text, `ink/[0.03]` a surface tint. White on a dark background, black on a
+  // light one; the components no longer say which.
+  tokens['--color-ink'] = isDark ? '#ffffff' : '#000000'
 
   return tokens
 }

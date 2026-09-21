@@ -72,7 +72,7 @@ export function ClickSpark({ children, className = '', onClick }: Props) {
             return (
               <span
                 key={i}
-                className="absolute block h-px w-3 origin-left rounded-full bg-crimson-400"
+                className="absolute block h-px w-3 origin-left rounded-full bg-primary-400"
                 style={
                   {
                     '--spark-angle': `${angle}rad`,

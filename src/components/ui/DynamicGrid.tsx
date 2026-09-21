@@ -25,7 +25,7 @@ export function DynamicGrid() {
     const ctx = oc.getContext('2d')
     if (!ctx) return oc
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.02)'
+    ctx.strokeStyle = 'color-mix(in srgb, var(--color-tertiary-ink) 2%, transparent)'
     ctx.lineWidth = 1
 
     // Vertical lines
@@ -113,7 +113,7 @@ export function DynamicGrid() {
     )
 
     // Brighter grid lines within glow radius
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+    ctx.strokeStyle = 'color-mix(in srgb, var(--color-tertiary-ink) 6%, transparent)'
     ctx.lineWidth = 1
 
     const r = GRID_GLOW_RADIUS

@@ -11,13 +11,13 @@ function variantColors(variant: BentoVariant): { primary: string; secondary: str
   switch (variant) {
     case 'merch':
     case 'proof':
-      return { primary: readToken('--color-crimson-500', '#B51A2B'), secondary: readToken('--color-crimson-700', '#541A2E') }
+      return { primary: readToken('--color-primary-500', '#B51A2B'), secondary: readToken('--color-primary-700', '#541A2E') }
     case 'omnigrid':
-      return { primary: readToken('--color-cyan-500', '#22d3ee'), secondary: readToken('--color-cyan-700', '#0e7490') }
+      return { primary: readToken('--color-secondary-500', '#22d3ee'), secondary: readToken('--color-secondary-700', '#0e7490') }
     case 'logistics':
-      return { primary: '#3b82f6', secondary: '#1e40af' }
+      return { primary: readToken('--color-secondary-400', '#47daf1'), secondary: readToken('--color-secondary-800', '#154c55') }
     case 'ecommerce':
-      return { primary: '#22c55e', secondary: '#166534' }
+      return { primary: readToken('--color-muted-foreground', '#888888'), secondary: readToken('--color-muted', '#1a1a2e') }
   }
 }
 
