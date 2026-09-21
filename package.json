@@ -9,6 +9,7 @@
     "dev": "vite",
     "tokens": "node packages/design-tokens/scripts/build.mjs",
     "content:pull": "CMS_URL=${CMS_URL:-http://localhost:3300} node scripts/fetch-content.mjs",
+    "content:check": "CMS_URL=${CMS_URL:-https://cms.norav.dev} node scripts/fetch-content.mjs --check",
     "content:backfill": "tsx scripts/backfill-snapshot-defaults.mts",
     "illustrations": "node scripts/generate-illustrations.mjs",
     "prebuild": "node scripts/fetch-content.mjs && node scripts/generate-sitemap.mjs",

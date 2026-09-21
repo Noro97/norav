@@ -215,6 +215,7 @@ npx tsc --noEmit      # the build runs this first anyway
 npm test              # vitest + jsdom
 npm --prefix db test  # every migration applied to an ephemeral PGlite, invariants asserted
 npm --prefix cms test
+npm run content:check # the committed snapshots still match what the CMS publishes
 ```
 
 `.github/workflows/ci.yml` runs all of it on every push and pull request to
@@ -262,6 +263,13 @@ override but dead weight: for a while every address on the site answered to the
 home page's title this way, and it looked correct on the only page whose title
 happened to match. `PageHead` writes those tags imperatively for exactly this
 reason; add a new one to `applySeo`, not to the JSX.
+
+**The committed snapshots go stale, and nothing tells you.** Publishing needs no
+deploy, so the copy under `src/content` — what `npm run dev`, the tests and an
+offline build render — drifts from production until someone runs
+`npm run content:pull`. It was three weeks and four versions behind once. Run
+`npm run content:check` when a section you placed in the CMS is not on the page
+locally, and pull before a branch that touches `src/content`.
 
 **A failed content fetch at build time is not an error.** If `npm run build`
 prints `keeping the committed snapshots`, the deploy succeeded with whatever is
