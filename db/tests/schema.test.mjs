@@ -380,6 +380,36 @@ await expectError(
 }
 
 {
+  // 0021 points each skill at the case study that shows it. The skills block
+  // above was planted after the migration set ran, so the file is replayed;
+  // then a proof typed by hand is planted and the file replayed again.
+  const file = readFileSync(join(root, 'migrations', '0021_skills_say_where_they_were_used.sql'), 'utf8')
+  await db.exec(file)
+  const {
+    rows: [skills],
+  } = await db.query(
+    `select b.id from blocks b join block_translations t on t.block_id = b.id
+      where b.type = 'skills' and t.locale = 'en' and t.content ? 'categories'`,
+  )
+  const read = async () => {
+    const { rows } = await db.query(`select content from block_translations where block_id = $1 and locale = 'en'`, [skills.id])
+    return rows[0].content
+  }
+  let content = await read()
+  const react = content.categories[0].skills[0]
+  const docker = content.categories[1].skills[0]
+  check('a skill a study shows gets its proof and a link', react.proof === 'NexusRoute' && react.proofHref === '/work/logistics', JSON.stringify(react))
+  check('a skill nothing shows is left without one', !('proof' in docker), JSON.stringify(docker))
+  check('levels and names survive the walk', react.level === 95 && docker.name === 'Docker')
+
+  content.categories[0].skills[0].proof = 'Typed by hand'
+  await db.query(`update block_translations set content = $2::jsonb where block_id = $1 and locale = 'en'`, [skills.id, JSON.stringify(content)])
+  await db.exec(file)
+  content = await read()
+  check('a proof typed by hand outranks the seeded one', content.categories[0].skills[0].proof === 'Typed by hand')
+}
+
+{
   // 0013 seeds the menu. The assertion that matters is what it stores: a page
   // slug and a section, never an address — an address would look identical
   // until someone renamed the page, and then point at nothing.

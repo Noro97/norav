@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router'
+import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -10,6 +12,27 @@ import type { SkillsContent, SkillsSettings } from '@norav/content-schema'
 type SkillCategory = SkillsContent['categories'][number]
 type Skill = SkillCategory['skills'][number]
 
+/**
+ * The case study a skill points at. A path stays in the app through the
+ * router; anything else (a repo, a live product) is a plain link that leaves.
+ */
+function Proof({ label, href }: { label: string; href: string }) {
+  const base = 'inline-flex items-center gap-0.5 font-mono text-[10px] uppercase tracking-wider text-crimson-400/80'
+  if (!href) return <span className={base}>{label}</span>
+  const className = `${base} hover:text-crimson-400 transition-colors`
+  const body = (
+    <>
+      {label}
+      <ArrowUpRight className="w-3 h-3" strokeWidth={2} aria-hidden />
+    </>
+  )
+  return href.startsWith('/') ? (
+    <Link to={href} className={className}>{body}</Link>
+  ) : (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>{body}</a>
+  )
+}
+
 function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boolean; showCounters: boolean }) {
   // The gradient spans the whole track, and the fill uncovers the part of it
   // the skill reaches — so the colour carries the same meaning as the length:
@@ -19,8 +42,11 @@ function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boo
   return (
     <div className="group">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="font-mono text-xs text-white/60 group-hover:text-white/80 transition-colors">
-          {skill.name}
+        <span className="flex items-baseline gap-2 min-w-0">
+          <span className="font-mono text-xs text-white/60 group-hover:text-white/80 transition-colors">
+            {skill.name}
+          </span>
+          {skill.proof && <Proof label={skill.proof} href={skill.proofHref} />}
         </span>
         <div className="flex items-center gap-2">
           <span className="font-mono text-xs text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
