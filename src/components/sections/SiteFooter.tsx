@@ -12,7 +12,7 @@ const ICONS: Record<string, LucideIcon> = {
   website: Globe,
 }
 
-const LINK = 'font-mono text-xs uppercase tracking-[0.15em] text-white/45 hover:text-white transition-colors'
+const LINK = 'type-label text-tertiary-ink/45 hover:text-tertiary-ink transition-colors'
 
 export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<SiteFooterContent, SiteFooterSettings>('site_footer')
@@ -26,17 +26,17 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
   const { content, settings } = block
 
   return (
-    <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-6 md:px-16 pt-16 pb-10 border-t border-white/[0.06]">
+    <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-6 md:px-16 pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-sm font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
-              <span className="text-crimson-500">norav</span>
-              <span className="text-white/45">.</span>
-              <span className="text-crimson-500">dev</span>
+            <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-sm font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
+              <span className="text-primary-500">norav</span>
+              <span className="text-tertiary-ink/45">.</span>
+              <span className="text-primary-500">dev</span>
             </Link>
             {content.tagline && (
-              <p className="mt-4 text-sm text-white/45 leading-relaxed max-w-sm">{content.tagline}</p>
+              <p className="mt-4 text-body-sm text-tertiary-ink/45 max-w-sm">{content.tagline}</p>
             )}
           </div>
 
@@ -59,7 +59,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
 
           <div>
             {content.reachLabel && <span className="label-mono block mb-4">{content.reachLabel}</span>}
-            <a href={`mailto:${settings.email}`} className={`${LINK} group inline-flex items-center gap-1.5 normal-case tracking-normal text-sm text-white/70`}>
+            <a href={`mailto:${settings.email}`} className="group inline-flex items-center gap-1.5 font-mono text-body-sm text-tertiary-ink/70 hover:text-tertiary-ink transition-colors">
               <Mail className="w-4 h-4" strokeWidth={1.75} aria-hidden />
               {content.emailLabel}
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
@@ -74,7 +74,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="w-10 h-10 rounded-full border border-white/[0.08] bg-white/[0.02] flex items-center justify-center text-white/45 hover:text-crimson-400 hover:border-crimson-500/30 transition-all duration-300"
+                    className="w-10 h-10 rounded-full border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center text-tertiary-ink/45 hover:text-primary-400 hover:border-primary-500/30 transition-all duration-300"
                   >
                     <Icon className="w-4 h-4" strokeWidth={1.75} />
                   </a>
