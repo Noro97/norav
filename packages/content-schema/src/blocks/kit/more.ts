@@ -379,6 +379,13 @@ const visualFeedContent = z.object({
         color: z.string().regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour'),
         likes: z.string().max(8),
         age: z.string().max(8),
+        /**
+         * A picture in place of the coloured placeholder art, and a line under
+         * it in place of the likes. Both optional, so the feed the section
+         * arrived with still validates and still draws as it did.
+         */
+        image: z.string().max(300).default(''),
+        caption: z.string().max(60).default(''),
       }),
     )
     .min(1)
@@ -388,7 +395,7 @@ const visualFeedContent = z.object({
 export const kitVisualFeedBlock = defineKitBlock({
   type: 'kit_visual_feed',
   label: 'Visual feed',
-  description: 'A social-feed strip of coloured placeholder tiles with a follow link.',
+  description: 'A strip of square tiles — pictures with a caption, or coloured placeholders — with a link under them.',
   content: visualFeedContent,
   defaults: {
     headGlyph: '◉',
@@ -396,12 +403,12 @@ export const kitVisualFeedBlock = defineKitBlock({
     ctaLabel: 'Follow on Instagram →',
     ctaHref: '',
     tiles: [
-      { color: '#ff7fbf', likes: '47', age: '1d' },
-      { color: '#7fffc4', likes: '94', age: '2d' },
-      { color: '#ffd47f', likes: '141', age: '3d' },
-      { color: '#7fcfff', likes: '188', age: '4d' },
-      { color: '#c4a8ff', likes: '235', age: '5d' },
-      { color: '#f5efe6', likes: '282', age: '6d' },
+      { color: '#ff7fbf', likes: '47', age: '1d', image: '', caption: '' },
+      { color: '#7fffc4', likes: '94', age: '2d', image: '', caption: '' },
+      { color: '#ffd47f', likes: '141', age: '3d', image: '', caption: '' },
+      { color: '#7fcfff', likes: '188', age: '4d', image: '', caption: '' },
+      { color: '#c4a8ff', likes: '235', age: '5d', image: '', caption: '' },
+      { color: '#f5efe6', likes: '282', age: '6d', image: '', caption: '' },
     ],
   },
   form: [
@@ -415,6 +422,8 @@ export const kitVisualFeedBlock = defineKitBlock({
       min: 1,
       max: 12,
       fields: [
+        { field: 'image', control: 'media', label: 'Picture', localized: false, help: 'Empty draws the coloured placeholder instead.' },
+        { field: 'caption', control: 'text', label: 'Caption', help: 'Shown under the picture in place of the likes.' },
         { field: 'color', control: 'text', label: 'Colour', localized: false, placeholder: '#7fcfff' },
         { field: 'likes', control: 'text', label: 'Likes', localized: false },
         { field: 'age', control: 'text', label: 'Age', localized: false },
