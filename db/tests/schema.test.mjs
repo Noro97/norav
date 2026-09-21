@@ -437,6 +437,40 @@ await expectError(
 }
 
 {
+  // 0017 writes the five decisions sections, but only over an empty one: copy
+  // written by hand in the admin outranks the seeded copy. The migration set
+  // ran before any detail block existed, so it is replayed against two — one
+  // untouched, one with an English heading already written.
+  const { rows: details } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'proof_detail', 9300), ($1, 'merch_detail', 9400) returning id, type`,
+    [page.id],
+  )
+  const merch = details.find((row) => row.type === 'merch_detail')
+  const proof = details.find((row) => row.type === 'proof_detail')
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', '{"title":"Hand-written"}'::jsonb)`,
+    [merch.id],
+  )
+  await db.exec(readFileSync(join(root, 'migrations', '0017_case_studies_say_why.sql'), 'utf8'))
+
+  const copyOf = async (id, locale) => {
+    const { rows } = await db.query(
+      `select content, status from block_translations where block_id = $1 and locale = $2`,
+      [id, locale],
+    )
+    return rows[0]
+  }
+  const proofEn = await copyOf(proof.id, 'en')
+  const proofRu = await copyOf(proof.id, 'ru')
+  check('an untouched study gets its decisions', proofEn?.content.decisions?.length === 4, JSON.stringify(proofEn))
+  check('in both languages', proofRu?.content.title === 'Проверить тренировку, когда никто не смотрит')
+  check('marked ready, so the admin does not flag it as a draft', proofEn?.status === 'ready' && proofRu?.status === 'ready')
+  check('the numbers read the same in every language', proofRu?.content.metrics[0].value === proofEn?.content.metrics[0].value)
+  check('a heading written by hand is left alone', (await copyOf(merch.id, 'en'))?.content.title === 'Hand-written')
+  check('while the language nobody wrote is still seeded', (await copyOf(merch.id, 'ru'))?.content.decisions?.length === 2)
+}
+
+{
   // The page route merges seo with `||` rather than replacing it, so a request
   // carrying one locale must not drop the other. It is a shallow merge, which
   // is right for whole locales and wrong for half of one — asserted both ways
