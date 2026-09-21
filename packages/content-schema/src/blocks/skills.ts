@@ -19,6 +19,14 @@ const content = sectionHeader.extend({
               name: z.string().min(1).max(60),
               level: z.number().int().min(0).max(100),
               years: z.number().int().min(0).max(50),
+              /**
+               * Where the skill was used for real, as a name and a link — the
+               * case study that proves it. Both default to empty so every row
+               * written before they existed still validates, and a skill with
+               * nothing to point at simply shows no link.
+               */
+              proof: z.string().max(60).default(''),
+              proofHref: z.string().max(200).default(''),
             }),
           )
           .min(1)
@@ -47,7 +55,7 @@ export const skillsBlock = defineBlock({
       proficiencyOverview: 'Proficiency Overview',
       skillsTracked: '{{count}} skills tracked',
       categories: [
-        { name: 'Frontend Core', skills: [{ name: 'React.js', level: 95, years: 7 }] },
+        { name: 'Frontend Core', skills: [{ name: 'React.js', level: 95, years: 7, proof: '', proofHref: '' }] },
       ],
     },
     settings: { showCounters: true },
@@ -88,6 +96,20 @@ export const skillsBlock = defineBlock({
             { field: 'name', control: 'text', label: 'Skill', localized: false },
             { field: 'level', control: 'number', label: 'Level (0-100)', localized: false },
             { field: 'years', control: 'number', label: 'Years', localized: false },
+            {
+              field: 'proof',
+              control: 'text',
+              label: 'Proven in',
+              localized: false,
+              help: 'The case study where this was used for real. Empty shows no link.',
+            },
+            {
+              field: 'proofHref',
+              control: 'text',
+              label: 'Proof link',
+              localized: false,
+              help: 'A path like /work/logistics stays in the app; a full URL leaves it.',
+            },
           ],
         },
       ],
