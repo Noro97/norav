@@ -428,6 +428,31 @@ await expectError(
 }
 
 {
+  // 0018 places the testimonials block on the work overview, which 0012 made,
+  // so the migration set already placed it; replaying the file proves it is
+  // placed once.
+  const {
+    rows: [work],
+  } = await db.query(`select id from pages where slug = 'work'`)
+  await db.exec(readFileSync(join(root, 'migrations', '0018_proof_next_to_the_work_it_proves.sql'), 'utf8'))
+  const { rows: placed } = await db.query(
+    `select id, position from blocks where page_id = $1 and type = 'testimonials' and deleted_at is null`,
+    [work.id],
+  )
+  check('the references sit once under the grid, however often the file runs', placed.length === 1 && Number(placed[0].position) === 3000)
+  const { rows: copy } = await db.query(
+    `select locale, status, content from block_translations where block_id = $1 order by locale`,
+    [placed[0]?.id],
+  )
+  check('three placeholder quotes in each language', copy.length === 2 && copy.every((row) => row.content.quotes.length === 3))
+  check('saved as drafts, so the admin shows them as unfinished', copy.every((row) => row.status === 'draft'))
+  check(
+    'every placeholder says it is one',
+    copy.every((row) => row.content.quotes.every((q) => /replace before launch|заменить до запуска/.test(q.quote))),
+  )
+}
+
+{
   // History must survive the author's account being removed.
   await db.query(`insert into revisions (entity_type, entity_id, locale, data, author_id) values ('block', $1, 'en', '{}'::jsonb, $2)`, [hero.id, owner.id])
   await db.query(`delete from admin_users where id = $1`, [owner.id])
