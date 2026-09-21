@@ -9,6 +9,7 @@ import { experienceBlock } from './experience'
 import { skillsBlock } from './skills'
 import { techMarqueeBlock } from './tech-marquee'
 import { contactCtaBlock } from './contact-cta'
+import { recruiterCtaBlock } from './recruiter-cta'
 import { projectsIntroBlock } from './projects-intro'
 import { bentoGridBlock } from './bento-grid'
 import { terminalFooterBlock } from './terminal-footer'
@@ -81,6 +82,7 @@ export const BLOCK_REGISTRY = {
   proof_detail: proofDetailBlock,
   workflow: workflowBlock,
   contact_cta: contactCtaBlock,
+  recruiter_cta: recruiterCtaBlock,
   terminal_footer: terminalFooterBlock,
 
   // Built out of the shared effects rather than around a bespoke widget, and
@@ -214,6 +216,7 @@ export type { ExperienceBlockContent, ExperienceSettings } from './experience'
 export type { SkillsContent, SkillsSettings } from './skills'
 export type { TechMarqueeContent, TechMarqueeSettings } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
+export type { RecruiterCtaContent, RecruiterCtaSettings } from './recruiter-cta'
 export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
 export type { WorkflowContent, WorkflowSettings } from './workflow'
 export type { VibeCodingContent, VibeCodingSettings } from './vibecoding'

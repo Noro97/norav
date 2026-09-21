@@ -74,6 +74,7 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
     'WorkflowAutomation',
   ),
   contact_cta: named(() => import('@/components/sections/ContactCTA'), 'ContactCTA'),
+  recruiter_cta: named(() => import('@/components/sections/RecruiterCTA'), 'RecruiterCTA'),
   terminal_footer: named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'),
 
   // Assembled from the shared effects rather than built around a widget of

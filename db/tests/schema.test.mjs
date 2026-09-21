@@ -410,6 +410,33 @@ await expectError(
 }
 
 {
+  // 0016 places the recruiter card on the home page. The migration set runs
+  // before the fixtures create that page, so it is replayed here against one
+  // — which also proves the replay is safe.
+  const file = readFileSync(join(root, 'migrations', '0016_a_recruiter_can_hire_from_the_first_screen.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: cards } = await db.query(
+    `select id, position, settings from blocks where page_id = $1 and type = 'recruiter_cta' and deleted_at is null`,
+    [page.id],
+  )
+  check('the recruiter card is placed once, however often the file runs', cards.length === 1, `got ${cards.length}`)
+  check('it sits between the numbers and the closing call', Number(cards[0]?.position) === 2500)
+  check(
+    'with no About block to copy from, the CV link is empty rather than invented',
+    cards[0]?.settings.cvHref === '',
+    JSON.stringify(cards[0]?.settings),
+  )
+  const { rows: copy } = await db.query(
+    `select locale, content, status from block_translations where block_id = $1 order by locale`,
+    [cards[0]?.id],
+  )
+  check('both languages are written', copy.length === 2, `got ${copy.length}`)
+  check('as ready, not draft', copy.every((row) => row.status === 'ready'))
+  check('three reasons, in Russian too', copy.find((row) => row.locale === 'ru')?.content.points.length === 3)
+}
+
+{
   // The page route merges seo with `||` rather than replacing it, so a request
   // carrying one locale must not drop the other. It is a shallow merge, which
   // is right for whole locales and wrong for half of one — asserted both ways
