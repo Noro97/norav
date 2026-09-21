@@ -109,7 +109,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'omnigrid'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-28 md:py-36"
+      className="relative px-gutter-x py-28 md:py-36"
     >
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-secondary-500/[0.03] blur-[120px] pointer-events-none" />
@@ -118,15 +118,15 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
         {/* Header */}
         <div className="mb-12">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-4 mb-5">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/45 text-body-md md:text-body-lg max-w-xl leading-relaxed">
+          <p className="text-tertiary-ink/45 text-body-regular md:text-body-large max-w-xl leading-relaxed">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
             {content.techStack.map((tech) => (
-              <span key={tech.name} className="case-study-pill text-body-xs font-mono text-secondary-400/70 tracking-wide">
+              <span key={tech.name} className="case-study-pill text-caption font-mono text-secondary-400/70 tracking-wide">
                 {tech.name}
               </span>
             ))}
@@ -144,7 +144,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                 {t('projects:omnigrid.cache.status')}
               </h4>
               <div className="flex items-center gap-3 mb-4">
-                <span className={`case-study-pill text-body-xs font-mono transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}>
+                <span className={`case-study-pill text-caption font-mono transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}>
                   {t(`projects:omnigrid.cache.${cacheStatus.toLowerCase()}`)}
                 </span>
                 {showLightning && (
@@ -153,7 +153,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                   </svg>
                 )}
               </div>
-              <div className="space-y-2 text-body-xs font-mono text-tertiary-ink/45">
+              <div className="space-y-2 text-caption font-mono text-tertiary-ink/45">
                 <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.hitRate')}</span>
                   <span className="text-secondary-300 font-semibold">98.7%</span>
@@ -213,10 +213,10 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
               </h4>
 
               <div className="mb-4">
-                <h5 className="text-body-xs font-semibold text-secondary-400/80 mb-1.5">
+                <h5 className="text-caption font-semibold text-secondary-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.headlessVsComponent')}
                 </h5>
-                <p className="text-body-xs text-tertiary-ink/45 leading-relaxed">
+                <p className="text-caption text-tertiary-ink/45 leading-relaxed">
                   {t('projects:omnigrid.engineering.headlessDesc')}
                 </p>
               </div>
@@ -224,10 +224,10 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
               <div className="h-px bg-tertiary-ink/[0.06] my-3" />
 
               <div>
-                <h5 className="text-body-xs font-semibold text-secondary-400/80 mb-1.5">
+                <h5 className="text-caption font-semibold text-secondary-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.serverVsClient')}
                 </h5>
-                <p className="text-body-xs text-tertiary-ink/45 leading-relaxed">
+                <p className="text-caption text-tertiary-ink/45 leading-relaxed">
                   {t('projects:omnigrid.engineering.serverDesc')}
                 </p>
               </div>
@@ -249,19 +249,19 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
                   placeholder={t('projects:omnigrid.filterPlaceholder')}
-                  className="w-full pl-9 pr-4 py-2.5 text-body-xs font-mono text-tertiary-ink/70 bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-xl placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors backdrop-blur-sm"
+                  className="w-full pl-9 pr-4 py-2.5 text-caption font-mono text-tertiary-ink/70 bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-xl placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors backdrop-blur-sm"
                 />
               </div>
 
               {/* Stats bar */}
-              <div className="flex items-center gap-3 text-body-xs font-mono text-tertiary-ink/45">
+              <div className="flex items-center gap-3 text-caption font-mono text-tertiary-ink/45">
                 <span>{rows.length.toLocaleString()} rows</span>
                 <span className="text-tertiary-ink/10">|</span>
                 <span>{sorting.length} sorted</span>
                 <span className="text-tertiary-ink/10">|</span>
                 <span>{renderTime < 1 ? '<1' : renderTime}ms render</span>
                 <span className="text-tertiary-ink/10">|</span>
-                <span className={`case-study-pill py-0.5 text-body-xs ${CACHE_COLORS[cacheStatus]}`}>
+                <span className={`case-study-pill py-0.5 text-caption ${CACHE_COLORS[cacheStatus]}`}>
                   {cacheStatus}
                 </span>
               </div>
@@ -306,7 +306,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
                         <div
                           key={cell.id}
                           style={{ width: cell.column.getSize(), flexShrink: 0 }}
-                          className={`px-3 py-2.5 text-body-xs font-mono truncate ${cellClass}`}
+                          className={`px-3 py-2.5 text-caption font-mono truncate ${cellClass}`}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </div>

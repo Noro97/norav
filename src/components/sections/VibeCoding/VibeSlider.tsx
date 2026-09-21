@@ -133,13 +133,13 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
           <div className="w-2.5 h-2.5 rounded-full bg-tertiary-ink/10" />
           <div className="ml-3 relative">
             <motion.span
-              className="font-mono text-body-xs text-tertiary-ink/40 absolute left-0 whitespace-nowrap"
+              className="font-mono text-caption text-tertiary-ink/40 absolute left-0 whitespace-nowrap"
               style={{ opacity: filenameOpacity }}
             >
               {copy.boringLabel}
             </motion.span>
             <motion.span
-              className="font-mono text-body-xs text-tertiary-ink/40 whitespace-nowrap"
+              className="font-mono text-caption text-tertiary-ink/40 whitespace-nowrap"
               style={{ opacity: archFilenameOpacity }}
             >
               {copy.archLabel}
@@ -163,7 +163,7 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
               style={{ opacity: codeOpacity, backfaceVisibility: 'hidden' }}
             >
               <pre
-                className="font-mono text-body-xs md:text-body-xs leading-relaxed text-tertiary-ink/60 whitespace-pre-wrap"
+                className="font-mono text-caption md:text-caption leading-relaxed text-tertiary-ink/60 whitespace-pre-wrap"
                 dangerouslySetInnerHTML={{ __html: HIGHLIGHTED_CODE }}
               />
               {/* Scanline overlay for code */}

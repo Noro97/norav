@@ -148,23 +148,23 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'logistics'}
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
+      className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/70 text-body-lg leading-relaxed max-w-lg">
+          <p className="text-tertiary-ink/70 text-body-large leading-relaxed max-w-lg">
             {content.description}
           </p>
 
           {/* Tech stack tags */}
           <div className="flex flex-wrap gap-2">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-body-xs font-mono text-tertiary-ink/50">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/50">
                 {tag.name}
               </span>
             ))}
@@ -173,24 +173,24 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
           {/* Live metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
             <div className="case-study-card p-4 text-center">
-              <div className="text-display-sm font-black text-secondary-300 font-mono">{markerCount}</div>
-              <div className="text-body-xs text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
+              <div className="text-heading-small font-black text-secondary-300 font-mono">{markerCount}</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
             </div>
             <div className="case-study-card p-4 text-center">
-              <div className="text-display-sm font-black text-primary-400 font-mono">{latency}ms</div>
-              <div className="text-body-xs text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.latency')}</div>
+              <div className="text-heading-small font-black text-primary-400 font-mono">{latency}ms</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.latency')}</div>
             </div>
             <div className="case-study-card p-4 text-center">
-              <div className="text-display-sm font-black text-primary-400 font-mono">
+              <div className="text-heading-small font-black text-primary-400 font-mono">
                 {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
               </div>
-              <div className="text-body-xs text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
             </div>
             <div className="case-study-card p-4 text-center">
-              <div className="text-display-sm font-black text-primary-400 font-mono">
+              <div className="text-heading-small font-black text-primary-400 font-mono">
                 {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
               </div>
-              <div className="text-body-xs text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
             </div>
           </div>
 
@@ -198,7 +198,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
           <button
             onClick={handleStressTest}
             disabled={isStressTesting}
-            className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-primary-500/10 border border-primary-500/30 text-primary-400 font-mono text-body-md tracking-wider uppercase rounded transition-all hover:bg-primary-500/20 hover:border-primary-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-primary-500/10 border border-primary-500/30 text-primary-400 font-mono text-body-regular tracking-wider uppercase rounded transition-all hover:bg-primary-500/20 hover:border-primary-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className={`w-2.5 h-2.5 rounded-full ${isStressTesting ? 'bg-status-warning animate-pulse' : 'bg-primary-500'}`} />
             {isStressTesting ? t('logistics.stressTest.rendering', { count: markerCount }) : t('logistics.stressTest.run')}
@@ -206,7 +206,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
 
           {/* Live log */}
           {mapLoaded && (
-            <div className="font-mono text-body-xs text-tertiary-ink/40 space-y-1 max-h-20 overflow-hidden">
+            <div className="font-mono text-caption text-tertiary-ink/40 space-y-1 max-h-20 overflow-hidden">
               <div>{t('logistics.log.eventBatch', { count: wsMessages % 30 + 5 })}</div>
               <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: connections?.features.length ?? 0 })}</div>
               <div>{t('logistics.log.frameBudget', { time: (16.6 - (latency % 4)).toFixed(1) })}</div>
@@ -231,7 +231,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
             />
           </Suspense>
           {/* Overlay label */}
-          <div className="case-study-pill absolute top-3 left-3 font-mono text-body-xs text-tertiary-ink/40 bg-tertiary-shade/50">
+          <div className="case-study-pill absolute top-3 left-3 font-mono text-caption text-tertiary-ink/40 bg-tertiary-shade/50">
             {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>

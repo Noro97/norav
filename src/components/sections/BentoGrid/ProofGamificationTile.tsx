@@ -48,10 +48,10 @@ function AnimatedXP() {
 
   return (
     <div ref={ref} className="flex items-baseline gap-1.5">
-      <motion.span className="font-mono text-display-sm font-black text-tertiary-ink tabular-nums">
+      <motion.span className="font-mono text-heading-small font-black text-tertiary-ink tabular-nums">
         {display}
       </motion.span>
-      <span className="font-mono text-body-xs text-tertiary-ink/40 font-medium">XP</span>
+      <span className="font-mono text-caption text-tertiary-ink/40 font-medium">XP</span>
     </div>
   )
 }
@@ -104,8 +104,8 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Physio bar */}
             <div className="mb-2.5">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-body-xs text-tertiary-ink/50">{t('proof.gamification.physio')}</span>
-                <span className="font-mono text-body-xs text-tertiary-ink/45">72%</span>
+                <span className="font-mono text-caption text-tertiary-ink/50">{t('proof.gamification.physio')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/45">72%</span>
               </div>
               <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
@@ -120,8 +120,8 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Neuro bar */}
             <div className="mb-4">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-body-xs text-primary-400/60">{t('proof.gamification.neuro')}</span>
-                <span className="font-mono text-body-xs text-tertiary-ink/45">58%</span>
+                <span className="font-mono text-caption text-primary-400/60">{t('proof.gamification.neuro')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/45">58%</span>
               </div>
               <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
@@ -136,7 +136,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Level bar */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-body-xs text-tertiary-ink/50">{t('proof.gamification.level')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/50">{t('proof.gamification.level')}</span>
               </div>
               <div className="h-1.5 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
@@ -174,7 +174,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
                       className="w-3/4 h-3/4 object-contain transition-transform duration-300 group-hover/badge:scale-110"
                     />
                   )}
-                  <span className="font-mono text-body-xs mt-1 opacity-60">
+                  <span className="font-mono text-caption mt-1 opacity-60">
                     {t(`proof.gamification.badge${badge.rarity.charAt(0).toUpperCase() + badge.rarity.slice(1)}`)}
                   </span>
                 </div>

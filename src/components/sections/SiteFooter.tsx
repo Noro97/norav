@@ -26,17 +26,17 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
   const { content, settings } = block
 
   return (
-    <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-6 md:px-16 pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
+    <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-sm font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
+            <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-small font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
               <span className="text-primary-500">norav</span>
               <span className="text-tertiary-ink/45">.</span>
               <span className="text-primary-500">dev</span>
             </Link>
             {content.tagline && (
-              <p className="mt-4 text-body-sm text-tertiary-ink/45 max-w-sm">{content.tagline}</p>
+              <p className="mt-4 text-body-small text-tertiary-ink/45 max-w-sm">{content.tagline}</p>
             )}
           </div>
 
@@ -59,7 +59,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
 
           <div>
             {content.reachLabel && <span className="label-mono block mb-4">{content.reachLabel}</span>}
-            <a href={`mailto:${settings.email}`} className="group inline-flex items-center gap-1.5 font-mono text-body-sm text-tertiary-ink/70 hover:text-tertiary-ink transition-colors">
+            <a href={`mailto:${settings.email}`} className="group inline-flex items-center gap-1.5 font-mono text-body-small text-tertiary-ink/70 hover:text-tertiary-ink transition-colors">
               <Mail className="w-4 h-4" strokeWidth={1.75} aria-hidden />
               {content.emailLabel}
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />

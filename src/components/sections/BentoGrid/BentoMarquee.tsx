@@ -40,10 +40,10 @@ export function BentoMarquee() {
       >
         {items.map((principle, i) => (
           <span key={i} className="flex items-center shrink-0">
-            <span className="font-mono text-body-sm text-tertiary-ink/45 uppercase tracking-[0.2em] px-6">
+            <span className="font-mono text-body-small text-tertiary-ink/45 uppercase tracking-[0.2em] px-6">
               {principle}
             </span>
-            <span className="text-primary-500/40 text-body-xs">&#9670;</span>
+            <span className="text-primary-500/40 text-caption">&#9670;</span>
           </span>
         ))}
       </div>

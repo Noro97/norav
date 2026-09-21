@@ -39,7 +39,7 @@ export function BlockRenderer({ slug }: { slug: string }) {
  return (
       <section className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
         <span className="label-mono">/{slug}</span>
-        <p className="text-tertiary-ink/40 text-body-md max-w-md">
+        <p className="text-tertiary-ink/40 text-body-regular max-w-md">
           This page has no sections yet. Add one in the CMS, or move one here from another page.
         </p>
       </section>

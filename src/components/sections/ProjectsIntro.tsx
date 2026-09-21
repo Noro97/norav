@@ -39,7 +39,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
         titleComponent={
           <>
             <p className="label-mono">{content.label}</p>
-            <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+            <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
               {content.heading.map((segment, index) => (
                 <Fragment key={index}>
                   {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
@@ -54,7 +54,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                 </Fragment>
               ))}
             </h2>
-            <p className="text-tertiary-ink/40 text-body-md max-w-xl mx-auto">{content.body}</p>
+            <p className="text-tertiary-ink/40 text-body-regular max-w-xl mx-auto">{content.body}</p>
 
             {content.viewAllLabel && (
               <div className="mt-6">
@@ -94,7 +94,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
       </ContainerScroll>
 
       {links.length > 0 && (
-        <div className="relative px-6 md:px-16 pb-24 -mt-8">
+        <div className="relative px-gutter-x pb-24 -mt-8">
           <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {links.map((study) => (
               <Link
@@ -109,8 +109,8 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                     strokeWidth={1.75}
                   />
                 </div>
-                <h3 className="mt-3 font-display text-display-sm font-black text-tertiary-ink">{study.title}</h3>
-                <p className="mt-2 text-tertiary-ink/40 text-body-sm leading-relaxed line-clamp-3">
+                <h3 className="mt-3 font-display text-heading-small font-black text-tertiary-ink">{study.title}</h3>
+                <p className="mt-2 text-tertiary-ink/40 text-body-small leading-relaxed line-clamp-3">
                   {study.description}
                 </p>
               </Link>

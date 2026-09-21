@@ -3,10 +3,16 @@
 Three colour roles, one type scale, and a lint rule that says so. Everything a
 component on this site paints or sets type with is a name from this page.
 
-The system lives in two files: `src/index.css` (the tokens and the two `@theme`
-blocks) and `eslint.config.js` (the rules that keep components inside it).
-`packages/content-schema/src/theme.ts` is where the CMS derives the palette
-the tokens alias — see [How a colour reaches the screen](#how-a-colour-reaches-the-screen).
+The system lives in one file: `packages/design-tokens/tokens.json`, the source
+of truth for every colour, type size, spacing step, breakpoint and radius, and
+the responsive variants of the ones that change with the viewport. `npm run
+tokens` generates `tokens.css` (which `src/index.css` imports) and a
+TypeScript module from it; a test keeps the three in step. `eslint.config.js`
+keeps components inside it. [The package README](../packages/design-tokens/README.md)
+is the developer reference — names, and how to read a token from a class, from
+CSS and from code. `packages/content-schema/src/theme.ts` is where the CMS
+derives the palette the tokens alias — see
+[How a colour reaches the screen](#how-a-colour-reaches-the-screen).
 
 ## Colour
 
@@ -103,7 +109,7 @@ compile here.
 
 | Utility | Token | Face | For |
 | --- | --- | --- | --- |
-| `font-display` | `--font-display` | Inter Tight (900 only) | display sizes — headings |
+| `font-display` | `--font-display` | Inter Tight (900 only) | heading sizes |
 | `font-sans` | `--font-sans` | Inter | body — the default on `body` |
 | `font-mono` | `--font-mono` | JetBrains Mono | labels, numbers, code, anything tabular |
 
@@ -121,7 +127,7 @@ Four. `--font-weight-*: initial` removes the rest.
 | `font-normal` | 400 | body |
 | `font-medium` | 500 | labels, emphasis inside body text |
 | `font-semibold` | 600 | UI — buttons, table cells, card titles at body sizes |
-| `font-black` | 900 | display sizes, and the big mono numbers |
+| `font-black` | 900 | heading sizes, and the big mono numbers |
 
 There is no 700: it read as a second, softer headline next to the 900 display
 face. What was `font-bold` on a heading is `font-black`; on body text it is
@@ -134,20 +140,20 @@ tightens and leading closes as the size grows, never one value for all.
 
 | Utility | Size | Leading | Tracking | Family | Use |
 | --- | --- | --- | --- | --- | --- |
-| `text-display-2xl` | 56 → 112 px | 0.98 | −0.03em | display | the hero name |
-| `text-display-xl` | 44 → 80 px | 1.02 | −0.02em | display | a page title |
-| `text-display-lg` | 36 → 60 px | 1.05 | −0.015em | display | **the section heading** |
-| `text-display-md` | 28 → 44 px | 1.1 | −0.01em | display | a sub-heading, a big number |
-| `text-display-sm` | 22 → 30 px | 1.2 | −0.01em | display | a card title, a metric |
-| `text-body-lg` | 17 → 20 px | 1.6 | 0 | sans | lead paragraphs |
-| `text-body-md` | 16 px | 1.6 | 0 | sans | body |
-| `text-body-sm` | 14 px | 1.55 | 0 | sans | dense UI, table cells |
-| `text-body-xs` | 12 px | 1.5 | 0 | sans | captions, badges |
+| `text-heading-display` | 56 → 112 px | 0.98 | −0.03em | display | the hero name |
+| `text-heading-xlarge` | 44 → 80 px | 1.02 | −0.02em | display | a page title |
+| `text-heading-large` | 36 → 60 px | 1.05 | −0.015em | display | **the section heading** |
+| `text-heading-medium` | 28 → 44 px | 1.1 | −0.01em | display | a sub-heading, a big number |
+| `text-heading-small` | 22 → 30 px | 1.2 | −0.01em | display | a card title, a metric |
+| `text-body-large` | 17 → 20 px | 1.6 | 0 | sans | lead paragraphs |
+| `text-body-regular` | 16 px | 1.6 | 0 | sans | body |
+| `text-body-small` | 14 px | 1.55 | 0 | sans | dense UI, table cells |
+| `text-caption` | 12 px | 1.5 | 0 | sans | captions, badges |
 | `text-label` | 11.2 px | 1.4 | 0.2em | mono | see `type-label` |
 
-Display sizes carry their own leading and tracking; do not add `leading-tight`
+Heading sizes carry their own leading and tracking; do not add `leading-tight`
 or `tracking-tight` next to them — the migration stripped 30 of those.
-Tailwind's `text-xs…text-9xl` and any `text-[11px]` are removed and linted.
+Tailwind's `text-xs…text-9xl` and any `text-[11px]` are removed and linted. Every size also exists as `--typography-<name>-font-size-{mobile,tablet,desktop}` — the same clamp evaluated at 375, 768 and 1280 px — for code that needs a number.
 
 ### Type roles
 
@@ -162,12 +168,34 @@ label-mono   type-label in primary-500 — the section eyebrow
 Give it a tone: `type-label text-tertiary-ink/40` for a table header,
 `type-label text-secondary-400` for a badge on a widget.
 
-## Radius, spacing
+## Spacing, breakpoints, radius
 
-Unchanged by this pass and already consistent: `rounded-full` for pills and
-dots, `rounded-lg` (12 px) for inputs and small tiles, `rounded-xl` (20 px)
-for icon wells, `rounded-2xl` (28 px) for cards. Spacing is Tailwind's 4 px
-scale.
+A 4 px base, with named steps for the gaps a design decides:
+`spacing-2xs` 4 · `xs` 8 · `sm` 12 · `md` 16 · `lg` 24 · `xl` 32 · `2xl` 48 ·
+`3xl` 64 · `4xl` 96 — as CSS variables and in the TypeScript tokens. In a
+class, Tailwind's numeric scale (`gap-2`, `p-4`): the named steps are kept out
+of `@theme` on purpose, because `max-w-md` would resolve to `--spacing-md`
+ahead of the container scale.
+
+Four spacings change with the viewport and carry a value per tier:
+
+| Token | mobile | tablet | desktop | Was |
+| --- | --- | --- | --- | --- |
+| `spacing-gutter-x` | 24 | 40 | 64 | `px-6 md:px-16` — now `px-gutter-x` |
+| `spacing-section-y` | 80 | 96 | 96 | `py-24` |
+| `spacing-card-padding` | 24 | 32 | 32 | `p-6 md:p-8` |
+| `spacing-stack` | 32 | 40 | 48 | the gap under a heading |
+
+The live variable (`--spacing-gutter-x`, and the `px-gutter-x` utility) switches
+at the tier boundaries by itself; the `-mobile/-tablet/-desktop` tokens are the
+static values for code that needs one.
+
+Breakpoints are Tailwind's — `sm` 640, `md` 768, `lg` 1024, `xl` 1280 — and
+the tiers are mobile (below `md`), tablet (`md` to `lg`), desktop (`lg` up).
+
+Radius: `rounded-full` for pills and dots, `rounded-lg` (12 px) for inputs and
+small tiles, `rounded-xl` (20 px) for icon wells, `rounded-2xl` (28 px) for
+cards.
 
 ## Refactored examples
 
@@ -177,7 +205,7 @@ The section heading — the idiom that appeared thirteen times, three ways:
 // before
 <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
 // after
-<h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-4">
+<h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
 ```
 
 A card surface:
@@ -234,7 +262,7 @@ fontFamily="var(--font-mono)"
    secondary.
 4. **Status is not decoration.** Green because it is *done*, never because
    green looks nice next to the amber one.
-5. **Size from the scale, family from the size.** Display sizes take
+5. **Size from the scale, family from the size.** Heading sizes take
    `font-display font-black`; body sizes take the default `font-sans`;
    numbers and labels take `font-mono`. Never `leading-*` or `tracking-*`
    next to a display size.

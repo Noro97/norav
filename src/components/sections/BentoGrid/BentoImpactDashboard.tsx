@@ -67,12 +67,12 @@ function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: num
       {/* Value */}
       <div className="relative flex items-baseline gap-1">
         {metric.prefix && (
-          <span className="font-mono text-body-md text-tertiary-ink/50 font-normal">{metric.prefix}</span>
+          <span className="font-mono text-body-regular text-tertiary-ink/50 font-normal">{metric.prefix}</span>
         )}
-        <motion.span className="font-mono text-display-md font-black text-tertiary-ink tabular-nums">
+        <motion.span className="font-mono text-heading-medium font-black text-tertiary-ink tabular-nums">
           {display}
         </motion.span>
-        <span className="font-mono text-body-xs text-tertiary-ink/45 font-medium ml-0.5">{metric.suffix}</span>
+        <span className="font-mono text-caption text-tertiary-ink/45 font-medium ml-0.5">{metric.suffix}</span>
       </div>
 
       {/* Detail line */}
@@ -122,7 +122,7 @@ export function BentoImpactDashboard() {
               {content.dashboard.title}
             </h3>
           </div>
-          <span className="font-mono text-body-xs text-primary-500/50 tracking-wider">
+          <span className="font-mono text-caption text-primary-500/50 tracking-wider">
             REAL-TIME
           </span>
         </div>

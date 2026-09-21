@@ -35,7 +35,7 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
           {names.map((tech, i) => (
             <span
               key={i}
-              className="font-display text-body-lg font-semibold text-tertiary-ink/25 hover:text-tertiary-ink/50 transition-colors duration-300 tracking-tight"
+              className="font-display text-body-large font-semibold text-tertiary-ink/25 hover:text-tertiary-ink/50 transition-colors duration-300 tracking-tight"
             >
               {tech}
             </span>
@@ -72,10 +72,10 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
       >
         {items.map((tech, i) => (
           <span key={i} className="flex items-center shrink-0">
-            <span className="font-display text-display-md font-black text-tertiary-ink/15 hover:text-tertiary-ink/40 transition-colors duration-300 px-7">
+            <span className="font-display text-heading-medium font-black text-tertiary-ink/15 hover:text-tertiary-ink/40 transition-colors duration-300 px-7">
               {tech}
             </span>
-            <span className="text-primary-500/40 text-body-xs">&#9670;</span>
+            <span className="text-primary-500/40 text-caption">&#9670;</span>
           </span>
         ))}
       </div>

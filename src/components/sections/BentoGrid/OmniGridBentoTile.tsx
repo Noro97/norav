@@ -133,7 +133,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             </motion.div>
           )}
           <span
-            className={`px-2 py-0.5 text-body-xs font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
+            className={`px-2 py-0.5 text-caption font-mono tracking-wider border rounded-full transition-all duration-300 ${CACHE_COLORS[cacheStatus]}`}
           >
             {cacheStatus}
           </span>
@@ -148,12 +148,12 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         </div>
 
         {/* Title */}
-        <h3 className="font-display text-display-sm font-black text-tertiary-ink mb-2 group-hover:text-secondary-50 transition-colors duration-300">
+        <h3 className="font-display text-heading-small font-black text-tertiary-ink mb-2 group-hover:text-secondary-50 transition-colors duration-300">
           {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
-        <p className="text-body-sm text-tertiary-ink/60 leading-relaxed mb-4 max-w-lg">
+        <p className="text-body-small text-tertiary-ink/60 leading-relaxed mb-4 max-w-lg">
           {copy?.description ?? ''}
         </p>
 
@@ -164,13 +164,13 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Filter..."
-            className="w-full max-w-[200px] px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/70 bg-tertiary-shade/40 border border-tertiary-ink/[0.08] rounded-md placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors"
+            className="w-full max-w-[200px] px-2.5 py-1 text-caption font-mono text-tertiary-ink/70 bg-tertiary-shade/40 border border-tertiary-ink/[0.08] rounded-md placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors"
           />
         </div>
 
         {/* Mini Bloomberg table */}
         <div className="mb-5 rounded-lg bg-tertiary-shade/40 border border-tertiary-ink/[0.08] overflow-x-auto scrollbar-hidden" data-lenis-prevent>
-          <table className="w-full min-w-[450px] text-body-xs font-mono">
+          <table className="w-full min-w-[450px] text-caption font-mono">
             <thead>
               <tr className="border-b border-tertiary-ink/[0.06]">
                 {table.getHeaderGroups()[0]?.headers.map((header) => (
@@ -217,7 +217,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
           {OMNIGRID_PROJECT.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-body-xs font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>

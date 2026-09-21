@@ -43,16 +43,16 @@ function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boo
     <div className="group">
       <div className="flex items-center justify-between mb-1.5">
         <span className="flex items-baseline gap-2 min-w-0">
-          <span className="font-mono text-body-xs text-tertiary-ink/60 group-hover:text-tertiary-ink/80 transition-colors">
+          <span className="font-mono text-caption text-tertiary-ink/60 group-hover:text-tertiary-ink/80 transition-colors">
             {skill.name}
           </span>
           {skill.proof && <Proof label={skill.proof} href={skill.proofHref} />}
         </span>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-body-xs text-tertiary-ink/40 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="font-mono text-caption text-tertiary-ink/40 opacity-0 group-hover:opacity-100 transition-opacity">
             {skill.years}y
           </span>
-          <span className="font-mono text-body-xs text-tertiary-ink/45">
+          <span className="font-mono text-caption text-tertiary-ink/45">
             {showCounters ? (
               <CountUp target={skill.level} run={animate} suffix="%" />
             ) : (
@@ -234,17 +234,17 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'skills'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="skills-header">
           <span className="label-mono">{content.sectionLabel}</span>
           <div className="mt-3 mb-4">
-            <h2 className="font-display text-display-lg font-black text-tertiary-ink">
+            <h2 className="font-display text-heading-large font-black text-tertiary-ink">
               {content.title}
             </h2>
           </div>
-          <p className="text-tertiary-ink/40 text-body-md max-w-xl mb-12">
+          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">
             {content.description}
           </p>
         </div>
@@ -277,7 +277,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                       {category.name}
                     </h3>
                     <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
-                    <span className="font-mono text-body-xs text-tertiary-ink/40">
+                    <span className="font-mono text-caption text-tertiary-ink/40">
                       {Math.round(category.skills.reduce((s, sk) => s + sk.level, 0) / category.skills.length)}%
                     </span>
                   </div>
@@ -323,15 +323,15 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: categoryColour(i, categories.length) }}
                     />
-                    <span className="font-mono text-body-xs text-tertiary-ink/40 flex-1">{cat.name}</span>
-                    <span className="font-mono text-body-xs text-tertiary-ink/40">{avg}%</span>
+                    <span className="font-mono text-caption text-tertiary-ink/40 flex-1">{cat.name}</span>
+                    <span className="font-mono text-caption text-tertiary-ink/40">{avg}%</span>
                   </div>
                 )
               })}
             </div>
 
             <div className="mt-4 pt-3 border-t border-tertiary-ink/5 text-center">
-              <span className="font-mono text-body-xs text-tertiary-ink/40">
+              <span className="font-mono text-caption text-tertiary-ink/40">
                 {content.skillsTracked.replace('{{count}}', String(totalSkills))}
               </span>
             </div>

@@ -45,15 +45,15 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'terminal'}
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-16 py-24"
+      className="relative min-h-screen flex flex-col items-center justify-center px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-3xl mx-auto">
         <div className="mb-8 text-center">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/40 text-body-sm mt-2 font-mono">
+          <p className="text-tertiary-ink/40 text-body-small mt-2 font-mono">
             {content.subtitle}
           </p>
         </div>
@@ -65,7 +65,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
             <div className="w-3 h-3 rounded-full bg-tertiary-ink/20" />
             <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
             <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
-            <span className="ml-3 font-mono text-body-xs text-tertiary-ink/40">
+            <span className="ml-3 font-mono text-caption text-tertiary-ink/40">
               {content.titleBar}
             </span>
           </div>
@@ -77,7 +77,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
             data-lenis-prevent
           >
             {lines.map((line, i) => (
-              <div key={i} className="font-mono text-body-sm leading-relaxed">
+              <div key={i} className="font-mono text-body-small leading-relaxed">
                 {line.type === 'input' ? (
                   <div className="flex gap-2">
                     <span className="text-primary-500 shrink-0">
@@ -98,7 +98,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
             ))}
 
             {/* Current input line */}
-            <div className="flex gap-2 font-mono text-body-sm items-center mt-1">
+            <div className="flex gap-2 font-mono text-body-small items-center mt-1">
               <span className="text-primary-500 shrink-0">
                 {content.prompt}
               </span>
@@ -110,7 +110,7 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   aria-label={content.title}
-                  className="w-full bg-transparent text-tertiary-ink/80 outline-none caret-primary-500 font-mono text-body-sm focus:ring-1 focus:ring-primary-500/40 focus:rounded-sm"
+                  className="w-full bg-transparent text-tertiary-ink/80 outline-none caret-primary-500 font-mono text-body-small focus:ring-1 focus:ring-primary-500/40 focus:rounded-sm"
                   spellCheck={false}
                   autoComplete="off"
                   placeholder={content.placeholder}
@@ -121,17 +121,17 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
 
           {/* Status bar */}
           <div className="flex items-center justify-between px-4 py-2 bg-tertiary-ink/[0.02] border-t border-tertiary-ink/5">
-            <span className="font-mono text-body-xs text-tertiary-ink/40">
+            <span className="font-mono text-caption text-tertiary-ink/40">
               {lines.filter((l) => l.type === 'input').length} {t('common:labels.commands')}
             </span>
-            <span className="font-mono text-body-xs text-primary-500/40">
+            <span className="font-mono text-caption text-primary-500/40">
               zsh 5.9
             </span>
           </div>
         </div>
 
         <div className="mt-8 text-center">
-          <p className="font-mono text-body-xs text-tertiary-ink/35">
+          <p className="font-mono text-caption text-tertiary-ink/35">
             {t('common:footer.builtWith')}
           </p>
         </div>

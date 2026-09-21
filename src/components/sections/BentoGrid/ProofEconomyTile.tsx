@@ -23,7 +23,7 @@ function AnimatedBalance({ target, decimals = 0, active }: { target: number; dec
   }, [active, target, motionValue, decimals])
 
   return (
-    <motion.span className="font-mono text-body-lg font-semibold text-tertiary-ink tabular-nums">
+    <motion.span className="font-mono text-body-large font-semibold text-tertiary-ink tabular-nums">
       {display}
     </motion.span>
   )

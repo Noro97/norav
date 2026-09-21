@@ -68,7 +68,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'vibecoding'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-28 md:py-36 overflow-hidden"
+      className="relative px-gutter-x py-28 md:py-36 overflow-hidden"
     >
       {/* Terminal ghosting background */}
       <TerminalGhosting active={isInView} />
@@ -84,10 +84,10 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
         {/* Header */}
         <div className="vc-header mb-16">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="font-display text-display-xl font-black text-tertiary-ink mt-4 mb-5">
+          <h2 className="font-display text-heading-xlarge font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/45 text-body-md md:text-body-lg max-w-xl leading-relaxed">
+          <p className="text-tertiary-ink/45 text-body-regular md:text-body-large max-w-xl leading-relaxed">
             {content.body}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-primary-500/50 to-transparent mt-8" />
@@ -99,7 +99,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
           <div className="flex flex-col gap-10">
             {/* Micro-copy */}
             <blockquote className="pl-5 border-l-2 border-primary-500/40">
-              <p className="font-mono text-body-sm md:text-body-md text-tertiary-ink/50 italic leading-relaxed">
+              <p className="font-mono text-body-small md:text-body-regular text-tertiary-ink/50 italic leading-relaxed">
                 <ScrambleText text={content.microCopy} variant={settings.codeReveal} />
               </p>
             </blockquote>
@@ -113,7 +113,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
                 {content.systems.map((system) => (
                   <span
                     key={system.name}
-                    className={`font-mono text-body-xs px-3 py-1.5 rounded-lg border bg-tertiary-ink/[0.02] ${TONE_CLASS[system.tone] ?? ''}`}
+                    className={`font-mono text-caption px-3 py-1.5 rounded-lg border bg-tertiary-ink/[0.02] ${TONE_CLASS[system.tone] ?? ''}`}
                   >
                     {system.name}
                   </span>
@@ -125,7 +125,7 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
             <div className="grid grid-cols-3 gap-4">
               {content.stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="font-display text-display-md font-black text-tertiary-ink/80">
+                  <div className="font-display text-heading-medium font-black text-tertiary-ink/80">
                     {stat.value}
                   </div>
                   <div className="type-label text-tertiary-ink/40 mt-1">

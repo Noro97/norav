@@ -262,21 +262,21 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'proof'}
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-6 md:px-16 py-24"
+      className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-body-lg text-tertiary-ink/50 max-w-2xl mt-4">
+          <p className="text-body-large text-tertiary-ink/50 max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-body-xs font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
                 {tag.name}
               </span>
             ))}
@@ -291,7 +291,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
               <div className="w-3 h-3 rounded-full bg-primary-500/60" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
-              <span className="ml-3 font-mono text-body-xs text-tertiary-ink/45">{t('projects:proof.windowLabel')}</span>
+              <span className="ml-3 font-mono text-caption text-tertiary-ink/45">{t('projects:proof.windowLabel')}</span>
             </div>
 
             {/* Activity selector */}
@@ -304,7 +304,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={act.key}
                     onClick={() => handleSelectActivity(i)}
-                    className={`px-3 py-1.5 text-body-xs font-mono rounded border transition-all ${
+                    className={`px-3 py-1.5 text-caption font-mono rounded border transition-all ${
                       selectedActivity === i ? CHOSEN : UNCHOSEN
                     }`}
                   >
@@ -319,8 +319,8 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
             <div className="case-study-card flex items-center gap-3 px-4 py-3">
               <span className="w-2 h-2 rounded-full bg-status-warning animate-pulse shrink-0" />
               <div>
-                <span className="font-mono text-body-xs text-tertiary-ink/40 block">{t('projects:proof.liveness.title')}</span>
-                <span className="font-mono text-body-sm text-status-warning/80">
+                <span className="font-mono text-caption text-tertiary-ink/40 block">{t('projects:proof.liveness.title')}</span>
+                <span className="font-mono text-body-small text-status-warning/80">
                   {t(`projects:proof.liveness.${livenessChallenge}`)}
                 </span>
               </div>
@@ -330,7 +330,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
             {pipelineStatus === 'done' ? (
               <button
                 onClick={handleReset}
-                className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-tertiary-ink/5 border border-tertiary-ink/20 text-tertiary-ink/60 font-mono text-body-sm tracking-wider uppercase rounded transition-all hover:bg-tertiary-ink/10 hover:text-tertiary-ink/80"
+                className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-tertiary-ink/5 border border-tertiary-ink/20 text-tertiary-ink/60 font-mono text-body-small tracking-wider uppercase rounded transition-all hover:bg-tertiary-ink/10 hover:text-tertiary-ink/80"
               >
                 {t('projects:proof.button.reset')}
               </button>
@@ -338,7 +338,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
               <button
                 onClick={handleStart}
                 disabled={pipelineStatus === 'running'}
-                className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-primary-500/10 border border-primary-500/30 text-primary-400 font-mono text-body-sm tracking-wider uppercase rounded transition-all hover:bg-primary-500/20 hover:border-primary-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative inline-flex items-center gap-3 px-7 py-3.5 bg-primary-500/10 border border-primary-500/30 text-primary-400 font-mono text-body-small tracking-wider uppercase rounded transition-all hover:bg-primary-500/20 hover:border-primary-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className={`w-2.5 h-2.5 rounded-full ${pipelineStatus === 'running' ? 'bg-status-warning animate-pulse' : 'bg-primary-500'}`} />
                 {pipelineStatus === 'running'
@@ -351,25 +351,25 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-3">
               <div className="case-study-card p-3 text-center">
-                <div className="text-display-sm font-black text-primary-400 font-mono">{confidence}%</div>
-                <div className="text-body-xs text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.confidence')}</div>
+                <div className="text-heading-small font-black text-primary-400 font-mono">{confidence}%</div>
+                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.confidence')}</div>
               </div>
               <div className="case-study-card p-3 text-center">
-                <div className="text-display-sm font-black text-primary-400 font-mono">{processingTime}s</div>
-                <div className="text-body-xs text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.processingTime')}</div>
+                <div className="text-heading-small font-black text-primary-400 font-mono">{processingTime}s</div>
+                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.processingTime')}</div>
               </div>
               <div className="case-study-card p-3 text-center border-secondary-500/30">
-                <div className="text-display-sm font-black text-secondary-300 font-mono">+{points}</div>
-                <div className="text-body-xs text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.points')}</div>
+                <div className="text-heading-small font-black text-secondary-300 font-mono">+{points}</div>
+                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.points')}</div>
               </div>
               <div className="case-study-card p-3 text-center">
-                <div className="text-display-sm font-black text-primary-400 font-mono">{streak}d</div>
-                <div className="text-body-xs text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.streak')}</div>
+                <div className="text-heading-small font-black text-primary-400 font-mono">{streak}d</div>
+                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.streak')}</div>
               </div>
             </div>
 
             {/* Pipeline log */}
-            <div className="font-mono text-body-xs space-y-1 max-h-28 overflow-y-auto">
+            <div className="font-mono text-caption space-y-1 max-h-28 overflow-y-auto">
               {logLines.map((line, i) => (
                 <div key={i} className={i === logLines.length - 1 && pipelineStatus === 'running' ? 'text-tertiary-ink/50' : 'text-status-success/60'}>
                   {line}
@@ -387,7 +387,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
           <div className="proof-right bg-tertiary-bg p-6 md:p-8 border-t lg:border-t-0 lg:border-l border-tertiary-ink/5">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-3 h-3 rounded-full bg-secondary-500/40" />
-              <span className="font-mono text-body-xs text-tertiary-ink/45">{t('projects:proof.pipeline.title')}</span>
+              <span className="font-mono text-caption text-tertiary-ink/45">{t('projects:proof.pipeline.title')}</span>
             </div>
 
             {/* Nodes */}
@@ -407,7 +407,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                       }`}
                     >
                       {/* Icon */}
-                      <div className={`w-8 h-8 rounded-md flex items-center justify-center font-mono text-body-xs font-semibold transition-colors duration-500 ${
+                      <div className={`w-8 h-8 rounded-md flex items-center justify-center font-mono text-caption font-semibold transition-colors duration-500 ${
                         status === 'active'
                           ? 'bg-primary-500/20 text-primary-400'
                           : status === 'done'
@@ -424,7 +424,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                       </div>
 
                       {/* Label */}
-                      <span className={`font-mono text-body-sm transition-colors duration-500 ${
+                      <span className={`font-mono text-body-small transition-colors duration-500 ${
                         status === 'active' ? 'text-primary-400' :
                         status === 'done' ? 'text-status-success/70' : 'text-tertiary-ink/40'
                       }`}>
@@ -475,30 +475,30 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
                 <svg viewBox="0 0 16 16" className="w-5 h-5 text-status-success" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M3 8l3.5 3.5L13 5" />
                 </svg>
-                <span className="font-mono text-body-sm font-semibold text-status-success">
+                <span className="font-mono text-body-small font-semibold text-status-success">
                   {t('projects:proof.result.title')}
                 </span>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-body-xs text-tertiary-ink/50">
+                  <span className="font-mono text-caption text-tertiary-ink/50">
                     {t(`projects:proof.activities.${activity.key}`)}
                   </span>
-                  <span className="font-mono text-body-xs text-tertiary-ink/60">
+                  <span className="font-mono text-caption text-tertiary-ink/60">
                     {t('projects:proof.result.reps', { count: activity.reps })}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-body-xs text-secondary-300 font-semibold">
+                  <span className="font-mono text-caption text-secondary-300 font-semibold">
                     {t('projects:proof.result.physioPoints', { count: activity.basePoints })}
                   </span>
-                  <span className="case-study-pill font-mono text-body-xs text-secondary-300/80 border-secondary-500/30 py-0.5">
+                  <span className="case-study-pill font-mono text-caption text-secondary-300/80 border-secondary-500/30 py-0.5">
                     {t('projects:proof.result.premium')}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-body-xs text-secondary-400">
+                  <span className="font-mono text-caption text-secondary-400">
                     {t('projects:proof.result.xpGained', { count: activity.baseXP })}
                   </span>
                 </div>
@@ -506,7 +506,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
 
               {/* Telegram's own blue: a brand mark, the one hex a component may carry. */}
               {/* eslint-disable-next-line no-restricted-syntax -- brand colour, not the palette */}
-              <button className="mt-3 w-full px-4 py-2 bg-[#26a5e4]/10 border border-[#26a5e4]/20 text-[#26a5e4] font-mono text-body-xs rounded-lg hover:bg-[#26a5e4]/20 transition-colors">
+              <button className="mt-3 w-full px-4 py-2 bg-[#26a5e4]/10 border border-[#26a5e4]/20 text-[#26a5e4] font-mono text-caption rounded-lg hover:bg-[#26a5e4]/20 transition-colors">
                 {t('projects:proof.result.share')}
               </button>
             </div>

@@ -33,12 +33,12 @@ const designSystemRules = {
     {
       selector: `JSXAttribute[name.name="className"] Literal[value=/(^|\\s|:)${OFF_SYSTEM_TYPE}/]`,
       message:
-        'Off-system type. Sizes are text-display-{2xl..sm}, text-body-{lg..xs}, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
+        'Off-system type. Sizes are text-heading-{display,xlarge,large,medium,small}, text-body-{large,regular,small}, text-caption, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
     },
     {
       selector: `JSXAttribute[name.name="className"] TemplateElement[value.raw=/(^|\\s|:)${OFF_SYSTEM_TYPE}/]`,
       message:
-        'Off-system type. Sizes are text-display-{2xl..sm}, text-body-{lg..xs}, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
+        'Off-system type. Sizes are text-heading-{display,xlarge,large,medium,small}, text-body-{large,regular,small}, text-caption, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
     },
     {
       selector: `JSXAttribute[name.name="className"] Literal[value=/(^|\\s|:)${COLOUR_PREFIX}-\\[#/]`,
@@ -72,6 +72,11 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       ...designSystemRules,
     },
+  },
+  {
+    // The token generator is a Node script, not browser code.
+    files: ['packages/design-tokens/scripts/**/*.mjs'],
+    languageOptions: { globals: { process: 'readonly', console: 'readonly' } },
   },
   {
     // Tests pass colours as fixtures and assert on what came out; they are

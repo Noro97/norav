@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "tokens": "node packages/design-tokens/scripts/build.mjs",
     "content:pull": "CMS_URL=${CMS_URL:-http://localhost:3300} node scripts/fetch-content.mjs",
     "content:backfill": "tsx scripts/backfill-snapshot-defaults.mts",
     "illustrations": "node scripts/generate-illustrations.mjs",

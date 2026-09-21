@@ -29,7 +29,7 @@ function Counter({ stat, run }: { stat: Stat; run: boolean }) {
   const display = reduced ? stat.value : n
 
   return (
-    <span className="font-display text-display-lg font-black text-tertiary-ink tabular-nums">
+    <span className="font-display text-heading-large font-black text-tertiary-ink tabular-nums">
       {stat.prefix}{display}{stat.suffix}
     </span>
   )
@@ -63,7 +63,7 @@ export function ImpactStrip({ anchorId }: { anchorId?: string | null }) {
     <section
       ref={ref}
       {...(anchorId ? { id: anchorId } : {})}
-      className="relative px-6 md:px-16 py-16"
+      className="relative px-gutter-x py-16"
       aria-label={content.label}
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">

@@ -70,9 +70,9 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                 <div className="type-label text-secondary-300 mb-2">
                   Shipment Details
                 </div>
-                <h3 className="font-display text-display-sm font-black text-tertiary-ink">
+                <h3 className="font-display text-heading-small font-black text-tertiary-ink">
                   {shipment.id}
-                  <span className="text-tertiary-ink/45 text-body-sm font-normal ml-2">({shipment.code})</span>
+                  <span className="text-tertiary-ink/45 text-body-small font-normal ml-2">({shipment.code})</span>
                 </h3>
               </div>
               <button
@@ -117,7 +117,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                     <div key={step.label} className="flex items-center flex-1">
                       <div className="flex flex-col items-center">
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-body-sm border transition-all ${
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-body-small border transition-all ${
                             isCurrent
                               ? 'border-secondary-500/50 bg-secondary-500/20 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-secondary-500)_30%,_transparent)]'
                               : isActive
@@ -130,7 +130,7 @@ export function ShipmentDetailModal({ shipment, onClose }: Props) {
                             return Icon ? <Icon size={16} className={isActive ? '' : 'opacity-30'} /> : null
                           })()}
                         </div>
-                        <span className={`text-body-xs font-mono mt-1.5 text-center leading-tight ${
+                        <span className={`text-caption font-mono mt-1.5 text-center leading-tight ${
                           isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/35'
                         }`}>
                           {step.label}
@@ -161,7 +161,7 @@ function DetailField({ label, value, valueClass = 'text-tertiary-ink/70' }: { la
   return (
     <div className="rounded-xl bg-tertiary-ink/[0.02] border border-tertiary-ink/[0.06] p-3">
       <div className="type-label text-tertiary-ink/40 mb-1">{label}</div>
-      <div className={`text-body-sm font-mono ${valueClass}`}>{value}</div>
+      <div className={`text-body-small font-mono ${valueClass}`}>{value}</div>
     </div>
   )
 }

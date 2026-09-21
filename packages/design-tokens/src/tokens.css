@@ -1,0 +1,331 @@
+/* Generated from packages/design-tokens/tokens.json by `npm run tokens` — do not edit. */
+
+/* ---------- Physical palette — written by the published theme; read by nothing but the aliases below and the kit's stylesheet. ---------- */
+:root {
+  --color-crimson-50: #fef2f3;
+  --color-crimson-100: #fde6e8;
+  --color-crimson-200: #fbc9cd;
+  --color-crimson-300: #f7a0a6;
+  --color-crimson-400: #d63040;
+  --color-crimson-500: #B51A2B;
+  --color-crimson-600: #8c1523;
+  --color-crimson-700: #541A2E;
+  --color-crimson-800: #3d1322;
+  --color-crimson-900: #2a0e17;
+  --color-cyan-50: #f5fcfd;
+  --color-cyan-100: #ebf9fb;
+  --color-cyan-200: #d7f2f6;
+  --color-cyan-300: #b9e9f0;
+  --color-cyan-400: #47daf1;
+  --color-cyan-500: #22d3ee;
+  --color-cyan-600: #0fadc5;
+  --color-cyan-700: #1d6975;
+  --color-cyan-800: #154c55;
+  --color-cyan-900: #0f353a;
+  --color-background: #0a0a1a;
+  --color-card: #0d0d1f;
+  --color-muted: #1a1a2e;
+  --color-secondary: #1a1a2e;
+  --color-foreground: #e0e0e0;
+  --color-card-foreground: #e0e0e0;
+  --color-secondary-foreground: #e0e0e0;
+  --color-muted-foreground: #888888;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-input: rgba(255, 255, 255, 0.06);
+  --color-ink: #ffffff;
+  --color-primary: #B51A2B;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #B51A2B;
+  --color-accent-foreground: #ffffff;
+  --color-ring: #B51A2B;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+  --color-info: #38bdf8;
+}
+
+@theme {
+  /* Tailwind's own palette, sizes, families and weights: gone. What follows is the whole vocabulary. */
+  --color-*: initial;
+  --text-*: initial;
+  --font-*: initial;
+  --font-weight-*: initial;
+
+  --font-display: 'Inter Tight', Inter, system-ui, sans-serif;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-family-display: var(--font-display);
+  --font-family-sans: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-black: 900;
+
+  --text-heading-display: clamp(3.5rem, 5vw + 2rem, 7rem);
+  --text-heading-display--line-height: 0.98;
+  --text-heading-display--letter-spacing: -0.03em;
+  --text-heading-xlarge: clamp(2.75rem, 4vw + 1.5rem, 5rem);
+  --text-heading-xlarge--line-height: 1.02;
+  --text-heading-xlarge--letter-spacing: -0.02em;
+  --text-heading-large: clamp(2.25rem, 3vw + 1.25rem, 3.75rem);
+  --text-heading-large--line-height: 1.05;
+  --text-heading-large--letter-spacing: -0.015em;
+  --text-heading-medium: clamp(1.75rem, 2vw + 1rem, 2.75rem);
+  --text-heading-medium--line-height: 1.1;
+  --text-heading-medium--letter-spacing: -0.01em;
+  --text-heading-small: clamp(1.375rem, 1vw + 1rem, 1.875rem);
+  --text-heading-small--line-height: 1.2;
+  --text-heading-small--letter-spacing: -0.01em;
+  --text-body-large: clamp(1.0625rem, 0.4vw + 1rem, 1.25rem);
+  --text-body-large--line-height: 1.6;
+  --text-body-large--letter-spacing: 0;
+  --text-body-regular: 1rem;
+  --text-body-regular--line-height: 1.6;
+  --text-body-regular--letter-spacing: 0;
+  --text-body-small: 0.875rem;
+  --text-body-small--line-height: 1.55;
+  --text-body-small--letter-spacing: 0;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0;
+  --text-label: 0.7rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.2em;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* Responsive spacing — the live variable; it switches at the tier boundaries further down. */
+  --spacing-gutter-x: 24px;
+  --spacing-section-y: 80px;
+  --spacing-card-padding: 24px;
+  --spacing-stack: 32px;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-3xl: 36px;
+  --radius-full: 9999px;
+}
+
+/* ---------- Semantic roles — the only colours a component may name in a class. `inline` so a utility carries the physical variable itself, which the theme repaints. ---------- */
+@theme inline {
+  --color-primary-50: var(--color-crimson-50);
+  --color-primary-100: var(--color-crimson-100);
+  --color-primary-200: var(--color-crimson-200);
+  --color-primary-300: var(--color-crimson-300);
+  --color-primary-400: var(--color-crimson-400);
+  --color-primary-500: var(--color-crimson-500);
+  --color-primary-600: var(--color-crimson-600);
+  --color-primary-700: var(--color-crimson-700);
+  --color-primary-800: var(--color-crimson-800);
+  --color-primary-900: var(--color-crimson-900);
+  --color-primary-fg: var(--color-primary-foreground);
+
+  --color-secondary-50: var(--color-cyan-50);
+  --color-secondary-100: var(--color-cyan-100);
+  --color-secondary-200: var(--color-cyan-200);
+  --color-secondary-300: var(--color-cyan-300);
+  --color-secondary-400: var(--color-cyan-400);
+  --color-secondary-500: var(--color-cyan-500);
+  --color-secondary-600: var(--color-cyan-600);
+  --color-secondary-700: var(--color-cyan-700);
+  --color-secondary-800: var(--color-cyan-800);
+  --color-secondary-900: var(--color-cyan-900);
+
+  --color-tertiary-bg: var(--color-background);
+  --color-tertiary-card: var(--color-card);
+  --color-tertiary-raised: var(--color-muted);
+  --color-tertiary-fg: var(--color-foreground);
+  --color-tertiary-muted: var(--color-muted-foreground);
+  --color-tertiary-line: var(--color-border);
+  --color-tertiary-line-soft: var(--color-input);
+  --color-tertiary-ink: var(--color-ink);
+  --color-tertiary-shade: #000000;
+
+  --color-status-success: var(--color-success);
+  --color-status-warning: var(--color-warning);
+  --color-status-danger: var(--color-danger);
+  --color-status-info: var(--color-info);
+}
+
+/* ---------- By intent — for style objects, canvas, SVG and plain CSS. In a class, use the role. ---------- */
+:root {
+  --color-background-page: var(--color-tertiary-bg);
+  --color-background-surface: var(--color-tertiary-card);
+  --color-background-raised: var(--color-tertiary-raised);
+  --color-background-scrim: color-mix(in srgb, var(--color-tertiary-shade) 80%, transparent);
+  --color-background-subtle: color-mix(in srgb, var(--color-tertiary-ink) 3%, transparent);
+  --color-background-accent: var(--color-primary-500);
+  --color-background-accent-subtle: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  --color-background-accent-secondary: var(--color-secondary-500);
+  --color-background-accent-secondary-subtle: color-mix(in srgb, var(--color-secondary-500) 10%, transparent);
+  --color-background-disabled: color-mix(in srgb, var(--color-tertiary-ink) 6%, transparent);
+
+  --color-text-primary: var(--color-tertiary-fg);
+  --color-text-secondary: var(--color-tertiary-muted);
+  --color-text-tertiary: color-mix(in srgb, var(--color-tertiary-ink) 45%, transparent);
+  --color-text-inverse: var(--color-primary-fg);
+  --color-text-accent: var(--color-primary-400);
+  --color-text-accent-secondary: var(--color-secondary-400);
+  --color-text-disabled: color-mix(in srgb, var(--color-tertiary-ink) 30%, transparent);
+
+  --color-border-default: var(--color-tertiary-line);
+  --color-border-subtle: var(--color-tertiary-line-soft);
+  --color-border-strong: color-mix(in srgb, var(--color-tertiary-ink) 20%, transparent);
+  --color-border-accent: color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  --color-border-focus: var(--color-primary-500);
+  --color-border-disabled: color-mix(in srgb, var(--color-tertiary-ink) 4%, transparent);
+
+  --color-interactive-default: var(--color-primary-500);
+  --color-interactive-hover: var(--color-primary-400);
+  --color-interactive-active: var(--color-primary-600);
+  --color-interactive-subtle: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  --color-interactive-secondary-default: var(--color-secondary-500);
+  --color-interactive-secondary-hover: var(--color-secondary-400);
+  --color-interactive-secondary-active: var(--color-secondary-600);
+  --color-interactive-disabled: color-mix(in srgb, var(--color-tertiary-ink) 15%, transparent);
+  --color-interactive-disabled-text: color-mix(in srgb, var(--color-tertiary-ink) 30%, transparent);
+
+  /* Typography, one property per token, plus the fluid size evaluated at each tier. */
+  --typography-heading-display-font-family: var(--font-display);
+  --typography-heading-display-font-size: var(--text-heading-display);
+  --typography-heading-display-font-weight: 900;
+  --typography-heading-display-line-height: 0.98;
+  --typography-heading-display-letter-spacing: -0.03em;
+  --typography-heading-display-font-size-mobile: 56px;
+  --typography-heading-display-font-size-tablet: 70.4px;
+  --typography-heading-display-font-size-desktop: 96px;
+  --typography-heading-xlarge-font-family: var(--font-display);
+  --typography-heading-xlarge-font-size: var(--text-heading-xlarge);
+  --typography-heading-xlarge-font-weight: 900;
+  --typography-heading-xlarge-line-height: 1.02;
+  --typography-heading-xlarge-letter-spacing: -0.02em;
+  --typography-heading-xlarge-font-size-mobile: 44px;
+  --typography-heading-xlarge-font-size-tablet: 54.7px;
+  --typography-heading-xlarge-font-size-desktop: 75.2px;
+  --typography-heading-large-font-family: var(--font-display);
+  --typography-heading-large-font-size: var(--text-heading-large);
+  --typography-heading-large-font-weight: 900;
+  --typography-heading-large-line-height: 1.05;
+  --typography-heading-large-letter-spacing: -0.015em;
+  --typography-heading-large-font-size-mobile: 36px;
+  --typography-heading-large-font-size-tablet: 43px;
+  --typography-heading-large-font-size-desktop: 58.4px;
+  --typography-heading-medium-font-family: var(--font-display);
+  --typography-heading-medium-font-size: var(--text-heading-medium);
+  --typography-heading-medium-font-weight: 900;
+  --typography-heading-medium-line-height: 1.1;
+  --typography-heading-medium-letter-spacing: -0.01em;
+  --typography-heading-medium-font-size-mobile: 28px;
+  --typography-heading-medium-font-size-tablet: 31.4px;
+  --typography-heading-medium-font-size-desktop: 41.6px;
+  --typography-heading-small-font-family: var(--font-display);
+  --typography-heading-small-font-size: var(--text-heading-small);
+  --typography-heading-small-font-weight: 900;
+  --typography-heading-small-line-height: 1.2;
+  --typography-heading-small-letter-spacing: -0.01em;
+  --typography-heading-small-font-size-mobile: 22px;
+  --typography-heading-small-font-size-tablet: 23.7px;
+  --typography-heading-small-font-size-desktop: 28.8px;
+  --typography-body-large-font-family: var(--font-sans);
+  --typography-body-large-font-size: var(--text-body-large);
+  --typography-body-large-font-weight: 400;
+  --typography-body-large-line-height: 1.6;
+  --typography-body-large-letter-spacing: 0;
+  --typography-body-large-font-size-mobile: 17.5px;
+  --typography-body-large-font-size-tablet: 19.1px;
+  --typography-body-large-font-size-desktop: 20px;
+  --typography-body-regular-font-family: var(--font-sans);
+  --typography-body-regular-font-size: var(--text-body-regular);
+  --typography-body-regular-font-weight: 400;
+  --typography-body-regular-line-height: 1.6;
+  --typography-body-regular-letter-spacing: 0;
+  --typography-body-regular-font-size-mobile: 16px;
+  --typography-body-regular-font-size-tablet: 16px;
+  --typography-body-regular-font-size-desktop: 16px;
+  --typography-body-small-font-family: var(--font-sans);
+  --typography-body-small-font-size: var(--text-body-small);
+  --typography-body-small-font-weight: 400;
+  --typography-body-small-line-height: 1.55;
+  --typography-body-small-letter-spacing: 0;
+  --typography-body-small-font-size-mobile: 14px;
+  --typography-body-small-font-size-tablet: 14px;
+  --typography-body-small-font-size-desktop: 14px;
+  --typography-caption-font-family: var(--font-sans);
+  --typography-caption-font-size: var(--text-caption);
+  --typography-caption-font-weight: 400;
+  --typography-caption-line-height: 1.5;
+  --typography-caption-letter-spacing: 0;
+  --typography-caption-font-size-mobile: 12px;
+  --typography-caption-font-size-tablet: 12px;
+  --typography-caption-font-size-desktop: 12px;
+  --typography-label-font-family: var(--font-mono);
+  --typography-label-font-size: var(--text-label);
+  --typography-label-font-weight: 500;
+  --typography-label-line-height: 1.4;
+  --typography-label-letter-spacing: 0.2em;
+  --typography-label-text-transform: uppercase;
+  --typography-label-font-size-mobile: 11.2px;
+  --typography-label-font-size-tablet: 11.2px;
+  --typography-label-font-size-desktop: 11.2px;
+
+  /* Spacing. The named steps are for CSS and code; in a class use Tailwind's numeric scale (they would
+     shadow the container sizes in max-w-* if they went through @theme). Then the responsive ones, per tier. */
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+  --spacing-gutter-x-mobile: 24px;
+  --spacing-gutter-x-tablet: 40px;
+  --spacing-gutter-x-desktop: 64px;
+  --spacing-section-y-mobile: 80px;
+  --spacing-section-y-tablet: 96px;
+  --spacing-section-y-desktop: 96px;
+  --spacing-card-padding-mobile: 24px;
+  --spacing-card-padding-tablet: 32px;
+  --spacing-card-padding-desktop: 32px;
+  --spacing-stack-mobile: 32px;
+  --spacing-stack-tablet: 40px;
+  --spacing-stack-desktop: 48px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --spacing-gutter-x: var(--spacing-gutter-x-tablet);
+    --spacing-section-y: var(--spacing-section-y-tablet);
+    --spacing-card-padding: var(--spacing-card-padding-tablet);
+    --spacing-stack: var(--spacing-stack-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --spacing-gutter-x: var(--spacing-gutter-x-desktop);
+    --spacing-section-y: var(--spacing-section-y-desktop);
+    --spacing-card-padding: var(--spacing-card-padding-desktop);
+    --spacing-stack: var(--spacing-stack-desktop);
+  }
+}
+
+/* A label: an eyebrow, a table header, a badge. No colour of its own — pair it with a tone. */
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+}

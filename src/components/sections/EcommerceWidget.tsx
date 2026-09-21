@@ -221,20 +221,20 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'ecommerce'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-body-lg text-tertiary-ink/50 max-w-2xl mt-4">
+          <p className="text-body-large text-tertiary-ink/50 max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-body-xs font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
                 {tag.name}
               </span>
             ))}
@@ -280,10 +280,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                           </svg>
                         )}
                       </div>
-                      <span className={`text-body-sm font-mono ${isActive ? 'text-tertiary-ink/80' : 'text-tertiary-ink/50'}`}>
+                      <span className={`text-body-small font-mono ${isActive ? 'text-tertiary-ink/80' : 'text-tertiary-ink/50'}`}>
                         {cat}
                       </span>
-                      <span className="ml-auto text-body-xs font-mono text-tertiary-ink/40">{count}</span>
+                      <span className="ml-auto text-caption font-mono text-tertiary-ink/40">{count}</span>
                     </button>
                   )
                 })}
@@ -292,7 +292,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 <div className="mt-3 pt-3 border-t border-tertiary-ink/5">
                   <div className="flex flex-wrap gap-1">
                     {availableSubcategories.map((sub) => (
-                      <span key={sub} className="case-study-pill py-0.5 text-body-xs font-mono text-primary-400/60 bg-primary-500/5">
+                      <span key={sub} className="case-study-pill py-0.5 text-caption font-mono text-primary-400/60 bg-primary-500/5">
                         {sub}
                       </span>
                     ))}
@@ -321,7 +321,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                   }
                   className="w-full accent-primary-500"
                 />
-                <div className="flex justify-between font-mono text-body-xs text-tertiary-ink/40">
+                <div className="flex justify-between font-mono text-caption text-tertiary-ink/40">
                   <span>${filters.priceRange[0]}</span>
                   <span>${filters.priceRange[1]}</span>
                 </div>
@@ -338,7 +338,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={opt.value}
                     onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, sortBy: opt.value })) }}
-                    className={`w-full text-left px-2 py-1.5 rounded text-body-xs font-mono transition-all ${
+                    className={`w-full text-left px-2 py-1.5 rounded text-caption font-mono transition-all ${
                       filters.sortBy === opt.value
                         ? 'text-secondary-400 bg-secondary-500/10'
                         : 'text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/3'
@@ -355,7 +355,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
               <h4 className="type-label text-tertiary-ink/40 mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
-              <code className="text-body-xs font-mono text-primary-400/80 break-all block leading-relaxed">
+              <code className="text-caption font-mono text-primary-400/80 break-all block leading-relaxed">
                 {window.location.pathname}{filtersToParams(filters) || ''}
               </code>
             </div>
@@ -365,13 +365,13 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
           <div className="ecom-grid">
             {/* Header row */}
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-body-xs text-tertiary-ink/40">
+              <span className="font-mono text-caption text-tertiary-ink/40">
                 {t('projects:ecommerce.productsCount', { filtered: filteredProducts.length, total: MOCK_PRODUCTS.length })}
               </span>
               {filters.categories.length > 0 && (
                 <button
                   onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, categories: [] })) }}
-                  className="font-mono text-body-xs text-primary-400/60 hover:text-primary-400 transition-colors"
+                  className="font-mono text-caption text-primary-400/60 hover:text-primary-400 transition-colors"
                 >
                   {t('common:buttons.clearFilters')}
                 </button>
@@ -392,18 +392,18 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                       <span className="type-label text-tertiary-ink/40">
                         {product.category}
                       </span>
-                      <span className="font-mono text-body-xs text-tertiary-ink/45 group-hover:text-tertiary-ink/70 transition-colors">
+                      <span className="font-mono text-caption text-tertiary-ink/45 group-hover:text-tertiary-ink/70 transition-colors">
                         {product.subcategory}
                       </span>
                     </div>
-                    <h5 className="font-mono text-body-xs text-tertiary-ink/70 truncate" title={product.name}>
+                    <h5 className="font-mono text-caption text-tertiary-ink/70 truncate" title={product.name}>
                       {product.name}
                     </h5>
                     <div className="flex items-center justify-between mt-1.5">
-                      <span className="font-mono text-body-sm font-medium text-secondary-300">
+                      <span className="font-mono text-body-small font-medium text-secondary-300">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className="font-mono text-body-xs text-tertiary-ink/40 uppercase">
+                      <span className="font-mono text-caption text-tertiary-ink/40 uppercase">
                         #{String(product.id).padStart(3, '0')}
                       </span>
                     </div>
@@ -413,10 +413,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
               {filteredProducts.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <span className="font-mono text-body-sm text-tertiary-ink/40">{t('projects:ecommerce.noProducts')}</span>
+                  <span className="font-mono text-body-small text-tertiary-ink/40">{t('projects:ecommerce.noProducts')}</span>
                   <button
                     onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
-                    className="font-mono text-body-xs text-primary-400/60 hover:text-primary-400 mt-2 transition-colors"
+                    className="font-mono text-caption text-primary-400/60 hover:text-primary-400 mt-2 transition-colors"
                   >
                     {t('common:buttons.resetAll')}
                   </button>
@@ -430,7 +430,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-body-xs text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &lt;
                 </button>
@@ -438,7 +438,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-body-xs transition-all ${
+                    className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-caption transition-all ${
                       page === i
                         ? 'border-secondary-500/40 bg-secondary-500/10 text-secondary-400'
                         : 'border-tertiary-ink/10 text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20'
@@ -450,7 +450,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={page === totalPages - 1}
-                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-body-xs text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &gt;
                 </button>

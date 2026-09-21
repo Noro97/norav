@@ -21,7 +21,7 @@ function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: Re
 }
 
 const BUTTON_CLASS =
-  'group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-500/90 hover:bg-primary-500 text-tertiary-ink font-medium text-body-sm transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
+  'group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-500/90 hover:bg-primary-500 text-tertiary-ink font-medium text-body-small transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
 
 export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
   const block = useBlock<CtaBannerContent, CtaBannerSettings>('cta_banner', blockId)
@@ -39,7 +39,7 @@ export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blo
   )
 
   return (
-    <section {...(anchorId ? { id: anchorId } : {})} className="relative px-6 md:px-16 py-20">
+    <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-20">
       <div className="relative z-10 w-full max-w-4xl mx-auto">
         <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {settings.background === 'orb' && <OrbBackground />}
@@ -49,11 +49,11 @@ export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blo
 
           <div className="relative">
             {content.label && <span className="label-mono block">{content.label}</span>}
-            <h2 className="font-display text-display-lg font-black text-tertiary-ink mt-3 mb-5">
+            <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-5">
               {content.title}
             </h2>
             {content.body && (
-              <p className="text-tertiary-ink/45 text-body-md max-w-xl mx-auto mb-9 leading-relaxed">
+              <p className="text-tertiary-ink/45 text-body-regular max-w-xl mx-auto mb-9 leading-relaxed">
                 {content.body}
               </p>
             )}

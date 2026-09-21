@@ -1,23 +1,28 @@
 import { useRef, useEffect } from 'react'
 import type { BentoVariant } from './bento.data'
 import { readToken, useAccentColor, withAlpha } from '@/content/theme'
+import { defaults, tokenNames } from '@norav/design-tokens'
 
 /**
  * Each tile is tinted by the project it stands for. The two that carry the
  * site's own identity follow the theme; the rest are the products' colours and
  * stay put — a green e-commerce tile is green because the product is.
  */
+/** A token and its default, for the canvas — which needs a resolved colour, not a class. */
+const paint = (name: string) => readToken(name, defaults[name]!)
+
 function variantColors(variant: BentoVariant): { primary: string; secondary: string } {
+  const { color } = tokenNames
   switch (variant) {
     case 'merch':
     case 'proof':
-      return { primary: readToken('--color-primary-500', '#B51A2B'), secondary: readToken('--color-primary-700', '#541A2E') }
+      return { primary: paint(color.primary[500]), secondary: paint(color.primary[700]) }
     case 'omnigrid':
-      return { primary: readToken('--color-secondary-500', '#22d3ee'), secondary: readToken('--color-secondary-700', '#0e7490') }
+      return { primary: paint(color.secondary[500]), secondary: paint(color.secondary[700]) }
     case 'logistics':
-      return { primary: readToken('--color-secondary-400', '#47daf1'), secondary: readToken('--color-secondary-800', '#154c55') }
+      return { primary: paint(color.secondary[400]), secondary: paint(color.secondary[800]) }
     case 'ecommerce':
-      return { primary: readToken('--color-muted-foreground', '#888888'), secondary: readToken('--color-muted', '#1a1a2e') }
+      return { primary: paint(color.tertiary.muted), secondary: paint(color.tertiary.raised) }
   }
 }
 
