@@ -9,6 +9,7 @@
     "dev": "vite",
     "content:pull": "CMS_URL=${CMS_URL:-http://localhost:3300} node scripts/fetch-content.mjs",
     "content:backfill": "tsx scripts/backfill-snapshot-defaults.mts",
+    "illustrations": "node scripts/generate-illustrations.mjs",
     "prebuild": "node scripts/fetch-content.mjs && node scripts/generate-sitemap.mjs",
     "build": "tsc && vite build",
     "lint": "eslint src packages server api vite-api-plugin.ts vite.config.ts",
