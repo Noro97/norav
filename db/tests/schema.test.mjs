@@ -481,9 +481,13 @@ await expectError(
     rows.every((row) => !JSON.stringify(row.data).includes('/')),
     JSON.stringify(rows.map((r) => r.data)),
   )
+  // 0013 pointed Contact at the chrome, where the terminal lived; 0023 moved
+  // the terminal to a page of its own and the item followed it.
   check(
-    'the contact item points at the site chrome, where the footer lives',
-    rows.find((row) => row.slug === 'contact')?.data.page === 'site',
+    'the contact item follows the terminal to its own page',
+    rows.find((row) => row.slug === 'contact')?.data.page === 'contact' &&
+      rows.find((row) => row.slug === 'contact')?.data.anchor === 'terminal',
+    JSON.stringify(rows.find((row) => row.slug === 'contact')?.data),
   )
 
   const { rows: labels } = await db.query(
@@ -496,6 +500,42 @@ await expectError(
     'the Russian label is Russian',
     labels.find((row) => row.locale === 'ru')?.data.label === 'Обо мне',
   )
+}
+
+{
+  // 0023 moves the terminal off the chrome page and onto contact, puts a call
+  // to action above it and a footer on the chrome. No terminal existed when the
+  // migration set ran, so one is planted on `site` and the file replayed.
+  const {
+    rows: [site],
+  } = await db.query(`select id from pages where slug = 'site'`)
+  const {
+    rows: [terminal],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, anchor_id) values ($1, 'terminal_footer', 1000, 'terminal') returning id`,
+    [site.id],
+  )
+  const file = readFileSync(join(root, 'migrations', '0023_a_footer_and_a_contact_page.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: moved } = await db.query(
+    `select p.slug, b.position from blocks b join pages p on p.id = b.page_id where b.id = $1`,
+    [terminal.id],
+  )
+  check('the terminal is moved to the contact page, not recreated', moved[0].slug === 'contact' && Number(moved[0].position) === 2000)
+  const { rows: contact } = await db.query(
+    `select b.type, b.position from blocks b join pages p on p.id = b.page_id
+      where p.slug = 'contact' and b.deleted_at is null order by b.position`,
+  )
+  check('a call to action sits above it, once', contact.map((row) => row.type).join(',') === 'kit_cta_banner,terminal_footer')
+  const { rows: cta } = await db.query(
+    `select t.locale, t.content from block_translations t join blocks b on b.id = t.block_id where b.type = 'kit_cta_banner' and b.anchor_id = 'contact'`,
+  )
+  check('with no About block to copy a CV from, the second button is dropped', cta.length === 2 && cta.every((row) => row.content.secondaryLabel === ''))
+  const { rows: chrome } = await db.query(
+    `select b.type from blocks b join pages p on p.id = b.page_id where p.slug = 'site' and b.deleted_at is null`,
+  )
+  check('the chrome page holds the footer and nothing else', chrome.map((row) => row.type).join(',') === 'site_footer')
 }
 
 {
