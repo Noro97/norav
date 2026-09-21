@@ -50,7 +50,7 @@ export function SpotlightCard({ children, className = '' }: Props) {
           style={{
             opacity: 'var(--spotlight-opacity)',
             background:
-              'radial-gradient(400px circle at var(--spotlight-x) var(--spotlight-y), color-mix(in srgb, var(--color-crimson-500) 15%, transparent), transparent 60%)',
+              'radial-gradient(400px circle at var(--spotlight-x) var(--spotlight-y), color-mix(in srgb, var(--color-primary-500) 15%, transparent), transparent 60%)',
           }}
         />
       )}

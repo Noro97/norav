@@ -37,13 +37,13 @@ function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: num
   return (
     <div
       ref={ref}
-      className="relative p-4 rounded-xl bg-black/30 border border-white/[0.04] group/metric hover:border-crimson-500/15 transition-all duration-300"
+      className="relative p-4 rounded-xl bg-tertiary-shade/30 border border-tertiary-ink/[0.04] group/metric hover:border-primary-500/15 transition-all duration-300"
     >
       {/* Scanline texture */}
       <div
         className="absolute inset-0 rounded-xl opacity-[0.015] pointer-events-none"
         style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, color-mix(in srgb, var(--color-tertiary-ink) 3%, transparent) 2px, color-mix(in srgb, var(--color-tertiary-ink) 3%, transparent) 4px)',
         }}
       />
 
@@ -59,7 +59,7 @@ function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: num
             style={{ backgroundColor: metric.color }}
           />
         </span>
-        <span className="font-mono text-xs text-white/50 uppercase tracking-[0.15em]">
+        <span className="type-label text-tertiary-ink/50">
           {metric.label}
         </span>
       </div>
@@ -67,16 +67,16 @@ function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: num
       {/* Value */}
       <div className="relative flex items-baseline gap-1">
         {metric.prefix && (
-          <span className="font-mono text-base text-white/50 font-light">{metric.prefix}</span>
+          <span className="font-mono text-body-regular text-tertiary-ink/50 font-normal">{metric.prefix}</span>
         )}
-        <motion.span className="font-mono text-3xl font-black text-white tabular-nums tracking-tight">
+        <motion.span className="font-mono text-heading-medium font-black text-tertiary-ink tabular-nums">
           {display}
         </motion.span>
-        <span className="font-mono text-xs text-white/45 font-medium ml-0.5">{metric.suffix}</span>
+        <span className="font-mono text-caption text-tertiary-ink/45 font-medium ml-0.5">{metric.suffix}</span>
       </div>
 
       {/* Detail line */}
-      <p className="font-mono text-[11px] text-white/45 mt-2 tracking-wide uppercase">
+      <p className="type-label text-tertiary-ink/45 mt-2">
         {metric.detail}
       </p>
 
@@ -96,16 +96,16 @@ export function BentoImpactDashboard() {
   const metrics = content.dashboard.metrics
 
   return (
-    <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-white/[0.06] bg-background backdrop-blur-xl">
+    <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-tertiary-bg backdrop-blur-xl">
       {/* Subtle crimson gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-crimson-500/[0.03] via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary-500/[0.03] via-transparent to-transparent pointer-events-none" />
 
       {/* Grid pattern — crimson tint */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
-            'linear-gradient(color-mix(in srgb, var(--color-crimson-500) 25%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-crimson-500) 25%, transparent) 1px, transparent 1px)',
+            'linear-gradient(color-mix(in srgb, var(--color-primary-500) 25%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-primary-500) 25%, transparent) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
         }}
       />
@@ -115,14 +115,14 @@ export function BentoImpactDashboard() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2.5">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-crimson-400 opacity-50" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-crimson-400" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-50" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
             </span>
-            <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+            <h3 className="type-label text-tertiary-ink/60">
               {content.dashboard.title}
             </h3>
           </div>
-          <span className="font-mono text-[11px] text-crimson-500/50 tracking-wider">
+          <span className="font-mono text-caption text-primary-500/50 tracking-wider">
             REAL-TIME
           </span>
         </div>
@@ -136,7 +136,7 @@ export function BentoImpactDashboard() {
       </div>
 
       {/* Bottom glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-crimson-500/[0.02] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-primary-500/[0.02] to-transparent pointer-events-none" />
     </div>
   )
 }

@@ -13,11 +13,11 @@ function InteractiveImageCard({ src, alt, effect }: { src: string; alt: string; 
   return (
     <EffectCard
       effect={effect}
-      className="rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-crimson-500)_20%,_transparent)]"
+      className="rounded-xl overflow-hidden border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-primary-500)_20%,_transparent)]"
     >
       <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover" />
       {/* Edge highlight */}
-      <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/[0.08]" />
+      <div className="pointer-events-none absolute inset-0 rounded-xl border border-tertiary-ink/[0.08]" />
     </EffectCard>
   )
 }
@@ -65,22 +65,22 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'experience'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+        <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
           {content.title}
         </h2>
-        <p className="text-white/40 text-base max-w-xl mb-16">
+        <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-16">
           {content.description}
         </p>
 
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-white/5">
-            <div className="timeline-line-fill absolute inset-0 bg-gradient-to-b from-crimson-500/60 via-crimson-500/20 to-transparent" />
+          <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-tertiary-ink/5">
+            <div className="timeline-line-fill absolute inset-0 bg-gradient-to-b from-primary-500/60 via-primary-500/20 to-transparent" />
           </div>
 
           {/* Cards */}
@@ -98,7 +98,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                   } items-start gap-8 md:gap-0`}
                 >
                   {/* Dot on timeline */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-crimson-500 border-2 border-background z-10 mt-6 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-crimson-500)_50%,_transparent)]" />
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary-500 border-2 border-tertiary-bg z-10 mt-6 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-primary-500)_50%,_transparent)]" />
 
                   {/* Content */}
                   <div
@@ -110,38 +110,38 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                       {/* Header */}
                       <div className={`flex items-start gap-3 mb-4 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
                         {/* Company logo placeholder */}
-                        <div className="w-10 h-10 rounded-lg bg-crimson-500/10 border border-crimson-500/20 flex items-center justify-center shrink-0">
-                          <span className="font-mono text-xs text-crimson-400 font-bold">
+                        <div className="w-10 h-10 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center shrink-0">
+                          <span className="font-mono text-caption text-primary-400 font-semibold">
                             {company.slice(0, 2).toUpperCase()}
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-base">{exp.role}</h3>
+                          <h3 className="text-tertiary-ink font-semibold text-body-regular">{exp.role}</h3>
                           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                            <span className="font-mono text-xs text-crimson-400">{company}</span>
-                            <span className="text-white/35">·</span>
-                            <span className="font-mono text-xs text-white/45">{exp.type}</span>
+                            <span className="font-mono text-caption text-primary-400">{company}</span>
+                            <span className="text-tertiary-ink/35">·</span>
+                            <span className="font-mono text-caption text-tertiary-ink/45">{exp.type}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Period badge */}
                       <div className={`mb-3 ${isLeft ? 'md:text-right' : ''}`}>
-                        <span className="inline-block px-2 py-0.5 bg-white/5 rounded font-mono text-xs text-white/40 tracking-wider">
+                        <span className="inline-block px-2 py-0.5 bg-tertiary-ink/5 rounded font-mono text-caption text-tertiary-ink/40 tracking-wider">
                           {exp.period}
                         </span>
                       </div>
 
                       {/* Description */}
-                      <p className={`text-white/40 text-sm leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
+                      <p className={`text-tertiary-ink/40 text-body-small leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
                         {exp.description}
                       </p>
 
                       {/* Achievements */}
                       <ul className="space-y-1.5 mb-4">
                         {exp.achievements.map((achievement, j) => (
-                          <li key={j} className={`flex gap-2 text-xs text-white/50 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
-                            <span className="text-crimson-500 shrink-0 mt-0.5">▸</span>
+                          <li key={j} className={`flex gap-2 text-caption text-tertiary-ink/50 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
+                            <span className="text-primary-500 shrink-0 mt-0.5">▸</span>
                             <span>{achievement.text}</span>
                           </li>
                         ))}
@@ -152,7 +152,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
                         {exp.stack.map((tech) => (
                           <span
                             key={tech.name}
-                            className="px-2 py-0.5 text-xs font-mono text-white/45 bg-white/3 border border-white/5 rounded"
+                            className="px-2 py-0.5 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/3 border border-tertiary-ink/5 rounded"
                           >
                             {tech.name}
                           </span>

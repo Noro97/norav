@@ -108,6 +108,82 @@ for (const [prop, value, note] of THEME) {
   palette.append({ prop, value, raws: note ? { before: '\n  ', value: { value, raw: `${value} /* ${note} */` } } : { before: '\n  ' } })
 }
 
+// The kit sets its type in pixels of its own — a 66px section title where this
+// site's heading is 36 to 60, 700 where the site's headings are 900, and ten
+// sizes under 16px for what the site says in two. Beside the native sections
+// that read as a second site. So every size is mapped onto the site's scale
+// (packages/design-tokens/tokens.json, drawn in docs/DESIGN_SYSTEM.md), by
+// where it sits: a fixed pixel size by its value, a clamp() by its ceiling.
+// The scale is fluid, so the mapped sizes are responsive by construction and
+// the laptop scaler leaves them alone — it only scales pixels.
+//
+// Two things stay as they are. Decorative type past 130px — the marquee's
+// words, the letters behind a banner — is not part of the text hierarchy and
+// has no step to land on. And the heading tokens bring their own line-height
+// and letter-spacing, so a rule that set a heading size takes those too;
+// the kit's tuned values were tuned for sizes that no longer exist.
+const SCALE = [
+  // [ceiling (px, inclusive) → token, heading?]. The bands follow what the
+  // kit uses each size for: its section titles top out between 64 and 80 and
+  // are the site's section heading; its banner headlines at 96 to 128 are a
+  // page title; nothing in the kit is the hero name, so nothing lands on
+  // heading-display.
+  [11.5, 'label', false],
+  [12.5, 'caption', false],
+  [14.5, 'body-small', false],
+  [16.5, 'body-regular', false],
+  [20.5, 'body-large', false],
+  [33, 'heading-small', true],
+  [45, 'heading-medium', true],
+  [80, 'heading-large', true],
+  [130, 'heading-xlarge', true],
+]
+const DECORATIVE_PX = 130
+const WEIGHTS = { 700: 900, 800: 900 }
+
+/** The pixel value a declaration is judged by: a plain size, or a clamp's ceiling. */
+function judgedPx(value) {
+  const clamp = value.match(/clamp\(\s*([\d.]+)px\s*,[^,]+,\s*([\d.]+)px\s*\)/)
+  if (clamp) return Number(clamp[2])
+  const px = value.match(/^\s*([\d.]+)px\s*$/)
+  return px ? Number(px[1]) : null
+}
+
+let mapped = 0
+let kept = 0
+root.walkDecls('font-size', (decl) => {
+  if (insideKeyframes(decl)) return
+  const px = judgedPx(decl.value)
+  if (px === null || px > DECORATIVE_PX) {
+    kept++
+    return
+  }
+  const step = SCALE.find(([ceiling]) => px <= ceiling)
+  if (!step) {
+    kept++
+    return
+  }
+  const [, token, heading] = step
+  decl.value = `var(--text-${token})`
+  if (heading) {
+    // A heading size brings the heading weight: the display face is loaded
+    // at 900 only, so the 400 the kit asks for would be synthesised anyway,
+    // and the site's big mono numbers are black as well.
+    const rule = decl.parent
+    rule.walkDecls(/^(line-height|letter-spacing|font-weight)$/, (own) => own.remove())
+    rule.append({ prop: 'font-weight', value: '900' })
+    rule.append({ prop: 'line-height', value: `var(--text-${token}--line-height)` })
+    rule.append({ prop: 'letter-spacing', value: `var(--text-${token}--letter-spacing)` })
+  }
+  mapped++
+})
+root.walkDecls('font-weight', (decl) => {
+  if (insideKeyframes(decl)) return
+  const weight = WEIGHTS[decl.value.trim()]
+  if (weight) decl.value = String(weight)
+})
+console.log(`[type] ${mapped} sizes mapped onto the scale, ${kept} decorative or unmeasurable sizes kept`)
+
 // The imported headings are set at 400 in a serif. Handed this site's display
 // family — which is loaded at its heading weight and not at 400 — that reads as
 // a fallback rather than as a decision, so they take the weight the rest of the
@@ -115,8 +191,7 @@ for (const [prop, value, note] of THEME) {
 root.append(postcss.parse(`
 ${SCOPE} .section-title,
 ${SCOPE} .hero-headline {
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 900;
 }
 `))
 

@@ -16,8 +16,8 @@ import { applyTheme } from './theme'
  */
 
 interface ContentValue {
-  snapshot: Snapshot
-  locale: Locale
+ snapshot: Snapshot
+ locale: Locale
   /** True while a newer published version is being fetched. */
   isRefreshing: boolean
   /** Looking at a draft, not at what the site publishes. */
@@ -37,9 +37,9 @@ const ContentContext = createContext<ContentValue | null>(null)
 const DEV_CMS_URL = 'http://localhost:3300'
 
 function cmsOrigin(): string | undefined {
-  const configured = import.meta.env.VITE_CMS_URL
-  const origin = configured ?? (import.meta.env.DEV ? DEV_CMS_URL : undefined)
-  return origin?.replace(/\/$/, '')
+ const configured = import.meta.env.VITE_CMS_URL
+ const origin = configured ?? (import.meta.env.DEV ? DEV_CMS_URL : undefined)
+ return origin?.replace(/\/$/, '')
 }
 
 /**
@@ -55,113 +55,113 @@ function cmsOrigin(): string | undefined {
  * is to check what everyone else sees.
  */
 export function previewToken(): string | null {
-  if (typeof window === 'undefined') return null
-  return new URLSearchParams(window.location.hash.replace(/^#/, '')).get('preview')
+ if (typeof window === 'undefined') return null
+ return new URLSearchParams(window.location.hash.replace(/^#/, '')).get('preview')
 }
 
 /** What the CMS says when it will not render a draft. */
 interface PreviewRefusal {
-  message: string
-  fields: { page: string; block: string; locale: string; path: string; message: string }[]
+ message: string
+ fields: { page: string; block: string; locale: string; path: string; message: string }[]
 }
 
 async function fetchPreview(baseUrl: string, locale: Locale, token: string): Promise<Snapshot> {
-  const response = await fetch(
+ const response = await fetch(
     `${baseUrl}/api/public/preview?locale=${locale}&token=${encodeURIComponent(token)}`,
     { cache: 'no-store' },
   )
-  if (!response.ok) {
-    // The CMS explains itself — an expired key, or a draft that does not
-    // validate. Throwing the status alone turned every one of those into the
-    // site quietly falling back to published content, which then renders a 404
-    // for the page being previewed. The reader is the person who pressed
-    // Preview; they should be told which field is wrong, not shown a wrong
-    // answer.
-    const body = (await response.json().catch(() => null)) as
+ if (!response.ok) {
+ // The CMS explains itself — an expired key, or a draft that does not
+ // validate. Throwing the status alone turned every one of those into the
+ // site quietly falling back to published content, which then renders a 404
+ // for the page being previewed. The reader is the person who pressed
+ // Preview; they should be told which field is wrong, not shown a wrong
+ // answer.
+ const body = (await response.json().catch(() => null)) as
       | { error?: { message?: string; fields?: PreviewRefusal['fields'] } }
       | null
-    const refusal: PreviewRefusal = {
-      message: body?.error?.message ?? `The CMS answered ${response.status}.`,
-      fields: body?.error?.fields ?? [],
+ const refusal: PreviewRefusal = {
+ message: body?.error?.message ?? `The CMS answered ${response.status}.`,
+ fields: body?.error?.fields ?? [],
     }
-    throw Object.assign(new Error(refusal.message), { refusal })
+ throw Object.assign(new Error(refusal.message), { refusal })
   }
-  return (await response.json()) as Snapshot
+ return (await response.json()) as Snapshot
 }
 
 async function fetchLocale(baseUrl: string, locale: Locale, version: number): Promise<Snapshot> {
-  const response = await fetch(`${baseUrl}/api/public/content?locale=${locale}&v=${version}`)
-  if (!response.ok) throw new Error(`content ${locale}: HTTP ${response.status}`)
-  return (await response.json()) as Snapshot
+ const response = await fetch(`${baseUrl}/api/public/content?locale=${locale}&v=${version}`)
+ if (!response.ok) throw new Error(`content ${locale}: HTTP ${response.status}`)
+ return (await response.json()) as Snapshot
 }
 
 async function fetchLatest(baseUrl: string, version: number): Promise<Record<Locale, Snapshot>> {
-  const [en, ru] = await Promise.all([
+ const [en, ru] = await Promise.all([
     fetchLocale(baseUrl, 'en', version),
     fetchLocale(baseUrl, 'ru', version),
   ])
-  return { en, ru }
+ return { en, ru }
 }
 
 export function ContentProvider({ children }: { children: React.ReactNode }) {
-  const { i18n } = useTranslation()
-  // The address decides the language. i18n still holds it, because the code's
-  // own strings are translated through it — but it follows the URL rather than
-  // the other way round, so a link to /ru/work/merch lands in Russian and a
-  // reload stays there.
-  const { locale } = readPath(useLocation().pathname)
+ const { i18n } = useTranslation()
+ // The address decides the language. i18n still holds it, because the code's
+ // own strings are translated through it — but it follows the URL rather than
+ // the other way round, so a link to /ru/work/merch lands in Russian and a
+ // reload stays there.
+ const { locale } = readPath(useLocation().pathname)
 
   useEffect(() => {
-    // Compare on the base tag. The browser's detector reports regional codes —
-    // en-US, ru-RU — which never equal a bare locale, so comparing the whole
-    // string asks i18n to change language on every render, for ever.
-    if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
+ // Compare on the base tag. The browser's detector reports regional codes —
+ // en-US, ru-RU — which never equal a bare locale, so comparing the whole
+ // string asks i18n to change language on every render, for ever.
+ if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
   }, [i18n, locale])
-  const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
-  // Starts true when a CMS is configured, because at the first paint nothing
-  // has been checked yet and "up to date" would be a guess. Cleared the moment
-  // the manifest answers, either way.
-  const [isRefreshing, setIsRefreshing] = useState(() => cmsOrigin() !== undefined)
-  const [isPreview, setIsPreview] = useState(false)
-  const [refusal, setRefusal] = useState<PreviewRefusal | null>(null)
+ const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
+ // Starts true when a CMS is configured, because at the first paint nothing
+ // has been checked yet and "up to date" would be a guess. Cleared the moment
+ // the manifest answers, either way.
+ const [isRefreshing, setIsRefreshing] = useState(() => cmsOrigin() !== undefined)
+ const [isPreview, setIsPreview] = useState(false)
+ const [refusal, setRefusal] = useState<PreviewRefusal | null>(null)
 
   useEffect(() => {
-    const configured = cmsOrigin()
-    if (!configured) return
-    // Narrowed once, so the closures below see a plain string.
-    const baseUrl: string = configured
+ const configured = cmsOrigin()
+ if (!configured) return
+ // Narrowed once, so the closures below see a plain string.
+ const baseUrl: string = configured
 
-    let cancelled = false
-    const controller = new AbortController()
+ let cancelled = false
+ const controller = new AbortController()
 
-    async function revalidate() {
-      try {
-        const token = previewToken()
-        if (token) {
-          // Straight to the draft: there is no manifest for unpublished content,
-          // and nothing to compare a checksum against.
-          const [en, ru] = await Promise.all([
+ async function revalidate() {
+ try {
+ const token = previewToken()
+ if (token) {
+ // Straight to the draft: there is no manifest for unpublished content,
+ // and nothing to compare a checksum against.
+ const [en, ru] = await Promise.all([
             fetchPreview(baseUrl, 'en', token),
             fetchPreview(baseUrl, 'ru', token),
           ])
-          if (cancelled) return
-          const draft = { en, ru }
+ if (cancelled) return
+ const draft = { en, ru }
           setSnapshots(draft)
           setCurrentSnapshots(draft)
-          // No version: a draft palette must not be remembered, or leaving the
-          // preview would take its colours along to the published page.
+ // No version: a draft palette must not be remembered, or leaving the
+ // preview would take its colours along to the published page.
           applyTheme(draft.en.settings)
           setIsPreview(true)
           return
         }
 
-        const response = await fetch(`${baseUrl}/api/public/manifest`, { signal: controller.signal })
-        if (!response.ok) return
-        const manifest = (await response.json()) as { version: number; checksum: string }
-        // Checksum, not version: a rollback republishes older copy under a new
-        // version, and identical copy must not trigger a pointless fetch.
-        if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) {
-          if (import.meta.env.DEV) {
+ const response = await fetch(`${baseUrl}/api/public/manifest`, { signal: controller.signal })
+ if (!response.ok) return
+ const manifest = (await response.json()) as { version: number; checksum: string }
+ // Checksum, not version: a rollback republishes older copy under a new
+ // version, and identical copy must not trigger a pointless fetch.
+ if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) {
+ if (import.meta.env.DEV) {
             console.info(
               `[content] up to date with ${baseUrl} (version ${BAKED_SNAPSHOTS.en.version}).`,
             )
@@ -170,30 +170,30 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         }
 
         setIsRefreshing(true)
-        const latest = await fetchLatest(baseUrl, manifest.version)
-        if (cancelled) return
+ const latest = await fetchLatest(baseUrl, manifest.version)
+ if (cancelled) return
         setSnapshots(latest)
-        // Keep the non-React readers (the terminal) on the same content.
+ // Keep the non-React readers (the terminal) on the same content.
         setCurrentSnapshots(latest)
         applyTheme(latest.en.settings, manifest.version)
-        if (import.meta.env.DEV) {
+ if (import.meta.env.DEV) {
           console.info(
             `[content] swapped in version ${manifest.version} from ${baseUrl} ` +
               `(bundle was built with ${BAKED_SNAPSHOTS.en.version}).`,
           )
         }
       } catch (error) {
-        // A refused preview is the one failure worth showing. Falling back to
-        // published content is right, but the person who pressed Preview then
-        // sees the published site — or a 404 for a page that is not published
-        // yet — with no hint that their draft was rejected and why.
-        const refused = (error as { refusal?: PreviewRefusal })?.refusal
-        if (refused && !cancelled) setRefusal(refused)
+ // A refused preview is the one failure worth showing. Falling back to
+ // published content is right, but the person who pressed Preview then
+ // sees the published site — or a 404 for a page that is not published
+ // yet — with no hint that their draft was rejected and why.
+ const refused = (error as { refusal?: PreviewRefusal })?.refusal
+ if (refused && !cancelled) setRefusal(refused)
 
-        // The bundle already holds a complete, valid snapshot — staying on it is
-        // the correct outcome of any failure here. In development, say so: a
-        // silent no-op is indistinguishable from "my edit did not show up".
-        if (import.meta.env.DEV && (error as Error)?.name !== 'AbortError') {
+ // The bundle already holds a complete, valid snapshot — staying on it is
+ // the correct outcome of any failure here. In development, say so: a
+ // silent no-op is indistinguishable from "my edit did not show up".
+ if (import.meta.env.DEV && (error as Error)?.name !== 'AbortError') {
           console.warn(
             `[content] could not reach ${baseUrl} — rendering the snapshot baked at build time. ` +
               'Start the CMS with `npm --prefix cms run dev`.',
@@ -201,28 +201,28 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           )
         }
       } finally {
-        if (!cancelled) setIsRefreshing(false)
+ if (!cancelled) setIsRefreshing(false)
       }
     }
 
-    // Never compete with the first paint.
-    const idle = window.requestIdleCallback?.(() => void revalidate(), { timeout: 4000 })
-    const timer = idle === undefined ? window.setTimeout(() => void revalidate(), 2000) : undefined
+ // Never compete with the first paint.
+ const idle = window.requestIdleCallback?.(() => void revalidate(), { timeout: 4000 })
+ const timer = idle === undefined ? window.setTimeout(() => void revalidate(), 2000) : undefined
 
-    return () => {
-      cancelled = true
+ return () => {
+ cancelled = true
       controller.abort()
-      if (idle !== undefined) window.cancelIdleCallback?.(idle)
-      if (timer !== undefined) window.clearTimeout(timer)
+ if (idle !== undefined) window.cancelIdleCallback?.(idle)
+ if (timer !== undefined) window.clearTimeout(timer)
     }
   }, [])
 
-  const value = useMemo<ContentValue>(
+ const value = useMemo<ContentValue>(
     () => ({ snapshot: locale === 'ru' ? snapshots.ru : snapshots.en, locale, isRefreshing, isPreview }),
     [snapshots, locale, isRefreshing, isPreview],
   )
 
-  return (
+ return (
     <ContentContext.Provider value={value}>
       {isPreview && <PreviewBadge />}
       {refusal && <PreviewRefused refusal={refusal} />}
@@ -247,23 +247,23 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  * that caused it.
  */
 function PreviewRefused({ refusal }: { refusal: PreviewRefusal }) {
-  return (
+ return (
     <div
       role="alert"
       style={{
-        position: 'fixed',
+ position: 'fixed',
         insetInlineStart: '50%',
         insetBlockEnd: '16px',
-        transform: 'translateX(-50%)',
+ transform: 'translateX(-50%)',
         zIndex: 9999,
         maxWidth: 'min(90vw, 520px)',
-        padding: '12px 16px',
+ padding: '12px 16px',
         borderRadius: '12px',
-        border: '1px solid color-mix(in srgb, var(--color-danger) 45%, transparent)',
-        background: 'color-mix(in srgb, var(--color-background) 92%, transparent)',
+ border: '1px solid color-mix(in srgb, var(--color-danger) 45%, transparent)',
+ background: 'color-mix(in srgb, var(--color-background) 92%, transparent)',
         backdropFilter: 'blur(8px)',
-        color: 'var(--color-danger)',
-        font: '500 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace',
+ color: 'var(--color-danger)',
+ font: '500 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace',
       }}
     >
       <strong style={{ letterSpacing: '0.06em' }}>PREVIEW REFUSED</strong>
@@ -281,25 +281,25 @@ function PreviewRefused({ refusal }: { refusal: PreviewRefusal }) {
 }
 
 function PreviewBadge() {
-  return (
+ return (
     <div
       role="status"
       style={{
-        position: 'fixed',
+ position: 'fixed',
         insetInlineStart: '50%',
         insetBlockEnd: '16px',
-        transform: 'translateX(-50%)',
+ transform: 'translateX(-50%)',
         zIndex: 9999,
-        display: 'flex',
+ display: 'flex',
         alignItems: 'center',
-        gap: '10px',
-        padding: '7px 14px',
+ gap: '10px',
+ padding: '7px 14px',
         borderRadius: '999px',
-        border: '1px solid color-mix(in srgb, var(--color-warning) 45%, transparent)',
-        background: 'color-mix(in srgb, var(--color-background) 88%, transparent)',
+ border: '1px solid color-mix(in srgb, var(--color-warning) 45%, transparent)',
+ background: 'color-mix(in srgb, var(--color-background) 88%, transparent)',
         backdropFilter: 'blur(8px)',
-        color: 'var(--color-warning)',
-        font: '500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
+ color: 'var(--color-warning)',
+ font: '500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
         letterSpacing: '0.06em',
       }}
     >
@@ -315,14 +315,14 @@ function PreviewBadge() {
 }
 
 export function useContent(): ContentValue {
-  const value = useContext(ContentContext)
-  if (!value) throw new Error('useContent must be used inside <ContentProvider>')
-  return value
+ const value = useContext(ContentContext)
+ if (!value) throw new Error('useContent must be used inside <ContentProvider>')
+ return value
 }
 
 export interface BlockView<TContent, TSettings> {
-  content: TContent
-  settings: TSettings
+ content: TContent
+ settings: TSettings
   anchorId: string | null
 }
 
@@ -331,19 +331,19 @@ export interface BlockView<TContent, TSettings> {
  * a section that was hidden in the CMS simply renders nothing.
  */
 export function useBlock<TContent, TSettings = Record<string, unknown>>(
-  type: string,
+ type: string,
   blockId?: string,
 ): BlockView<TContent, TSettings> | undefined {
-  const { snapshot } = useContent()
-  return useMemo(() => {
-    // A repeatable section is handed its own id by the renderer and asks for
-    // exactly that row; without one, the first block of the type is the answer,
-    // which is all a section that appears once ever needs.
-    const block = blockId ? findBlockById(snapshot, blockId) : findBlock(snapshot, type)
-    if (!block) return undefined
-    return {
-      content: block.content as TContent,
-      settings: block.settings as TSettings,
+ const { snapshot } = useContent()
+ return useMemo(() => {
+ // A repeatable section is handed its own id by the renderer and asks for
+ // exactly that row; without one, the first block of the type is the answer,
+ // which is all a section that appears once ever needs.
+ const block = blockId ? findBlockById(snapshot, blockId) : findBlock(snapshot, type)
+ if (!block) return undefined
+ return {
+ content: block.content as TContent,
+ settings: block.settings as TSettings,
       anchorId: block.anchorId,
     }
   }, [snapshot, type, blockId])
@@ -360,15 +360,15 @@ export function useBlock<TContent, TSettings = Record<string, unknown>>(
  * anyone touching it.
  */
 export function useAnchorPages(): Map<string, string> {
-  const { snapshot } = useContent()
-  return useMemo(() => {
-    const anchors = new Map<string, string>()
-    for (const page of snapshot.pages) {
-      for (const block of page.blocks) {
-        if (block.anchorId) anchors.set(block.anchorId, page.slug)
+ const { snapshot } = useContent()
+ return useMemo(() => {
+ const anchors = new Map<string, string>()
+ for (const page of snapshot.pages) {
+ for (const block of page.blocks) {
+ if (block.anchorId) anchors.set(block.anchorId, page.slug)
       }
     }
-    return anchors
+ return anchors
   }, [snapshot])
 }
 
@@ -378,15 +378,15 @@ export function useAnchorPages(): Map<string, string> {
  * has never been published, so a section renders nothing rather than throwing.
  */
 export function useCollection<TRow = Record<string, unknown>>(
-  key: string,
+ key: string,
 ): { id: string; slug: string; data: TRow }[] {
-  const { snapshot } = useContent()
-  return useMemo(
+ const { snapshot } = useContent()
+ return useMemo(
     () =>
       (snapshot.collections[key] ?? []).map((entry) => ({
-        id: entry.id,
-        slug: entry.slug,
-        data: entry.data as TRow,
+ id: entry.id,
+ slug: entry.slug,
+ data: entry.data as TRow,
       })),
     [snapshot, key],
   )

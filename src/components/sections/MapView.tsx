@@ -70,9 +70,9 @@ function createMarkerIcon(intensity: number): google.maps.Symbol {
   return {
     path: google.maps.SymbolPath.CIRCLE,
     scale: 4 + intensity * 6,
-    fillColor: 'var(--color-crimson-500)',
+    fillColor: 'var(--color-primary-500)',
     fillOpacity: 0.7 + intensity * 0.3,
-    strokeColor: '#ff3050',
+    strokeColor: 'var(--color-primary-400)',
     strokeWeight: 1,
     strokeOpacity: 0.4,
   }
@@ -118,7 +118,7 @@ function createBezierOverlay(): google.maps.OverlayView & {
 
     // Read through the token cache: cheap per draw, and current after a
     // theme change, which a value captured at construction would not be.
-    ctx.strokeStyle = withAlpha(readToken('--color-crimson-500', '#B51A2B'), 0.12)
+    ctx.strokeStyle = withAlpha(readToken('--color-primary-500', '#B51A2B'), 0.12)
     ctx.lineWidth = 0.8
 
     connections.features.forEach((f) => {
@@ -242,7 +242,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 2 + intensity * 3,
-            fillColor: 'var(--color-crimson-500)',
+            fillColor: 'var(--color-primary-500)',
             fillOpacity: 0.6,
             strokeWeight: 0,
           },
@@ -359,7 +359,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
 
   if (authFailed) {
     return (
-      <div className="absolute inset-0 bg-background">
+      <div className="absolute inset-0 bg-tertiary-bg">
         {fallbackImage && (
           <img
             src={fallbackImage}
@@ -367,7 +367,7 @@ export default function MapView({ markers, connections, onLoad, fallbackImage }:
             className="absolute inset-0 w-full h-full object-cover opacity-60"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-tertiary-bg via-transparent to-tertiary-bg/80" />
       </div>
     )
   }

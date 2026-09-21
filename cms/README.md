@@ -133,6 +133,26 @@ the frozen migration inputs — never touches production, whatever `.env` says:
 npm --prefix cms run db:reset
 ```
 
+That is the content as it was when the CMS was born. For the content as it is
+*now* — to try a change against what visitors actually see — pull the live
+database down instead:
+
+```bash
+npm --prefix cms run pull:production          # says what it would replace, stops
+npm --prefix cms run pull:production -- --yes # does it
+```
+
+It reads every content table from the Neon database in `cms/.env` over a
+read-only connection and replaces the embedded copy — pages, blocks, entries,
+settings, the media library, the revision and publication history — in one
+transaction, so a failure halfway leaves the laptop as it was. Accounts are the
+one thing it never moves in either direction: your local login stays, and
+production's password hashes stay in production. A revision keeps its content
+and loses its author; sign-in attempts in the audit log stay behind. Both
+databases have to be on the same migration, and the CMS has to be stopped
+while it runs (PGlite is single-writer). The site picks the content up on its
+next load.
+
 To try something against real Postgres without touching live content, branch
 the database in Neon and point `cms/.env` at the branch. The same applies to
 preview deployments: give `norav-cms` a Preview-scoped `DATABASE_URL` on a Neon

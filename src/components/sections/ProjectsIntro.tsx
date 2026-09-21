@@ -12,7 +12,7 @@ import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content
 
 const TONE_CLASS: Record<Tone, string> = {
   main: '',
-  highlight: 'italic text-crimson-500',
+  highlight: 'italic text-primary-500',
 }
 
 function needsLeadingSpace(text: string): boolean {
@@ -39,7 +39,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
         titleComponent={
           <>
             <p className="label-mono">{content.label}</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+            <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
               {content.heading.map((segment, index) => (
                 <Fragment key={index}>
                   {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
@@ -54,7 +54,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                 </Fragment>
               ))}
             </h2>
-            <p className="text-white/40 text-base max-w-xl mx-auto">{content.body}</p>
+            <p className="text-tertiary-ink/40 text-body-regular max-w-xl mx-auto">{content.body}</p>
 
             {content.viewAllLabel && (
               <div className="mt-6">
@@ -62,7 +62,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                   <StarBorderButton className="rounded-full">
                     <Link
                       to={hrefFor('work', locale)}
-                      className="press group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-background text-white/80 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
+                      className="press type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-tertiary-bg text-tertiary-ink/80 hover:text-tertiary-ink transition-colors duration-300"
                     >
                       {content.viewAllLabel}
                       <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -71,7 +71,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
                 ) : (
                   <Link
                     to={hrefFor('work', locale)}
-                    className="press group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/[0.08] text-white/60 hover:text-white hover:border-cyan-500/30 font-mono text-xs uppercase tracking-wider transition-colors duration-300"
+                    className="press type-label group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-tertiary-ink/[0.08] text-tertiary-ink/60 hover:text-tertiary-ink hover:border-secondary-500/30 transition-colors duration-300"
                   >
                     {content.viewAllLabel}
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -94,23 +94,23 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
       </ContainerScroll>
 
       {links.length > 0 && (
-        <div className="relative px-6 md:px-16 pb-24 -mt-8">
+        <div className="relative px-gutter-x pb-24 -mt-8">
           <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {links.map((study) => (
               <Link
                 key={study.slug}
                 to={hrefFor(study.slug, locale)}
-                className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/20"
+                className="group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl p-6 transition-all duration-300 hover:border-secondary-500/20"
               >
                 <div className="flex items-start justify-between gap-4">
                   <span className="label-mono">{study.number}</span>
                   <ArrowUpRight
-                    className="w-4 h-4 text-white/25 transition-colors group-hover:text-cyan-400"
+                    className="w-4 h-4 text-tertiary-ink/25 transition-colors group-hover:text-secondary-400"
                     strokeWidth={1.75}
                   />
                 </div>
-                <h3 className="mt-3 text-xl font-bold text-white leading-tight">{study.title}</h3>
-                <p className="mt-2 text-white/40 text-sm leading-relaxed line-clamp-3">
+                <h3 className="mt-3 font-display text-heading-small font-black text-tertiary-ink">{study.title}</h3>
+                <p className="mt-2 text-tertiary-ink/40 text-body-small leading-relaxed line-clamp-3">
                   {study.description}
                 </p>
               </Link>

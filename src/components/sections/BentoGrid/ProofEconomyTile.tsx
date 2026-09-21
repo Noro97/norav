@@ -23,7 +23,7 @@ function AnimatedBalance({ target, decimals = 0, active }: { target: number; dec
   }, [active, target, motionValue, decimals])
 
   return (
-    <motion.span className="font-mono text-lg font-bold text-white tabular-nums">
+    <motion.span className="font-mono text-body-large font-semibold text-tertiary-ink tabular-nums">
       {display}
     </motion.span>
   )
@@ -51,41 +51,41 @@ export function ProofEconomyTile() {
   return (
     <div
       ref={tileRef}
-      className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.025] to-transparent backdrop-blur-xl p-5 md:p-6 flex flex-col transition-all duration-500 hover:border-crimson-500/15"
+      className="bento-tile group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.025] to-transparent backdrop-blur-xl p-5 md:p-6 flex flex-col transition-all duration-500 hover:border-primary-500/15"
     >
       {/* Ambient glow */}
-      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-crimson-500/[0.03] blur-2xl group-hover:bg-crimson-500/[0.06] transition-all duration-700 pointer-events-none" />
+      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary-500/[0.03] blur-2xl group-hover:bg-primary-500/[0.06] transition-all duration-700 pointer-events-none" />
 
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crimson-400/70">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-400/70">
           <path d="M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-7l-1.5-1.5" />
           <path d="M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-7l-1.5-1.5" />
         </svg>
-        <h3 className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+        <h3 className="type-label text-tertiary-ink/60">
           {t('proof.economy.label')}
         </h3>
       </div>
 
       {/* Balance cards */}
       <div className="grid grid-cols-2 gap-2 mb-4">
-        <div className="p-2.5 rounded-lg bg-black/30 border border-white/[0.04]">
+        <div className="p-2.5 rounded-lg bg-tertiary-shade/30 border border-tertiary-ink/[0.04]">
           <div className="flex items-center gap-1.5 mb-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400/70">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-secondary-300/70">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
-            <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+            <span className="type-label text-tertiary-ink/40">
               {t('proof.economy.starsBalance')}
             </span>
           </div>
           <AnimatedBalance target={2450} active={isConnected && isInView} />
         </div>
-        <div className="p-2.5 rounded-lg bg-black/30 border border-white/[0.04]">
+        <div className="p-2.5 rounded-lg bg-tertiary-shade/30 border border-tertiary-ink/[0.04]">
           <div className="flex items-center gap-1.5 mb-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400/70">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-secondary-400/70">
               <path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z" />
             </svg>
-            <span className="font-mono text-[10px] text-white/40 uppercase tracking-wider">
+            <span className="type-label text-tertiary-ink/40">
               {t('proof.economy.tonBalance')}
             </span>
           </div>
@@ -97,24 +97,24 @@ export function ProofEconomyTile() {
       <button
         onClick={handleConnect}
         disabled={walletState !== 'idle'}
-        className={`w-full py-2 px-3 rounded-lg font-mono text-xs uppercase tracking-wider border transition-all duration-300 mb-4 ${
+        className={`type-label w-full py-2 px-3 rounded-lg border transition-all duration-300 mb-4 ${
           walletState === 'idle'
-            ? 'border-crimson-500/20 text-crimson-400/60 bg-crimson-500/[0.05] hover:bg-crimson-500/[0.1] hover:border-crimson-500/30 cursor-pointer'
+            ? 'border-primary-500/20 text-primary-400/60 bg-primary-500/[0.05] hover:bg-primary-500/[0.1] hover:border-primary-500/30 cursor-pointer'
             : walletState === 'connecting'
-              ? 'border-crimson-500/15 text-crimson-400/40 bg-crimson-500/[0.03]'
-              : 'border-green-500/20 text-green-400/60 bg-green-500/[0.05]'
+              ? 'border-primary-500/15 text-primary-400/40 bg-primary-500/[0.03]'
+              : 'border-status-success/20 text-status-success/60 bg-status-success/[0.05]'
         }`}
       >
         {walletState === 'idle' && t('proof.economy.connectWallet')}
         {walletState === 'connecting' && (
           <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 border border-crimson-400/40 border-t-crimson-400 rounded-full animate-spin" />
+            <span className="w-3 h-3 border border-primary-400/40 border-t-crimson-400 rounded-full animate-spin" />
             Connecting...
           </span>
         )}
         {walletState === 'connected' && (
           <span className="inline-flex items-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-status-success">
               <polyline points="20 6 9 17 4 12" />
             </svg>
             {t('proof.economy.connected')}
@@ -124,7 +124,7 @@ export function ProofEconomyTile() {
 
       {/* Transaction flow SVG */}
       <div className="mt-auto">
-        <p className="font-mono text-[10px] text-white/45 uppercase tracking-wider mb-2">
+        <p className="type-label text-tertiary-ink/45 mb-2">
           {t('proof.economy.txFlow')}
         </p>
         <svg viewBox="0 0 260 40" className="w-full h-auto" aria-hidden="true">
@@ -142,17 +142,17 @@ export function ProofEconomyTile() {
                 width={50}
                 height={24}
                 rx={6}
-                fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
-                stroke={isConnected ? 'color-mix(in srgb, var(--color-crimson-500) 30%, transparent)' : 'color-mix(in srgb, var(--color-crimson-500) 10%, transparent)'}
+                fill="color-mix(in srgb, var(--color-primary-500) 8%, transparent)"
+                stroke={isConnected ? 'color-mix(in srgb, var(--color-primary-500) 30%, transparent)' : 'color-mix(in srgb, var(--color-primary-500) 10%, transparent)'}
                 strokeWidth={0.8}
               />
               <text
                 x={node.x + 25}
                 y={23}
                 textAnchor="middle"
-                fill={isConnected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'}
+                fill={isConnected ? 'color-mix(in srgb, var(--color-tertiary-ink) 50%, transparent)' : 'color-mix(in srgb, var(--color-tertiary-ink) 20%, transparent)'}
                 fontSize={9}
-                fontFamily="'JetBrains Mono', monospace"
+                fontFamily="var(--font-mono)"
               >
                 {node.label}
               </text>
@@ -166,7 +166,7 @@ export function ProofEconomyTile() {
               y1={20}
               x2={x + 15}
               y2={20}
-              stroke={isConnected ? 'color-mix(in srgb, var(--color-crimson-500) 40%, transparent)' : 'color-mix(in srgb, var(--color-crimson-500) 10%, transparent)'}
+              stroke={isConnected ? 'color-mix(in srgb, var(--color-primary-500) 40%, transparent)' : 'color-mix(in srgb, var(--color-primary-500) 10%, transparent)'}
               strokeWidth={1}
               strokeDasharray="4 4"
               className={isConnected ? 'animate-dash-flow' : ''}
@@ -178,8 +178,8 @@ export function ProofEconomyTile() {
 
       {/* Corner accent */}
       <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
-        <div className="absolute bottom-3 right-3 w-px h-4 bg-gradient-to-t from-white/[0.06] to-transparent" />
-        <div className="absolute bottom-3 right-3 h-px w-4 bg-gradient-to-l from-white/[0.06] to-transparent" />
+        <div className="absolute bottom-3 right-3 w-px h-4 bg-gradient-to-t from-tertiary-ink/[0.06] to-transparent" />
+        <div className="absolute bottom-3 right-3 h-px w-4 bg-gradient-to-l from-tertiary-ink/[0.06] to-transparent" />
       </div>
     </div>
   )

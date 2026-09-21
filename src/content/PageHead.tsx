@@ -39,15 +39,15 @@ const ABSOLUTE = /^https?:\/\//
  * default title and card are written down.
  */
 export function resolveSeo(page: SnapshotPage | undefined, locale: Locale): ResolvedSeo {
-  const byLocale = (page?.seo ?? {}) as Record<string, Seo | undefined>
-  const written = byLocale[locale] ?? byLocale[DEFAULT_LOCALE] ?? {}
-  const first = page?.blocks[0]?.content as { title?: string; description?: string } | undefined
-  const image = written.ogImage
+ const byLocale = (page?.seo ?? {}) as Record<string, Seo | undefined>
+ const written = byLocale[locale] ?? byLocale[DEFAULT_LOCALE] ?? {}
+ const first = page?.blocks[0]?.content as { title?: string; description?: string } | undefined
+ const image = written.ogImage
 
-  return {
-    title: written.title ?? first?.title,
-    description: written.description ?? first?.description,
-    image: !image ? undefined : ABSOLUTE.test(image) ? image : `${SITE}${image}`,
+ return {
+ title: written.title ?? first?.title,
+ description: written.description ?? first?.description,
+ image: !image ? undefined : ABSOLUTE.test(image) ? image : `${SITE}${image}`,
   }
 }
 
@@ -64,20 +64,20 @@ const metaOf = (kind: 'name' | 'property', key: string) =>
 let shell: { title: string; description: string; image: string } | null = null
 
 function shellDefaults() {
-  shell ??= {
-    title: document.title,
-    description: metaOf('name', 'description')?.content ?? '',
-    image: metaOf('property', 'og:image')?.content ?? '',
+ shell ??= {
+ title: document.title,
+ description: metaOf('name', 'description')?.content ?? '',
+ image: metaOf('property', 'og:image')?.content ?? '',
   }
-  return shell
+ return shell
 }
 
 function write(kind: 'name' | 'property', key: string, value: string) {
-  if (!value) return
+ if (!value) return
 
-  let tag = metaOf(kind, key)
-  if (!tag) {
-    tag = document.createElement('meta')
+ let tag = metaOf(kind, key)
+ if (!tag) {
+ tag = document.createElement('meta')
     tag.setAttribute(kind, key)
     document.head.appendChild(tag)
   }
@@ -99,13 +99,13 @@ function write(kind: 'name' | 'property', key: string, value: string) {
  * the page's own copy.
  */
 export function applySeo(seo: ResolvedSeo) {
-  const fallback = shellDefaults()
-  const title = seo.title ?? fallback.title
-  const description = seo.description ?? fallback.description
-  const image = seo.image ?? fallback.image
+ const fallback = shellDefaults()
+ const title = seo.title ?? fallback.title
+ const description = seo.description ?? fallback.description
+ const image = seo.image ?? fallback.image
 
-  // A page that resolves no title of its own must land back on the site's,
-  // never keep the title of the page the reader came from.
+ // A page that resolves no title of its own must land back on the site's,
+ // never keep the title of the page the reader came from.
   document.title = title
 
   write('name', 'description', description)
@@ -119,7 +119,7 @@ export function applySeo(seo: ResolvedSeo) {
 
 /** Only for tests: forgets the shell copy read on the first write. */
 export function forgetShellDefaults() {
-  shell = null
+ shell = null
 }
 
 /**
@@ -135,16 +135,16 @@ export function forgetShellDefaults() {
  * to a search engine.
  */
 export function PageHead({ slug }: { slug: string }) {
-  const { snapshot, locale } = useContent()
-  const page = snapshot.pages.find((candidate) => candidate.slug === slug)
-  // Destructured rather than kept as an object: resolveSeo builds a new one
-  // every render, so the object is never a usable dependency and its three
-  // values are what actually change.
-  const { title, description, image } = resolveSeo(page, locale)
+ const { snapshot, locale } = useContent()
+ const page = snapshot.pages.find((candidate) => candidate.slug === slug)
+ // Destructured rather than kept as an object: resolveSeo builds a new one
+ // every render, so the object is never a usable dependency and its three
+ // values are what actually change.
+ const { title, description, image } = resolveSeo(page, locale)
 
-  // Not hoistable: <html lang> is an attribute on an element React does not
-  // render. A screen reader picks its voice from it, so leaving it at "en" on a
-  // Russian page is the one head detail a reader actually hears.
+ // Not hoistable: <html lang> is an attribute on an element React does not
+ // render. A screen reader picks its voice from it, so leaving it at "en" on a
+ // Russian page is the one head detail a reader actually hears.
   useEffect(() => {
     document.documentElement.lang = locale
   }, [locale])
@@ -153,14 +153,14 @@ export function PageHead({ slug }: { slug: string }) {
     applySeo({ title, description, image })
   }, [title, description, image])
 
-  const other = otherLocale(locale)
-  const here = `${SITE}${hrefFor(slug, locale)}`
-  const there = `${SITE}${hrefFor(slug, other)}`
-  // What a search engine offers a reader whose language is neither. English is
-  // the default the site answers on without a prefix, so it is the fallback.
-  const fallback = `${SITE}${hrefFor(slug, DEFAULT_LOCALE)}`
+ const other = otherLocale(locale)
+ const here = `${SITE}${hrefFor(slug, locale)}`
+ const there = `${SITE}${hrefFor(slug, other)}`
+ // What a search engine offers a reader whose language is neither. English is
+ // the default the site answers on without a prefix, so it is the fallback.
+ const fallback = `${SITE}${hrefFor(slug, DEFAULT_LOCALE)}`
 
-  return (
+ return (
     <>
       <link rel="canonical" href={here} />
       <link rel="alternate" hrefLang={locale} href={here} />

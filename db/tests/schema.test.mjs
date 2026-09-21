@@ -196,6 +196,104 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 5b. 0022 rewrites the hero and the bio — only the copy that shipped
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0022_the_site_speaks_in_the_readme_voice.sql'), 'utf8')
+  const {
+    rows: [about],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, anchor_id) values ($1, 'about', 9500, 'about-copy') returning id`,
+    [page.id],
+  )
+  const shipped = {
+    bio: {
+      lead: [{ text: 'I build interfaces that feel alive — and think.', accent: 'main' }],
+      paragraphs: [{ text: 'With 7+ years of experience' }, { text: 'Currently seeking senior or staff-level roles' }],
+    },
+    role: 'Frontend-Focused Fullstack Engineer',
+    facts: [{ label: 'Location', value: 'Yerevan, Armenia' }, { label: 'Status', value: 'Open to offers' }],
+    socials: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/Noro97' }],
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [about.id, JSON.stringify(shipped)],
+  )
+  await db.query(`update block_translations set content = '{"subtitle":"Fullstack Engineer","scrollHint":"Scroll"}'::jsonb where block_id = $1`, [hero.id])
+
+  await db.exec(file)
+  await db.exec(file)
+
+  const contentOf = async (id) => {
+    const { rows } = await db.query(`select content from block_translations where block_id = $1 and locale = 'en'`, [id])
+    return rows[0].content
+  }
+  const heroCopy = await contentOf(hero.id)
+  check('the hero subtitle is rewritten', heroCopy.subtitle === 'Fullstack Engineer, frontend-focused')
+  check('with a number in the tagline', heroCopy.tagline?.some((run) => run.text.includes('50K')))
+  check('and the scroll hint left alone', heroCopy.scrollHint === 'Scroll')
+
+  const aboutCopy = await contentOf(about.id)
+  check('the role line reads as the hero does', aboutCopy.role === 'Fullstack Engineer, frontend-focused')
+  check('the bio lead is rewritten', aboutCopy.bio.lead[0].text.startsWith('I build interfaces that hold up'))
+  check('the first paragraph is rewritten', aboutCopy.bio.paragraphs[0].text.includes('production incident'))
+  check('the second paragraph is kept', aboutCopy.bio.paragraphs[1].text === 'Currently seeking senior or staff-level roles')
+  check('the status fact is narrowed, found by value', aboutCopy.facts[1].value === 'Open to senior/staff roles')
+  check('the other facts and the socials are untouched', aboutCopy.facts[0].value === 'Yerevan, Armenia' && aboutCopy.socials.length === 1)
+
+  await db.query(`update block_translations set content = '{"subtitle":"Reworded by hand"}'::jsonb where block_id = $1`, [hero.id])
+  await db.exec(file)
+  check('copy reworded in the admin is left alone', (await contentOf(hero.id)).subtitle === 'Reworded by hand')
+}
+
+// ---------------------------------------------------------------------------
+// 5c. 0024 repoints every product image at a drawn one — uploads only
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0024_illustrations_in_the_palette.sql'), 'utf8')
+  await db.query(
+    `update entries set data = data || '{"image":"https://blob.example/media/d1bf3316-x.png"}'::jsonb where collection = 'experience' and slug = 'proof-app'`,
+  )
+  const {
+    rows: [bento],
+  } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'bento_grid', 9600) returning id`,
+    [page.id],
+  )
+  const before = {
+    sectionLabel: 'Deep Dive',
+    projects: [
+      { project: 'nexusroute', title: 'NexusRoute', image: 'https://blob.example/media/65b68898-x.png' },
+      { project: 'proof', title: 'Proof', image: '' },
+    ],
+    tiles: [
+      { title: 'Performance Audit', image: 'https://blob.example/media/26394992-x.png' },
+      { title: 'Hand-placed', image: '/assets/mine.png' },
+    ],
+    illustrations: { omnigrid: 'https://blob.example/media/e145c603-x.png', gamification: '/assets/mine.svg' },
+    badges: [{ rarity: 'rare', image: 'https://blob.example/media/badge.svg' }],
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [bento.id, JSON.stringify(before)],
+  )
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: entry } = await db.query(`select data from entries where collection = 'experience' and slug = 'proof-app'`)
+  check('an uploaded experience image becomes the drawn one', entry[0].data.image === '/assets/illustrations/proof-mini-app.svg')
+  check('the rest of the entry survives', entry[0].data.period === 'Feb 2026 — Present')
+  const { rows: grid } = await db.query(`select content from block_translations where block_id = $1`, [bento.id])
+  const after = grid[0].content
+  check('a project card is matched by its key', after.projects[0].image === '/assets/illustrations/nexusroute-map.svg')
+  check('a card with no image stays without one', after.projects[1].image === '')
+  check('a tile is matched by the file it held', after.tiles[0].image === '/assets/illustrations/tile-performance.svg')
+  check('a path set by hand is left alone', after.tiles[1].image === '/assets/mine.png' && after.illustrations.gamification === '/assets/mine.svg')
+  check('the named illustration is repointed', after.illustrations.omnigrid === '/assets/illustrations/omnigrid-illustration.svg')
+  check('the badges are not products and are not touched', after.badges[0].image === 'https://blob.example/media/badge.svg')
+  check('the rest of the block survives', after.sectionLabel === 'Deep Dive')
+}
+
+// ---------------------------------------------------------------------------
 // 6. Publishing
 // ---------------------------------------------------------------------------
 {
@@ -380,21 +478,63 @@ await expectError(
 }
 
 {
+  // 0021 points each skill at the case study that shows it. The skills block
+  // above was planted after the migration set ran, so the file is replayed;
+  // then a proof typed by hand is planted and the file replayed again.
+  const file = readFileSync(join(root, 'migrations', '0021_skills_say_where_they_were_used.sql'), 'utf8')
+  await db.exec(file)
+  const {
+    rows: [skills],
+  } = await db.query(
+    `select b.id from blocks b join block_translations t on t.block_id = b.id
+      where b.type = 'skills' and t.locale = 'en' and t.content ? 'categories'`,
+  )
+  const read = async () => {
+    const { rows } = await db.query(`select content from block_translations where block_id = $1 and locale = 'en'`, [skills.id])
+    return rows[0].content
+  }
+  let content = await read()
+  const react = content.categories[0].skills[0]
+  const docker = content.categories[1].skills[0]
+  check('a skill a study shows gets its proof and a link', react.proof === 'NexusRoute' && react.proofHref === '/work/logistics', JSON.stringify(react))
+  check('a skill nothing shows is left without one', !('proof' in docker), JSON.stringify(docker))
+  check('levels and names survive the walk', react.level === 95 && docker.name === 'Docker')
+
+  content.categories[0].skills[0].proof = 'Typed by hand'
+  await db.query(`update block_translations set content = $2::jsonb where block_id = $1 and locale = 'en'`, [skills.id, JSON.stringify(content)])
+  await db.exec(file)
+  content = await read()
+  check('a proof typed by hand outranks the seeded one', content.categories[0].skills[0].proof === 'Typed by hand')
+}
+
+{
   // 0013 seeds the menu. The assertion that matters is what it stores: a page
   // slug and a section, never an address — an address would look identical
   // until someone renamed the page, and then point at nothing.
   const { rows } = await db.query(
     `select slug, data from entries where collection = 'navigation' order by position`,
   )
-  check('the menu is seeded', rows.length === 8, `got ${rows.length}`)
+  // Eight from 0013, and Writing from 0020 — slotted between Projects and
+  // Automation without renumbering either.
+  check('the menu is seeded', rows.length === 9, `got ${rows.length}`)
+  const order = rows.map((row) => row.slug)
+  check(
+    'writing sits between the projects and the automation',
+    order.indexOf('writing') === order.indexOf('projects') + 1 && order.indexOf('automation') === order.indexOf('writing') + 1,
+    order.join(','),
+  )
   check(
     'no item stores an address',
     rows.every((row) => !JSON.stringify(row.data).includes('/')),
     JSON.stringify(rows.map((r) => r.data)),
   )
+  // 0013 pointed Contact at the chrome, where the terminal lived; 0023 moved
+  // the terminal to a page of its own and the item followed it.
   check(
-    'the contact item points at the site chrome, where the footer lives',
-    rows.find((row) => row.slug === 'contact')?.data.page === 'site',
+    'the contact item follows the terminal to its own page',
+    rows.find((row) => row.slug === 'contact')?.data.page === 'contact' &&
+      rows.find((row) => row.slug === 'contact')?.data.anchor === 'terminal',
+    JSON.stringify(rows.find((row) => row.slug === 'contact')?.data),
   )
 
   const { rows: labels } = await db.query(
@@ -407,6 +547,119 @@ await expectError(
     'the Russian label is Russian',
     labels.find((row) => row.locale === 'ru')?.data.label === 'Обо мне',
   )
+}
+
+{
+  // 0023 moves the terminal off the chrome page and onto contact, puts a call
+  // to action above it and a footer on the chrome. No terminal existed when the
+  // migration set ran, so one is planted on `site` and the file replayed.
+  const {
+    rows: [site],
+  } = await db.query(`select id from pages where slug = 'site'`)
+  const {
+    rows: [terminal],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, anchor_id) values ($1, 'terminal_footer', 1000, 'terminal') returning id`,
+    [site.id],
+  )
+  const file = readFileSync(join(root, 'migrations', '0023_a_footer_and_a_contact_page.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: moved } = await db.query(
+    `select p.slug, b.position from blocks b join pages p on p.id = b.page_id where b.id = $1`,
+    [terminal.id],
+  )
+  check('the terminal is moved to the contact page, not recreated', moved[0].slug === 'contact' && Number(moved[0].position) === 2000)
+  const { rows: contact } = await db.query(
+    `select b.type, b.position from blocks b join pages p on p.id = b.page_id
+      where p.slug = 'contact' and b.deleted_at is null order by b.position`,
+  )
+  check('a call to action sits above it, once', contact.map((row) => row.type).join(',') === 'kit_cta_banner,terminal_footer')
+  const { rows: cta } = await db.query(
+    `select t.locale, t.content from block_translations t join blocks b on b.id = t.block_id where b.type = 'kit_cta_banner' and b.anchor_id = 'contact'`,
+  )
+  check('with no About block to copy a CV from, the second button is dropped', cta.length === 2 && cta.every((row) => row.content.secondaryLabel === ''))
+  const { rows: chrome } = await db.query(
+    `select b.type from blocks b join pages p on p.id = b.page_id where p.slug = 'site' and b.deleted_at is null`,
+  )
+  check('the chrome page holds the footer and nothing else', chrome.map((row) => row.type).join(',') === 'site_footer')
+}
+
+{
+  // 0016 places the recruiter card on the home page. The migration set runs
+  // before the fixtures create that page, so it is replayed here against one
+  // — which also proves the replay is safe.
+  const file = readFileSync(join(root, 'migrations', '0016_a_recruiter_can_hire_from_the_first_screen.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: cards } = await db.query(
+    `select id, position, settings from blocks where page_id = $1 and type = 'recruiter_cta' and deleted_at is null`,
+    [page.id],
+  )
+  check('the recruiter card is placed once, however often the file runs', cards.length === 1, `got ${cards.length}`)
+  check('it sits between the numbers and the closing call', Number(cards[0]?.position) === 2500)
+  check(
+    'with no About block to copy from, the CV link is empty rather than invented',
+    cards[0]?.settings.cvHref === '',
+    JSON.stringify(cards[0]?.settings),
+  )
+  const { rows: copy } = await db.query(
+    `select locale, content, status from block_translations where block_id = $1 order by locale`,
+    [cards[0]?.id],
+  )
+  check('both languages are written', copy.length === 2, `got ${copy.length}`)
+  check('as ready, not draft', copy.every((row) => row.status === 'ready'))
+  check('three reasons, in Russian too', copy.find((row) => row.locale === 'ru')?.content.points.length === 3)
+}
+
+{
+  // 0017 writes the five decisions sections, but only over an empty one: copy
+  // written by hand in the admin outranks the seeded copy. The migration set
+  // ran before any detail block existed, so it is replayed against two — one
+  // untouched, one with an English heading already written.
+  const { rows: details } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'proof_detail', 9300), ($1, 'merch_detail', 9400) returning id, type`,
+    [page.id],
+  )
+  const merch = details.find((row) => row.type === 'merch_detail')
+  const proof = details.find((row) => row.type === 'proof_detail')
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', '{"title":"Hand-written"}'::jsonb)`,
+    [merch.id],
+  )
+  await db.exec(readFileSync(join(root, 'migrations', '0017_case_studies_say_why.sql'), 'utf8'))
+
+  const copyOf = async (id, locale) => {
+    const { rows } = await db.query(
+      `select content, status from block_translations where block_id = $1 and locale = $2`,
+      [id, locale],
+    )
+    return rows[0]
+  }
+  const proofEn = await copyOf(proof.id, 'en')
+  const proofRu = await copyOf(proof.id, 'ru')
+  check('an untouched study gets its decisions', proofEn?.content.decisions?.length === 4, JSON.stringify(proofEn))
+  check('in both languages', proofRu?.content.title === 'Проверить тренировку, когда никто не смотрит')
+  check('marked ready, so the admin does not flag it as a draft', proofEn?.status === 'ready' && proofRu?.status === 'ready')
+  check('the numbers read the same in every language', proofRu?.content.metrics[0].value === proofEn?.content.metrics[0].value)
+  check('a heading written by hand is left alone', (await copyOf(merch.id, 'en'))?.content.title === 'Hand-written')
+  check('while the language nobody wrote is still seeded', (await copyOf(merch.id, 'ru'))?.content.decisions?.length === 2)
+}
+
+{
+  // 0020 makes the writing page whole: a title for the tab, one block, and
+  // three placeholder articles that name themselves as such.
+  const { rows: pages } = await db.query(`select id, seo from pages where slug = 'writing'`)
+  check('the writing page exists with a title in both languages', pages.length === 1 && pages[0].seo.en?.title && pages[0].seo.ru?.title)
+  await db.exec(readFileSync(join(root, 'migrations', '0020_a_place_to_write.sql'), 'utf8'))
+  const { rows: blocks } = await db.query(
+    `select id from blocks where page_id = $1 and type = 'kit_writing' and deleted_at is null`,
+    [pages[0]?.id],
+  )
+  check('one writing block, however often the file runs', blocks.length === 1)
+  const { rows: copy } = await db.query(`select locale, status, content from block_translations where block_id = $1`, [blocks[0]?.id])
+  check('three placeholder posts per language, saved as drafts', copy.length === 2 && copy.every((row) => row.status === 'draft' && row.content.posts.length === 3))
+  check('no placeholder links anywhere', copy.every((row) => row.content.posts.every((post) => post.href === '')))
 }
 
 {
@@ -428,6 +681,31 @@ await expectError(
 }
 
 {
+  // 0018 places the testimonials block on the work overview, which 0012 made,
+  // so the migration set already placed it; replaying the file proves it is
+  // placed once.
+  const {
+    rows: [work],
+  } = await db.query(`select id from pages where slug = 'work'`)
+  await db.exec(readFileSync(join(root, 'migrations', '0018_proof_next_to_the_work_it_proves.sql'), 'utf8'))
+  const { rows: placed } = await db.query(
+    `select id, position from blocks where page_id = $1 and type = 'testimonials' and deleted_at is null`,
+    [work.id],
+  )
+  check('the references sit once under the grid, however often the file runs', placed.length === 1 && Number(placed[0].position) === 3000)
+  const { rows: copy } = await db.query(
+    `select locale, status, content from block_translations where block_id = $1 order by locale`,
+    [placed[0]?.id],
+  )
+  check('three placeholder quotes in each language', copy.length === 2 && copy.every((row) => row.content.quotes.length === 3))
+  check('saved as drafts, so the admin shows them as unfinished', copy.every((row) => row.status === 'draft'))
+  check(
+    'every placeholder says it is one',
+    copy.every((row) => row.content.quotes.every((q) => /replace before launch|заменить до запуска/.test(q.quote))),
+  )
+}
+
+{
   // History must survive the author's account being removed.
   await db.query(`insert into revisions (entity_type, entity_id, locale, data, author_id) values ('block', $1, 'en', '{}'::jsonb, $2)`, [hero.id, owner.id])
   await db.query(`delete from admin_users where id = $1`, [owner.id])
@@ -435,6 +713,102 @@ await expectError(
   check('revisions outlive their author', rows.length === 1 && rows[0].author_id === null)
   const { rows: sessionRows } = await db.query(`select 1 from sessions`)
   check('deleting a user cascades to their sessions', sessionRows.length === 0)
+}
+
+{
+  // 0019 hides the Vibe Coding section on About and places a card under the
+  // Experience timeline. No such section existed when the migration set ran,
+  // so one is planted and the file replayed.
+  const {
+    rows: [about],
+  } = await db.query(`select id from pages where slug = 'about'`)
+  const {
+    rows: [vibe],
+  } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'vibecoding', 2000) returning id`,
+    [about.id],
+  )
+  const file = readFileSync(join(root, 'migrations', '0019_the_founder_story_is_evidence.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: hidden } = await db.query(`select is_visible, deleted_at from blocks where id = $1`, [vibe.id])
+  check('the founder section is hidden, not deleted', hidden[0].is_visible === false && hidden[0].deleted_at === null)
+  const { rows: cards } = await db.query(
+    `select b.id, b.position, b.settings from blocks b join pages p on p.id = b.page_id
+      where p.slug = 'experience' and b.type = 'cta_banner' and b.anchor_id = 'proof-app' and b.deleted_at is null`,
+  )
+  check('one card under the timeline, however often the file runs', cards.length === 1 && Number(cards[0].position) === 2000)
+  check('it points at the case study', cards[0]?.settings.href === '/work/proof')
+  const { rows: copy } = await db.query(`select locale from block_translations where block_id = $1`, [cards[0]?.id])
+  check('in both languages', copy.length === 2)
+}
+
+{
+  // 0025 places five sections on home and about and hides the logo marquee.
+  // Home did not exist when the migration set ran, so the file is replayed.
+  const {
+    rows: [aboutPage],
+  } = await db.query(`select id from pages where slug = 'about'`)
+  await db.query(`insert into blocks (page_id, type, position) values ($1, 'tech_marquee', 3000)`, [aboutPage.id])
+  const file = readFileSync(join(root, 'migrations', '0025_home_and_about_say_more.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const placed = async (slug) => {
+    const { rows } = await db.query(
+      `select b.type from blocks b join pages p on p.id = b.page_id
+        where p.slug = $1 and b.deleted_at is null and b.is_visible and b.type like 'kit_%' order by b.position`,
+      [slug],
+    )
+    return rows.map((row) => row.type).join(',')
+  }
+  check('home gets the band and the services, once', (await placed('home')) === 'kit_big_marquee,kit_services')
+  check('about gets process, tools and questions, once', (await placed('about')) === 'kit_process,kit_tool_stack,kit_faq')
+  const { rows: marquee } = await db.query(
+    `select is_visible, deleted_at from blocks where page_id = $1 and type = 'tech_marquee'`,
+    [aboutPage.id],
+  )
+  check('the logo marquee is hidden, not deleted', marquee[0].is_visible === false && marquee[0].deleted_at === null)
+  const { rows: copy } = await db.query(
+    `select b.type, t.locale, t.status, t.content from block_translations t join blocks b on b.id = t.block_id
+      where b.type in ('kit_big_marquee','kit_services','kit_process','kit_tool_stack','kit_faq')`,
+  )
+  check('every section is written in both languages', copy.length === 10)
+  check('the questions are drafts — two answers are placeholders', copy.filter((row) => row.type === 'kit_faq').every((row) => row.status === 'draft'))
+  check('everything else is ready', copy.filter((row) => row.type !== 'kit_faq').every((row) => row.status === 'ready'))
+  check(
+    'every placeholder says it is one',
+    copy.filter((row) => row.type === 'kit_faq').every((row) => row.content.items.filter((item) => /Placeholder|Заглушка/.test(item.a)).length === 3),
+  )
+  check('sixteen tools, the schema ceiling', copy.find((row) => row.type === 'kit_tool_stack')?.content.tools.length === 16)
+}
+
+{
+  // 0026 places the last seven promoted sections on work, skills and
+  // experience. All three pages come from 0012, so the migration set already
+  // placed them; the replay proves it is placed once.
+  await db.exec(readFileSync(join(root, 'migrations', '0026_work_skills_and_experience_say_more.sql'), 'utf8'))
+  const placed = async (slug) => {
+    const { rows } = await db.query(
+      `select b.type from blocks b join pages p on p.id = b.page_id
+        where p.slug = $1 and b.deleted_at is null and b.type like 'kit_%' order by b.position`,
+      [slug],
+    )
+    return rows.map((row) => row.type).join(',')
+  }
+  check('work gets the band, the feed, press, awards and the reel, in that order', (await placed('work')) === 'kit_stats_marquee,kit_visual_feed,kit_press,kit_awards,kit_show_reel')
+  check('skills gets the comparison', (await placed('skills')) === 'kit_compare_table')
+  check('experience gets the milestones', (await placed('experience')) === 'kit_timeline')
+  const { rows: copy } = await db.query(
+    `select b.type, t.locale, t.status, t.content from block_translations t join blocks b on b.id = t.block_id
+      where b.type in ('kit_stats_marquee','kit_visual_feed','kit_press','kit_awards','kit_show_reel','kit_compare_table','kit_timeline')`,
+  )
+  check('seven sections, two languages each', copy.length === 14)
+  const drafts = copy.filter((row) => ['kit_press', 'kit_awards', 'kit_show_reel'].includes(row.type))
+  check('press, awards and the reel are drafts', drafts.every((row) => row.status === 'draft'))
+  check('and say so in their own text', drafts.every((row) => /Placeholder|PLACEHOLDER|Заглушка|ЗАГЛУШКА/.test(JSON.stringify(row.content))))
+  check('the rest are ready', copy.filter((row) => !drafts.includes(row)).every((row) => row.status === 'ready'))
+  check('every feed tile is a drawn illustration', copy.filter((row) => row.type === 'kit_visual_feed').every((row) => row.content.tiles.every((tile) => tile.image.startsWith('/assets/illustrations/'))))
+  check('the comparison never marks the other column as lacking what this profile lacks', copy.filter((row) => row.type === 'kit_compare_table').every((row) => row.content.rows.every((r) => r.a === true)))
 }
 
 // ---------------------------------------------------------------------------

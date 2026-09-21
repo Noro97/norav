@@ -157,6 +157,13 @@ throwing, which is what lets the CMS ship a block type before the site that
 renders it. The hero stays in the entry chunk because it is the LCP element;
 every other section is a lazy import.
 
+**Colour is a role, type is a scale.** A component names one of three colour
+roles — `primary-*`, `secondary-*`, `tertiary-*` — or `status-*` for state,
+and one size from the display/body scale; Tailwind's own palette and sizes are
+switched off and the lint rule says so aloud. The roles are aliases onto the
+palette the CMS publishes, which is how a theme change repaints the site
+without a component knowing. [docs/DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md).
+
 **Copy lives in two places, deliberately.** Section content — headings, project
 descriptions, the terminal's narrative — comes from the CMS. Interface chrome
 that has no editorial meaning stays in `src/i18n/locales`. If a non-developer
@@ -203,11 +210,12 @@ more.
 ## Checks
 
 ```bash
-npm run lint          # eslint over src packages server api and the configs
+npm run lint          # eslint over src packages server api and the configs; a warning fails it
 npx tsc --noEmit      # the build runs this first anyway
 npm test              # vitest + jsdom
 npm --prefix db test  # every migration applied to an ephemeral PGlite, invariants asserted
 npm --prefix cms test
+npm run content:check # the committed snapshots still match what the CMS publishes
 ```
 
 `.github/workflows/ci.yml` runs all of it on every push and pull request to
@@ -255,6 +263,13 @@ override but dead weight: for a while every address on the site answered to the
 home page's title this way, and it looked correct on the only page whose title
 happened to match. `PageHead` writes those tags imperatively for exactly this
 reason; add a new one to `applySeo`, not to the JSX.
+
+**The committed snapshots go stale, and nothing tells you.** Publishing needs no
+deploy, so the copy under `src/content` — what `npm run dev`, the tests and an
+offline build render — drifts from production until someone runs
+`npm run content:pull`. It was three weeks and four versions behind once. Run
+`npm run content:check` when a section you placed in the CMS is not on the page
+locally, and pull before a branch that touches `src/content`.
 
 **A failed content fetch at build time is not an error.** If `npm run build`
 prints `keeping the committed snapshots`, the deploy succeeded with whatever is

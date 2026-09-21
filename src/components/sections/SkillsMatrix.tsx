@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router'
+import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -10,6 +12,27 @@ import type { SkillsContent, SkillsSettings } from '@norav/content-schema'
 type SkillCategory = SkillsContent['categories'][number]
 type Skill = SkillCategory['skills'][number]
 
+/**
+ * The case study a skill points at. A path stays in the app through the
+ * router; anything else (a repo, a live product) is a plain link that leaves.
+ */
+function Proof({ label, href }: { label: string; href: string }) {
+  const base = 'type-label inline-flex items-center gap-0.5 text-primary-400/80'
+  if (!href) return <span className={base}>{label}</span>
+  const className = `${base} hover:text-primary-400 transition-colors`
+  const body = (
+    <>
+      {label}
+      <ArrowUpRight className="w-3 h-3" strokeWidth={2} aria-hidden />
+    </>
+  )
+  return href.startsWith('/') ? (
+    <Link to={href} className={className}>{body}</Link>
+  ) : (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>{body}</a>
+  )
+}
+
 function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boolean; showCounters: boolean }) {
   // The gradient spans the whole track, and the fill uncovers the part of it
   // the skill reaches — so the colour carries the same meaning as the length:
@@ -19,14 +42,17 @@ function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boo
   return (
     <div className="group">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="font-mono text-xs text-white/60 group-hover:text-white/80 transition-colors">
-          {skill.name}
+        <span className="flex items-baseline gap-2 min-w-0">
+          <span className="font-mono text-caption text-tertiary-ink/60 group-hover:text-tertiary-ink/80 transition-colors">
+            {skill.name}
+          </span>
+          {skill.proof && <Proof label={skill.proof} href={skill.proofHref} />}
         </span>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="font-mono text-caption text-tertiary-ink/40 opacity-0 group-hover:opacity-100 transition-opacity">
             {skill.years}y
           </span>
-          <span className="font-mono text-xs text-white/45">
+          <span className="font-mono text-caption text-tertiary-ink/45">
             {showCounters ? (
               <CountUp target={skill.level} run={animate} suffix="%" />
             ) : (
@@ -35,7 +61,7 @@ function SkillBar({ skill, animate, showCounters }: { skill: Skill; animate: boo
           </span>
         </div>
       </div>
-      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-tertiary-ink/5 rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-1000 ease-out"
           style={{
@@ -91,18 +117,18 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
   return (
     <svg viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[240px] mx-auto">
       {ringPaths.map((path, i) => (
-        <path key={i} d={path} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+        <path key={i} d={path} fill="none" stroke="color-mix(in srgb, var(--color-tertiary-ink) 4%, transparent)" strokeWidth="0.5" />
       ))}
       {values.map((_, i) => {
         const p = getPoint(i, radius)
         return (
-          <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+          <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="color-mix(in srgb, var(--color-tertiary-ink) 4%, transparent)" strokeWidth="0.5" />
         )
       })}
       <path
         d={dataPath}
-        fill="color-mix(in_srgb,var(--color-crimson-500)_15%,transparent)"
-        stroke="var(--color-crimson-500)"
+        fill="color-mix(in_srgb,var(--color-primary-500)_15%,transparent)"
+        stroke="var(--color-primary-500)"
         strokeWidth="1.5"
         className="transition-all duration-1000 ease-out"
       />
@@ -115,7 +141,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
             cx={p.x}
             cy={p.y}
             r="3"
-            fill="var(--color-crimson-500)"
+            fill="var(--color-primary-500)"
             className="transition-all duration-1000 ease-out"
           />
         )
@@ -129,9 +155,9 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
             y={p.y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="rgba(255,255,255,0.5)"
+            fill="color-mix(in srgb, var(--color-tertiary-ink) 50%, transparent)"
             fontSize="9"
-            fontFamily="JetBrains Mono"
+            fontFamily="var(--font-mono)"
           >
             {cat.name.split(' ')[0]}
           </text>
@@ -157,7 +183,7 @@ function RadarChart({ categories, animate }: { categories: SkillCategory[]; anim
  */
 function categoryColour(index: number, count: number): string {
   const ratio = count > 1 ? Math.round((index / (count - 1)) * 100) : 0
-  return `color-mix(in srgb, var(--color-cyan-500) ${ratio}%, var(--color-crimson-500))`
+  return `color-mix(in srgb, var(--color-secondary-500) ${ratio}%, var(--color-primary-500))`
 }
 
 /** The same colour as a wash behind a card. */
@@ -208,17 +234,17 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'skills'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="skills-header">
           <span className="label-mono">{content.sectionLabel}</span>
           <div className="mt-3 mb-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+            <h2 className="font-display text-heading-large font-black text-tertiary-ink">
               {content.title}
             </h2>
           </div>
-          <p className="text-white/40 text-base max-w-xl mb-12">
+          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">
             {content.description}
           </p>
         </div>
@@ -229,8 +255,8 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
             {categories.map((category, catIdx) => (
               <div
                 key={category.name}
-                className={`skill-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-crimson-500/20 hover:shadow-[0_0_40px_-12px_color-mix(in_srgb,var(--color-crimson-500)_10%,transparent)] ${
-                  activeCategory === catIdx ? 'border-crimson-500/20' : ''
+                className={`skill-card relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-primary-500/20 hover:shadow-[0_0_40px_-12px_color-mix(in_srgb,var(--color-primary-500)_10%,transparent)] ${
+                  activeCategory === catIdx ? 'border-primary-500/20' : ''
                 }`}
                 onMouseEnter={() => setActiveCategory(catIdx)}
                 onMouseLeave={() => setActiveCategory(null)}
@@ -247,11 +273,11 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: categoryColour(catIdx, categories.length) }}
                     />
-                    <h3 className="font-mono text-xs text-white/50 tracking-[0.15em] uppercase">
+                    <h3 className="type-label text-tertiary-ink/50">
                       {category.name}
                     </h3>
-                    <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
-                    <span className="font-mono text-xs text-white/40">
+                    <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
+                    <span className="font-mono text-caption text-tertiary-ink/40">
                       {Math.round(category.skills.reduce((s, sk) => s + sk.level, 0) / category.skills.length)}%
                     </span>
                   </div>
@@ -272,8 +298,8 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
           </div>
 
           {/* Radar chart sidebar */}
-          <div className="sticky top-24 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-6">
-            <h4 className="font-mono text-xs text-white/45 tracking-wider uppercase mb-4 text-center">
+          <div className="sticky top-24 rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl p-6">
+            <h4 className="type-label text-tertiary-ink/45 mb-4 text-center">
               {content.proficiencyOverview}
             </h4>
             <RadarChart categories={categories} animate={animate} />
@@ -288,7 +314,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                   <div
                     key={cat.name}
                     className={`flex items-center gap-2 px-2 py-1 rounded transition-all cursor-default ${
-                      activeCategory === i ? 'bg-white/5' : ''
+                      activeCategory === i ? 'bg-tertiary-ink/5' : ''
                     }`}
                     onMouseEnter={() => setActiveCategory(i)}
                     onMouseLeave={() => setActiveCategory(null)}
@@ -297,15 +323,15 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
                       className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: categoryColour(i, categories.length) }}
                     />
-                    <span className="font-mono text-xs text-white/40 flex-1">{cat.name}</span>
-                    <span className="font-mono text-xs text-white/40">{avg}%</span>
+                    <span className="font-mono text-caption text-tertiary-ink/40 flex-1">{cat.name}</span>
+                    <span className="font-mono text-caption text-tertiary-ink/40">{avg}%</span>
                   </div>
                 )
               })}
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/5 text-center">
-              <span className="font-mono text-xs text-white/40">
+            <div className="mt-4 pt-3 border-t border-tertiary-ink/5 text-center">
+              <span className="font-mono text-caption text-tertiary-ink/40">
                 {content.skillsTracked.replace('{{count}}', String(totalSkills))}
               </span>
             </div>

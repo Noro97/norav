@@ -10,11 +10,10 @@ lifted into a schema and its header now comes from `section-head.jsx` here, so a
 re-sync overwrites it and the promotion has to be redone. Promote a section
 only once you mean to own it.
 
-`sections/index.ts` and `tweaks/index.ts` are the source project's own typed
-barrels and give the rest of this repo a checked surface over them. Neither
-`tweaks/` nor `ui/reveal.tsx` is reachable from this site — they came with the
-import and nothing here calls them, so they cost a few files on disk and nothing
-in the bundle.
+The source project's barrels, its tweaks panel and its `reveal` helper did not
+make the trip: `registry.tsx` and `blocks.tsx` import each section's file
+directly, so nothing here read them. A re-sync copies section files, not the
+glue around them.
 
 ## Two ways a section reaches a page
 
@@ -58,6 +57,20 @@ which are Tailwind's. `scripts/port-portfolio-kit-css.mjs` moves every rule unde
 `.pf-kit` — the wrapper `PortfolioSection` renders — and prefixes every keyframe
 `pfk-`. Its output, `src/styles/portfolio-kit.css`, is generated and committed;
 edit the script, never the CSS.
+
+The same script puts the kit's type on the site's scale: every `font-size` is
+mapped to a `--text-*` token from `packages/design-tokens` (the bands are in
+`docs/DESIGN_SYSTEM.md`, "The imported kit"), heading sizes bring the heading
+weight and line-height with them, and only decorative type past 130px keeps its
+own size. `__tests__/type-scale.test.ts` holds it to that.
+
+Two more stylesheets load after it, in this order. `portfolio-kit-laptop.css`
+is generated from it by `scripts/scale-portfolio-kit-for-laptop.mjs` — the kit
+was designed on a large display, and under 1536px every spacing of 32px and up
+is scaled to 0.8 (type is fluid already and is not touched); re-run the script
+after a re-sync. `portfolio-kit-mobile.css` is hand-written: the layout this
+site changes under the kit's 720px breakpoint lives there, never in the
+generated files — and never type, which the scale handles.
 
 `'use client'` directives were dropped (Vite has no use for them, and Rollup
 warns on each).

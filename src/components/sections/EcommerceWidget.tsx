@@ -13,11 +13,13 @@ import { ProductDetailModal } from './ProductDetailModal'
 import { originOf } from '@/lib/motion'
 import type { ModalOrigin } from '@/components/ui/ModalShell'
 
+// A tint per category, from the three roles — the difference between two
+// tiles is the hue of the accent, not a fourth colour.
 export const CATEGORY_COLORS: Record<string, string> = {
-  Electronics: 'from-blue-900/40 to-blue-800/10',
-  Clothing: 'from-crimson-900/40 to-crimson-800/10',
-  Home: 'from-amber-900/40 to-amber-800/10',
-  Sports: 'from-emerald-900/40 to-emerald-800/10',
+  Electronics: 'from-secondary-900/60 to-secondary-800/10',
+  Clothing: 'from-primary-900/40 to-primary-800/10',
+  Home: 'from-tertiary-ink/[0.08] to-tertiary-ink/[0.02]',
+  Sports: 'from-secondary-700/40 to-secondary-900/10',
 }
 
 const ITEMS_PER_PAGE = 12
@@ -103,31 +105,31 @@ function FilterGraph({ filters }: { filters: FilterState }) {
 
   return (
     <svg viewBox="0 0 300 120" className="w-full">
-      <line x1="68" y1="30" x2="132" y2="30" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasCat ? 0.6 : 0.08} strokeDasharray={hasCat ? 'none' : '4 2'} />
-      <line x1="168" y1="30" x2="228" y2="30" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.5 : 0.08} strokeDasharray={hasSort ? 'none' : '4 2'} />
-      <line x1="55" y1="48" x2="88" y2="80" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasPrice ? 0.4 : 0.06} />
-      <line x1="115" y1="82" x2="178" y2="95" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={0.3} />
-      <line x1="155" y1="48" x2="188" y2="78" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={0.25} />
-      <line x1="238" y1="45" x2="212" y2="78" stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.4 : 0.08} />
+      <line x1="68" y1="30" x2="132" y2="30" stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasCat ? 0.6 : 0.08} strokeDasharray={hasCat ? 'none' : '4 2'} />
+      <line x1="168" y1="30" x2="228" y2="30" stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasSort ? 0.5 : 0.08} strokeDasharray={hasSort ? 'none' : '4 2'} />
+      <line x1="55" y1="48" x2="88" y2="80" stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasPrice ? 0.4 : 0.06} />
+      <line x1="115" y1="82" x2="178" y2="95" stroke="var(--color-primary-500)" strokeWidth="1" opacity={0.3} />
+      <line x1="155" y1="48" x2="188" y2="78" stroke="var(--color-primary-500)" strokeWidth="1" opacity={0.25} />
+      <line x1="238" y1="45" x2="212" y2="78" stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasSort ? 0.4 : 0.08} />
 
-      <circle cx="50" cy="30" r="18" fill={hasCat ? 'var(--color-crimson-500)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1.5" opacity={hasCat ? 1 : 0.3}>
+      <circle cx="50" cy="30" r="18" fill={hasCat ? 'var(--color-primary-500)' : 'var(--color-secondary)'} stroke="var(--color-primary-500)" strokeWidth="1.5" opacity={hasCat ? 1 : 0.3}>
         {hasCat && <animate attributeName="r" values="18;19;18" dur="2s" repeatCount="indefinite" />}
       </circle>
-      <text x="50" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">CAT</text>
+      <text x="50" y="34" textAnchor="middle" fill="var(--color-tertiary-ink)" fontSize="8" fontFamily="var(--font-mono)">CAT</text>
 
-      <circle cx="150" cy="30" r="18" fill={hasCat ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasCat ? 0.8 : 0.2} />
-      <text x="150" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SUB</text>
+      <circle cx="150" cy="30" r="18" fill={hasCat ? 'var(--color-primary-700)' : 'var(--color-secondary)'} stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasCat ? 0.8 : 0.2} />
+      <text x="150" y="34" textAnchor="middle" fill="var(--color-tertiary-ink)" fontSize="8" fontFamily="var(--font-mono)">SUB</text>
 
-      <circle cx="250" cy="30" r="18" fill={hasSort ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasSort ? 0.8 : 0.25} />
-      <text x="250" y="34" textAnchor="middle" fill="white" fontSize="8" fontFamily="JetBrains Mono">SORT</text>
+      <circle cx="250" cy="30" r="18" fill={hasSort ? 'var(--color-primary-700)' : 'var(--color-secondary)'} stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasSort ? 0.8 : 0.25} />
+      <text x="250" y="34" textAnchor="middle" fill="var(--color-tertiary-ink)" fontSize="8" fontFamily="var(--font-mono)">SORT</text>
 
-      <circle cx="100" cy="95" r="18" fill={hasPrice ? 'var(--color-crimson-700)' : 'var(--color-secondary)'} stroke="var(--color-crimson-500)" strokeWidth="1" opacity={hasPrice ? 0.8 : 0.2} />
-      <text x="100" y="99" textAnchor="middle" fill="white" fontSize="7" fontFamily="JetBrains Mono">PRICE</text>
+      <circle cx="100" cy="95" r="18" fill={hasPrice ? 'var(--color-primary-700)' : 'var(--color-secondary)'} stroke="var(--color-primary-500)" strokeWidth="1" opacity={hasPrice ? 0.8 : 0.2} />
+      <text x="100" y="99" textAnchor="middle" fill="var(--color-tertiary-ink)" fontSize="7" fontFamily="var(--font-mono)">PRICE</text>
 
-      <circle cx="200" cy="95" r="22" fill="var(--color-crimson-500)" fillOpacity="0.15" stroke="var(--color-crimson-500)" strokeWidth="1.5" opacity={0.9}>
+      <circle cx="200" cy="95" r="22" fill="var(--color-primary-500)" fillOpacity="0.15" stroke="var(--color-primary-500)" strokeWidth="1.5" opacity={0.9}>
         <animate attributeName="r" values="22;23;22" dur="3s" repeatCount="indefinite" />
       </circle>
-      <text x="200" y="99" textAnchor="middle" fill="var(--color-crimson-500)" fontSize="7" fontFamily="JetBrains Mono">RESULT</text>
+      <text x="200" y="99" textAnchor="middle" fill="var(--color-primary-500)" fontSize="7" fontFamily="var(--font-mono)">RESULT</text>
     </svg>
   )
 }
@@ -224,20 +226,20 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'ecommerce'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="text-display-lg font-bold text-white mt-3">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
           </h2>
-          <p className="text-body-lg text-white/50 max-w-2xl mt-4">
+          <p className="text-body-large text-tertiary-ink/50 max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-xs font-mono text-white/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
                 {tag.name}
               </span>
             ))}
@@ -249,7 +251,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
           <div className="ecom-sidebar flex flex-col gap-5">
             {/* Dependency Graph */}
             <div className="case-study-card p-4">
-              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="type-label text-tertiary-ink/40 mb-3">
                 {t('projects:ecommerce.filterDependencyGraph')}
               </h4>
               <FilterGraph filters={filters} />
@@ -257,7 +259,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
             {/* Category filter */}
             <div className="case-study-card p-4">
-              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="type-label text-tertiary-ink/40 mb-3">
                 {t('projects:ecommerce.categories')}
               </h4>
               <div className="space-y-1.5">
@@ -273,29 +275,29 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                       <div
                         className={`w-4 h-4 rounded border shrink-0 transition-all flex items-center justify-center ${
                           isActive
-                            ? 'border-cyan-500 bg-cyan-500'
-                            : 'border-white/20 group-hover:border-white/40'
+                            ? 'border-secondary-500 bg-secondary-500'
+                            : 'border-tertiary-ink/20 group-hover:border-tertiary-ink/40'
                         }`}
                       >
                         {isActive && (
-                          <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 text-tertiary-ink" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M2 6l3 3 5-5" />
                           </svg>
                         )}
                       </div>
-                      <span className={`text-sm font-mono ${isActive ? 'text-white/80' : 'text-white/50'}`}>
+                      <span className={`text-body-small font-mono ${isActive ? 'text-tertiary-ink/80' : 'text-tertiary-ink/50'}`}>
                         {cat}
                       </span>
-                      <span className="ml-auto text-xs font-mono text-white/40">{count}</span>
+                      <span className="ml-auto text-caption font-mono text-tertiary-ink/40">{count}</span>
                     </button>
                   )
                 })}
               </div>
               {filters.categories.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-white/5">
+                <div className="mt-3 pt-3 border-t border-tertiary-ink/5">
                   <div className="flex flex-wrap gap-1">
                     {availableSubcategories.map((sub) => (
-                      <span key={sub} className="case-study-pill py-0.5 text-xs font-mono text-crimson-400/60 bg-crimson-500/5">
+                      <span key={sub} className="case-study-pill py-0.5 text-caption font-mono text-primary-400/60 bg-primary-500/5">
                         {sub}
                       </span>
                     ))}
@@ -306,7 +308,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
             {/* Price range */}
             <div className="case-study-card p-4">
-              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="type-label text-tertiary-ink/40 mb-3">
                 {t('projects:ecommerce.priceRange')}
               </h4>
               <div className="space-y-3">
@@ -322,9 +324,9 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                       priceRange: [prev.priceRange[0], Number(e.target.value)],
                     }))
                   }
-                  className="w-full accent-crimson-500"
+                  className="w-full accent-primary-500"
                 />
-                <div className="flex justify-between font-mono text-xs text-white/40">
+                <div className="flex justify-between font-mono text-caption text-tertiary-ink/40">
                   <span>${filters.priceRange[0]}</span>
                   <span>${filters.priceRange[1]}</span>
                 </div>
@@ -333,7 +335,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
             {/* Sort */}
             <div className="case-study-card p-4">
-              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-3">
+              <h4 className="type-label text-tertiary-ink/40 mb-3">
                 {t('projects:ecommerce.sortBy')}
               </h4>
               <div className="space-y-1">
@@ -341,10 +343,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={opt.value}
                     onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, sortBy: opt.value })) }}
-                    className={`w-full text-left px-2 py-1.5 rounded text-xs font-mono transition-all ${
+                    className={`w-full text-left px-2 py-1.5 rounded text-caption font-mono transition-all ${
                       filters.sortBy === opt.value
-                        ? 'text-cyan-400 bg-cyan-500/10'
-                        : 'text-white/40 hover:text-white/60 hover:bg-white/3'
+                        ? 'text-secondary-400 bg-secondary-500/10'
+                        : 'text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/3'
                     }`}
                   >
                     {t(`projects:${opt.labelKey}`)}
@@ -355,10 +357,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
             {/* URL params display */}
             <div className="case-study-card p-4 flex-1">
-              <h4 className="font-mono text-xs text-white/40 tracking-wider uppercase mb-2">
+              <h4 className="type-label text-tertiary-ink/40 mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
-              <code className="text-xs font-mono text-crimson-400/80 break-all block leading-relaxed">
+              <code className="text-caption font-mono text-primary-400/80 break-all block leading-relaxed">
                 {window.location.pathname}{filtersToParams(filters) || ''}
               </code>
             </div>
@@ -368,13 +370,13 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
           <div className="ecom-grid">
             {/* Header row */}
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-xs text-white/40">
+              <span className="font-mono text-caption text-tertiary-ink/40">
                 {t('projects:ecommerce.productsCount', { filtered: filteredProducts.length, total: MOCK_PRODUCTS.length })}
               </span>
               {filters.categories.length > 0 && (
                 <button
                   onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, categories: [] })) }}
-                  className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 transition-colors"
+                  className="font-mono text-caption text-primary-400/60 hover:text-primary-400 transition-colors"
                 >
                   {t('common:buttons.clearFilters')}
                 </button>
@@ -400,23 +402,23 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                     className="press case-study-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
                   >
                     <div
-                      className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-white/5 to-transparent'} border border-white/[0.04]`}
+                      className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-tertiary-ink/5 to-transparent'} border border-tertiary-ink/[0.04]`}
                     >
-                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
+                      <span className="type-label text-tertiary-ink/40">
                         {product.category}
                       </span>
-                      <span className="font-mono text-xs text-white/45 group-hover:text-white/70 transition-colors">
+                      <span className="font-mono text-caption text-tertiary-ink/45 group-hover:text-tertiary-ink/70 transition-colors">
                         {product.subcategory}
                       </span>
                     </div>
-                    <h5 className="font-mono text-xs text-white/70 truncate" title={product.name}>
+                    <h5 className="font-mono text-caption text-tertiary-ink/70 truncate" title={product.name}>
                       {product.name}
                     </h5>
                     <div className="flex items-center justify-between mt-1.5">
-                      <span className="font-mono text-sm font-medium text-gold-400">
+                      <span className="font-mono text-body-small font-medium text-secondary-300">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className="font-mono text-xs text-white/40 uppercase">
+                      <span className="font-mono text-caption text-tertiary-ink/40 uppercase">
                         #{String(product.id).padStart(3, '0')}
                       </span>
                     </div>
@@ -426,10 +428,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
               {filteredProducts.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <span className="font-mono text-sm text-white/40">{t('projects:ecommerce.noProducts')}</span>
+                  <span className="font-mono text-body-small text-tertiary-ink/40">{t('projects:ecommerce.noProducts')}</span>
                   <button
                     onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
-                    className="font-mono text-xs text-crimson-400/60 hover:text-crimson-400 mt-2 transition-colors"
+                    className="font-mono text-caption text-primary-400/60 hover:text-primary-400 mt-2 transition-colors"
                   >
                     {t('common:buttons.resetAll')}
                   </button>
@@ -443,7 +445,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="w-8 h-8 rounded border border-white/10 flex items-center justify-center font-mono text-xs text-white/40 hover:text-white/70 hover:border-white/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &lt;
                 </button>
@@ -451,10 +453,10 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                   <button
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-xs transition-all ${
+                    className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-caption transition-all ${
                       page === i
-                        ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400'
-                        : 'border-white/10 text-white/40 hover:text-white/70 hover:border-white/20'
+                        ? 'border-secondary-500/40 bg-secondary-500/10 text-secondary-400'
+                        : 'border-tertiary-ink/10 text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20'
                     }`}
                   >
                     {i + 1}
@@ -463,7 +465,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={page === totalPages - 1}
-                  className="w-8 h-8 rounded border border-white/10 flex items-center justify-center font-mono text-xs text-white/40 hover:text-white/70 hover:border-white/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &gt;
                 </button>

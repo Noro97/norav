@@ -48,7 +48,7 @@ function BentoIllustration({ src, alt }: { src: string; alt: string }) {
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl flex items-center justify-center p-4 transition-all duration-500 hover:border-crimson-500/20 will-change-transform"
+      className="bento-tile group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl flex items-center justify-center p-4 transition-all duration-500 hover:border-primary-500/20 will-change-transform"
       style={{ transition: 'transform 0.15s ease-out' }}
     >
       <img
@@ -58,7 +58,7 @@ function BentoIllustration({ src, alt }: { src: string; alt: string }) {
         className="w-full h-auto max-h-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-105"
       />
       {/* Glare */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.06),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_50%,color-mix(in srgb, var(--color-tertiary-ink) 6%, transparent),transparent_60%)]" />
     </div>
   )
 }
@@ -102,22 +102,22 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'overview'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-28 md:py-36"
+      className="relative px-gutter-x py-28 md:py-36"
     >
       {/* Section ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-crimson-500/[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary-500/[0.03] blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="bento-header mb-16">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mt-4 mb-5">
+          <h2 className="font-display text-heading-xlarge font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
           </h2>
-          <p className="text-white/45 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-tertiary-ink/45 text-body-regular md:text-body-large max-w-xl leading-relaxed">
             {content.description}
           </p>
-          <div className="h-px w-24 bg-gradient-to-r from-crimson-500/50 to-transparent mt-8" />
+          <div className="h-px w-24 bg-gradient-to-r from-primary-500/50 to-transparent mt-8" />
         </div>
 
         {/* Bento Grid */}

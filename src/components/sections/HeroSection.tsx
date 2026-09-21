@@ -12,7 +12,7 @@ import type { HeroContent, HeroSettings } from '@norav/content-schema'
 /** How a tagline segment is painted. */
 const TONE_CLASS: Record<Tone, string> = {
   main: '',
-  highlight: 'text-crimson-400',
+  highlight: 'text-primary-400',
 }
 
 /** Segments are space-joined, except one that opens with punctuation. */
@@ -126,7 +126,7 @@ export function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto pt-[28vh]">
         <p
           ref={subtitleRef}
-          className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-crimson-500 mb-6"
+          className="type-label md:text-body-small text-primary-500 mb-6"
         >
           {settings.subtitleReveal === 'none' ? (
             content.subtitle
@@ -135,7 +135,7 @@ export function HeroSection() {
           )}
         </p>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
+        <h1 className="font-display text-heading-display font-black text-tertiary-ink mb-8 pr-[0.05em]" style={{ fontFamily: 'var(--font-family-display)' }}>
           {nameParts.map((part, partIdx) => {
             const elements = part.text.split('').map((char, i) => {
               const idx = (charBaseOffsets[partIdx] ?? 0) + i
@@ -143,7 +143,7 @@ export function HeroSection() {
                 <span
                   key={idx}
                   ref={(el) => { if (el) charsRef.current[idx] = el }}
-                  className={`inline-block opacity-0 translate-y-[40px]${part.crimson ? ' text-crimson-500' : ''}${'lineBreak' in part && part.lineBreak ? ' hidden min-[425px]:inline-block' : ''}`}
+                  className={`inline-block opacity-0 translate-y-[40px]${part.crimson ? ' text-primary-500' : ''}${'lineBreak' in part && part.lineBreak ? ' hidden min-[425px]:inline-block' : ''}`}
                 >
                   {char === ' ' ? '\u00A0' : char}
                 </span>
@@ -158,7 +158,7 @@ export function HeroSection() {
 
         <p
           ref={taglineRef}
-          className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-light"
+          className="text-body-large text-tertiary-ink/50 max-w-2xl mx-auto leading-relaxed font-normal"
         >
           {content.tagline.map((segment, index) => (
             <Fragment key={index}>
@@ -175,10 +175,10 @@ export function HeroSection() {
           ref={scrollHintRef}
           className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
         >
-          <span className="font-mono text-xs tracking-[0.3em] uppercase text-white/20">
+          <span className="type-label text-tertiary-ink/20">
             {content.scrollHint}
           </span>
-          <div className="w-px h-8 bg-gradient-to-b from-crimson-500/50 to-transparent animate-pulse" />
+          <div className="w-px h-8 bg-gradient-to-b from-primary-500/50 to-transparent animate-pulse" />
         </div>
       )}
     </section>

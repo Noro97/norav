@@ -34,16 +34,16 @@ export function GallerySection({ anchorId, blockId }: { anchorId?: string | null
     <section
       ref={sectionRef}
       {...(anchorId ? { id: anchorId } : {})}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="gallery-header mb-12">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
             {content.title}
           </h2>
           {content.description && (
-            <p className="text-white/40 text-base max-w-xl">{content.description}</p>
+            <p className="text-tertiary-ink/40 text-body-regular max-w-xl">{content.description}</p>
           )}
         </div>
 

@@ -22,7 +22,7 @@ function highlightLine(line: string): string {
       const end = escaped.indexOf(quote, i + quote.length)
       if (end !== -1) {
         const str = escaped.slice(i, end + quote.length)
-        result += `<span class="text-emerald-400">${str}</span>`
+        result += `<span class="text-secondary-400">${str}</span>`
         i = end + quote.length
         continue
       }
@@ -33,7 +33,7 @@ function highlightLine(line: string): string {
     if (wordMatch) {
       const word = wordMatch[0]
       if (KEYWORDS.has(word)) {
-        result += `<span class="text-crimson-400">${word}</span>`
+        result += `<span class="text-primary-400">${word}</span>`
       } else {
         result += word
       }
@@ -44,7 +44,7 @@ function highlightLine(line: string): string {
     // Numbers
     const numMatch = escaped.slice(i).match(/^\d+/)
     if (numMatch) {
-      result += `<span class="text-sky-400">${numMatch[0]}</span>`
+      result += `<span class="text-primary-300">${numMatch[0]}</span>`
       i += numMatch[0].length
       continue
     }
@@ -152,23 +152,23 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
     <div className="flex flex-col gap-5">
       {/* Display card */}
       <div
-        className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl overflow-hidden"
+        className="rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl overflow-hidden"
         style={{ perspective: 800 }}
       >
         {/* macOS chrome */}
-        <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        <div className="flex items-center gap-2 px-4 py-3 bg-tertiary-ink/[0.03] border-b border-tertiary-ink/5">
+          <div className="w-2.5 h-2.5 rounded-full bg-tertiary-ink/20" />
+          <div className="w-2.5 h-2.5 rounded-full bg-tertiary-ink/15" />
+          <div className="w-2.5 h-2.5 rounded-full bg-tertiary-ink/10" />
           <div className="ml-3 relative">
             <motion.span
-              className="font-mono text-xs text-white/40 absolute left-0 whitespace-nowrap"
+              className="font-mono text-caption text-tertiary-ink/40 absolute left-0 whitespace-nowrap"
               style={{ opacity: filenameOpacity }}
             >
               {copy.boringLabel}
             </motion.span>
             <motion.span
-              className="font-mono text-xs text-white/40 whitespace-nowrap"
+              className="font-mono text-caption text-tertiary-ink/40 whitespace-nowrap"
               style={{ opacity: archFilenameOpacity }}
             >
               {copy.archLabel}
@@ -192,11 +192,11 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
               style={{ opacity: codeOpacity, backfaceVisibility: 'hidden' }}
             >
               <pre
-                className="font-mono text-xs md:text-xs leading-relaxed text-white/60 whitespace-pre-wrap"
+                className="font-mono text-caption md:text-caption leading-relaxed text-tertiary-ink/60 whitespace-pre-wrap"
                 dangerouslySetInnerHTML={{ __html: HIGHLIGHTED_CODE }}
               />
               {/* Scanline overlay for code */}
-              <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-white/[0.01] to-transparent" />
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-tertiary-ink/[0.01] to-transparent" />
             </motion.div>
           </motion.div>
 
@@ -222,10 +222,10 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
       {/* Slider control */}
       <div className="px-1">
         <div className="flex items-center justify-between mb-2.5">
-          <span className="font-mono text-xs text-white/45 uppercase tracking-wider">
+          <span className="type-label text-tertiary-ink/45">
             {copy.lowVibe}
           </span>
-          <span className="font-mono text-xs text-crimson-500/60 uppercase tracking-wider">
+          <span className="type-label text-primary-500/60">
             {copy.highVibe}
           </span>
         </div>
@@ -241,17 +241,17 @@ export function VibeSlider({ copy }: { copy: VibeSliderCopy }) {
           onDoubleClick={onDoubleClick}
         >
           {/* Track background */}
-          <div className="absolute inset-x-0 h-1 rounded-full bg-white/[0.06]">
+          <div className="absolute inset-x-0 h-1 rounded-full bg-tertiary-ink/[0.06]">
             {/* Filled portion */}
             <motion.div
-              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-white/10 to-crimson-500/40"
+              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-tertiary-ink/10 to-primary-500/40"
               style={{ width: thumbLeft }}
             />
           </div>
 
           {/* Thumb */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-crimson-500 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-crimson-500)_40%,_transparent)] border-2 border-white/20 transition-shadow hover:shadow-[0_0_20px_color-mix(in_srgb,_var(--color-crimson-500)_60%,_transparent)]"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary-500 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-primary-500)_40%,_transparent)] border-2 border-tertiary-ink/20 transition-shadow hover:shadow-[0_0_20px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]"
             style={{ left: thumbLeft }}
           />
         </div>
@@ -286,7 +286,7 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
               <path
                 d={`M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`}
                 fill="none"
-                stroke="color-mix(in srgb, var(--color-crimson-500) 30%, transparent)"
+                stroke="color-mix(in srgb, var(--color-primary-500) 30%, transparent)"
                 strokeWidth={1.5}
                 strokeDasharray="8 8"
                 className="animate-dash-flow"
@@ -294,10 +294,10 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
               {/* Arrowhead at target */}
               <polygon
                 points={`${x2 - 5},${y2 - 1} ${x2 + 5},${y2 - 1} ${x2},${y2 + 5}`}
-                fill="color-mix(in srgb, var(--color-crimson-500) 40%, transparent)"
+                fill="color-mix(in srgb, var(--color-primary-500) 40%, transparent)"
               />
               {/* Pulse dot at source */}
-              <circle cx={x1} cy={y1} r={3} fill="color-mix(in srgb, var(--color-crimson-500) 50%, transparent)">
+              <circle cx={x1} cy={y1} r={3} fill="color-mix(in srgb, var(--color-primary-500) 50%, transparent)">
                 <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
               </circle>
@@ -315,17 +315,17 @@ function ArchitectureDiagram({ nodeLabels }: { nodeLabels: Record<string, string
             width={node.width}
             height={NODE_HEIGHT}
             rx={10}
-            fill="color-mix(in srgb, var(--color-crimson-500) 8%, transparent)"
-            stroke="color-mix(in srgb, var(--color-crimson-500) 25%, transparent)"
+            fill="color-mix(in srgb, var(--color-primary-500) 8%, transparent)"
+            stroke="color-mix(in srgb, var(--color-primary-500) 25%, transparent)"
             strokeWidth={1}
           />
           <text
             x={node.x + node.width / 2}
             y={node.y + NODE_HEIGHT / 2 + 5}
             textAnchor="middle"
-            fill="rgba(255, 255, 255, 0.7)"
+            fill="color-mix(in srgb, var(--color-tertiary-ink) 70%, transparent)"
             fontSize={14}
-            fontFamily="'JetBrains Mono', monospace"
+            fontFamily="var(--font-mono)"
           >
             {nodeLabels[node.id] ?? ''}
           </text>

@@ -70,13 +70,13 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       ref={tileRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`bento-tile group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-crimson-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-crimson-500)_15%,_transparent)] ${className}`}
+      className={`bento-tile group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl transition-all duration-500 hover:border-primary-500/20 hover:shadow-[0_0_60px_-12px_color-mix(in_srgb,_var(--color-primary-500)_15%,_transparent)] ${className}`}
     >
       {/* Abstract gradient mesh — unique per tile via hue rotation */}
       <div
         className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-700"
         style={{
-          background: `radial-gradient(ellipse at ${index === 0 ? '20% 30%' : index === 1 ? '80% 20%' : '50% 80%'}, color-mix(in srgb, var(--color-crimson-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at ${index === 0 ? '80% 70%' : index === 1 ? '20% 80%' : '90% 20%'}, color-mix(in srgb, var(--color-crimson-700) 30%, transparent) 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse at ${index === 0 ? '20% 30%' : index === 1 ? '80% 20%' : '50% 80%'}, color-mix(in srgb, var(--color-primary-500) 60%, transparent) 0%, transparent 50%), radial-gradient(ellipse at ${index === 0 ? '80% 70%' : index === 1 ? '20% 80%' : '90% 20%'}, color-mix(in srgb, var(--color-primary-700) 30%, transparent) 0%, transparent 60%)`,
         }}
       />
 
@@ -109,29 +109,29 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       )}
 
       {/* Top accent line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-crimson-500/40 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent" />
 
       <motion.div className="relative p-6 md:p-8" style={{ y }}>
         {/* Case study number — large watermark */}
-        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-crimson-500/10 select-none pointer-events-none tracking-tighter">
+        <div className="absolute top-4 right-6 md:right-8 font-mono text-[72px] md:text-[96px] font-black leading-none text-primary-500/10 select-none pointer-events-none tracking-tighter">
           {caseNum}
         </div>
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-xs text-crimson-500 tracking-[0.25em] uppercase">
+          <span className="type-label text-primary-500">
             Case Study {caseNum}
           </span>
-          <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
         </div>
 
         {/* Title */}
-        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-3 group-hover:text-crimson-50 transition-colors duration-300">
+        <h3 className="font-display text-heading-small font-black text-tertiary-ink mb-3 group-hover:text-primary-50 transition-colors duration-300">
           {copy?.title ?? ''}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-lg">
+        <p className="text-body-small text-tertiary-ink/60 leading-relaxed mb-6 max-w-lg">
           {copy?.description ?? ''}
         </p>
 
@@ -140,7 +140,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-xs font-mono text-white/50 bg-white/[0.04] border border-white/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/50 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>
@@ -151,11 +151,11 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         <MagneticButton
           onClick={handleScrollTo}
           aria-label={`${copy?.cta ?? ''} — ${copy?.title ?? ''}`}
-          className="inline-flex items-center gap-2.5 text-xs font-mono text-crimson-400/80 uppercase tracking-[0.15em] group/btn hover:text-crimson-300 transition-colors duration-300"
+          className="type-label inline-flex items-center gap-2.5 text-primary-400/80 group/btn hover:text-primary-300 transition-colors duration-300"
         >
           <span className="relative">
             {copy?.cta ?? ''}
-            <span className="absolute -bottom-px left-0 w-0 h-px bg-crimson-500/50 group-hover/btn:w-full transition-all duration-300" />
+            <span className="absolute -bottom-px left-0 w-0 h-px bg-primary-500/50 group-hover/btn:w-full transition-all duration-300" />
           </span>
           <ArrowUpRight
             size={12}
@@ -165,7 +165,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
       </motion.div>
 
       {/* Bottom edge glow on hover */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-crimson-500/0 to-transparent group-hover:via-crimson-500/30 transition-all duration-700" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/0 to-transparent group-hover:via-primary-500/30 transition-all duration-700" />
     </div>
   )
 }

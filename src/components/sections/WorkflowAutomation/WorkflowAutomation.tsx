@@ -66,7 +66,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
     <section
       id={anchorId ?? 'workflows'}
       ref={sectionRef}
-      className="relative px-6 md:px-16 py-24"
+      className="relative px-gutter-x py-24"
     >
       {settings.background === 'threads' && <ThreadsBackground />}
       {settings.background === 'beams' && <BeamsBackground />}
@@ -74,10 +74,10 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         <div className="wf-header">
           <span className="label-mono">{content.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mt-3 mb-4">
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
             {content.title}
           </h2>
-          <p className="text-white/40 text-base max-w-xl mb-12">{content.description}</p>
+          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -89,25 +89,25 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
             return (
             <div
               key={card.diagram}
-              className="wf-card relative overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-violet-500/20 hover:shadow-[0_0_40px_-12px_rgba(108,58,237,0.15)] flex flex-col"
+              className="wf-card relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl p-5 transition-all duration-300 hover:border-secondary-500/20 hover:shadow-[0_0_40px_-12px_rgba(108,58,237,0.15)] flex flex-col"
             >
               {/* n8n badge */}
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 rounded bg-violet-500/15 flex items-center justify-center">
-                  <span className="text-xs font-bold text-violet-400">n8n</span>
+                <div className="w-6 h-6 rounded bg-secondary-500/15 flex items-center justify-center">
+                  <span className="text-caption font-semibold text-secondary-500">n8n</span>
                 </div>
-                <h3 className="font-mono text-xs text-white/60 tracking-[0.12em] uppercase">
+                <h3 className="type-label text-tertiary-ink/60">
                   {card.title}
                 </h3>
               </div>
 
               {/* Workflow diagram */}
-              <div className="mb-4 bg-white/[0.02] rounded-xl p-3 border border-white/[0.04]">
+              <div className="mb-4 bg-tertiary-ink/[0.02] rounded-xl p-3 border border-tertiary-ink/[0.04]">
                 <WorkflowDiagram workflow={workflow} animate={animate} />
               </div>
 
               {/* Description */}
-              <p className="font-mono text-sm text-white/40 leading-relaxed mt-auto pt-4">
+              <p className="font-mono text-body-small text-tertiary-ink/40 leading-relaxed mt-auto pt-4">
                 {card.description}
               </p>
             </div>
@@ -120,7 +120,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
           {content.techStack.map((tech) => (
             <span
               key={tech.name}
-              className="px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] font-mono text-xs text-white/30"
+              className="px-3 py-1.5 rounded-full border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] font-mono text-caption text-tertiary-ink/30"
             >
               {tech.name}
             </span>
