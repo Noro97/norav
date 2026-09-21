@@ -247,6 +247,53 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 5c. 0024 repoints every product image at a drawn one — uploads only
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0024_illustrations_in_the_palette.sql'), 'utf8')
+  await db.query(
+    `update entries set data = data || '{"image":"https://blob.example/media/d1bf3316-x.png"}'::jsonb where collection = 'experience' and slug = 'proof-app'`,
+  )
+  const {
+    rows: [bento],
+  } = await db.query(
+    `insert into blocks (page_id, type, position) values ($1, 'bento_grid', 9600) returning id`,
+    [page.id],
+  )
+  const before = {
+    sectionLabel: 'Deep Dive',
+    projects: [
+      { project: 'nexusroute', title: 'NexusRoute', image: 'https://blob.example/media/65b68898-x.png' },
+      { project: 'proof', title: 'Proof', image: '' },
+    ],
+    tiles: [
+      { title: 'Performance Audit', image: 'https://blob.example/media/26394992-x.png' },
+      { title: 'Hand-placed', image: '/assets/mine.png' },
+    ],
+    illustrations: { omnigrid: 'https://blob.example/media/e145c603-x.png', gamification: '/assets/mine.svg' },
+    badges: [{ rarity: 'rare', image: 'https://blob.example/media/badge.svg' }],
+  }
+  await db.query(
+    `insert into block_translations (block_id, locale, content) values ($1, 'en', $2::jsonb)`,
+    [bento.id, JSON.stringify(before)],
+  )
+  await db.exec(file)
+  await db.exec(file)
+  const { rows: entry } = await db.query(`select data from entries where collection = 'experience' and slug = 'proof-app'`)
+  check('an uploaded experience image becomes the drawn one', entry[0].data.image === '/assets/illustrations/proof-mini-app.svg')
+  check('the rest of the entry survives', entry[0].data.period === 'Feb 2026 — Present')
+  const { rows: grid } = await db.query(`select content from block_translations where block_id = $1`, [bento.id])
+  const after = grid[0].content
+  check('a project card is matched by its key', after.projects[0].image === '/assets/illustrations/nexusroute-map.svg')
+  check('a card with no image stays without one', after.projects[1].image === '')
+  check('a tile is matched by the file it held', after.tiles[0].image === '/assets/illustrations/tile-performance.svg')
+  check('a path set by hand is left alone', after.tiles[1].image === '/assets/mine.png' && after.illustrations.gamification === '/assets/mine.svg')
+  check('the named illustration is repointed', after.illustrations.omnigrid === '/assets/illustrations/omnigrid-illustration.svg')
+  check('the badges are not products and are not touched', after.badges[0].image === 'https://blob.example/media/badge.svg')
+  check('the rest of the block survives', after.sectionLabel === 'Deep Dive')
+}
+
+// ---------------------------------------------------------------------------
 // 6. Publishing
 // ---------------------------------------------------------------------------
 {
