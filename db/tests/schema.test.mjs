@@ -386,7 +386,15 @@ await expectError(
   const { rows } = await db.query(
     `select slug, data from entries where collection = 'navigation' order by position`,
   )
-  check('the menu is seeded', rows.length === 8, `got ${rows.length}`)
+  // Eight from 0013, and Writing from 0020 — slotted between Projects and
+  // Automation without renumbering either.
+  check('the menu is seeded', rows.length === 9, `got ${rows.length}`)
+  const order = rows.map((row) => row.slug)
+  check(
+    'writing sits between the projects and the automation',
+    order.indexOf('writing') === order.indexOf('projects') + 1 && order.indexOf('automation') === order.indexOf('writing') + 1,
+    order.join(','),
+  )
   check(
     'no item stores an address',
     rows.every((row) => !JSON.stringify(row.data).includes('/')),
@@ -468,6 +476,22 @@ await expectError(
   check('the numbers read the same in every language', proofRu?.content.metrics[0].value === proofEn?.content.metrics[0].value)
   check('a heading written by hand is left alone', (await copyOf(merch.id, 'en'))?.content.title === 'Hand-written')
   check('while the language nobody wrote is still seeded', (await copyOf(merch.id, 'ru'))?.content.decisions?.length === 2)
+}
+
+{
+  // 0020 makes the writing page whole: a title for the tab, one block, and
+  // three placeholder articles that name themselves as such.
+  const { rows: pages } = await db.query(`select id, seo from pages where slug = 'writing'`)
+  check('the writing page exists with a title in both languages', pages.length === 1 && pages[0].seo.en?.title && pages[0].seo.ru?.title)
+  await db.exec(readFileSync(join(root, 'migrations', '0020_a_place_to_write.sql'), 'utf8'))
+  const { rows: blocks } = await db.query(
+    `select id from blocks where page_id = $1 and type = 'kit_writing' and deleted_at is null`,
+    [pages[0]?.id],
+  )
+  check('one writing block, however often the file runs', blocks.length === 1)
+  const { rows: copy } = await db.query(`select locale, status, content from block_translations where block_id = $1`, [blocks[0]?.id])
+  check('three placeholder posts per language, saved as drafts', copy.length === 2 && copy.every((row) => row.status === 'draft' && row.content.posts.length === 3))
+  check('no placeholder links anywhere', copy.every((row) => row.content.posts.every((post) => post.href === '')))
 }
 
 {
