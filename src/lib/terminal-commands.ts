@@ -288,7 +288,3 @@ export function executeCommand(input: string): TerminalLine[] {
 
   return result
 }
-
-export function shouldTriggerBurst(input: string): boolean {
-  return input.trim().toLowerCase() === 'sudo hire'
-}

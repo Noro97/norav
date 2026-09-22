@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { executeCommand, shouldTriggerBurst } from '../terminal-commands'
+import { executeCommand } from '../terminal-commands'
 
 // Initialize i18n before tests
 beforeAll(async () => {
@@ -126,25 +126,5 @@ describe('executeCommand', () => {
     const result = executeCommand('HELP')
     const outputs = result.filter((l) => l.type === 'output')
     expect(outputs.length).toBeGreaterThan(0)
-  })
-})
-
-describe('shouldTriggerBurst', () => {
-  it('returns true for sudo hire', () => {
-    expect(shouldTriggerBurst('sudo hire')).toBe(true)
-  })
-
-  it('is case-insensitive', () => {
-    expect(shouldTriggerBurst('SUDO HIRE')).toBe(true)
-    expect(shouldTriggerBurst('Sudo Hire')).toBe(true)
-  })
-
-  it('handles whitespace', () => {
-    expect(shouldTriggerBurst('  sudo hire  ')).toBe(true)
-  })
-
-  it('returns false for other commands', () => {
-    expect(shouldTriggerBurst('help')).toBe(false)
-    expect(shouldTriggerBurst('sudo rm')).toBe(false)
   })
 })
