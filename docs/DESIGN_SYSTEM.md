@@ -276,7 +276,6 @@ wants a resolved colour:
 ```tsx
 fill="var(--color-tertiary-ink)"                       // SVG: the variable is fine
 fontFamily="var(--font-mono)"
-<pointLight color={readToken('--color-ink', '#ffffff')} />   // three.js: resolved, re-read on theme change
 ```
 
 ## Building a new component
@@ -300,7 +299,7 @@ fontFamily="var(--font-mono)"
    The two exceptions above are the whole list; a third needs a comment that
    explains why it is content, not palette.
 8. **Read the token where a class cannot reach.** `readToken` /
-   `useThemeColor` from `@/content/theme` for canvas and three.js.
+   `useThemeColor` from `@/content/theme` for canvas.
 
 `npm run lint` enforces 1, 2, 5, 6 and 7: an off-system class, size, weight,
 hex or font name is an error with the rule to follow in the message. The

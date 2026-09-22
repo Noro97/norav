@@ -118,22 +118,26 @@
 }
 
 /* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts =====
-   `transition` is a shorthand: whichever rule declares it last replaces the
-   other's value outright rather than merging with it, regardless of source
-   order once specificity ties. A card component (`.glass-card` below, or a
-   Tailwind `transition-*` utility) owns its own hover transition and should
-   keep it after gaining `.reveal` for its one entrance, so this block sits
-   first and yields — the card's own transition is what wins where one exists. */
-.reveal {
-  transition: opacity 300ms ease-out, transform 300ms ease-out;
-}
-.reveal--pending {
-  opacity: 0;
-  transform: translateY(8px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { transition: none; }
-  .reveal--pending { opacity: 1; transform: none; }
+   `transition` is a shorthand: whichever rule declares it wins outright
+   replaces the other's value rather than merging with it, so this preset
+   can't just sit before a card's or a utility's own transition and expect
+   source order to save it. It's declared here in `base` instead, where
+   Tailwind's own utilities and any unlayered component rule both outrank
+   it — that's what lets a card (`.glass-card` below) or a Tailwind
+   `transition-*` utility keep its own hover transition, while an element
+   with no transition of its own still gets the entrance. */
+@layer base {
+  .reveal {
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+  .reveal--pending {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none; }
+    .reveal--pending { opacity: 1; transform: none; }
+  }
 }
 
 /* ===== GLASS CARD — the about facts and the experience entries ===== */

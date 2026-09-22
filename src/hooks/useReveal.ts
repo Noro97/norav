@@ -15,6 +15,14 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
  * grid); without it the ref's own element is the target. Under
  * `prefers-reduced-motion: reduce` the hook is inert: the stylesheet also
  * neutralises the classes, but not adding them is the cheaper guarantee.
+ *
+ * Two things a future caller needs to know. The classes are global with no
+ * reference counting, so exactly one `useReveal` call may target any given
+ * element — two overlapping calls step on each other's classList and corrupt
+ * each other's cleanup. And `src/styles/portfolio-kit.css` defines its own
+ * `.pf-kit .reveal` at higher specificity, which would neutralise
+ * `reveal--pending` before it ever paints — calling this hook on an element
+ * inside the imported kit's `.pf-kit` wrapper silently produces no entrance.
  */
 export const REVEAL_CLASS = 'reveal'
 export const PENDING_CLASS = 'reveal--pending'

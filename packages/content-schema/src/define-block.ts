@@ -6,8 +6,9 @@ import { getAtPath, setAtPath } from './paths'
  *
  * 1 — content block: every prop comes from the CMS.
  * 2 — app widget: the CMS owns order, visibility, copy and media; the
- *     interactive internals stay in code (a map, a data grid, a 3D scene).
- * 3 — chrome: not a block at all. Lives in `settings` (cursor, grain, SEO).
+ *     interactive internals stay in code (a map, a data grid, a faceted search).
+ * 3 — chrome: not a block at all. Lives in `settings` (theme, nav indicator
+ *     style, SEO).
  */
 export type BlockTier = 1 | 2 | 3
 

@@ -6,8 +6,8 @@ import { HOME_SLUG, hrefFor } from '@/content/routing'
 /**
  * An address the CMS has not published.
  *
- * It sits inside the same shell as every page — header, canvas, grain — because
- * the site is still there; it is this one address that is not. A bare page would
+ * It sits inside the same shell as every page — the header — because the site
+ * is still there; it is this one address that is not. A bare page would
  * read as something broken rather than as a wrong turn.
  */
 export function NotFound() {
