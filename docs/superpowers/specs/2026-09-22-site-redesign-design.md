@@ -18,9 +18,11 @@ eight-page skeleton. It is merged to `main` and applied to the local database
 
 This rebuild goes further and supersedes parts of that plan:
 
-- **Twelve routes become eight.** The home page carries the whole pitch; five
-  case-study pages carry the evidence; About carries the answers. Experience,
-  Skills, Work, Automation and Contact pages are removed (301 → home anchors).
+- **Twelve routes become ten, and every one of them resolves.** The home page
+  carries the whole pitch; `/work` indexes the five case studies that carry the
+  evidence; About carries the answers; `/contact` is the ask. Experience, Skills
+  and Automation are removed, their content folded into the pages above. The
+  menu is four items, each a route of its own — see *URLs and navigation*.
 - **The ambient layer is cut.** No three.js, no constellation, no grid, no grain,
   no floating debug strings, no custom cursor, no magnetic buttons, no scramble
   text. Entrance motion is a 300 ms fade, and nothing above the fold starts
@@ -63,7 +65,7 @@ moves by numbered migration (0027+), exactly as 0016–0026 did.
 | 0020 writing page (#74) | `/writing` with `kit_writing` placeholders | **Kept.** Nav item hidden until a post is real |
 | 0021 skills `provenIn` (#75) | Proficiency provenance per skill | **Dropped with the `skills` block.** The tool stack and the compare table replace it |
 | 0022 hero/about voice (#76) | Copy | **Superseded** by the brief's copy |
-| 0023 footer + contact page (#77) | `site_footer` on `site`; `/contact` with `kit_cta_banner` + the terminal | `site_footer` kept and extended. `/contact` removed; the terminal returns to `site`, hidden behind a footer toggle |
+| 0023 footer + contact page (#77) | `site_footer` on `site`; `/contact` with `kit_cta_banner` + the terminal | **Kept.** `site_footer` extended; `/contact` stays as a real route (see *URLs and navigation*); only the terminal moves back to `site`, hidden behind the footer toggle |
 | 0024 illustrations (#78) | Generated SVGs in `public/assets/illustrations/` | **Kept** as the source for case-study covers until the §5 assets exist |
 | 0025 home + about (#79) | `kit_big_marquee`, `kit_services` on home; `kit_process`, `kit_tool_stack`, `kit_faq` on about | Marquee and services deleted. Process moves to home; tool stack and FAQ stay on About |
 | 0026 work/skills/experience (#80) | `kit_stats_marquee`, `kit_show_reel`, `kit_visual_feed`, `kit_press`, `kit_awards` on work; `kit_compare_table` on skills; `kit_timeline` on experience | All deleted except the compare table, which moves to About |
@@ -108,7 +110,9 @@ track production and are refreshed in step 9.
 | Route | Blocks, in order | Notes |
 | --- | --- | --- |
 | `/` | hero · proof_strip · work_index · capabilities · kit_process · experience (compact) · testimonials · kit_writing · contact_cta | testimonials and kit_writing hidden until real |
+| `/work` | work_index (full) | the index of the five studies — see *URLs and navigation* |
 | `/about` | about · kit_compare_table · experience (full) · kit_tool_stack · kit_faq · contact_cta | FAQ has anchor `faq` |
+| `/contact` | kit_cta_banner · contact_cta | see *URLs and navigation* |
 | `/work/nexusroute` | logistics · logistics_detail · case_study_next | was `work/logistics` |
 | `/work/omnigrid` | omnigrid · omnigrid_detail · case_study_next | unchanged slug |
 | `/work/filtergraph` | ecommerce · ecommerce_detail · case_study_next | was `work/ecommerce` |
@@ -117,15 +121,62 @@ track production and are refreshed in step 9.
 | `/writing` | kit_writing | page hidden from nav until a post is real |
 | `/site` | site_footer · terminal_footer | terminal hidden behind the footer toggle |
 
-Removed pages: `experience`, `skills`, `work`, `automation`, `contact`, `test`.
-Their rows are soft-deleted (`deleted_at`), not dropped. `vercel.json` gains
-301s: `/experience → /#experience`, `/skills → /#capabilities`,
-`/work → /#work`, `/automation → /#capabilities`, `/contact → /#contact`, and
-the three slug renames with their `/ru/` twins.
+Removed pages: `experience`, `skills`, `automation`, `test`. Their rows are
+soft-deleted (`deleted_at`), not dropped. `vercel.json` gains 301s:
+`/experience → /about`, `/skills → /about`, `/automation → /`, and the three
+slug renames with their `/ru/` twins.
 
-Navigation collection: Work (`home#work`) · About (`about`) · Writing
-(`writing`, hidden until a post exists) · Email (external `mailto:`). The
-language toggle stays in the nav chrome.
+## URLs and navigation
+
+**Amended 2026-09-22, after the navigation audit.** The first draft of this
+spec turned five pages into home-page fragments and made the menu's Work item
+`home#work` and its Contact item a `mailto:`. The audit of the live nav found
+seven defects, and two of them are arguments against that plan rather than
+against the old site:
+
+- **A parent that does not resolve.** `/work/logistics` exists while `/work`
+  would have 301'd to `/#work`. A path segment whose parent 404s is the kind
+  of structure this redesign exists to remove.
+- **Contact had no address at all.** The item resolved to the `site`
+  pseudo-page, which `useNavigation` renders as a bare `#terminal` on every
+  page. Nothing to link, nothing to share, nothing for a crawler to find.
+
+So the rule is now explicit, and it governs the menu rather than the whole
+site:
+
+> **Every navigation destination is a resolvable address of its own** — a
+> route, or an external URL. No menu item is a bare fragment, and no menu item
+> points at a page that does not exist. Fragments stay legitimate *inside* a
+> page, for scrolling between the sections of the long home page and for deep
+> links like `/about#faq`; they are how you reach part of a page, never how a
+> page is identified.
+
+Navigation collection: **Work (`work`) · About (`about`) · Writing (`writing`,
+hidden until a post is real) · Contact (`contact`)**. Four items, four routes,
+no fragments — and it fits at every width, which the eight-item menu did not
+below about 900px. The language toggle stays in the nav chrome.
+
+`/work` is an index page rather than a redirect: it lists the five studies,
+completes the `/work/*` hierarchy, and is the address a reader would guess.
+The home page keeps its own `work_index` section as part of the pitch, ending
+in a link to `/work` — the same block type in two placements, which is why
+`work_index` is not a singleton.
+
+`/contact` is a real page rather than a `mailto:` menu item: it carries the
+CTA banner and the contact block, and gives the FAQ, the CV and the
+availability line somewhere to be linked from. The terminal stays where this
+spec already put it — on `site`, hidden behind the footer toggle — so it is an
+easter egg rather than the contact route.
+
+Three consequences for the code, beyond the content migration:
+
+1. `resolveTarget` in `src/content/navigation.ts` loses its `SITE_SLUG`
+   special-case, which existed only to render the phantom Contact item.
+2. `Navigation.handleClick` stops writing `#{id}` into the address as it
+   scrolls. It was what made a copied URL carry whichever section the reader
+   last clicked. In-page scrolling keeps working; the address stays the page's.
+3. The published `canonical` is therefore the page's own address, with no
+   fragment, on every view.
 
 ## Content model
 
@@ -149,10 +200,10 @@ Block schemas live in `packages/content-schema/src/blocks`. Changes:
   that, `findBlock` returns the home page's compact row on About.
 - **`capabilities`** — shape unchanged; copy only.
 - **`contact_cta`** — content gains `secondaryLabel` (CV) and `tertiaryLabel`
-  + `tertiaryHref` (FAQ link); settings gain `cvHref`. Placed on home and
-  About, so it drops `singleton: true` and `ContactCTA` passes `blockId`. The
-  About copy is the same block content; only the tertiary link differs (About
-  points at `#faq` on its own page, home at `/about#faq`).
+  + `tertiaryHref` (FAQ link); settings gain `cvHref`. Placed on home, About
+  and `/contact`, so it drops `singleton: true` and `ContactCTA` passes
+  `blockId`. The copy is the same on all three; only the tertiary link differs
+  (About points at `#faq` on its own page, the other two at `/about#faq`).
 - **`site_footer`** — content gains `nowLine`, `colophon`, `terminalLabel`;
   settings gain `showTerminalToggle: boolean`.
 - **`terminal_footer`** — settings gain `hiddenByDefault: boolean`. When true
@@ -169,7 +220,10 @@ Block schemas live in `packages/content-schema/src/blocks`. Changes:
   `ctaLabel`. settings: none. The card's link is derived from `page` via
   `hrefFor`; the cover image is derived from the case-study page's header block
   (`settings.image` on the widget block, falling back to
-  `/assets/illustrations/<slug>.svg`). Singleton, tier 1.
+  `/assets/illustrations/<slug>.svg`). Tier 1, and **not** a singleton: it is
+  placed twice — the condensed pitch on home, the full index on `/work` — so
+  `WorkIndex` reads its own row with `blockId`, as `Testimonials` already does.
+  `settings.limit` (integer, 0 = all) is what makes the home copy condensed.
 - **`case_study_next`** — no content; settings `{ next: slug }`. Renders "Next:
   <title of that page's header block> →". Five rows, one per study.
 
@@ -199,7 +253,7 @@ on the first field so nothing reads as translated when it is not.
 | # | Name | What it does |
 | --- | --- | --- |
 | 0027 | `the_ambient_layer_is_gone` | `settings.site` drops `grain`, `dynamicGrid`, `cursor` |
-| 0028 | `pages_that_are_now_anchors` | Soft-deletes `experience`, `skills`, `work`, `automation`, `contact`, `test` pages and their blocks; renames three case-study slugs; rewrites the navigation collection |
+| 0028 | `the_routes_are_the_structure` | Soft-deletes `experience`, `skills`, `automation`, `test` and their blocks; renames three case-study slugs; keeps `work` and `contact` as real pages and fills them; rewrites the navigation collection to the four items |
 | 0029 | `the_home_page_carries_the_pitch` | Replaces `impact_strip` with `proof_strip`; inserts `work_index`; moves `kit_process` from about to home; moves `testimonials` and `kit_writing` (as a home section) onto home, hidden; inserts compact `experience`; rewrites hero, capabilities, contact copy |
 | 0030 | `about_carries_the_answers` | Rewrites bio; moves `kit_compare_table` onto about; full `experience` on about; FAQ rows; tool-stack copy; soft-deletes `vibecoding`, `tech_marquee` |
 | 0031 | `case_studies_say_why_in_full` | Extends the five `*_detail` rows with context / problem / retro / caption; inserts `case_study_next` rows |
@@ -243,7 +297,15 @@ on the first field so nothing reads as translated when it is not.
 - `TerminalFooter.tsx` — collapsed state; unchanged commands; welcome text
   from the CMS as today.
 - `Navigation.tsx` — four items + language toggle; a sheet below 900 px;
-  never truncates. The current-page dropdown on mobile goes.
+  never truncates. The current-page dropdown on mobile goes. `handleClick`
+  stops writing `#{id}` into the address as it scrolls — it is why a copied
+  URL carried whichever section the reader last clicked. In-page scrolling
+  stays; the address stays the page's.
+- `src/content/navigation.ts` — `resolveTarget` loses the `SITE_SLUG`
+  special-case, which existed only so the phantom Contact item could render as
+  a bare `#terminal` on every page. With `/contact` a real route, an item
+  pointing at `site` is a mistake and should drop out like any other item
+  whose page is not published.
 - `PageHead.tsx` — adds `Person` and `WebSite` JSON-LD; per-page `og:image`
   from `public/og/<slug>.svg` (generated by a new `scripts/generate-og.mjs`
   from the brief's asset 06 template at `prebuild`, after the sitemap).
