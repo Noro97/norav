@@ -119,11 +119,14 @@ npm --prefix cms run dev:local     # the CMS on :3300, embedded database
 npm run dev                        # the site on :5173, which finds it by default
 ```
 
-`DATABASE_URL=` in front of any script does the same thing — Node's `--env-file`
-does not overwrite a variable that is already set, even to nothing:
+The scripts that write — `seed`, `import`, `import:media`, `link:images`,
+`user:add` — are forced onto the embedded database the same way, and refuse to
+run if `DATABASE_URL` reaches them regardless. Each has a `:production` twin
+that is the only way to point it at the live database:
 
 ```bash
-DATABASE_URL= npm --prefix cms run user:add -- --email you@example.com
+npm --prefix cms run user:add -- --email you@example.com              # the embedded database
+npm --prefix cms run user:add:production -- --email you@example.com   # the live account
 ```
 
 A clean slate — wipes the embedded database and rebuilds it from the seed and

@@ -15,7 +15,7 @@
 import { randomUUID } from 'node:crypto'
 import { readFile, readdir } from 'node:fs/promises'
 import { extname, join, relative } from 'node:path'
-import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, assertIntendedDatabase, closeDb, query, queryOne } from '../src/lib/db'
 import { getStorage } from '../src/lib/storage'
 import { repointReferences } from '../src/lib/content-references'
 
@@ -49,20 +49,7 @@ async function collect(dir: string, out: string[] = []): Promise<string[]> {
 }
 
 async function main() {
-  const toProduction = process.argv.includes('--production')
-  const usingPostgres = Boolean(process.env.DATABASE_URL)
-
-  // Two guards, because getting either half wrong is expensive and quiet.
-  if (usingPostgres && !toProduction) {
-    throw new Error(
-      'DATABASE_URL is set, so this would rewrite live content.\n' +
-        'Run `npm run import:media` for the embedded database, or\n' +
-        '`npm run import:media:production` if that is genuinely what you want.',
-    )
-  }
-  if (toProduction && !usingPostgres) {
-    throw new Error('--production was passed but DATABASE_URL is empty. Nothing to write to.')
-  }
+  const toProduction = assertIntendedDatabase('import:media')
 
   // Local runs get local storage too. Guarding only the database left a gap I
   // walked straight into: the embedded database recorded rows while the files

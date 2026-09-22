@@ -8,7 +8,7 @@
 //
 // Idempotent: a field that already holds a URL is left alone.
 // =============================================================================
-import { closeDb, query, queryOne } from '../src/lib/db'
+import { assertIntendedDatabase, closeDb, query, queryOne } from '../src/lib/db'
 
 /** Which original file belongs to which key, taken from the code it replaces. */
 const BENTO_PROJECTS: Record<string, string> = {
@@ -50,14 +50,7 @@ interface Row {
 }
 
 async function main() {
-  const toProduction = process.argv.includes('--production')
-  const usingPostgres = Boolean(process.env.DATABASE_URL)
-  if (usingPostgres && !toProduction) {
-    throw new Error('DATABASE_URL is set. Use `link:images:production` if that is deliberate.')
-  }
-  if (toProduction && !usingPostgres) {
-    throw new Error('--production was passed but DATABASE_URL is empty.')
-  }
+  const toProduction = assertIntendedDatabase('link:images')
 
   let filled = 0
   const already: string[] = []

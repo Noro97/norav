@@ -25,17 +25,19 @@ content this repository shipped:
 
 ```bash
 cp cms/.env.example cms/.env        # the same DATABASE_URL
-npm --prefix cms run seed
-npm --prefix cms run import
-npm --prefix cms run user:add -- --email you@example.com
+npm --prefix cms run seed:production
+npm --prefix cms run import:production
+npm --prefix cms run user:add:production -- --email you@example.com
 ```
 
 The password is prompted for. There is no public sign-up, and no default
 account exists.
 
 These scripts read `cms/.env`, so the connection string goes in that file — not
-only in Vercel. Without it they fall back to the embedded database and appear to
-succeed while writing nowhere useful.
+only in Vercel. The `:production` suffix is what lets them use it: the plain
+`seed`, `import` and `user:add` always target the embedded database, and each
+refuses to run if `DATABASE_URL` is set and the suffix is missing, or the other
+way round.
 
 ## 2. The CMS project
 
