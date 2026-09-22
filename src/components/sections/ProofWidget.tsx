@@ -1,8 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
@@ -86,25 +85,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
 
   useEffect(() => () => { cancelledRef.current = true; clearAllTimers() }, [clearAllTimers])
 
-  // GSAP entrance
-  useGSAP(() => {
-    const left = sectionRef.current!.querySelector('.proof-left')
-    const right = sectionRef.current!.querySelector('.proof-right')
-    if (left) {
-      gsap.fromTo(left,
-        { opacity: 0, x: -40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-    if (right) {
-      gsap.fromTo(right,
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.proof-left, .proof-right')
 
   const setNode = useCallback((index: number, status: NodeStatus) => {
     setNodeStatuses(prev => {

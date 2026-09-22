@@ -1,9 +1,8 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { Coffee, Image as ImageIcon, Shirt, Sticker, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
@@ -135,25 +134,7 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
     }
   }, [config])
 
-  // GSAP entrance
-  useGSAP(() => {
-    const left = sectionRef.current!.querySelector('.merch-left')
-    const right = sectionRef.current!.querySelector('.merch-right')
-    if (left) {
-      gsap.fromTo(left,
-        { opacity: 0, x: -40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-    if (right) {
-      gsap.fromTo(right,
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.merch-left, .merch-right')
 
   // Typing animation — isTyping is derived from the typed length instead of
   // being set synchronously inside the effect.

@@ -1,6 +1,5 @@
 import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { TestimonialsContent, TestimonialsSettings } from '@norav/content-schema'
@@ -9,18 +8,7 @@ export function Testimonials({ anchorId, blockId }: { anchorId?: string | null; 
   const block = useBlock<TestimonialsContent, TestimonialsSettings>('testimonials', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
-  useGSAP(() => {
-    const cards = sectionRef.current!.querySelectorAll('.quote-card')
-    if (!cards.length) return
-    gsap.fromTo(
-      cards,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 78%' },
-      }
-    )
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.quote-card')
 
   if (!block) return null
   const { content, settings } = block

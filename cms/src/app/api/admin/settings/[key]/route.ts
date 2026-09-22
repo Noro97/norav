@@ -18,8 +18,6 @@ export const dynamic = 'force-dynamic'
 const SCHEMAS: Record<string, z.ZodType> = {
   theme: themeSchema,
   site: z.object({
-    grain: z.boolean(),
-    dynamicGrid: z.boolean(),
     /** Which shape the active-link indicator in the nav takes. */
     navIndicator: z.enum(['dot', 'gooey']).default('dot'),
   }),
@@ -27,7 +25,7 @@ const SCHEMAS: Record<string, z.ZodType> = {
 
 const DEFAULTS: Record<string, unknown> = {
   theme: DEFAULT_THEME,
-  site: { grain: true, dynamicGrid: true, navIndicator: 'dot' },
+  site: { navIndicator: 'dot' },
 }
 
 export async function GET(request: Request, context: { params: Promise<{ key: string }> }) {

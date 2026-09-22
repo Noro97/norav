@@ -1,8 +1,7 @@
 import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
@@ -78,25 +77,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
   const [throughput, setThroughput] = useState(0)
   const stressRafRef = useRef(0)
 
-  // GSAP entrance
-  useGSAP(() => {
-    const content = sectionRef.current!.querySelector('.logistics-content')
-    const map = sectionRef.current!.querySelector('.logistics-map')
-    if (content) {
-      gsap.fromTo(content,
-        { opacity: 0, x: -40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-    if (map) {
-      gsap.fromTo(map,
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.logistics-content, .logistics-map')
 
   // Simulated live telemetry
   useEffect(() => {

@@ -3,8 +3,8 @@
 A personal portfolio site, and the small CMS that runs it. One repository, three
 deployable pieces, no CMS framework and no ORM anywhere in it.
 
-The site is a Vite + React 19 single page: a WebGL constellation behind the
-content, an interactive terminal in the footer, and every section — its copy,
+The site is a Vite + React 19 single page: an interactive terminal in the
+footer, and every section — its copy,
 its order, whether it appears at all — coming from a database rather than from
 JSX. Content is baked into the bundle at build time, so the first paint costs no
 network request, and refreshed in the background afterwards, so fixing a typo
@@ -14,7 +14,7 @@ does not need a deploy.
 
 | Path | What it is | Its own docs |
 | --- | --- | --- |
-| `src/`, `api/`, `server/` | The site: React 19, Vite 6, Tailwind 4, R3F, GSAP | this file |
+| `src/`, `api/`, `server/` | The site: React 19, Vite 6, Tailwind 4, GSAP | this file |
 | `packages/content-schema/` | Block registry and snapshot contract shared by both sides | — |
 | `cms/` | Admin UI and content API — Next.js App Router, `pg`, zod | [cms/README.md](./cms/README.md), [cms/DEPLOY.md](./cms/DEPLOY.md) |
 | `db/` | PostgreSQL schema — numbered SQL migrations, PGlite-tested | [db/README.md](./db/README.md) |
@@ -136,7 +136,6 @@ src/
     current.ts           the same snapshot, reachable outside React (the terminal)
     theme.ts             paints the published palette onto :root
   components/
-    canvas/              R3F scene, particle field, GLSL shaders
     sections/            one folder or file per block type
     ui/  navigation/
   i18n/locales/{en,ru}/  interface chrome only — see below
@@ -191,11 +190,14 @@ with. `public/sitemap.xml` is generated, never edited: it lists every published
 page in both languages, and skips the `site` page and any page with no sections,
 which the site renders as a 404.
 
-**Motion.** GSAP ScrollTrigger for scroll work, Framer Motion for component
-transitions, R3F for the constellation. `prefers-reduced-motion: reduce` drops
-the canvas, the grain, the floating artifacts and the dynamic grid entirely —
-they are not merely stilled. Three, GSAP, Maps, Spline and Framer Motion are
-each split into their own chunk in `vite.config.ts`.
+**Motion.** GSAP ScrollTrigger still does the scroll work its own widgets need,
+and Framer Motion still handles component transitions. Everything else below
+the fold shares one entrance — a 300ms fade and rise from `useReveal`
+(`src/hooks/useReveal.ts`) applied once, on mount, to whatever starts off
+screen. `prefers-reduced-motion: reduce` turns that entrance off — elements
+are simply visible from the start — without touching the widgets' own motion.
+`gsap`, `gmaps` and `motion` are each split into their own chunk in
+`vite.config.ts`.
 
 **The terminal.** `help`, `ls`, `cat`, `whoami`, `date`, `echo`, `neofetch`,
 `pwd`, `cd`, `sudo` and `clear` are local. `ask` streams from Claude through
@@ -240,11 +242,6 @@ variables, and how to tell whether it worked — is in
 Because `main` is production, work goes through a branch and a pull request.
 
 ## Things that will bite you
-
-**Restart the Vite dev server after pulling a change to the workspace package.**
-A running dev server re-optimises dependencies underneath itself, which leaves
-react-three-fiber with two copies of its store and throws *"R3F: Hooks can only
-be used within the Canvas component!"*, blanking the page.
 
 **`cms/.env` holds the production connection string.** A plain
 `npm --prefix cms run dev` therefore edits the live site. `dev:local` forces the

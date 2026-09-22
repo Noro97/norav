@@ -237,7 +237,7 @@ const COMMANDS: Record<string, CommandHandler> = {
       const bot = '  └' + '─'.repeat(w) + '┘'
       const boxed = rows.map((r) => '  │' + r + ' '.repeat(w - r.length) + '│')
 
-      return ['', top, ...boxed, bot, '', '  ' + (copy()?.hire.burst ?? ''), '']
+      return ['', top, ...boxed, bot, '']
     }
     if (args[0] === 'rm' || args[0] === 'su') {
       return [copy()?.hire.niceTry ?? '']
@@ -287,8 +287,4 @@ export function executeCommand(input: string): TerminalLine[] {
   }
 
   return result
-}
-
-export function shouldTriggerBurst(input: string): boolean {
-  return input.trim().toLowerCase() === 'sudo hire'
 }

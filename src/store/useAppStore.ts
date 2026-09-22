@@ -1,59 +1,27 @@
 import { create } from 'zustand'
 
-interface MousePosition {
-  x: number
-  y: number
-}
-
+/**
+ * What the chrome needs to know about the page: how far it has scrolled (the
+ * progress bar), which section is under the viewport's centre line (the nav),
+ * and whether the viewport is a phone. The scene that once read the mouse and
+ * a hero explosion flag is gone, and so are those fields.
+ */
 interface AppState {
   scrollProgress: number
-  mousePosition: MousePosition
   activeSection: string
   isMobile: boolean
-  particlesCollapsed: boolean
-  particleBurst: boolean
 
   setScrollProgress: (v: number) => void
-  setMousePosition: (pos: MousePosition) => void
   setActiveSection: (s: string) => void
   setIsMobile: (v: boolean) => void
-  setParticlesCollapsed: (v: boolean) => void
-  triggerParticleBurst: () => void
-
-  heroExploded: boolean
-  heroScrollProgress: number
-
-  setHeroExploded: (v: boolean) => void
-  setHeroScrollProgress: (v: number) => void
 }
-
-let burstTimer: ReturnType<typeof setTimeout> | null = null
 
 export const useAppStore = create<AppState>((set) => ({
   scrollProgress: 0,
-  mousePosition: { x: 0, y: 0 },
   activeSection: 'hero',
   isMobile: false,
-  particlesCollapsed: false,
-  particleBurst: false,
-
-  heroExploded: false,
-  heroScrollProgress: 0,
 
   setScrollProgress: (v) => set({ scrollProgress: v }),
-  setMousePosition: (pos) => set({ mousePosition: pos }),
   setActiveSection: (s) => set({ activeSection: s }),
   setIsMobile: (v) => set({ isMobile: v }),
-  setParticlesCollapsed: (v) => set({ particlesCollapsed: v }),
-  triggerParticleBurst: () => {
-    if (burstTimer) clearTimeout(burstTimer)
-    set({ particleBurst: true })
-    burstTimer = setTimeout(() => {
-      set({ particleBurst: false })
-      burstTimer = null
-    }, 1500)
-  },
-
-  setHeroExploded: (v) => set({ heroExploded: v }),
-  setHeroScrollProgress: (v) => set({ heroScrollProgress: v }),
 }))

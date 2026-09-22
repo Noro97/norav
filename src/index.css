@@ -117,6 +117,29 @@
   margin: 0 auto 2rem;
 }
 
+/* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts =====
+   `transition` is a shorthand: whichever rule wins replaces the other's
+   value outright rather than merging with it, so this preset cannot just
+   sit before a card's or a utility's own transition and expect source
+   order to save it. It is declared here in `base` instead, where
+   Tailwind's own utilities and any unlayered component rule both outrank
+   it — that's what lets a card (`.glass-card` below) or a Tailwind
+   `transition-*` utility keep its own hover transition, while an element
+   with no transition of its own still gets the entrance. */
+@layer base {
+  .reveal {
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+  .reveal--pending {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none; }
+    .reveal--pending { opacity: 1; transform: none; }
+  }
+}
+
 /* ===== GLASS CARD — the about facts and the experience entries ===== */
 .glass-card {
   backdrop-filter: blur(20px);
@@ -264,18 +287,4 @@
    position: static because relative offsets can't be measured reliably.
    Used by the BentoGrid parallax tiles. */
 html { position: relative; }
-
-/* The scene is drawn on a canvas behind the content, so anything on the content
-   layer that answers the pointer hides it. Blocks take events back one at a
-   time, and the hero opts out again with a utility class.
-   `main > *`, not `main > section`: a block whose root happens to be a div —
-   the imported kit's wrapper was one — inherited `none` from main and every
-   button inside it went dead, with nothing on the page to show why.
-   In `base` deliberately: an unlayered rule beats every Tailwind utility no
-   matter how specific the utility is, so written plainly these two would win
-   against the class and the mark would stay unclickable. */
-@layer base {
-  main { pointer-events: none; }
-  main > * { pointer-events: auto; }
-}
 

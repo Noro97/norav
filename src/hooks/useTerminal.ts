@@ -1,8 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import type { TerminalLine } from '@/types'
-import { executeCommand, shouldTriggerBurst } from '@/lib/terminal-commands'
+import { executeCommand } from '@/lib/terminal-commands'
 import { readSSEText } from '@/lib/sse'
-import { useAppStore } from '@/store/useAppStore'
 import i18n from '@/i18n'
 import { currentBlockContent } from '@/content/current'
 import type { TerminalFooterContent } from '@norav/content-schema'
@@ -94,11 +93,6 @@ export function useTerminal() {
 
     historyRef.current.unshift(input)
     historyIdxRef.current = -1
-
-    // Check for particle burst
-    if (shouldTriggerBurst(input)) {
-      useAppStore.getState().triggerParticleBurst()
-    }
 
     const result = executeCommand(input)
 

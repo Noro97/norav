@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 
-const WIDGET_SECTIONS = new Set(['logistics', 'merch', 'ecommerce', 'omnigrid', 'proof'])
-
 /**
  * Each section calls this hook with its id.
  * Uses IntersectionObserver — works for lazy-loaded sections
@@ -13,13 +11,12 @@ export function useSectionObserver(sectionId: string, ref: React.RefObject<HTMLE
     const el = ref.current
     if (!el) return
 
-    const { setActiveSection, setParticlesCollapsed } = useAppStore.getState()
+    const { setActiveSection } = useAppStore.getState()
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
           setActiveSection(sectionId)
-          setParticlesCollapsed(WIDGET_SECTIONS.has(sectionId))
         }
       },
       {

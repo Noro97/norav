@@ -2,9 +2,6 @@ import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { CaseStudyDetail } from '../CaseStudyDetail'
 
-// The section is being tested, not the scroll reveal on it.
-vi.mock('@gsap/react', () => ({ useGSAP: () => {} }))
-
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
 

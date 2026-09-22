@@ -1,8 +1,7 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
@@ -143,25 +142,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
   const [page, setPage] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
-  // GSAP entrance
-  useGSAP(() => {
-    const sidebar = sectionRef.current!.querySelector('.ecom-sidebar')
-    const grid = sectionRef.current!.querySelector('.ecom-grid')
-    if (sidebar) {
-      gsap.fromTo(sidebar,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-    if (grid) {
-      gsap.fromTo(grid,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, delay: 0.2,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.ecom-sidebar, .ecom-grid')
 
   // URL sync
   useEffect(() => {
