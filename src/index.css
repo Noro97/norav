@@ -117,6 +117,25 @@
   margin: 0 auto 2rem;
 }
 
+/* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts =====
+   `transition` is a shorthand: whichever rule declares it last replaces the
+   other's value outright rather than merging with it, regardless of source
+   order once specificity ties. A card component (`.glass-card` below, or a
+   Tailwind `transition-*` utility) owns its own hover transition and should
+   keep it after gaining `.reveal` for its one entrance, so this block sits
+   first and yields — the card's own transition is what wins where one exists. */
+.reveal {
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+.reveal--pending {
+  opacity: 0;
+  transform: translateY(8px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; }
+  .reveal--pending { opacity: 1; transform: none; }
+}
+
 /* ===== GLASS CARD — the about facts and the experience entries ===== */
 .glass-card {
   backdrop-filter: blur(20px);
@@ -129,19 +148,6 @@
 .glass-card:hover {
   border-color: color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   box-shadow: 0 20px 40px color-mix(in srgb, var(--color-tertiary-shade) 30%, transparent), 0 0 40px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
-}
-
-/* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts ===== */
-.reveal {
-  transition: opacity 300ms ease-out, transform 300ms ease-out;
-}
-.reveal--pending {
-  opacity: 0;
-  transform: translateY(8px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { transition: none; }
-  .reveal--pending { opacity: 1; transform: none; }
 }
 
 /* Scrolls without showing it — the data tables. */

@@ -28,10 +28,6 @@ class FakeObserver {
   }
 }
 
-function placeAt(el: Element, top: number) {
-  el.getBoundingClientRect = () => ({ top, bottom: top + 100, left: 0, right: 0, width: 0, height: 100, x: 0, y: top, toJSON: () => ({}) })
-}
-
 function Section({ selector }: { selector?: string }) {
   const ref = useRef<HTMLElement>(null)
   useReveal(ref, selector)
@@ -52,15 +48,17 @@ describe('useReveal', () => {
   afterEach(() => vi.restoreAllMocks())
 
   it('leaves an element already in view visible and unobserved', () => {
-    const { getByTestId, unmount } = render(<Section />)
-    // The effect ran before we could place the element; re-render to run it again.
-    placeAt(getByTestId('root'), 100)
-    // Unmount first: RTL's queries are bound to document.body, so a second
-    // render without this leaves two "root" nodes and getByTestId throws.
-    unmount()
-    const { getByTestId: again } = render(<Section />)
-    placeAt(again('root'), 100)
-    expect(again('root').classList.contains('reveal--pending')).toBe(false)
+    const original = HTMLElement.prototype.getBoundingClientRect
+    HTMLElement.prototype.getBoundingClientRect = () => ({ top: 100, bottom: 200, left: 0, right: 0, width: 0, height: 100, x: 0, y: 100, toJSON: () => ({}) })
+    try {
+      const { getByTestId } = render(<Section />)
+      const root = getByTestId('root')
+      expect(root.classList.contains('reveal')).toBe(true)
+      expect(root.classList.contains('reveal--pending')).toBe(false)
+      expect(observed).toHaveLength(0)
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original
+    }
   })
 
   it('marks a below-fold element pending, then reveals it when it intersects', () => {
