@@ -118,10 +118,10 @@
 }
 
 /* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts =====
-   `transition` is a shorthand: whichever rule declares it wins outright
-   replaces the other's value rather than merging with it, so this preset
-   can't just sit before a card's or a utility's own transition and expect
-   source order to save it. It's declared here in `base` instead, where
+   `transition` is a shorthand: whichever rule wins replaces the other's
+   value outright rather than merging with it, so this preset cannot just
+   sit before a card's or a utility's own transition and expect source
+   order to save it. It is declared here in `base` instead, where
    Tailwind's own utilities and any unlayered component rule both outrank
    it — that's what lets a card (`.glass-card` below) or a Tailwind
    `transition-*` utility keep its own hover transition, while an element
