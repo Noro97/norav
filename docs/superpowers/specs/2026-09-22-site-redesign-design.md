@@ -121,8 +121,12 @@ track production and are refreshed in step 9.
 | `/writing` | kit_writing | page hidden from nav until a post is real |
 | `/site` | site_footer · terminal_footer | terminal hidden behind the footer toggle |
 
-Removed pages: `experience`, `skills`, `automation`, `test`. Their rows are
-soft-deleted (`deleted_at`), not dropped. `vercel.json` gains 301s:
+Removed pages: `experience`, `skills`, `automation`, `test`. A page is retired
+by `status = 'archived'` — `pages` carries no `deleted_at` and no
+`is_visible`, and `archived` is what the publish step already skips
+(`cms/src/lib/publish.ts` selects `status = 'published'`). Their blocks *are*
+soft-deleted, because `blocks` has both columns and publish walks blocks by
+page id. Nothing is dropped either way. `vercel.json` gains 301s:
 `/experience → /about`, `/skills → /about`, `/automation → /`, and the three
 slug renames with their `/ru/` twins.
 
@@ -253,7 +257,7 @@ on the first field so nothing reads as translated when it is not.
 | # | Name | What it does |
 | --- | --- | --- |
 | 0027 | `the_ambient_layer_is_gone` | `settings.site` drops `grain`, `dynamicGrid`, `cursor` |
-| 0028 | `the_routes_are_the_structure` | Soft-deletes `experience`, `skills`, `automation`, `test` and their blocks; renames three case-study slugs; keeps `work` and `contact` as real pages and fills them; rewrites the navigation collection to the four items |
+| 0028 | `the_routes_are_the_structure` | Archives `experience`, `skills`, `automation`, `test` and soft-deletes their blocks; renames three case-study slugs; keeps `work` and `contact` published as real pages, carrying whatever 0012 and 0023 left on them until 0029 and 0030 rewrite it; moves the terminal back to `site`; rewrites the navigation collection to the four items |
 | 0029 | `the_home_page_carries_the_pitch` | Replaces `impact_strip` with `proof_strip`; inserts `work_index`; moves `kit_process` from about to home; moves `testimonials` and `kit_writing` (as a home section) onto home, hidden; inserts compact `experience`; rewrites hero, capabilities, contact copy |
 | 0030 | `about_carries_the_answers` | Rewrites bio; moves `kit_compare_table` onto about; full `experience` on about; FAQ rows; tool-stack copy; soft-deletes `vibecoding`, `tech_marquee` |
 | 0031 | `case_studies_say_why_in_full` | Extends the five `*_detail` rows with context / problem / retro / caption; inserts `case_study_next` rows |
@@ -345,8 +349,9 @@ mechanism, not a code change.
 ## Testing
 
 - `db`: a test block per migration in `schema.test.mjs` — the rows exist,
-  positions are monotonic, soft-deleted pages have no live blocks, every live
-  block's type is in the registry.
+  positions are monotonic, archived pages have no live blocks, every live
+  block's type is in the registry, and no menu item names a section or a page
+  that is not published.
 - `content-schema`: a test that every block type in the committed snapshots is
   registered, and that the six kept kit types validate their v40 rows.
 - Site: existing vitest suite; new tests for `WorkIndex` (derives href and
