@@ -131,6 +131,19 @@
   box-shadow: 0 20px 40px color-mix(in srgb, var(--color-tertiary-shade) 30%, transparent), 0 0 40px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
 }
 
+/* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts ===== */
+.reveal {
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+.reveal--pending {
+  opacity: 0;
+  transform: translateY(8px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; }
+  .reveal--pending { opacity: 1; transform: none; }
+}
+
 /* Scrolls without showing it — the data tables. */
 .scrollbar-hidden {
   scrollbar-width: none;
