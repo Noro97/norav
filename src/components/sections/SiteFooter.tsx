@@ -28,7 +28,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
   return (
     <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
       <div className="relative z-10 w-full max-w-6xl mx-auto">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1.2fr_1fr]">
           <div>
             <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-small font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
               <span className="text-primary-500">norav</span>
@@ -42,7 +42,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
 
           <nav aria-label={content.linksLabel}>
             {content.linksLabel && <span className="label-mono block mb-4">{content.linksLabel}</span>}
-            <ul className="space-y-2.5">
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5">
               {links.map((item) =>
                 item.external ? (
                   <li key={item.id}>

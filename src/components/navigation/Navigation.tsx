@@ -104,7 +104,7 @@ export function Navigation() {
       {/* Dot navigation — desktop */}
       <div className="hidden md:flex items-center gap-1">
         {sections.map((section) => {
-          const isActive = activeSection === section.id
+          const isActive = section.anchor !== null && activeSection === section.anchor
           return (
             <Link
               key={section.id}

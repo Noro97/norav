@@ -158,3 +158,31 @@ export async function assertExclusiveLocalDb(port = 3300): Promise<void> {
       'Stop it (Ctrl-C) before running this script, then start it again afterwards.',
   )
 }
+
+/**
+ * Which database a writing script is about to touch, checked against which one
+ * it was told to touch. `cms/.env` carries the production connection string so
+ * that the `:production` scripts can find it, which means every other script
+ * has to say out loud that it wants the embedded database — otherwise a plain
+ * `npm run user:add` re-passwords the live account and reports success.
+ *
+ * Two guards, because getting either half wrong is expensive and quiet: with
+ * DATABASE_URL set the script must carry `--production`; with `--production`
+ * it must have somewhere to write. Returns whether production was the target.
+ */
+export function assertIntendedDatabase(script: string): boolean {
+  const toProduction = process.argv.includes('--production')
+  const usingPostgres = Boolean(process.env.DATABASE_URL)
+
+  if (usingPostgres && !toProduction) {
+    throw new Error(
+      'DATABASE_URL is set, so this would write to the live database.\n' +
+        `Run \`npm run ${script}\` for the embedded database, or\n` +
+        `\`npm run ${script}:production\` if that is genuinely what you want.`,
+    )
+  }
+  if (toProduction && !usingPostgres) {
+    throw new Error('--production was passed but DATABASE_URL is empty. Nothing to write to.')
+  }
+  return toProduction
+}

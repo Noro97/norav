@@ -89,16 +89,36 @@ async function fetchPreview(baseUrl: string, locale: Locale, token: string): Pro
  return (await response.json()) as Snapshot
 }
 
-async function fetchLocale(baseUrl: string, locale: Locale, version: number): Promise<Snapshot> {
- const response = await fetch(`${baseUrl}/api/public/content?locale=${locale}&v=${version}`)
+/** What the manifest says is live: a version number, and what it contains. */
+interface Manifest {
+ version: number
+ checksum: string
+}
+
+/**
+ * Where one locale of a publication lives.
+ *
+ * The checksum is in the address, not only the version. The CMS serves this
+ * document as immutable, and a version number is only unique within one
+ * database: a laptop that recreates its embedded database counts from one
+ * again, so "v=36" comes round a second time with different content — and a
+ * browser told the first was immutable keeps serving it, reload or not. The
+ * checksum is what actually changes, so it is what the cache is keyed on.
+ */
+export function contentUrl(baseUrl: string, locale: Locale, manifest: Manifest): string {
+ return `${baseUrl}/api/public/content?locale=${locale}&v=${manifest.version}&c=${manifest.checksum}`
+}
+
+async function fetchLocale(baseUrl: string, locale: Locale, manifest: Manifest): Promise<Snapshot> {
+ const response = await fetch(contentUrl(baseUrl, locale, manifest))
  if (!response.ok) throw new Error(`content ${locale}: HTTP ${response.status}`)
  return (await response.json()) as Snapshot
 }
 
-async function fetchLatest(baseUrl: string, version: number): Promise<Record<Locale, Snapshot>> {
+async function fetchLatest(baseUrl: string, manifest: Manifest): Promise<Record<Locale, Snapshot>> {
  const [en, ru] = await Promise.all([
-    fetchLocale(baseUrl, 'en', version),
-    fetchLocale(baseUrl, 'ru', version),
+    fetchLocale(baseUrl, 'en', manifest),
+    fetchLocale(baseUrl, 'ru', manifest),
   ])
  return { en, ru }
 }
@@ -157,7 +177,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
  const response = await fetch(`${baseUrl}/api/public/manifest`, { signal: controller.signal })
  if (!response.ok) return
- const manifest = (await response.json()) as { version: number; checksum: string }
+ const manifest = (await response.json()) as Manifest
  // Checksum, not version: a rollback republishes older copy under a new
  // version, and identical copy must not trigger a pointless fetch.
  if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) {
@@ -170,7 +190,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         }
 
         setIsRefreshing(true)
- const latest = await fetchLatest(baseUrl, manifest.version)
+ const latest = await fetchLatest(baseUrl, manifest)
  if (cancelled) return
         setSnapshots(latest)
  // Keep the non-React readers (the terminal) on the same content.
