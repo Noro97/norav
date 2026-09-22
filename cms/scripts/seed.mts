@@ -4,10 +4,11 @@
  * Idempotent: re-running updates the rows it created instead of duplicating
  * them, so it is safe to run after adding a block to the registry.
  *
- *   npm run seed
+ *   npm run seed                # the embedded database
+ *   npm run seed:production     # the live one, deliberately
  */
 import { DEFAULT_THEME, heroBlock } from '@norav/content-schema'
-import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, assertIntendedDatabase, closeDb, query, queryOne } from '../src/lib/db'
 
 /**
  * The Russian copy lifted from src/i18n/locales/ru/hero.json. It lives here
@@ -30,6 +31,7 @@ const HERO_RU = {
   scrollHint: 'Прокрутите для навигации',
 }
 
+assertIntendedDatabase('seed')
 await assertExclusiveLocalDb()
 
 const page = await queryOne<{ id: string }>(

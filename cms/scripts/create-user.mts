@@ -3,10 +3,11 @@
  *
  *   npm run user:add -- --email you@example.com --password 'correct horse battery staple'
  *
- * Omit --password to be prompted for it.
+ * Omit --password to be prompted for it. That writes to the embedded database;
+ * `npm run user:add:production` is the one that touches the live account.
  */
 import { createInterface } from 'node:readline/promises'
-import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, assertIntendedDatabase, closeDb, query, queryOne } from '../src/lib/db'
 import { hashPassword } from '../src/lib/password'
 
 function arg(name: string): string | undefined {
@@ -14,6 +15,7 @@ function arg(name: string): string | undefined {
   return index === -1 ? undefined : process.argv[index + 1]
 }
 
+assertIntendedDatabase('user:add')
 await assertExclusiveLocalDb()
 
 const email = arg('email')

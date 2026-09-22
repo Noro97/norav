@@ -1,7 +1,8 @@
 /**
  * Moves the content the site ships today out of the code and into the CMS.
  *
- *   npm run import
+ *   npm run import              # the embedded database
+ *   npm run import:production   # the live one, deliberately
  *
  * Reads the English and Russian i18n namespaces straight from the site, pairs
  * them with the values that were hard-coded in the components (numbers, stacks,
@@ -24,7 +25,7 @@ import {
   validateEntryData,
   type Locale,
 } from '@norav/content-schema'
-import { assertExclusiveLocalDb, closeDb, query, queryOne } from '../src/lib/db'
+import { assertExclusiveLocalDb, assertIntendedDatabase, closeDb, query, queryOne } from '../src/lib/db'
 
 /**
  * Frozen copies of the i18n namespaces this migration reads.
@@ -507,6 +508,7 @@ const BLOCK_ORDER: { type: string; anchor: string | null }[] = [
   { type: 'terminal_footer', anchor: 'terminal' },
 ]
 
+assertIntendedDatabase('import')
 await assertExclusiveLocalDb()
 
 /**
