@@ -19,16 +19,13 @@ export default defineConfig(({ mode }) => {
       '@norav/design-tokens': path.resolve(__dirname, './packages/design-tokens/src'),
     },
   },
-  assetsInclude: ['**/*.glsl', '**/*.vert', '**/*.frag'],
   build: {
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks: {
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
           gsap: ['gsap'],
           gmaps: ['@googlemaps/js-api-loader'],
-          spline: ['@splinetool/react-spline', '@splinetool/runtime'],
           motion: ['framer-motion'],
         },
       },

@@ -11,18 +11,3 @@ interface ImportMetaEnv {
    */
   readonly VITE_CMS_URL?: string
 }
-
-declare module '*.glsl' {
-  const value: string
-  export default value
-}
-
-declare module '*.vert' {
-  const value: string
-  export default value
-}
-
-declare module '*.frag' {
-  const value: string
-  export default value
-}

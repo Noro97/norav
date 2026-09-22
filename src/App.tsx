@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
@@ -13,31 +13,9 @@ import { NotFound } from '@/components/NotFound'
 import { readPath } from '@/content/routing'
 import { useContent } from '@/content/ContentProvider'
 
-/** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
-interface SiteSettings {
-  grain?: boolean
-  dynamicGrid?: boolean
-}
-
-const AnimatedGrain = lazy(() =>
-  import('@/components/ui/AnimatedGrain').then((m) => ({ default: m.AnimatedGrain }))
-)
-const DynamicGrid = lazy(() =>
-  import('@/components/ui/DynamicGrid').then((m) => ({ default: m.DynamicGrid }))
-)
-const FloatingArtifacts = lazy(() =>
-  import('@/components/ui/FloatingArtifacts').then((m) => ({ default: m.FloatingArtifacts }))
-)
-const SceneController = lazy(() =>
-  import('@/components/canvas/SceneController').then((m) => ({
-    default: m.SceneController,
-  }))
-)
-
 function App() {
   const { slug } = readPath(useLocation().pathname)
   const { snapshot, isPreview } = useContent()
-  const siteSettings = (snapshot.settings.site as SiteSettings | undefined) ?? {}
   // A page with nothing on it is not a page. Hiding its last section in the CMS
   // leaves the row in the database and the slug in the snapshot, and rendering
   // that gives a reader a header above an empty screen — which reads as broken
@@ -48,10 +26,8 @@ function App() {
   // like the address was wrong.
   const page = snapshot.pages.find((candidate) => candidate.slug === slug)
   const exists = page !== undefined && (page.blocks.length > 0 || isPreview)
-  const hasHero = page?.blocks.some((block) => block.type === 'hero') ?? false
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   useEffect(() => {
     setIsMobile(isMobile)
@@ -62,7 +38,8 @@ function App() {
 
   const mainRef = useRef<HTMLElement>(null)
 
-  // Refresh ScrollTrigger when lazy sections change page height
+  // Refresh ScrollTrigger when lazy sections change page height — the progress
+  // bar is still measured by it.
   useEffect(() => {
     const main = mainRef.current
     if (!main) return
@@ -82,27 +59,6 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={null}>
-        {!prefersReducedMotion && (
-          <>
-            {siteSettings.dynamicGrid !== false && <DynamicGrid />}
-            <FloatingArtifacts />
-            {siteSettings.grain !== false && <AnimatedGrain />}
-          </>
-        )}
-      </Suspense>
-
-      {/* The 3D mark belongs to the hero, so it goes where the hero goes.
-          It used to hang in the app shell, which was invisible while the site
-          was one page and wrong the moment it was several: the mark floated
-          behind About and Skills, over sections that were never designed to sit
-          under it — and paid for a WebGL context on every page. */}
-      {!prefersReducedMotion && hasHero && (
-        <Suspense fallback={null}>
-          <SceneController />
-        </Suspense>
-      )}
-
       <Navigation />
       <ScrollProgress />
 
