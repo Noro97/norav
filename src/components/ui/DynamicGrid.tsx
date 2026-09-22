@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { useAccentColor, withAlpha } from '@/content/theme'
+import { useAccentColor, useThemeColor, withAlpha } from '@/content/theme'
+import { defaults, tokenNames } from '@norav/design-tokens'
 import { useAnimationLoop } from '@/hooks/useAnimationLoop'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { GRID_SPACING, GRID_GLOW_RADIUS } from '@/lib/constants'
@@ -17,6 +18,10 @@ export function DynamicGrid() {
   // A 2D canvas takes colour strings, not CSS variables, so the cursor glow
   // follows the accent through a subscription rather than a stylesheet.
   const accent = useAccentColor()
+  // Same reason for the lines: a `var()` in a strokeStyle is not a colour, and
+  // a canvas that is handed one keeps whatever it had — opaque black, which was
+  // the heavy grid on every page.
+  const ink = useThemeColor(tokenNames.color.tertiary.ink, defaults[tokenNames.color.tertiary.ink]!)
 
   const buildOffscreen = useCallback((width: number, height: number) => {
     const oc = document.createElement('canvas')
@@ -25,7 +30,7 @@ export function DynamicGrid() {
     const ctx = oc.getContext('2d')
     if (!ctx) return oc
 
-    ctx.strokeStyle = 'color-mix(in srgb, var(--color-tertiary-ink) 2%, transparent)'
+    ctx.strokeStyle = withAlpha(ink, 0.02)
     ctx.lineWidth = 1
 
     // Vertical lines
@@ -44,7 +49,7 @@ export function DynamicGrid() {
     }
 
     return oc
-  }, [])
+  }, [ink])
 
   // Initial draw + resize handler
   useEffect(() => {
@@ -113,7 +118,7 @@ export function DynamicGrid() {
     )
 
     // Brighter grid lines within glow radius
-    ctx.strokeStyle = 'color-mix(in srgb, var(--color-tertiary-ink) 6%, transparent)'
+    ctx.strokeStyle = withAlpha(ink, 0.06)
     ctx.lineWidth = 1
 
     const r = GRID_GLOW_RADIUS
