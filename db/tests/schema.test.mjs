@@ -811,6 +811,29 @@ await expectError(
   check('the comparison never marks the other column as lacking what this profile lacks', copy.filter((row) => row.type === 'kit_compare_table').every((row) => row.content.rows.every((r) => r.a === true)))
 }
 
+{
+  // 0027 strips three chrome switches from the site settings row. The row did
+  // not exist when the migration set ran, so one is planted with all three
+  // keys and the file replayed — twice, because a second run must be a no-op.
+  await db.query(
+    `insert into settings (key, value)
+     values ('site', '{"grain":true,"dynamicGrid":false,"cursor":true,"navIndicator":"gooey"}'::jsonb)
+     on conflict (key) do update set value = excluded.value`,
+  )
+  const file = readFileSync(join(root, 'migrations', '0027_the_ambient_layer_is_gone.sql'), 'utf8')
+  await db.exec(file)
+  await db.exec(file)
+  const {
+    rows: [site],
+  } = await db.query(`select value from settings where key = 'site'`)
+  check(
+    'the ambient switches are gone from the site row',
+    !('grain' in site.value) && !('dynamicGrid' in site.value) && !('cursor' in site.value),
+    JSON.stringify(site.value),
+  )
+  check('the nav indicator survives', site.value.navIndicator === 'gooey')
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------

@@ -7,12 +7,10 @@ import { Workspace, FeedbackBanner, PreviewButton, type Feedback } from './Works
 import type { EnvironmentInfo } from '@/lib/environment'
 
 interface SiteSettings {
-  grain: boolean
-  dynamicGrid: boolean
   navIndicator: 'dot' | 'gooey'
 }
 
-const DEFAULT_SETTINGS: SiteSettings = { grain: true, dynamicGrid: true, navIndicator: 'dot' }
+const DEFAULT_SETTINGS: SiteSettings = { navIndicator: 'dot' }
 
 interface SiteSettingsEditorProps {
   collections: SerializedCollectionDefinition[]
@@ -24,9 +22,9 @@ interface SiteSettingsEditorProps {
 }
 
 /**
- * Chrome that isn't a block — the grain, the dynamic grid,
- * and how the nav marks the active link. One row per key in `settings`,
- * carried into the published snapshot the same way the palette is.
+ * Chrome that isn't a block — how the nav marks the active link. One row per
+ * key in `settings`, carried into the published snapshot the same way the
+ * palette is.
  */
 export function SiteSettingsEditor({
   collections,
@@ -138,20 +136,6 @@ export function SiteSettingsEditor({
 
             <FeedbackBanner feedback={feedback} unsaved={dirty} />
 
-            <BoolField
-              label="Film grain"
-              help="A faint animated grain over the whole page."
-              value={settings.grain}
-              disabled={busy !== null}
-              onChange={(grain) => setSettings({ ...settings, grain })}
-            />
-            <BoolField
-              label="Dynamic grid"
-              help="The cursor-reactive background grid."
-              value={settings.dynamicGrid}
-              disabled={busy !== null}
-              onChange={(dynamicGrid) => setSettings({ ...settings, dynamicGrid })}
-            />
             <div className="field">
               <label htmlFor="nav-indicator">Nav active-link style</label>
               <select
@@ -171,34 +155,5 @@ export function SiteSettingsEditor({
         )}
       </>
     </Workspace>
-  )
-}
-
-function BoolField({
-  label,
-  help,
-  value,
-  disabled,
-  onChange,
-}: {
-  label: string
-  help: string
-  value: boolean
-  disabled?: boolean
-  onChange: (next: boolean) => void
-}) {
-  return (
-    <div className="field">
-      <label>
-        <input
-          type="checkbox"
-          checked={value}
-          disabled={disabled}
-          onChange={(e) => onChange(e.target.checked)}
-        />{' '}
-        {label}
-      </label>
-      <p className="help">{help}</p>
-    </div>
   )
 }
