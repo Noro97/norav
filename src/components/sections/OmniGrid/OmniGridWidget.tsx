@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
   useReactTable,
@@ -12,6 +10,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
@@ -48,25 +47,7 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
 
   const { data: shipments = [], cacheStatus, dataUpdatedAt } = useShipments()
 
-  // GSAP entrance
-  useGSAP(() => {
-    const sidebar = sectionRef.current!.querySelector('.omnigrid-sidebar')
-    const main = sectionRef.current!.querySelector('.omnigrid-main')
-    if (sidebar) {
-      gsap.fromTo(sidebar,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-    if (main) {
-      gsap.fromTo(main,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, delay: 0.2,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.omnigrid-sidebar, .omnigrid-main')
 
   // The compiler cannot memoise TanStack Table's returned functions and says so; it skips this component, which is fine.
   // eslint-disable-next-line react-hooks/incompatible-library
