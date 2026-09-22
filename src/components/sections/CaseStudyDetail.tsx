@@ -1,6 +1,5 @@
 import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import type { CaseStudyDetailContent } from '@norav/content-schema'
 
@@ -27,25 +26,7 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
   const block = useBlock<CaseStudyDetailContent>(type)
   const sectionRef = useRef<HTMLElement>(null)
 
-  useGSAP(
-    () => {
-      const items = sectionRef.current?.querySelectorAll('.detail-item')
-      if (!items?.length) return
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.07,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
-        }
-      )
-    },
-    { scope: sectionRef, dependencies: [block] }
-  )
+  useReveal(sectionRef, '.detail-item')
 
   if (!block) return null
   const { sectionLabel, title, intro, decisions, metrics } = block.content

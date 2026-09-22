@@ -1,8 +1,6 @@
 import { Fragment, useRef, useState } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
-import { useMagneticEffect } from '@/hooks/useMagneticEffect'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { toneOf, type Tone } from '@/content/accent'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
@@ -62,38 +60,10 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
   const block = useBlock<AboutContent, AboutSettings>('about')
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver('about', sectionRef)
-  const cvLinkRef = useRef<HTMLAnchorElement>(null)
-  useMagneticEffect(cvLinkRef, 60, 0.35)
 
   const [emailCopied, setEmailCopied] = useState<{ x: number; y: number } | null>(null)
 
-  useGSAP(() => {
-    const section = sectionRef.current!
-    const avatar = section.querySelector('.about-avatar')
-    if (avatar) {
-      gsap.fromTo(avatar,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.8,
-          scrollTrigger: { trigger: section, start: 'top 85%' } }
-      )
-    }
-    const content = section.querySelector('.about-content')
-    if (content) {
-      gsap.fromTo(content.children,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1,
-          scrollTrigger: { trigger: section, start: 'top 85%' } }
-      )
-    }
-    const facts = section.querySelector('.about-facts')
-    if (facts) {
-      gsap.fromTo(facts.children,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08,
-          scrollTrigger: { trigger: section, start: 'top 80%' } }
-      )
-    }
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.about-avatar, .about-content > *, .about-facts > *')
 
   if (!block) return null
   const { content, settings } = block
@@ -178,7 +148,6 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
 
                   {/* Download CV */}
                   <a
-                    ref={cvLinkRef}
                     href={settings.cvHref}
                     target="_blank"
                     rel="noopener noreferrer"

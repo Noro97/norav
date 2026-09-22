@@ -1,7 +1,6 @@
 import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock, useCollection } from '@/content/ContentProvider'
 import { EffectCard, type CardEffect } from '@/components/ui/effects/EffectCard'
 import type { ExperienceBlockContent, ExperienceContent, ExperienceData, ExperienceSettings } from '@norav/content-schema'
@@ -28,35 +27,7 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   useSectionObserver(anchorId ?? 'experience', sectionRef)
 
-  useGSAP(() => {
-    const section = sectionRef.current!
-    const timelineFill = section.querySelector('.timeline-line-fill')
-    if (timelineFill) {
-      gsap.fromTo(timelineFill,
-        { scaleY: 0 },
-        { scaleY: 1, transformOrigin: 'top', ease: 'none',
-          scrollTrigger: { trigger: section, start: 'top 60%', end: 'bottom 40%', scrub: 1 } }
-      )
-    }
-
-    const cards = section.querySelectorAll('.exp-card')
-    cards.forEach((card, i) => {
-      gsap.fromTo(card,
-        { opacity: 0, x: i % 2 === 0 ? -40 : 40 },
-        { opacity: 1, x: 0, duration: 0.7,
-          scrollTrigger: { trigger: card, start: 'top 90%' } }
-      )
-    })
-
-    const illustrations = section.querySelectorAll('.exp-illustration')
-    illustrations.forEach((el, i) => {
-      gsap.fromTo(el,
-        { opacity: 0, x: i % 2 === 0 ? 40 : -40, scale: 0.92 },
-        { opacity: 1, x: 0, scale: 1, duration: 0.8, delay: 0.2,
-          scrollTrigger: { trigger: el, start: 'top 90%' } }
-      )
-    })
-  }, { scope: sectionRef })
+  useReveal(sectionRef, '.exp-card')
 
   if (!block) return null
   const { content, settings } = block

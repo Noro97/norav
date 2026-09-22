@@ -1,12 +1,10 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
+import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import type { TerminalFooterContent, TerminalFooterSettings } from '@norav/content-schema'
 import { useTerminal } from '@/hooks/useTerminal'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ScrambleText } from '@/components/ui/effects/ScrambleText'
 
 export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
@@ -17,19 +15,8 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
   const outputRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { lines, input, setInput, handleKeyDown } = useTerminal()
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
-  useGSAP(() => {
-    if (prefersReducedMotion) return
-    const terminal = sectionRef.current!.querySelector('.terminal-window')
-    if (terminal) {
-      gsap.fromTo(terminal,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
-      )
-    }
-  }, { scope: sectionRef, dependencies: [prefersReducedMotion] })
+  useReveal(sectionRef, '.terminal-window')
 
   // Auto-scroll output
   useEffect(() => {
