@@ -58,8 +58,12 @@ a { color: var(--crimson-light); }
    monitor is harder to read, not easier. */
 .main { padding: 28px 36px 80px; max-width: 1000px; }
 
-.brand { font-weight: 700; letter-spacing: -0.02em; font-size: 15px; margin: 0 0 2px; }
-.brand span { color: var(--crimson); }
+.brand { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; color: var(--text); }
+.brand-mark { height: 22px; width: auto; display: block; }
+.brand-word {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson);
+}
 .brand-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 0 0 28px; }
 
 .block-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }

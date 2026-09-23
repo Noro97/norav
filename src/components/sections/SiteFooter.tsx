@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } from 'lucide-react'
 import { useBlock, useContent } from '@/content/ContentProvider'
 import { useNavigation } from '@/content/navigation'
+import { Logo } from '@/components/brand/Logo'
 import { HOME_SLUG, hrefFor } from '@/content/routing'
 import type { SiteFooterContent, SiteFooterSettings } from '@norav/content-schema'
 
@@ -28,10 +29,15 @@ export function SiteFooter() {
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="grid gap-10 md:grid-cols-[1.2fr_1.2fr_1fr]">
           <div>
-            <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-small font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">
-              <span className="text-primary-500">norav</span>
-              <span className="text-tertiary-ink/45">.</span>
-              <span className="text-primary-500">dev</span>
+            <Link
+              to={hrefFor(HOME_SLUG, locale)}
+              aria-label="norav.dev"
+              className="inline-flex items-center gap-2 text-tertiary-ink hover:opacity-80 transition-opacity"
+            >
+              <Logo className="h-7 w-auto" />
+              <span className="font-mono text-body-small font-semibold tracking-widest uppercase text-primary-500">
+                dev
+              </span>
             </Link>
             {content.tagline && (
               <p className="mt-4 text-body-small text-tertiary-ink/45 max-w-sm">{content.tagline}</p>

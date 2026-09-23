@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import type { Locale, SerializedCollectionDefinition } from '@norav/content-schema'
 import { ViewSwitcher, type WorkspaceView } from './ViewSwitcher'
 import { WorkspaceFooter } from './WorkspaceFooter'
+import { Brand } from './Logo'
 import type { EnvironmentInfo } from '@/lib/environment'
 
 /**
@@ -44,9 +45,7 @@ export function Workspace({
   return (
     <div className="shell">
       <aside className="sidebar">
-        <p className="brand">
-          norav<span>.</span>cms
-        </p>
+        <Brand />
         <p className="brand-sub">{subtitle}</p>
 
         <ViewSwitcher
