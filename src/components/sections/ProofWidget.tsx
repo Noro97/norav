@@ -245,7 +245,7 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-7xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         {/* Header */}
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>

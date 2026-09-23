@@ -27,7 +27,7 @@ export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="grid gap-10 md:grid-cols-[1.2fr_1.2fr_1fr]">
           <div>
             <Link to={hrefFor(HOME_SLUG, locale)} className="inline-block font-mono text-body-small font-semibold tracking-widest uppercase hover:opacity-80 transition-opacity">

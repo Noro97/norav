@@ -74,7 +74,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
 
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 mt-8">

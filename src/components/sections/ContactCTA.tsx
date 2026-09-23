@@ -33,7 +33,7 @@ export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-24">
-      <div className="relative z-10 w-full max-w-4xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {/* Ambient glow */}
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl pointer-events-none bg-primary-500/10" />

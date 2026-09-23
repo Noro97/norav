@@ -31,7 +31,7 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
       >
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-tertiary-ink/[0.06] to-transparent" />
         <p className="text-center label-mono mb-6">{content.label}</p>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 max-w-4xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 max-w-content mx-auto">
           {names.map((tech, i) => (
             <span
               key={i}

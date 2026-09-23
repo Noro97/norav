@@ -236,7 +236,7 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="skills-header">
           <span className="label-mono">{content.sectionLabel}</span>
           <div className="mt-3 mb-4">

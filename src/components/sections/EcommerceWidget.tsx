@@ -209,7 +209,7 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-7xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
           <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">

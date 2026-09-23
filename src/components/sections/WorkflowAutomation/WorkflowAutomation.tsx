@@ -71,7 +71,7 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
       {settings.background === 'threads' && <ThreadsBackground />}
       {settings.background === 'beams' && <BeamsBackground />}
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="wf-header">
           <span className="label-mono">{content.sectionLabel}</span>
           <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">

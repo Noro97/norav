@@ -15,7 +15,7 @@ export function RecruiterCTA({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-16">
-      <div className="relative z-10 w-full max-w-5xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-6 py-10 md:px-12 md:py-12">
           <div className="absolute -top-24 -right-16 w-64 h-64 rounded-full blur-3xl pointer-events-none bg-primary-500/10" />
 
