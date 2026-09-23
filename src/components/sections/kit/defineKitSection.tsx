@@ -40,14 +40,14 @@ export function defineKitSection<TContent>(
     const [{ KitFrame, useKitAccent }, module] = await Promise.all([import('./KitFrame'), loader()])
     const Section = module[name] as ComponentType<KitSectionProps<TContent>>
 
-    function KitSection({ anchorId, blockId }: BlockComponentProps) {
+    function KitSection({ blockId }: BlockComponentProps) {
       const block = useBlock<TContent, KitBlockSettings>(type, blockId)
       const accent = useKitAccent(block?.settings.accent)
       const content = useContentFor(block?.content as TContent)
       if (!block) return null
 
       return (
-        <KitFrame anchorId={anchorId}>
+        <KitFrame>
           <Section accent={accent} content={content} />
         </KitFrame>
       )

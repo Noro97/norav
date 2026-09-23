@@ -4,7 +4,6 @@ import { useBlock } from '@/content/ContentProvider'
 import type { CaseStudyDetailContent } from '@norav/content-schema'
 
 interface Props {
-  anchorId?: string | null
   /**
    * Which study's decisions to read. The five case studies each have a type of
    * their own — a type names exactly one block on this site — so the component
@@ -22,7 +21,7 @@ interface Props {
  * which is what lets the five be filled one at a time without the unfinished
  * ones looking broken.
  */
-export function CaseStudyDetail({ anchorId, type }: Props) {
+export function CaseStudyDetail({ type }: Props) {
   const block = useBlock<CaseStudyDetailContent>(type)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -38,7 +37,6 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
   return (
     <section
       ref={sectionRef}
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-content mx-auto">
@@ -99,18 +97,18 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
  * One per study, so `BLOCK_COMPONENTS` can name them the way it names every
  * other section and the lazy import stays a plain named export.
  */
-export const LogisticsDetail = (props: { anchorId?: string | null }) => (
-  <CaseStudyDetail {...props} type="logistics_detail" />
+export const LogisticsDetail = () => (
+  <CaseStudyDetail type="logistics_detail" />
 )
-export const MerchDetail = (props: { anchorId?: string | null }) => (
-  <CaseStudyDetail {...props} type="merch_detail" />
+export const MerchDetail = () => (
+  <CaseStudyDetail type="merch_detail" />
 )
-export const EcommerceDetail = (props: { anchorId?: string | null }) => (
-  <CaseStudyDetail {...props} type="ecommerce_detail" />
+export const EcommerceDetail = () => (
+  <CaseStudyDetail type="ecommerce_detail" />
 )
-export const OmniGridDetail = (props: { anchorId?: string | null }) => (
-  <CaseStudyDetail {...props} type="omnigrid_detail" />
+export const OmniGridDetail = () => (
+  <CaseStudyDetail type="omnigrid_detail" />
 )
-export const ProofDetail = (props: { anchorId?: string | null }) => (
-  <CaseStudyDetail {...props} type="proof_detail" />
+export const ProofDetail = () => (
+  <CaseStudyDetail type="proof_detail" />
 )

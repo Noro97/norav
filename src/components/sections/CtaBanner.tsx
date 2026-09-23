@@ -23,7 +23,7 @@ function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: Re
 const BUTTON_CLASS =
   'press group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-500/90 hover:bg-primary-500 text-tertiary-ink font-medium text-body-small transition-all duration-300 hover:shadow-[0_0_30px_-6px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
 
-export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+export function CtaBanner({ blockId }: { blockId?: string }) {
   const block = useBlock<CtaBannerContent, CtaBannerSettings>('cta_banner', blockId)
   if (!block) return null
   const { content, settings } = block
@@ -39,7 +39,7 @@ export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blo
   )
 
   return (
-    <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-20">
+    <section className="relative px-gutter-x py-20">
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {settings.background === 'orb' && <OrbBackground />}

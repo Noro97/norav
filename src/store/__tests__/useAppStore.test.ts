@@ -3,24 +3,18 @@ import { useAppStore } from '../useAppStore'
 
 describe('useAppStore', () => {
   beforeEach(() => {
-    useAppStore.setState({ scrollProgress: 0, activeSection: 'hero', isMobile: false })
+    useAppStore.setState({ scrollProgress: 0, isMobile: false })
   })
 
   it('initializes with default values', () => {
     const state = useAppStore.getState()
     expect(state.scrollProgress).toBe(0)
-    expect(state.activeSection).toBe('hero')
     expect(state.isMobile).toBe(false)
   })
 
   it('updates scroll progress', () => {
     useAppStore.getState().setScrollProgress(0.5)
     expect(useAppStore.getState().scrollProgress).toBe(0.5)
-  })
-
-  it('updates active section', () => {
-    useAppStore.getState().setActiveSection('skills')
-    expect(useAppStore.getState().activeSection).toBe('skills')
   })
 
   it('toggles mobile state', () => {
@@ -30,9 +24,9 @@ describe('useAppStore', () => {
     expect(useAppStore.getState().isMobile).toBe(false)
   })
 
-  it('carries nothing the scene used to read', () => {
+  it('carries nothing the scene or the scroll-driven menu used to read', () => {
     const state = useAppStore.getState() as unknown as Record<string, unknown>
-    for (const gone of ['mousePosition', 'particleBurst', 'particlesCollapsed', 'heroExploded', 'heroScrollProgress']) {
+    for (const gone of ['mousePosition', 'particleBurst', 'particlesCollapsed', 'heroExploded', 'heroScrollProgress', 'activeSection']) {
       expect(state).not.toHaveProperty(gone)
     }
   })

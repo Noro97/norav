@@ -529,11 +529,11 @@ await expectError(
     JSON.stringify(rows.map((r) => r.data)),
   )
   // 0013 pointed Contact at the chrome, where the terminal lived; 0023 moved
-  // the terminal to a page of its own and the item followed it.
+  // the terminal to a page of its own and the item followed it. (0031 then
+  // drops the item's section: the page is the whole address.)
   check(
     'the contact item follows the terminal to its own page',
-    rows.find((row) => row.slug === 'contact')?.data.page === 'contact' &&
-      rows.find((row) => row.slug === 'contact')?.data.anchor === 'terminal',
+    rows.find((row) => row.slug === 'contact')?.data.page === 'contact',
     JSON.stringify(rows.find((row) => row.slug === 'contact')?.data),
   )
 
@@ -879,6 +879,45 @@ await expectError(
   check('a library URL becomes a reference to its file', after.settings.badge === `media:${file.id}`, JSON.stringify(after.settings))
   check('a URL inside a longer string is left alone', after.settings.note === 'see https://store/media/crown.svg?v=2')
   check('a path into the public folder is left alone', after.settings.legacy === '/assets/illustrations/omnigrid.svg')
+}
+
+{
+  // 0031: menu items lose their section, and a link to a section becomes the
+  // path of its page. Planted after the set ran, then replayed twice.
+  const {
+    rows: [contactPage],
+  } = await db.query(`insert into pages (slug, status) values ('reach-me', 'published') returning id`)
+  await db.query(
+    `insert into blocks (page_id, type, position, anchor_id) values ($1, 'contact_cta', 1000, 'reach-me-cta')`,
+    [contactPage.id],
+  )
+  const {
+    rows: [linking],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, settings) values ($1, 'kit_cta_banner', 9500, $2) returning id`,
+    [
+      page.id,
+      JSON.stringify({ primaryHref: '#reach-me-cta', accent: '#9AE316', note: 'see #reach-me-cta below' }),
+    ],
+  )
+  const {
+    rows: [item],
+  } = await db.query(
+    `insert into entries (collection, slug, position, data)
+     values ('navigation', 'reach-me', 9500, '{"page":"reach-me","anchor":"reach-me-cta","external":""}') returning id`,
+  )
+  const sql = readFileSync(join(root, 'migrations', '0031_the_menu_links_pages_not_sections.sql'), 'utf8')
+  await db.exec(sql)
+  await db.exec(sql)
+  const {
+    rows: [after],
+  } = await db.query(`select settings from blocks where id = $1`, [linking.id])
+  const {
+    rows: [menu],
+  } = await db.query(`select data from entries where id = $1`, [item.id])
+  check('a link to a section becomes the path of its page', after.settings.primaryHref === '/reach-me', JSON.stringify(after.settings))
+  check('a colour and a hash inside a sentence are left alone', after.settings.accent === '#9AE316' && after.settings.note === 'see #reach-me-cta below')
+  check('a menu item keeps its page and loses its section', menu.data.page === 'reach-me' && !('anchor' in menu.data), JSON.stringify(menu.data))
 }
 
 // ---------------------------------------------------------------------------

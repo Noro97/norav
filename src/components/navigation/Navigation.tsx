@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Link, useLocation, useNavigate } from 'react-router'
-import { useAppStore } from '@/store/useAppStore'
+import { Link, useLocation } from 'react-router'
 import { useContent } from '@/content/ContentProvider'
-import { useNavigation } from '@/content/navigation'
+import { activeNavItem, useNavigation, type NavItem } from '@/content/navigation'
 import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
@@ -15,17 +14,30 @@ interface SiteSettings {
   navIndicator?: 'dot' | 'gooey'
 }
 
-// Map widget section IDs to their parent nav section
-const NAV_SECTION_MAP: Record<string, string> = {
-  ecommerce: 'logistics',
-  omnigrid: 'logistics',
-  merch: 'logistics',
-  vibecoding: 'overview',
+/** A menu link: a route through the router, or a plain link out of the site. */
+function NavLink({
+  item,
+  className,
+  onClick,
+  children,
+}: {
+  item: NavItem
+  className: string
+  onClick?: () => void
+  children: React.ReactNode
+}) {
+  return item.external ? (
+    <a href={item.href} target="_blank" rel="noopener noreferrer" className={className} onClick={onClick}>
+      {children}
+    </a>
+  ) : (
+    <Link to={item.href} className={className} onClick={onClick}>
+      {children}
+    </Link>
+  )
 }
 
 export function Navigation() {
-  const rawActiveSection = useAppStore((s) => s.activeSection)
-  const activeSection = NAV_SECTION_MAP[rawActiveSection] ?? rawActiveSection
   // isRefreshing is set the moment the manifest's checksum disagrees with the
   // one baked into this bundle — that is, when a different menu is already on
   // its way. Painting the bundle's copy in that window shows items that are
@@ -42,36 +54,13 @@ export function Navigation() {
   // The menu is content. An item whose page or section is hidden in the CMS
   // drops out on its own: the item names a page, and the snapshot only carries
   // pages that are published.
-  const published = useNavigation(here)
+  const published = useNavigation()
   const sections = isRefreshing ? [] : published
-  const navigate = useNavigate()
+  // Which item is lit is a question about the address, not the scroll
+  // position: every item is a page, so the reader is under exactly one.
+  const active = activeNavItem(sections, here)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
-  /**
-   * Scroll rather than navigate when the section is already here. The link keeps
-   * its href either way: a menu item should be right-clickable, and a crawler
-   * should see where it goes.
-   */
-  const handleClick = useCallback(
-    (event: React.MouseEvent, id: string) => {
-      const el = document.getElementById(id)
-      if (!el) return
-      event.preventDefault()
-      // Smooth, so the reader sees the distance and the direction; the setting
-      // that asks for less motion turns it into a jump (index.css). It used to
-      // say Lenis would smooth this — Lenis left, the comment stayed, and every
-      // menu click has been a teleport since.
-      el.scrollIntoView({ behavior: 'smooth' })
-      // And the address follows. Scrolling without it left every section of a
-      // page at the same URL, so a reader looking at one could neither send it
-      // to anyone nor come back to it. replace rather than push: reading down a
-      // page is one visit, and the back button should leave the page rather
-      // than retrace the sections.
-      navigate(`${window.location.pathname}#${id}`, { replace: true })
-    },
-    [navigate],
-  )
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -101,7 +90,6 @@ export function Navigation() {
       {/* Logo */}
       <Link
         to={hrefFor(HOME_SLUG, locale)}
-        onClick={(event) => here === HOME_SLUG && handleClick(event, 'hero')}
         className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
       >
         <span className="hidden sm:inline font-mono text-body-small font-semibold tracking-widest uppercase">
@@ -112,12 +100,11 @@ export function Navigation() {
       {/* Dot navigation — desktop */}
       <div className="hidden md:flex items-center gap-1">
         {sections.map((section) => {
-          const isActive = section.anchor !== null && activeSection === section.anchor
+          const isActive = section === active
           return (
-            <Link
+            <NavLink
               key={section.id}
-              to={section.href}
-              onClick={(event) => section.anchor && handleClick(event, section.anchor)}
+              item={section}
               className={`
                 relative flex items-center gap-2 px-3 py-2 rounded-full
                 transition-all duration-300 ease-out
@@ -148,7 +135,7 @@ export function Navigation() {
               >
                 {section.label}
               </span>
-            </Link>
+            </NavLink>
           )
         })}
         <Link
@@ -168,7 +155,7 @@ export function Navigation() {
             onClick={() => setDropdownOpen((v) => !v)}
             className="type-label flex items-center gap-1.5 text-tertiary-ink/40"
           >
-            {sections.find((item) => item.anchor === activeSection)?.label ?? ''}
+            {active?.label ?? ''}
             <ChevronDown
               size={14}
               className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
@@ -190,15 +177,12 @@ export function Navigation() {
               transition={SPRING.settle}
             >
               {sections.map((section) => {
-                const isActive = section.anchor !== null && activeSection === section.anchor
+                const isActive = section === active
                 return (
-                  <Link
+                  <NavLink
                     key={section.id}
-                    to={section.href}
-                    onClick={(event) => {
-                      if (section.anchor) handleClick(event, section.anchor)
-                      setDropdownOpen(false)
-                    }}
+                    item={section}
+                    onClick={() => setDropdownOpen(false)}
                     className={`type-label flex items-center gap-2.5 w-full px-4 py-2.5 text-left
                      
                       transition-colors duration-150
@@ -218,7 +202,7 @@ export function Navigation() {
                       `}
                     />
                     {section.label}
-                  </Link>
+                  </NavLink>
                 )
               })}
             </motion.div>

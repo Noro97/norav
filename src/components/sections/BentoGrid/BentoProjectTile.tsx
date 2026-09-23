@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useBlock } from '@/content/ContentProvider'
+import { useOpenSection } from '@/content/navigation'
 import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
@@ -59,9 +60,8 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
     }
   }
 
-  const handleScrollTo = useCallback(() => {
-    document.getElementById(project.targetSectionId)?.scrollIntoView({ behavior: 'smooth' })
-  }, [project.targetSectionId])
+  // Opens the case study — its page, or its section if it is on this one.
+  const openCaseStudy = useOpenSection(project.targetSectionId)
 
   const caseNum = String(index + 1).padStart(2, '0')
 
@@ -149,7 +149,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
         {/* CTA */}
         <MagneticButton
-          onClick={handleScrollTo}
+          onClick={openCaseStudy}
           aria-label={`${copy?.cta ?? ''} — ${copy?.title ?? ''}`}
           className="type-label inline-flex items-center gap-2.5 text-primary-400/80 group/btn hover:text-primary-300 transition-colors duration-300"
         >

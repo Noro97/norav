@@ -1,7 +1,6 @@
 import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { BENTO_PROJECTS, MICRO_TILES } from './bento.data'
 import { useBlock } from '@/content/ContentProvider'
 import type { BentoGridContent, BentoGridSettings } from '@norav/content-schema'
@@ -63,11 +62,10 @@ function BentoIllustration({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
+export function BentoGrid() {
   const block = useBlock<BentoGridContent, BentoGridSettings>('bento_grid')
   const sectionRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'overview', sectionRef)
 
   // A tile's illustration lives on the same entry as its words, found by the
   // slot the layout reserved for it.
@@ -100,7 +98,6 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'overview'}
       ref={sectionRef}
       className="relative px-gutter-x py-28 md:py-36"
     >

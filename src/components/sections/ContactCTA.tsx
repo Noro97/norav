@@ -26,13 +26,13 @@ function MaybeStarBorder({ enabled, children }: { enabled: boolean; children: Re
   return enabled ? <StarBorderButton className="rounded-full">{children}</StarBorderButton> : <>{children}</>
 }
 
-export function ContactCTA({ anchorId }: { anchorId?: string | null }) {
+export function ContactCTA() {
   const block = useBlock<ContactCtaContent, ContactCtaSettings>('contact_cta')
   if (!block) return null
   const { content, settings } = block
 
   return (
-    <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-24">
+    <section className="relative px-gutter-x py-24">
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {/* Ambient glow */}

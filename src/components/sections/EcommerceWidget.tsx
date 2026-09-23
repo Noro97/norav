@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimatePresence } from 'framer-motion'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
@@ -133,14 +132,13 @@ function FilterGraph({ filters }: { filters: FilterState }) {
   )
 }
 
-export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
+export function EcommerceWidget() {
   const block = useBlock<CaseStudyContent, CaseStudySettings>('ecommerce')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('ecommerce', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'ecommerce', sectionRef)
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
   const [page, setPage] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
@@ -205,7 +203,6 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'ecommerce'}
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >

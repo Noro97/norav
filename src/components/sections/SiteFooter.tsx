@@ -1,8 +1,8 @@
-import { Link, useLocation } from 'react-router'
+import { Link } from 'react-router'
 import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } from 'lucide-react'
 import { useBlock, useContent } from '@/content/ContentProvider'
 import { useNavigation } from '@/content/navigation'
-import { HOME_SLUG, hrefFor, readPath } from '@/content/routing'
+import { HOME_SLUG, hrefFor } from '@/content/routing'
 import type { SiteFooterContent, SiteFooterSettings } from '@norav/content-schema'
 
 const ICONS: Record<string, LucideIcon> = {
@@ -14,19 +14,17 @@ const ICONS: Record<string, LucideIcon> = {
 
 const LINK = 'type-label text-tertiary-ink/45 hover:text-tertiary-ink transition-colors'
 
-export function SiteFooter({ anchorId }: { anchorId?: string | null }) {
+export function SiteFooter() {
   const block = useBlock<SiteFooterContent, SiteFooterSettings>('site_footer')
   const { locale } = useContent()
-  const here = readPath(useLocation().pathname).slug
-  // The same list the menu draws, so the two cannot disagree. Items are
-  // page-relative on purpose: a hash for a section on this page, an address for
-  // one elsewhere, exactly as the menu resolves them.
-  const links = useNavigation(here)
+  // The same list the menu draws, so the two cannot disagree: every item a
+  // route, exactly as the menu resolves them.
+  const links = useNavigation()
   if (!block) return null
   const { content, settings } = block
 
   return (
-    <footer {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
+    <footer className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="grid gap-10 md:grid-cols-[1.2fr_1.2fr_1fr]">
           <div>

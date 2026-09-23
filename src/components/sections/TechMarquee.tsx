@@ -7,7 +7,7 @@ import type { TechMarqueeContent, TechMarqueeSettings } from '@norav/content-sch
  * the Skills and case-study sections. Reuses the shared `.marquee-track`
  * animation (paused under prefers-reduced-motion).
  */
-export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
+export function TechMarquee() {
   const block = useBlock<TechMarqueeContent, TechMarqueeSettings>('tech_marquee')
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +25,6 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
   if (settings.layout === 'logo-wall') {
     return (
       <section
-        {...(anchorId ? { id: anchorId } : {})}
         className="relative py-10"
         aria-label={content.label}
       >
@@ -51,7 +50,6 @@ export function TechMarquee({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative py-10 overflow-hidden"
       aria-label={content.label}
     >

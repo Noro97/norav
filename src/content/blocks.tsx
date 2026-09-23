@@ -30,7 +30,6 @@ import type {
  * the site that renders it.
  */
 export interface BlockComponentProps {
-  anchorId?: string | null
   /**
    * Which row on the page this is. A section that may appear more than once
    * passes it to `useBlock` so it reads its own settings instead of the first

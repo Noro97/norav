@@ -5,7 +5,7 @@ import { useBlock } from '@/content/ContentProvider'
 import { CountUp } from '@/components/ui/effects/CountUp'
 import type { MetricsContent, MetricsSettings } from '@norav/content-schema'
 
-export function MetricsSection({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+export function MetricsSection({ blockId }: { blockId?: string }) {
   const block = useBlock<MetricsContent, MetricsSettings>('metrics', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -28,7 +28,6 @@ export function MetricsSection({ anchorId, blockId }: { anchorId?: string | null
   return (
     <section
       ref={sectionRef}
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-20"
     >
       <div className="relative z-10 w-full max-w-content mx-auto">

@@ -4,7 +4,7 @@ import { useBlock } from '@/content/ContentProvider'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { TestimonialsContent, TestimonialsSettings } from '@norav/content-schema'
 
-export function Testimonials({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+export function Testimonials({ blockId }: { blockId?: string }) {
   const block = useBlock<TestimonialsContent, TestimonialsSettings>('testimonials', blockId)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -16,7 +16,6 @@ export function Testimonials({ anchorId, blockId }: { anchorId?: string | null; 
   return (
     <section
       ref={sectionRef}
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-content mx-auto">

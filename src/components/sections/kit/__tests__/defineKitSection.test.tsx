@@ -59,15 +59,14 @@ describe('a promoted kit section', () => {
   })
 
   it('scopes the imported stylesheet to a wrapper of its own', async () => {
-    // The anchor comes from the renderer as a prop, the way BlockRenderer hands
-    // it down — not from the block row.
     useBlock.mockReturnValue({ content: kitFaqBlock.defaults.content, settings: { accent: '' }, anchorId: 'faq' })
-    const { container } = render(<Faq anchorId="faq" />)
+    const { container } = render(<Faq />)
     await screen.findByText('Common questions')
 
     const wrapper = container.querySelector('.pf-kit')
     expect(wrapper).not.toBeNull()
-    expect(wrapper).toHaveAttribute('id', 'faq')
+    // No id: nothing links to a section by hash any more.
+    expect(wrapper).not.toHaveAttribute('id')
     // A section, not a div: `main` switches pointer events off and its children
     // switch them back on, and this wrapper is one of those children.
     expect(wrapper?.tagName).toBe('SECTION')

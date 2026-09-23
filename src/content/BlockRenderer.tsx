@@ -58,10 +58,16 @@ export function BlockRenderer({ slug }: { slug: string }) {
  return null
         }
 
+ // `data-section` names the section for code on this page that needs to
+ // reach it — a bento tile whose case study is further down. It is not an id
+ // and never goes in the address: pages are reached by route. The wrapper
+ // is `display: contents`, so it adds no box and changes no layout.
  return (
-          <Suspense key={block.id} fallback={<SectionLoader />}>
-            <Component anchorId={block.anchorId} blockId={block.id} />
-          </Suspense>
+          <div key={block.id} className="contents" data-section={block.anchorId ?? undefined}>
+            <Suspense fallback={<SectionLoader />}>
+              <Component blockId={block.id} />
+            </Suspense>
+          </div>
         )
       })}
     </>

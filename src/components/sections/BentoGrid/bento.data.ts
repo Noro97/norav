@@ -7,6 +7,7 @@ export type BentoVariant = 'logistics' | 'merch' | 'ecommerce' | 'proof' | 'omni
 
 export interface BentoProject {
   id: string
+  /** The section whose page the tile opens — the case study's anchor in the CMS. */
   targetSectionId: string
   techStack: string[]
   videoSrc?: VideoSource

@@ -1,5 +1,4 @@
 import { Fragment, useRef } from 'react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { toneOf, type Tone } from '@/content/accent'
 import type { HeroContent, HeroSettings } from '@norav/content-schema'
@@ -25,7 +24,6 @@ function needsLeadingSpace(text: string): boolean {
 export function HeroSection() {
   const hero = useBlock<HeroContent, HeroSettings>('hero')
   const containerRef = useRef<HTMLElement>(null)
-  useSectionObserver(hero?.anchorId ?? 'hero', containerRef)
 
   // Every hook has run by here, so the block being absent — hidden in the CMS —
   // can short-circuit the render.
@@ -35,7 +33,6 @@ export function HeroSection() {
 
   return (
     <section
-      id={hero.anchorId ?? 'hero'}
       ref={containerRef}
       className="relative min-h-[80vh] flex flex-col items-center justify-center px-gutter-x text-center"
     >

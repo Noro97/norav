@@ -19,9 +19,9 @@ import '@/styles/portfolio-kit-mobile.css'
  * through a `lazy()` boundary: 92 kB of CSS should not be on a page with no
  * kit section on it.
  */
-export function KitFrame({ anchorId, children }: { anchorId?: string | null; children: ReactNode }) {
+export function KitFrame({ children }: { children: ReactNode }) {
   return (
-    <section className="pf-kit" {...(anchorId ? { id: anchorId } : {})}>
+    <section className="pf-kit">
       {children}
     </section>
   )

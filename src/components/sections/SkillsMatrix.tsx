@@ -4,7 +4,6 @@ import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useBlock } from '@/content/ContentProvider'
 import { CountUp } from '@/components/ui/effects/CountUp'
 import type { SkillsContent, SkillsSettings } from '@norav/content-schema'
@@ -191,10 +190,9 @@ function categoryGlow(index: number, count: number): string {
   return `color-mix(in srgb, ${categoryColour(index, count)} 8%, transparent)`
 }
 
-export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
+export function SkillsMatrix() {
   const block = useBlock<SkillsContent, SkillsSettings>('skills')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'skills', sectionRef)
   const [animate, setAnimate] = useState(false)
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
@@ -232,7 +230,6 @@ export function SkillsMatrix({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'skills'}
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >
