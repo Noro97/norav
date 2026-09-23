@@ -179,7 +179,7 @@
         padding: 25.6px max(28px, 3vw)
     }
     .pf-kit .writing-empty {
-        padding: 38.4px var(--kit-gutter)
+        padding: 38.4px 0
     }
     .pf-kit .feed {
         padding: 64px 0
