@@ -19,5 +19,8 @@
   "footer.builtWith": "Создано с React + Three.js + GSAP + TypeScript",
   "notFound.title": "Такой страницы нет",
   "notFound.body": "Адрес неверный, либо страницу сняли с публикации.",
-  "notFound.home": "Вернуться на сайт"
+  "notFound.home": "Вернуться на сайт",
+  "writing.back": "Все заметки",
+  "writing.minutes": "{{count}} мин чтения",
+  "writing.englishOnly": "Эта заметка на английском; русской версии пока нет."
 }

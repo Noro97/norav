@@ -80,7 +80,17 @@ function indexable(pages) {
 export function buildSitemap(snapshot, site = SITE, locales = LOCALES) {
   const lastmod = (snapshot.publishedAt ?? new Date().toISOString()).slice(0, 10)
 
-  const urls = indexable(snapshot.pages ?? []).flatMap((page) => {
+  // Posts are not pages in the CMS, but each has an address of its own under
+  // the Writing page, and its own date to report.
+  const entries = [
+    ...indexable(snapshot.pages ?? []).map((page) => ({ slug: page.slug, lastmod })),
+    ...(snapshot.collections?.posts ?? []).map((post) => ({
+      slug: `writing/${post.slug}`,
+      lastmod: String(post.data?.publishedAt ?? lastmod).slice(0, 10),
+    })),
+  ]
+
+  const urls = entries.flatMap((page) => {
     // Every address carries the whole set of alternates, itself included —
     // hreflang is only believed when the pages point at each other.
     const alternates = [
@@ -95,7 +105,7 @@ export function buildSitemap(snapshot, site = SITE, locales = LOCALES) {
       [
         '  <url>',
         `    <loc>${urlFor(site, page.slug, locale)}</loc>`,
-        `    <lastmod>${lastmod}</lastmod>`,
+        `    <lastmod>${page.lastmod}</lastmod>`,
         ...alternates,
         '  </url>',
       ].join('\n'),
@@ -136,7 +146,8 @@ function main() {
   const snapshot = JSON.parse(readFileSync(join(content, `snapshot.${DEFAULT_LOCALE}.json`), 'utf8'))
 
   writeFileSync(join(root, 'public', 'sitemap.xml'), buildSitemap(snapshot, SITE, locales))
-  console.log(`[sitemap] ${indexable(snapshot.pages ?? []).length} pages × ${locales.join(', ')}.`)
+  const posts = snapshot.collections?.posts?.length ?? 0
+  console.log(`[sitemap] ${indexable(snapshot.pages ?? []).length} pages, ${posts} posts × ${locales.join(', ')}.`)
 }
 
 // Only when run as a command. The test imports this file for its functions.

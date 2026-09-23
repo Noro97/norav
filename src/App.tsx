@@ -10,8 +10,10 @@ import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { BlockRenderer } from '@/content/BlockRenderer'
 import { PageHead } from '@/content/PageHead'
 import { NotFound } from '@/components/NotFound'
-import { readPath } from '@/content/routing'
+import { readPath, SITE_SLUG } from '@/content/routing'
 import { useContent } from '@/content/ContentProvider'
+import { postAt } from '@/content/posts'
+import { PostPage } from '@/components/posts/PostPage'
 
 function App() {
   const { slug } = readPath(useLocation().pathname)
@@ -26,6 +28,9 @@ function App() {
   // like the address was wrong.
   const page = snapshot.pages.find((candidate) => candidate.slug === slug)
   const exists = page !== undefined && (page.blocks.length > 0 || isPreview)
+  // A post is not a page in the CMS: /writing/<slug> is answered from the
+  // `posts` collection, under the Writing page it belongs to.
+  const post = page ? undefined : postAt(snapshot, slug)
   const isMobile = useMediaQuery('(max-width: 768px)')
   const setIsMobile = useAppStore((s) => s.setIsMobile)
 
@@ -70,6 +75,12 @@ function App() {
           <>
             <PageHead slug={slug} />
             <BlockRenderer slug={slug} />
+          </>
+        ) : post ? (
+          <>
+            <PostPage key={post.slug} post={post} />
+            {/* The footer every page ends with. */}
+            <BlockRenderer slug={SITE_SLUG} />
           </>
         ) : (
           <NotFound />
