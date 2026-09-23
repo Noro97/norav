@@ -40,7 +40,7 @@ export function CtaBanner({ anchorId, blockId }: { anchorId?: string | null; blo
 
   return (
     <section {...(anchorId ? { id: anchorId } : {})} className="relative px-gutter-x py-20">
-      <div className="relative z-10 w-full max-w-4xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="relative overflow-hidden rounded-3xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-primary-500/[0.06] via-tertiary-ink/[0.02] to-transparent backdrop-blur-xl px-8 py-14 md:px-14 md:py-16 text-center">
           {settings.background === 'orb' && <OrbBackground />}
           {settings.background === 'particles' && <ParticlesBackground />}

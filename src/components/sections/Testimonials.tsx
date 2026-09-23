@@ -19,7 +19,7 @@ export function Testimonials({ anchorId, blockId }: { anchorId?: string | null; 
       {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <span className="label-mono">{content.sectionLabel}</span>
         <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
           {content.title}

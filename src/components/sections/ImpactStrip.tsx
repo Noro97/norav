@@ -66,7 +66,7 @@ export function ImpactStrip({ anchorId }: { anchorId?: string | null }) {
       className="relative px-gutter-x py-16"
       aria-label={content.label}
     >
-      <div className="relative z-10 w-full max-w-5xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-6 py-10 md:py-12">
           <p className="text-center label-mono mb-8">{content.label}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

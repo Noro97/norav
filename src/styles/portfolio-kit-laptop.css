@@ -12,7 +12,7 @@
         gap: 32px
     }
     .pf-kit .hero {
-        padding: 112px max(32px, 4vw) 64px
+        padding: 112px var(--kit-gutter) 64px
     }
     .pf-kit .hero-inner {
         gap: 51.2px
@@ -46,13 +46,13 @@
     }
     .pf-kit .bio {
         gap: 25.6px;
-        padding: 44.8px max(32px, 4vw) 44.8px max(32px, 4vw)
+        padding: 44.8px var(--kit-gutter) 44.8px var(--kit-gutter)
     }
     .pf-kit .testimonials {
-        padding: 44.8px max(32px, 4vw)
+        padding: 44.8px var(--kit-gutter)
     }
     .pf-kit .contact {
-        padding: 96px max(32px, 4vw)
+        padding: 96px var(--kit-gutter)
     }
     .pf-kit .contact-grid {
         gap: 64px
@@ -67,7 +67,7 @@
         margin: 0 0 25.6px 0
     }
     .pf-kit .footer {
-        padding: 64px max(32px, 4vw) 25.6px
+        padding: 64px var(--kit-gutter) 25.6px
     }
     .pf-kit .footer-top {
         margin-bottom: 44.8px
@@ -83,7 +83,7 @@
         padding: 96px 0 64px
     }
     .pf-kit .svc {
-        padding: 32px max(32px, 4vw)
+        padding: 32px var(--kit-gutter)
     }
     .pf-kit .process {
         padding: 96px 0 80px
@@ -107,7 +107,7 @@
         padding: 0 24px 0 67.2px
     }
     .pf-kit .cta-banner {
-        padding: 112px max(32px, 4vw) 112px
+        padding: 112px var(--kit-gutter) 112px
     }
     .pf-kit .cta-bg-text {
         font-size: clamp(96px, 17.6vw, 288px)
@@ -116,7 +116,7 @@
         margin: 0 0 28.8px 0
     }
     .pf-kit .stat-pills {
-        padding: 48px max(32px, 4vw)
+        padding: 48px var(--kit-gutter)
     }
     .pf-kit .media-tiles {
         padding: 96px 0 80px
@@ -128,7 +128,7 @@
         padding: 96px 0 80px
     }
     .pf-kit .mentor {
-        padding: 64px max(32px, 4vw)
+        padding: 64px var(--kit-gutter)
     }
     .pf-kit .mentor-card {
         padding: 44.8px max(28px, 3vw)
@@ -167,7 +167,7 @@
         gap: 51.2px
     }
     .pf-kit .reel {
-        padding: 64px max(32px, 4vw)
+        padding: 64px var(--kit-gutter)
     }
     .pf-kit .reel-content {
         padding: 38.4px
@@ -178,11 +178,14 @@
     .pf-kit .post {
         padding: 25.6px max(28px, 3vw)
     }
+    .pf-kit .writing-empty {
+        padding: 38.4px var(--kit-gutter)
+    }
     .pf-kit .feed {
         padding: 64px 0
     }
     .pf-kit .feed-cta {
-        padding: 25.6px max(32px, 4vw) 0
+        padding: 25.6px var(--kit-gutter) 0
     }
     .pf-kit .big-marq {
         padding: 25.6px 0
@@ -194,7 +197,7 @@
         gap: 38.4px
     }
     .pf-kit .brief {
-        padding: 80px max(32px, 4vw) 64px
+        padding: 80px var(--kit-gutter) 64px
     }
     .pf-kit .agent-plan {
         padding: 80px 0
@@ -206,7 +209,7 @@
         padding: 25.6px
     }
     .pf-kit .anim-sub {
-        padding: 96px max(32px, 4vw)
+        padding: 96px var(--kit-gutter)
     }
     .pf-kit .anim-sub-title {
         margin: 0 0 32px
@@ -245,7 +248,7 @@
         padding: 80px 0
     }
     .pf-kit .magnetic {
-        padding: 64px max(32px, 4vw)
+        padding: 64px var(--kit-gutter)
     }
     .pf-kit .magnetic-content {
         padding: 38.4px
@@ -254,7 +257,7 @@
         padding: 16px 25.6px
     }
     .pf-kit .typer {
-        padding: 96px max(32px, 4vw)
+        padding: 96px var(--kit-gutter)
     }
     .pf-kit .typer-line {
         margin: 25.6px 0 44.8px
@@ -288,10 +291,10 @@
         gap: 8px 44.8px
     }
     .pf-kit .spotlight {
-        padding: 112px max(32px, 4vw)
+        padding: 112px var(--kit-gutter)
     }
     .pf-kit .trail {
-        padding: 112px max(32px, 4vw)
+        padding: 112px var(--kit-gutter)
     }
     .pf-kit .hshelf {
         padding: 80px 0 64px
@@ -303,7 +306,7 @@
         padding: 80px 0
     }
     .pf-kit .glitch {
-        padding: 96px max(32px, 4vw)
+        padding: 96px var(--kit-gutter)
     }
     .pf-kit .glitch-text {
         font-size: clamp(51.2px, 9.6vw, 144px);

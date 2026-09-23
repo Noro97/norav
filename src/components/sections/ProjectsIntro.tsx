@@ -95,7 +95,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
 
       {links.length > 0 && (
         <div className="relative px-gutter-x pb-24 -mt-8">
-          <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="w-full max-w-content mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {links.map((study) => (
               <Link
                 key={study.slug}

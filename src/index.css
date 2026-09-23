@@ -122,6 +122,10 @@ html { scroll-behavior: smooth; }
 
 /* ===== THEME ===== */
 @theme {
+  /* The one content width. Every section's content sits in a column this
+     wide, centred, inside the page gutter — so every left edge on the site is
+     the same edge. Gives the `max-w-content` class; the kit reads the variable. */
+  --container-content: 1280px;
   --animate-glitch: glitch 0.4s infinite alternate;
   --animate-shift: shift 1s ease-in-out infinite alternate;
 }

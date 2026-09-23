@@ -131,7 +131,7 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
           <span className="label-mono">{sectionLabel}</span>

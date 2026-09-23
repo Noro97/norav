@@ -32,7 +32,7 @@
   /* FAQ: the question was 26px in the display face with a 60px number
      column and 28px of padding — one question per screen. */
   .pf-kit .faq { padding: 64px 0 56px; }
-  .pf-kit .faq-list { margin: 0 max(16px, 4vw); }
+  .pf-kit .faq-list { margin: 0 var(--kit-gutter); }
   .pf-kit .faq-q { grid-template-columns: 28px 1fr 20px; gap: 12px; padding: 18px 0; }
   .pf-kit .faq-q:hover { padding-left: 0; }
   .pf-kit .faq-a > p { padding: 0 20px 0 40px; }
@@ -41,20 +41,20 @@
   /* Services: a 320px minimum height stacked one card under another leaves
      a screen of nothing between the blurb and the tags. */
   .pf-kit .services { padding: 64px 0 56px; }
-  .pf-kit .svc { padding: 28px max(16px, 4vw); min-height: 0; gap: 12px; }
+  .pf-kit .svc { padding: 28px var(--kit-gutter); min-height: 0; gap: 12px; }
   .pf-kit .svc-tags { margin-top: 4px; padding-top: 12px; }
   .pf-kit .svc-arrow { display: none; }
 
   /* Pricing: a 56px price and a 40px name in a card a phone wide. */
   .pf-kit .pricing { padding: 64px 0 56px; }
-  .pf-kit .pricing-grid { padding: 0 max(16px, 4vw); gap: 12px; }
+  .pf-kit .pricing-grid { padding: 0 var(--kit-gutter); gap: 12px; }
   .pf-kit .tier { padding: 28px 20px 24px; gap: 10px; }
   .pf-kit .tier-features { gap: 8px; }
   .pf-kit .tier .btn { margin-top: 8px; }
 
   /* CTA banner: 140px above and below, a 112px headline, and a 360px
      watermark the copy floats over. */
-  .pf-kit .cta-banner { padding: 72px max(16px, 4vw) 88px; }
+  .pf-kit .cta-banner { padding: 72px var(--kit-gutter) 88px; }
   .pf-kit .cta-headline { margin-bottom: 16px; }
   .pf-kit .cta-sub { margin-bottom: 24px; }
   .pf-kit .cta-row { gap: 10px; }
@@ -67,19 +67,19 @@
 
   /* Awards: the count was a 56px numeral beside a 24px name, in a column
      100px wide — on a phone the count is a badge, not a headline. */
-  .pf-kit .awards-inner { gap: 24px; padding: 0 max(16px, 4vw); }
+  .pf-kit .awards-inner { gap: 24px; padding: 0 var(--kit-gutter); }
   .pf-kit .award-row { grid-template-columns: 56px 1fr; gap: 16px; padding: 18px 0; }
   .pf-kit .award-row:hover { padding-left: 0; }
 
   /* Compare table: three columns still, but each cell earns its width. */
-  .pf-kit .compare-table { padding: 0 max(16px, 4vw); }
+  .pf-kit .compare-table { padding: 0 var(--kit-gutter); }
   .pf-kit .cmp-head, .pf-kit .cmp-row { grid-template-columns: 1.3fr 1fr 1fr; }
   .pf-kit .cmp-cell, .pf-kit .cmp-head .cmp-cell { padding: 14px 10px; gap: 8px; }
   .pf-kit .cmp-tag { left: 10px; padding: 3px 7px; }
 
   /* Showreel: a taller frame so the play button has a band of its own between
      the eyebrow and the title, and the corner labels stay out of the copy. */
-  .pf-kit .reel { padding: 56px max(16px, 4vw); }
+  .pf-kit .reel { padding: 56px var(--kit-gutter); }
   .pf-kit .reel-frame { aspect-ratio: 4 / 3; max-height: none; border-radius: 12px; }
   /* The frame's children are spaced evenly, which puts the title in the
      middle — under the button. Pin the eyebrow to the top and the copy to the

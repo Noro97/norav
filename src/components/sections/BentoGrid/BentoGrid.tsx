@@ -107,7 +107,7 @@ export function BentoGrid({ anchorId }: { anchorId?: string | null }) {
       {/* Section ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary-500/[0.03] blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-content mx-auto">
         {/* Header */}
         <div className="bento-header mb-16">
           <span className="label-mono">{content.sectionLabel}</span>

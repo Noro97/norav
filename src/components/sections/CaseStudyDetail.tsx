@@ -41,7 +41,7 @@ export function CaseStudyDetail({ anchorId, type }: Props) {
       {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-24"
     >
-      <div className="relative z-10 w-full max-w-4xl mx-auto">
+      <div className="relative z-10 w-full max-w-content mx-auto">
         {sectionLabel && <span className="label-mono">{sectionLabel}</span>}
         {title && (
           <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
