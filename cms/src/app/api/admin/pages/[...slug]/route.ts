@@ -146,7 +146,11 @@ export async function PATCH(request: Request, context: { params: Promise<{ slug:
   return ok({ page: updated })
 }
 
-/** Removes a page. Its blocks must be moved or deleted first. */
+/**
+ * Removes a page. Its blocks must be moved or deleted first. Menu items that
+ * point at it block the delete too, unless `?unlink=1` says to take them out
+ * of the menu in the same change.
+ */
 export async function DELETE(request: Request, context: { params: Promise<{ slug: string[] }> }) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
@@ -180,18 +184,34 @@ export async function DELETE(request: Request, context: { params: Promise<{ slug
   // The site drops a menu item whose page is gone, so nothing breaks for a
   // reader — but the item stays in the collection as invisible dead data, and
   // the person deleting the page is the only one in a position to decide.
+  // `?unlink=1` is that decision made: the dialog has already said which menu
+  // items point here, and asked.
+  const unlink = new URL(request.url).searchParams.get('unlink') === '1'
   const linked = await queryOne<{ count: number }>(
     `select count(*)::int as count from entries
       where collection = 'navigation' and data ->> 'page' = $1 and deleted_at is null`,
     [path],
   )
-  if (linked && linked.count > 0) {
+  if (!unlink && linked && linked.count > 0) {
     return conflict(
       `${linked.count} menu item${linked.count === 1 ? '' : 's'} point${linked.count === 1 ? 's' : ''} at "${path}". Change or remove them first.`,
     )
   }
 
-  await query(`delete from pages where id = $1`, [page.id])
+  // One statement, for the same reason a rename is: a page deleted without its
+  // menu items going too is the dead data the guard above exists to prevent.
+  const removed = await queryOne<{ unlinked: number }>(
+    `with unlinked as (
+       update entries set deleted_at = now()
+        where $2::boolean
+          and collection = 'navigation' and data ->> 'page' = $3 and deleted_at is null
+        returning 1
+     ), removed as (
+       delete from pages where id = $1 returning 1
+     )
+     select (select count(*) from unlinked)::int as unlinked`,
+    [page.id, unlink, path],
+  )
 
   await audit({
     actorId: auth.user.id,
@@ -199,8 +219,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ slug
     entityType: 'page',
     entityId: page.id,
     ip: clientIp(request),
-    diff: { slug: path },
+    diff: { slug: path, unlinked: removed?.unlinked ?? 0 },
   })
 
-  return ok({ deleted: path })
+  return ok({ deleted: path, unlinked: removed?.unlinked ?? 0 })
 }

@@ -22,6 +22,7 @@ export function PageSettings({
   seo,
   locales,
   blocks,
+  menuItems,
   onClose,
   onSaved,
   onDeleted,
@@ -31,6 +32,7 @@ export function PageSettings({
   seo: Seo
   locales: readonly Locale[]
   blocks: number
+  menuItems: number
   onClose: () => void
   onSaved: (slug: string) => void
   onDeleted: () => void
@@ -72,10 +74,25 @@ export function PageSettings({
     onSaved(body.data.page.slug)
   }
 
+  const menuLabel = `${menuItems} menu item${menuItems === 1 ? '' : 's'}`
+  // Sections are refused outright — losing them should take a step of its own.
+  // Menu items are not: the only sensible thing to do with a link to a page
+  // being deleted is remove it, so the dialog offers to, and asks.
+  const deleteBlocked = blocks > 0
+
   async function remove() {
+    const question =
+      menuItems > 0
+        ? `Delete /${slug} and remove the ${menuLabel} that link${menuItems === 1 ? 's' : ''} to it?`
+        : `Delete /${slug}?`
+    if (!window.confirm(question)) return
+
     setBusy(true)
     setError(null)
-    const response = await fetch(`/api/admin/pages/${slug}`, { method: 'DELETE' })
+    const response = await fetch(
+      `/api/admin/pages/${slug}${menuItems > 0 ? '?unlink=1' : ''}`,
+      { method: 'DELETE' },
+    )
     const body = await response.json().catch(() => null)
     setBusy(false)
 
@@ -94,7 +111,13 @@ export function PageSettings({
       footer={
         <>
           {!isRoot && (
-            <button type="button" className="ghost" onClick={remove} disabled={busy}>
+            <button
+              type="button"
+              className="ghost"
+              onClick={remove}
+              disabled={busy || deleteBlocked}
+              title={deleteBlocked ? 'Move or delete its sections first' : undefined}
+            >
               Delete page
             </button>
           )}
@@ -158,10 +181,16 @@ export function PageSettings({
         </fieldset>
       ))}
 
-      {!isRoot && blocks > 0 && (
+      {!isRoot && deleteBlocked && (
         <p className="subtle">
           Holds {blocks} section{blocks === 1 ? '' : 's'}. Move or delete them before deleting the
           page.
+        </p>
+      )}
+      {!isRoot && !deleteBlocked && menuItems > 0 && (
+        <p className="subtle">
+          Linked from {menuLabel}. Deleting the page removes {menuItems === 1 ? 'it' : 'them'} from
+          the menu too.
         </p>
       )}
     </Modal>

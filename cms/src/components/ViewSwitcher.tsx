@@ -22,6 +22,8 @@ export interface PageSummary {
   /** Per locale: { en: { title, description }, ru: {...} }. */
   seo: Record<string, { title?: string; description?: string }>
   blocks: number
+  /** Menu entries that link here — each one stops a delete until it goes too. */
+  menuItems: number
   /** Edited since the last publish — work that is saved but not on the site. */
   changed: boolean
 }
