@@ -1,5 +1,6 @@
 import { query } from './db'
-import { toMediaRef } from './media-refs'
+import { mediaRefId, toMediaRef } from './media-refs'
+import { htmlMediaIds } from './post-html'
 
 /**
  * Where a media URL can be referenced, as [table, jsonb column, id column].
@@ -103,6 +104,24 @@ export async function findUsage(
         if (!usage.has(file.id)) usage.set(file.id, new Set())
         usage.get(file.id)!.add(await label(site, row.key))
       }
+    }
+  }
+
+  // Posts are text columns, not JSON, and name files only by reference: a
+  // cover field, and images inside the body.
+  const posts = await query<{ slug: string; cover: string; bodies: string[] }>(
+    `select p.slug, p.cover, coalesce(array_agg(t.body_html) filter (where t.body_html is not null), '{}') as bodies
+       from posts p left join post_translations t on t.post_id = p.id
+      where p.deleted_at is null
+      group by p.id`,
+  )
+  const wanted = new Set(files.map((file) => file.id))
+  for (const post of posts) {
+    const named = [mediaRefId(post.cover), ...post.bodies.flatMap(htmlMediaIds)]
+    for (const id of named) {
+      if (!id || !wanted.has(id)) continue
+      if (!usage.has(id)) usage.set(id, new Set())
+      usage.get(id)!.add(`post · ${post.slug}`)
     }
   }
 

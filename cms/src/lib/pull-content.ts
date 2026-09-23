@@ -25,6 +25,8 @@ const CONTENT_TABLES = [
   'entries',
   'entry_translations',
   'media',
+  'posts',
+  'post_translations',
   'settings',
   'revisions',
   'publications',

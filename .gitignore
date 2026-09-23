@@ -17,6 +17,8 @@ node_modules/
 # next.js (cms)
 .next/
 next-env.d.ts
+# the post editor, copied out of node_modules by cms/scripts/copy-tinymce.mjs
+cms/public/tinymce/
 
 # embedded local database and uploads used by the CMS in development
 .pglite/

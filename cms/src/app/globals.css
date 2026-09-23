@@ -564,3 +564,16 @@ img.repeat-thumb[src$=".svg"] { object-fit: contain; }
   }
   .main { padding: 20px 18px 64px; }
 }
+
+/* Posts: the text on the left, what is known about it on the right. */
+.post-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; align-items: start; }
+.post-main { min-width: 0; }
+.post-aside { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 4px; }
+.post-aside fieldset { display: flex; flex-direction: column; gap: 6px; }
+.post-list { margin-top: 20px; }
+.post-list .view-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tox.tox-tinymce { border-radius: var(--radius); border-color: var(--border); }
+@media (max-width: 1000px) {
+  .post-layout { grid-template-columns: 1fr; }
+  .post-aside { position: static; }
+}
