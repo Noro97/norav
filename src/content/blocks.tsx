@@ -1,5 +1,6 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import { HeroSection } from '@/components/sections/HeroSection'
+import { useWritingPosts } from '@/components/sections/kit/useWritingPosts'
 import { defineKitSection } from '@/components/sections/kit/defineKitSection'
 import type {
   KitStatsMarqueeContent,
@@ -106,5 +107,6 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   kit_timeline: defineKitSection<KitTimelineContent>('kit_timeline', () => import('@/components/portfolio-kit/sections/more-sections/timeline'), 'Timeline'),
   kit_tool_stack: defineKitSection<KitToolStackContent>('kit_tool_stack', () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'), 'ToolStack'),
   kit_visual_feed: defineKitSection<KitVisualFeedContent>('kit_visual_feed', () => import('@/components/portfolio-kit/sections/more-sections/visual-feed'), 'VisualFeed'),
-  kit_writing: defineKitSection<KitWritingContent>('kit_writing', () => import('@/components/portfolio-kit/sections/more-sections/writing'), 'Writing'),
+  // Its cards come from published posts once there are any.
+  kit_writing: defineKitSection<KitWritingContent>('kit_writing', () => import('@/components/portfolio-kit/sections/more-sections/writing'), 'Writing', useWritingPosts),
 }

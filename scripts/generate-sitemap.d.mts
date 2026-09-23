@@ -17,6 +17,7 @@ export declare function localesOnDisk(dir: string): string[]
 export interface SitemapSnapshot {
   publishedAt?: string
   pages?: { slug: string; blocks?: unknown[] }[]
+  collections?: { posts?: { slug: string; data?: { publishedAt?: string } }[] }
 }
 
 export declare function buildSitemap(

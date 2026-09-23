@@ -29,6 +29,12 @@ export function defineKitSection<TContent>(
   type: string,
   loader: () => Promise<Record<string, unknown>>,
   name: string,
+  /**
+   * A hook that may change what the section is handed — for the one section
+   * whose rows can come from somewhere other than its own block. It runs on
+   * every render, so it must be a hook in the React sense.
+   */
+  useContentFor: (content: TContent) => TContent = (content) => content,
 ): LazyExoticComponent<ComponentType<BlockComponentProps>> {
   return lazy(async () => {
     const [{ KitFrame, useKitAccent }, module] = await Promise.all([import('./KitFrame'), loader()])
@@ -37,11 +43,12 @@ export function defineKitSection<TContent>(
     function KitSection({ anchorId, blockId }: BlockComponentProps) {
       const block = useBlock<TContent, KitBlockSettings>(type, blockId)
       const accent = useKitAccent(block?.settings.accent)
+      const content = useContentFor(block?.content as TContent)
       if (!block) return null
 
       return (
         <KitFrame anchorId={anchorId}>
-          <Section accent={accent} content={block.content} />
+          <Section accent={accent} content={content} />
         </KitFrame>
       )
     }

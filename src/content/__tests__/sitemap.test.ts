@@ -108,3 +108,22 @@ describe('addresses that need encoding', () => {
     expect(trailing).not.toContain('//about')
   })
 })
+
+describe('buildSitemap with posts', () => {
+  const xml = buildSitemap(
+    {
+      ...snapshot,
+      collections: {
+        posts: [{ slug: 'content-pipelines', data: { publishedAt: '2026-10-02T08:00:00.000Z' } }],
+      },
+    },
+    SITE,
+  )
+
+  it('lists each post under the Writing page, in every language, with its own date', () => {
+    expect(xml).toContain(`<loc>${SITE}/writing/content-pipelines</loc>`)
+    expect(xml).toContain(`<loc>${SITE}/ru/writing/content-pipelines</loc>`)
+    const entry = xml.split('<url>').find((block) => block.includes('<loc>https://norav.dev/writing/content-pipelines</loc>'))
+    expect(entry).toContain('<lastmod>2026-10-02</lastmod>')
+  })
+})

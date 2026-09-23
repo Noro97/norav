@@ -134,13 +134,13 @@ export function forgetShellDefaults() {
  * addresses there is nothing to point at, and half the content stays invisible
  * to a search engine.
  */
-export function PageHead({ slug }: { slug: string }) {
+export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
  const { snapshot, locale } = useContent()
  const page = snapshot.pages.find((candidate) => candidate.slug === slug)
  // Destructured rather than kept as an object: resolveSeo builds a new one
  // every render, so the object is never a usable dependency and its three
- // values are what actually change.
- const { title, description, image } = resolveSeo(page, locale)
+ // values are what actually change. A post is not a page and brings its own.
+ const { title, description, image } = seo ?? resolveSeo(page, locale)
 
  // Not hoistable: <html lang> is an attribute on an element React does not
  // render. A screen reader picks its voice from it, so leaving it at "en" on a

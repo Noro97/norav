@@ -19,5 +19,8 @@
   "footer.builtWith": "Built with React + Three.js + GSAP + TypeScript",
   "notFound.title": "This page does not exist",
   "notFound.body": "The address is wrong, or the page was unpublished.",
-  "notFound.home": "Back to the site"
+  "notFound.home": "Back to the site",
+  "writing.back": "All writing",
+  "writing.minutes": "{{count}} min read",
+  "writing.englishOnly": "This post is in English; a Russian version is not written yet."
 }

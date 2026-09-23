@@ -379,3 +379,78 @@ html { position: relative; }
     transition-duration: 100ms;
   }
 }
+
+/* ===== POSTS =====
+   The body of /writing/<slug> is HTML from the CMS, so its elements are styled
+   here rather than with classes the editor cannot write. Only what the editor's
+   toolbar can make: two heading levels, paragraphs, emphasis, lists, quotes,
+   links, inline and block code, images with captions. */
+.post-cover {
+  width: 100%;
+  height: auto;
+  margin-bottom: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-tertiary-line);
+}
+.post-body {
+  font-size: var(--text-body-large);
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-tertiary-ink) 88%, transparent);
+}
+.post-body > * + * { margin-top: 1.25em; }
+.post-body h2 {
+  margin-top: 2.2em;
+  font-family: var(--font-display);
+  font-size: var(--text-heading-small);
+  line-height: var(--text-heading-small--line-height);
+  font-weight: 800;
+  color: var(--color-tertiary-ink);
+}
+.post-body h3 {
+  margin-top: 1.8em;
+  font-family: var(--font-display);
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--color-tertiary-ink);
+}
+.post-body strong { color: var(--color-tertiary-ink); font-weight: 700; }
+.post-body a {
+  color: var(--color-primary-500);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.post-body ul, .post-body ol { padding-left: 1.4em; }
+.post-body ul { list-style: disc; }
+.post-body ol { list-style: decimal; }
+.post-body li + li { margin-top: 0.4em; }
+.post-body blockquote {
+  padding-left: 1.2em;
+  border-left: 2px solid var(--color-primary-500);
+  color: color-mix(in srgb, var(--color-tertiary-ink) 70%, transparent);
+}
+.post-body code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-tertiary-ink) 8%, transparent);
+}
+.post-body pre {
+  overflow-x: auto;
+  padding: 1em 1.2em;
+  border-radius: 10px;
+  border: 1px solid var(--color-tertiary-line);
+  background: var(--color-card);
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-body pre code { padding: 0; background: none; font-size: inherit; }
+.post-body img { max-width: 100%; height: auto; border-radius: 10px; }
+.post-body figure { margin: 2em 0; }
+.post-body figcaption {
+  margin-top: 0.6em;
+  font-size: 0.85em;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-tertiary-ink) 55%, transparent);
+}
+.post-body hr { border: 0; border-top: 1px solid var(--color-tertiary-line); margin: 2.5em 0; }
