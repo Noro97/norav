@@ -527,11 +527,28 @@ export function Editor({
           // advice that only ever applied to a database with nothing in it at
           // all, and that sends anyone who has just created a page off to run a
           // command that will not add a section to it.
-          <p className="subtle">
-            {blocks.length === 0
-              ? 'Nothing on this page yet. Add a section from the list on the left.'
-              : 'Pick a section on the left to edit it.'}
-          </p>
+          <>
+            <p className="subtle">
+              {blocks.length === 0
+                ? 'Nothing on this page yet. Add a section from the list on the left.'
+                : 'Pick a section on the left to edit it.'}
+            </p>
+            {/* The settings live in the section toolbar, which an empty page
+                never shows — so an empty page could not be renamed, archived
+                or deleted, the one case where deleting is most likely. */}
+            <div className="toolbar">
+              <span className="spacer" />
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => setSettingsOpen(true)}
+                disabled={busy !== null}
+                title="Address, status and search listing"
+              >
+                Page settings
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <h1>{definition.label}</h1>
