@@ -15,6 +15,7 @@ import {
   type SnapshotPage,
 } from '@norav/content-schema'
 import { query } from './db'
+import { resolveMediaRefs } from './media-refs'
 
 /**
  * Turns the working tables into one immutable document per locale.
@@ -93,8 +94,34 @@ export async function buildPublication(): Promise<PublishResult> {
       order by e.collection, e.position`,
   )
 
+  // Content names library files by id; the site gets the URL each has now.
+  // Only live rows: a reference to a deleted file is a hole, not a URL.
+  const media = await query<{ id: string; url: string }>(
+    `select id, url from media where deleted_at is null`,
+  )
+  const mediaUrls = new Map(media.map((row) => [row.id, row.url]))
+
+  const problems: PublishProblem[] = []
+  /** Resolves a value's references, recording any that point at nothing. */
+  const withMedia = <T>(value: T, where: Omit<PublishProblem, 'path' | 'message'>): T => {
+    const resolved = resolveMediaRefs(value, mediaUrls)
+    for (const miss of resolved.missing) {
+      problems.push({
+        ...where,
+        path: miss.path,
+        message: 'Points at a file that is no longer in the media library. Choose another.',
+      })
+    }
+    return resolved.value as T
+  }
+
   const settingsRows = await query<{ key: string; value: unknown }>(`select key, value from settings`)
-  const settings = Object.fromEntries(settingsRows.map((row) => [row.key, row.value]))
+  const settings = Object.fromEntries(
+    settingsRows.map((row) => [
+      row.key,
+      withMedia(row.value, { page: '(site settings)', block: row.key, locale: SOURCE_LOCALE }),
+    ]),
+  )
 
   // The palette is two decisions in the database and a full set of CSS
   // variables on the page. Deriving here means the site writes what it is told
@@ -104,7 +131,6 @@ export async function buildPublication(): Promise<PublishResult> {
   const theme = parsedTheme.success ? parsedTheme.data : DEFAULT_THEME
   settings.theme = { ...theme, tokens: deriveThemeTokens(theme) }
 
-  const problems: PublishProblem[] = []
   const publishedAt = new Date().toISOString()
 
   const locales = {} as Record<Locale, Snapshot>
@@ -147,8 +173,12 @@ export async function buildPublication(): Promise<PublishResult> {
           id: block.id,
           type: block.type,
           anchorId: block.anchor_id,
-          content: result.data as Record<string, unknown>,
-          settings: block.settings,
+          content: withMedia(result.data as Record<string, unknown>, {
+            page: page.slug,
+            block: block.type,
+            locale,
+          }),
+          settings: withMedia(block.settings, { page: page.slug, block: block.type, locale }),
         })
       }
 
@@ -166,7 +196,10 @@ export async function buildPublication(): Promise<PublishResult> {
       ;(collections[entry.collection] ??= []).push({
         id: entry.id,
         slug: entry.slug,
-        data: { ...entry.data, ...localized },
+        data: withMedia(
+          { ...entry.data, ...localized },
+          { page: `(${entry.collection})`, block: entry.slug, locale },
+        ),
       })
     }
 

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { getAtPath } from '@norav/content-schema'
 import { usePages } from './PagesContext'
 import { MediaPicker } from './MediaPicker'
+import { mediaDisplaySrc, mediaRefId, toMediaRef } from '@/lib/media-refs'
 import { Modal } from './Modal'
 
 /**
@@ -240,9 +241,10 @@ function Field({ field, prefix, ...form }: FieldProps) {
 }
 
 /**
- * An image field: a thumbnail, the path it points at, and the library behind a
- * button. The path stays editable by hand — the images that predate the media
- * library live in the site's public folder and are referenced by path.
+ * An image field: a thumbnail, the reference it holds, and the library behind
+ * a button. Choosing stores `media:<id>`; the value stays editable by hand —
+ * the images that predate the media library live in the site's public folder
+ * and are referenced by path.
  */
 function MediaField({
   id,
@@ -268,7 +270,7 @@ function MediaField({
       <label htmlFor={id}>{label}</label>
 
       <div className="media-field">
-        {value ? <img src={value} alt="" /> : null}
+        {value ? <img src={mediaDisplaySrc(value)} alt="" /> : null}
         <input
           id={id}
           type="text"
@@ -289,7 +291,8 @@ function MediaField({
         <MediaPicker
           onClose={() => setPicking(false)}
           onSelect={(item) => {
-            onChange(item.url)
+            // The entry, not where its bytes are today — see lib/media-refs.
+            onChange(toMediaRef(item.id))
             setPicking(false)
           }}
         />
@@ -346,6 +349,7 @@ function RepeaterField({
    */
   const thumbnail = (row: Record<string, unknown>): string | null => {
     for (const value of mediaFields.map((field) => row[field])) {
+      if (mediaRefId(value)) return mediaDisplaySrc(value as string)
       if (typeof value === 'string' && /^https?:\/\//.test(value) && !/\.pdf$/i.test(value)) {
         return value
       }

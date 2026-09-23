@@ -848,6 +848,39 @@ await expectError(
   check('a freshly retired file awaits the sweep', row.purged_at === null)
 }
 
+{
+  // 0029 turns URLs of library files into `media:<id>`. Planted after the
+  // migration set ran, then the file replayed — twice, since a second run must
+  // find nothing left to convert.
+  const {
+    rows: [file],
+  } = await db.query(
+    `insert into media (storage_key, url, mime) values ('crown.svg', 'https://store/media/crown.svg', 'image/svg+xml') returning id`,
+  )
+  const {
+    rows: [block],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, settings) values ($1, 'bento_grid', 7000, $2) returning id`,
+    [
+      page.id,
+      JSON.stringify({
+        badge: 'https://store/media/crown.svg',
+        note: 'see https://store/media/crown.svg?v=2',
+        legacy: '/assets/illustrations/omnigrid.svg',
+      }),
+    ],
+  )
+  const sql = readFileSync(join(root, 'migrations', '0029_content_names_files_by_id.sql'), 'utf8')
+  await db.exec(sql)
+  await db.exec(sql)
+  const {
+    rows: [after],
+  } = await db.query(`select settings from blocks where id = $1`, [block.id])
+  check('a library URL becomes a reference to its file', after.settings.badge === `media:${file.id}`, JSON.stringify(after.settings))
+  check('a URL inside a longer string is left alone', after.settings.note === 'see https://store/media/crown.svg?v=2')
+  check('a path into the public folder is left alone', after.settings.legacy === '/assets/illustrations/omnigrid.svg')
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------

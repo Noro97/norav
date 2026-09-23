@@ -17,7 +17,7 @@ export interface MediaItem {
 
 /**
  * The library, as an overlay. Opened from an image field, it lists what has
- * been uploaded, takes new files, and hands back a URL.
+ * been uploaded, takes new files, and hands back the chosen entry.
  *
  * The standalone Media view is the same list without the choosing.
  */
