@@ -64,14 +64,14 @@ describe('CaseStudyDetail', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Only a heading')
   })
 
-  it('carries the anchor the CMS gave it', () => {
+  it('carries no anchor id: the menu reaches pages by route, not sections by hash', () => {
     withContent({ title: 'Anchored' })
     useBlock.mockReturnValue({
       content: { sectionLabel: '', title: 'Anchored', intro: '', decisions: [], metrics: [] },
       settings: {},
       anchorId: 'proof-detail',
     })
-    const { container } = render(<CaseStudyDetail type="proof_detail" anchorId="proof-detail" />)
-    expect(container.querySelector('section')?.id).toBe('proof-detail')
+    const { container } = render(<CaseStudyDetail type="proof_detail" />)
+    expect(container.querySelector('section')?.id).toBe('')
   })
 })

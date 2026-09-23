@@ -62,9 +62,9 @@
    chrome goes solid and its edges get drawn. None of them switches feedback
    off — a pressed button still presses. */
 
-/* A menu click glides to its section so the reader sees how far they went
-   and in which direction; arriving from another page lands instantly (see
-   useHashScroll) because there is nothing to have travelled from. */
+/* Scrolling the page itself glides, so a reader sees how far it went and in
+   which direction; arriving on a new page lands at its top instantly (see
+   useScrollToTopOnNavigate) because there is nothing to have travelled from. */
 html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {

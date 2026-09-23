@@ -12,7 +12,7 @@ import type { PortfolioSectionSettings } from '@norav/content-schema'
  * several of these, and each has to read its own variant rather than the first
  * one on the page.
  */
-export function PortfolioSection({ anchorId, blockId }: { anchorId?: string | null; blockId?: string }) {
+export function PortfolioSection({ blockId }: { blockId?: string }) {
   const block = useBlock<Record<string, never>, PortfolioSectionSettings>('portfolio_section', blockId)
   const accent = useKitAccent(block?.settings.accent)
   if (!block) return null
@@ -28,7 +28,7 @@ export function PortfolioSection({ anchorId, blockId }: { anchorId?: string | nu
   }
 
   return (
-    <KitFrame anchorId={anchorId}>
+    <KitFrame>
       <Suspense fallback={<div className="min-h-[40vh]" />}>
         <Section accent={accent} />
       </Suspense>

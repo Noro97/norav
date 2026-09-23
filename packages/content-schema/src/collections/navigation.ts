@@ -14,16 +14,17 @@ import { defineCollection } from '../define-collection'
  * nobody would find out until a reader complained — so the address is derived,
  * and renaming a page repoints the items that name it.
  *
- * `anchor` is a section within that page. It is what lets one item mean "the
- * footer", which lives in the site chrome and is on no page in particular.
+ * An item is a page and nothing finer. It used to carry a section too, from
+ * when the site was one long page and the menu scrolled to sections by hash;
+ * each of those is a page now, so the page is the whole address. Entries saved
+ * before that still hold the old `anchor` key — 0031 removes it, and the site
+ * ignores it until then.
  *
  * `external` wins when set, for the links that leave: a CV, a profile, a repo.
  */
 const data = z.object({
   /** Slug of the page this points at. Empty when `external` is set. */
   page: z.string().max(120),
-  /** Section within the page — the anchor id of a block. */
-  anchor: z.string().max(64),
   /** A full URL. Takes precedence over `page` when present. */
   external: z.string().max(300),
 })
@@ -40,20 +41,12 @@ export const navigationCollection = defineCollection({
   data,
   content,
   defaults: {
-    data: { page: 'home', anchor: '', external: '' },
+    data: { page: 'home', external: '' },
     content: { label: 'New item' },
   },
   form: [
     { field: 'label', control: 'text', label: 'Label' },
     { field: 'page', control: 'page', label: 'Page', source: 'data' },
-    {
-      field: 'anchor',
-      control: 'text',
-      label: 'Section',
-      source: 'data',
-      localized: false,
-      help: 'A section on that page — its anchor. Leave empty for the top of the page.',
-    },
     {
       field: 'external',
       control: 'text',

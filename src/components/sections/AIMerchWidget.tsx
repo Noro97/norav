@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { Coffee, Image as ImageIcon, Shirt, Sticker, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
@@ -90,14 +89,13 @@ function syntaxHighlight(json: string): string {
     .replace(/:\s*(\d+\.?\d*)/g, ': <span class="text-secondary-300">$1</span>')
 }
 
-export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
+export function AIMerchWidget() {
   const block = useBlock<CaseStudyContent, CaseStudySettings>('merch')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('merch', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'merch', sectionRef)
   const jsonRef = useRef<HTMLPreElement>(null)
   const [config, setConfig] = useState<MerchConfig>(DEFAULT_CONFIG)
   const [displayedJson, setDisplayedJson] = useState('')
@@ -189,7 +187,6 @@ export function AIMerchWidget({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'merch'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >

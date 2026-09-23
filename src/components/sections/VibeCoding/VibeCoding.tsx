@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useInView } from 'framer-motion'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { TerminalGhosting } from './TerminalGhosting'
 import { VibeSlider } from './VibeSlider'
 import { useBlock } from '@/content/ContentProvider'
@@ -17,11 +16,10 @@ const TONE_CLASS: Record<string, string> = {
   crimson: 'border-primary-500/30 text-primary-400/70',
 }
 
-export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
+export function VibeCoding() {
   const block = useBlock<VibeCodingContent, VibeCodingSettings>('vibecoding')
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'vibecoding', sectionRef)
 
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 })
 
@@ -66,7 +64,6 @@ export function VibeCoding({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'vibecoding'}
       ref={sectionRef}
       className="relative px-gutter-x py-28 md:py-36 overflow-hidden"
     >

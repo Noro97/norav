@@ -8,7 +8,7 @@ import type { CapabilitiesContent, CapabilitiesSettings } from '@norav/content-s
 /** The icons the CMS offers, resolved to components the section can render. */
 const ICONS: Record<string, LucideIcon> = { Layers, Bot, Component, Gauge, Sparkles, Rocket }
 
-export function Capabilities({ anchorId }: { anchorId?: string | null }) {
+export function Capabilities() {
   const block = useBlock<CapabilitiesContent, CapabilitiesSettings>('capabilities')
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -20,7 +20,6 @@ export function Capabilities({ anchorId }: { anchorId?: string | null }) {
   return (
     <section
       ref={sectionRef}
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-24"
     >
       <div className="relative z-10 w-full max-w-content mx-auto">

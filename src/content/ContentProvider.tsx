@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
 import { readPath } from './routing'
+import { resolveContentLinks } from './links'
 import type { Locale, Snapshot } from '@norav/content-schema'
 import { BAKED_SNAPSHOTS, findBlock, findBlockById } from './index'
 import { setCurrentSnapshots } from './current'
@@ -354,19 +355,23 @@ export function useBlock<TContent, TSettings = Record<string, unknown>>(
  type: string,
   blockId?: string,
 ): BlockView<TContent, TSettings> | undefined {
- const { snapshot } = useContent()
+ const { snapshot, locale } = useContent()
+ const anchorPages = useAnchorPages()
  return useMemo(() => {
  // A repeatable section is handed its own id by the renderer and asks for
  // exactly that row; without one, the first block of the type is the answer,
  // which is all a section that appears once ever needs.
  const block = blockId ? findBlockById(snapshot, blockId) : findBlock(snapshot, type)
  if (!block) return undefined
+ const pageSlugs = new Set(snapshot.pages.map((page) => page.slug))
  return {
- content: block.content as TContent,
+ // Every link a block carries is a route by the time a section sees it —
+ // see resolveContentLinks for the hash links older content still holds.
+ content: resolveContentLinks(block.content, anchorPages, pageSlugs, locale) as TContent,
  settings: block.settings as TSettings,
       anchorId: block.anchorId,
     }
-  }, [snapshot, type, blockId])
+  }, [snapshot, type, blockId, anchorPages, locale])
 }
 
 /**

@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
@@ -59,14 +58,13 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
   return { type: 'FeatureCollection', features }
 }
 
-export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
+export function LogisticsWidget() {
   const block = useBlock<LogisticsContent, CaseStudySettings>('logistics')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('logistics', block?.content.sectionLabel ?? '')
   const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'logistics', sectionRef)
   const [markerCount, setMarkerCount] = useState(0)
   const [isStressTesting, setIsStressTesting] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
@@ -127,7 +125,6 @@ export function LogisticsWidget({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'logistics'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >

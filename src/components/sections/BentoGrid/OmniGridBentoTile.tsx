@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useBlock } from '@/content/ContentProvider'
+import { useOpenSection } from '@/content/navigation'
 import type { BentoGridContent } from '@norav/content-schema'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
@@ -89,9 +90,8 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
   const visibleRows = table.getRowModel().rows.slice(0, 8)
 
-  const handleScrollTo = useCallback(() => {
-    document.getElementById('omnigrid')?.scrollIntoView({ behavior: 'smooth' })
-  }, [])
+  // Opens the OmniGrid case study — its page, or its section if it is on this one.
+  const openCaseStudy = useOpenSection('omnigrid')
 
   return (
     <div
@@ -228,7 +228,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
 
         {/* CTA */}
         <MagneticButton
-          onClick={handleScrollTo}
+          onClick={openCaseStudy}
           aria-label={copy?.cta ?? ''}
           className="type-label inline-flex items-center gap-2.5 text-secondary-400/80 group/btn hover:text-secondary-300 transition-colors duration-300"
         >

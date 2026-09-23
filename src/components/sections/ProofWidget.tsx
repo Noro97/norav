@@ -1,6 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
@@ -46,14 +45,13 @@ type PipelineStatus = 'idle' | 'running' | 'done'
 const STEP_DURATION = 800
 const REP_INTERVAL = 250
 
-export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
+export function ProofWidget() {
   const block = useBlock<CaseStudyContent, CaseStudySettings>('proof')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('proof', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'proof', sectionRef)
 
   const [selectedActivity, setSelectedActivity] = useState(0)
   const [livenessChallenge, setLivenessChallenge] = useState(
@@ -241,7 +239,6 @@ export function ProofWidget({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'proof'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >

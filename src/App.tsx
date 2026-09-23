@@ -4,7 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useScrollTracking } from '@/hooks/useScrollTracking'
-import { useHashScroll } from '@/hooks/useHashScroll'
+import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate'
+import { useRouterLinks } from '@/hooks/useRouterLinks'
 import { Navigation } from '@/components/navigation/Navigation'
 import { ScrollProgress } from '@/components/navigation/ScrollProgress'
 import { BlockRenderer } from '@/content/BlockRenderer'
@@ -39,9 +40,10 @@ function App() {
   }, [isMobile, setIsMobile])
 
   useScrollTracking()
-  useHashScroll()
+  useScrollToTopOnNavigate()
 
   const mainRef = useRef<HTMLElement>(null)
+  useRouterLinks(mainRef)
 
   // Refresh ScrollTrigger when lazy sections change page height — the progress
   // bar is still measured by it.

@@ -35,7 +35,7 @@ function Counter({ stat, run }: { stat: Stat; run: boolean }) {
   )
 }
 
-export function ImpactStrip({ anchorId }: { anchorId?: string | null }) {
+export function ImpactStrip() {
   const block = useBlock<ImpactStripContent, ImpactStripSettings>('impact_strip')
   const ref = useRef<HTMLElement>(null)
   const [run, setRun] = useState(false)
@@ -62,7 +62,6 @@ export function ImpactStrip({ anchorId }: { anchorId?: string | null }) {
   return (
     <section
       ref={ref}
-      {...(anchorId ? { id: anchorId } : {})}
       className="relative px-gutter-x py-16"
       aria-label={content.label}
     >

@@ -1,8 +1,6 @@
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-import { useCollection, useContent } from '@/content/ContentProvider'
-import { useAppStore } from '@/store/useAppStore'
+import { useContent } from '@/content/ContentProvider'
 import { PageHead, SITE } from '@/content/PageHead'
 import { hrefFor } from '@/content/routing'
 import { postDate, WRITING_SLUG, type Post } from '@/content/posts'
@@ -19,14 +17,6 @@ export function PostPage({ post }: { post: Post }) {
   const { t } = useTranslation('common')
   const { locale } = useContent()
   const slug = `${WRITING_SLUG}/${post.slug}`
-  // A post has no sections for the menu to follow as it scrolls, so it says
-  // where it belongs: under whichever menu item leads to the Writing page.
-  const menu = useCollection<{ page: string; anchor: string }>('navigation')
-  const writingAnchor = menu.find((row) => row.data.page === WRITING_SLUG)?.data.anchor
-  useEffect(() => {
-    if (writingAnchor) useAppStore.getState().setActiveSection(writingAnchor)
-  }, [writingAnchor])
-
   const image = post.cover ? (/^https?:\/\//.test(post.cover) ? post.cover : `${SITE}${post.cover}`) : undefined
 
   return (

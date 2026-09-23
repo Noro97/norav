@@ -1,17 +1,15 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import type { TerminalFooterContent, TerminalFooterSettings } from '@norav/content-schema'
 import { useTerminal } from '@/hooks/useTerminal'
 import { ScrambleText } from '@/components/ui/effects/ScrambleText'
 
-export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
+export function TerminalFooter() {
   const block = useBlock<TerminalFooterContent, TerminalFooterSettings>('terminal_footer')
   const { t } = useTranslation(['terminal', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'terminal', sectionRef)
   const outputRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { lines, input, setInput, handleKeyDown } = useTerminal()
@@ -30,7 +28,6 @@ export function TerminalFooter({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'terminal'}
       ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center px-gutter-x py-24"
     >

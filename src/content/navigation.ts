@@ -1,24 +1,30 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { SECTIONS } from '@/lib/constants'
 import { useAnchorPages, useCollection, useContent } from './ContentProvider'
-import { HOME_SLUG, SITE_SLUG, hrefFor } from './routing'
+import { HOME_SLUG, hrefFor, readPath } from './routing'
 
 interface NavigationRow {
   /** Localised, so it comes from the entry's content rather than its data. */
   label: string
   page: string
-  anchor: string
+  /**
+   * Entries written before the menu went route-only still carry the section
+   * they used to scroll to. It is read only to follow a section that has
+   * moved to another page (resolveTarget); nothing links to it.
+   */
+  anchor?: string
   external: string
 }
 
 export interface NavItem {
   id: string
   label: string
-  /** Where it goes: an href for a link, or a hash for a section on this page. */
+  /** A route in this site, or a full URL when `external`. Never a hash. */
   href: string
-  /** The anchor it points at, when it has one — the nav highlights by this. */
-  anchor: string | null
+  /** The page the item leads to — what decides whether it is the active one. */
+  page: string | null
   external: boolean
 }
 
@@ -29,10 +35,10 @@ export interface NavItem {
  * out here: renaming a page in the admin moves its menu item with it, and there
  * is no second place holding a URL that can quietly stop matching.
  *
- * Two cases keep a link on the current page rather than sending the reader
- * somewhere. A section that is already here is a scroll. And a section on the
- * `site` page is the chrome — the footer — which renders below every page, so
- * linking to its own address would be a page nobody means to visit.
+ * Every item is a route. The site used to be one long page, where the menu
+ * scrolled to sections and wrote their anchors into the address; each of those
+ * sections is a page of its own now, and an address like /about#about said the
+ * same thing twice.
  *
  * Items whose page no longer exists are dropped rather than rendered as dead
  * links. Hiding a page hides the way to it, which is what an editor means by
@@ -41,13 +47,13 @@ export interface NavItem {
 /**
  * Which page an item points at.
  *
- * The editor's choice first. The anchor index answers only when the chosen page
- * does not hold that section — which means the section moved, and following it
- * beats pointing at where it used to be.
+ * The page the editor chose, whenever it is there to go to. A page is the
+ * whole address now: an item that also names a section (older entries do) does
+ * not get sent elsewhere because that section moved — the editor picked a page,
+ * and a menu item that silently leads somewhere else is the harder bug to see.
  *
- * The other order made the Page field inert: every item has an anchor, so the
- * index would have decided all of them and the control would have changed
- * nothing.
+ * The section answers only when the chosen page is missing or empty, which is
+ * the one case where following it beats a dead link.
  */
 export function resolveTarget(
   pages: { slug: string; blocks: { anchorId?: string | null }[] }[],
@@ -55,16 +61,12 @@ export function resolveTarget(
   anchor: string,
   anchorPages: Map<string, string>,
 ): string {
-  const holdsAnchor =
-    !anchor ||
-    pages.some(
-      (candidate) =>
-        candidate.slug === page && candidate.blocks.some((block) => block.anchorId === anchor),
-    )
-  return (page && holdsAnchor ? page : anchorPages.get(anchor)) || page || HOME_SLUG
+  const chosen = page && pages.find((candidate) => candidate.slug === page)
+  if (chosen && chosen.blocks.length > 0) return page
+  return anchorPages.get(anchor) || page || HOME_SLUG
 }
 
-export function useNavigation(here: string): NavItem[] {
+export function useNavigation(): NavItem[] {
   const rows = useCollection<NavigationRow>('navigation')
   const { snapshot, locale } = useContent()
   const anchorPages = useAnchorPages()
@@ -81,7 +83,6 @@ export function useNavigation(here: string): NavItem[] {
         : SECTIONS.map((section, index) => ({
             id: `fallback-${index}`,
             page: anchorPages.get(section.id) ?? HOME_SLUG,
-            anchor: section.id,
             external: '',
             label: t(section.labelKey),
           }))
@@ -90,26 +91,63 @@ export function useNavigation(here: string): NavItem[] {
 
     for (const { id, label, page, anchor, external } of source) {
       if (external) {
-        items.push({ id, label, href: external, anchor: null, external: true })
+        items.push({ id, label, href: external, page: null, external: true })
         continue
       }
 
-      const target = resolveTarget(snapshot.pages, page, anchor, anchorPages)
+      const target = resolveTarget(snapshot.pages, page, anchor ?? '', anchorPages)
+      if (!snapshot.pages.some((candidate) => candidate.slug === target)) continue
 
-      const exists = snapshot.pages.some((candidate) => candidate.slug === target)
-      if (!exists) continue
-
-      const local = target === here || target === SITE_SLUG
-      const hash = anchor ? `#${anchor}` : ''
-      items.push({
-        id,
-        label,
-        href: local ? hash || hrefFor(target, locale) : `${hrefFor(target, locale)}${hash}`,
-        anchor: anchor || null,
-        external: false,
-      })
+      items.push({ id, label, href: hrefFor(target, locale), page: target, external: false })
     }
 
     return items
-  }, [rows, snapshot, locale, anchorPages, here, t])
+  }, [rows, snapshot, locale, anchorPages, t])
+}
+
+/**
+ * The item the reader is under: the one whose page is this address, or the
+ * nearest page above it — a post at writing/<slug> is under Writing, a case
+ * study at projects/merch under Projects. Home only at home, or it would be
+ * above everything. When two items lead to one page, the first wins, so the
+ * menu never lights up twice.
+ */
+export function activeNavItem(items: NavItem[], here: string): NavItem | undefined {
+  let best: NavItem | undefined
+  for (const item of items) {
+    const page = item.page
+    if (!page) continue
+    const under = page === here || (page !== HOME_SLUG && here.startsWith(`${page}/`))
+    if (under && (!best || page.length > (best.page?.length ?? 0))) best = item
+  }
+  return best
+}
+
+/**
+ * Opens a section by its anchor: the page that holds it, by route.
+ *
+ * For code that names a section rather than a page — a bento tile knows it
+ * opens "merch", not which address the merch case study lives at. The CMS
+ * decides that, and moving the section to another page moves the link.
+ *
+ * When the section is on this very page there is nowhere to route to, so it
+ * scrolls there instead — found by the renderer's `data-section`, and without
+ * touching the address.
+ */
+export function useOpenSection(anchor: string): () => void {
+  const anchorPages = useAnchorPages()
+  const { locale } = useContent()
+  const navigate = useNavigate()
+  const here = readPath(useLocation().pathname).slug
+  const page = anchorPages.get(anchor) ?? HOME_SLUG
+
+  return useCallback(() => {
+    if (page === here) {
+      document
+        .querySelector(`[data-section="${CSS.escape(anchor)}"]`)
+        ?.firstElementChild?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    navigate(hrefFor(page, locale))
+  }, [anchor, page, here, locale, navigate])
 }

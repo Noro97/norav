@@ -23,7 +23,7 @@ function needsLeadingSpace(text: string): boolean {
  * Scroll-reveal band that opens the case studies. The copy used to be inline in
  * App.tsx — English only, invisible to i18n — and now comes from the CMS.
  */
-export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
+export function ProjectsIntro() {
   const block = useBlock<ProjectsIntroContent, ProjectsIntroSettings>('projects_intro')
   // Whatever case studies have a page of their own. Empty while they all still
   // sit below this band, which is exactly when a list of links would be wrong.
@@ -34,7 +34,7 @@ export function ProjectsIntro({ anchorId }: { anchorId?: string | null }) {
   const { content, settings } = block
 
   return (
-    <section id={anchorId ?? 'projects-intro'} className="relative">
+    <section className="relative">
       <ContainerScroll
         titleComponent={
           <>

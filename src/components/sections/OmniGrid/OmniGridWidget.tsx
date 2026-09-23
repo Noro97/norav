@@ -9,7 +9,6 @@ import {
   flexRender,
   type SortingState,
 } from '@tanstack/react-table'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
@@ -34,14 +33,13 @@ const CACHE_COLORS: Record<string, string> = {
 }
 
 
-function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
+function OmniGridContent() {
   const block = useBlock<CaseStudyContent, CaseStudySettings>('omnigrid')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('omnigrid', block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'omnigrid', sectionRef)
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -96,7 +94,6 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'omnigrid'}
       ref={sectionRef}
       className="relative px-gutter-x py-28 md:py-36"
     >
@@ -328,10 +325,10 @@ function OmniGridContent({ anchorId }: { anchorId?: string | null }) {
   )
 }
 
-export function OmniGridWidget({ anchorId }: { anchorId?: string | null }) {
+export function OmniGridWidget() {
   return (
     <QueryClientProvider client={queryClient}>
-      <OmniGridContent anchorId={anchorId} />
+      <OmniGridContent />
     </QueryClientProvider>
   )
 }

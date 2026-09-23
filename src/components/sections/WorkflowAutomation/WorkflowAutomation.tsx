@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { WorkflowDiagram } from './WorkflowDiagram'
 import { WORKFLOWS } from './workflow.data'
 import { useBlock } from '@/content/ContentProvider'
@@ -12,10 +11,9 @@ import type { WorkflowContent, WorkflowSettings } from '@norav/content-schema'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
+export function WorkflowAutomation() {
   const block = useBlock<WorkflowContent, WorkflowSettings>('workflow')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'workflows', sectionRef)
   const [animate, setAnimate] = useState(false)
 
   useGSAP(() => {
@@ -64,7 +62,6 @@ export function WorkflowAutomation({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'workflows'}
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >

@@ -1,5 +1,4 @@
 import { Fragment, useRef, useState } from 'react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { toneOf, type Tone } from '@/content/accent'
@@ -56,10 +55,9 @@ function needsLeadingSpace(text: string): boolean {
   return !/^[.,;:!?)\]]/.test(text)
 }
 
-export function AboutHero({ anchorId }: { anchorId?: string | null }) {
+export function AboutHero() {
   const block = useBlock<AboutContent, AboutSettings>('about')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver('about', sectionRef)
 
   const [emailCopied, setEmailCopied] = useState<{ x: number; y: number } | null>(null)
 
@@ -70,7 +68,6 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'about'}
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-gutter-x py-24"
     >

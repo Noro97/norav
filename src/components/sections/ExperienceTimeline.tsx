@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock, useCollection } from '@/content/ContentProvider'
 import { EffectCard, type CardEffect } from '@/components/ui/effects/EffectCard'
@@ -21,11 +20,10 @@ function InteractiveImageCard({ src, alt, effect }: { src: string; alt: string; 
   )
 }
 
-export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
+export function ExperienceTimeline() {
   const block = useBlock<ExperienceBlockContent, ExperienceSettings>('experience')
   const roles = useCollection<ExperienceRow>('experience')
   const sectionRef = useRef<HTMLDivElement>(null)
-  useSectionObserver(anchorId ?? 'experience', sectionRef)
 
   useReveal(sectionRef, '.exp-card')
 
@@ -34,7 +32,6 @@ export function ExperienceTimeline({ anchorId }: { anchorId?: string | null }) {
 
   return (
     <section
-      id={anchorId ?? 'experience'}
       ref={sectionRef}
       className="relative px-gutter-x py-24"
     >
