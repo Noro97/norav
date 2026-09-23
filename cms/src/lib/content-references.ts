@@ -1,4 +1,5 @@
 import { query } from './db'
+import { toMediaRef } from './media-refs'
 
 /**
  * Where a media URL can be referenced, as [table, jsonb column, id column].
@@ -61,16 +62,19 @@ export async function repointReferences(from: string, to: string): Promise<numbe
 }
 
 /**
- * What names each media URL, as labels a person can act on.
+ * What names each library file, as labels a person can act on, keyed by id.
  *
  * The point is the moment before a delete: "used by Bento grid, About" is the
  * difference between removing a spare copy and removing the photo on the live
- * site. Deduplicated per locale — a file used in both translations of one block
- * is one place, not two.
+ * site. A file is named either by its `media:<id>` reference or, in content
+ * written before references, by its URL — both count. Deduplicated per locale:
+ * a file used in both translations of one block is one place, not two.
  */
-export async function findUsage(urls: string[]): Promise<Map<string, string[]>> {
+export async function findUsage(
+  files: { id: string; url: string }[],
+): Promise<Map<string, string[]>> {
   const usage = new Map<string, Set<string>>()
-  if (urls.length === 0) return new Map()
+  if (files.length === 0) return new Map()
 
   const label = async (site: (typeof REFERENCE_SITES)[number], key: string): Promise<string> => {
     if (site.table.startsWith('block')) {
@@ -90,13 +94,17 @@ export async function findUsage(urls: string[]): Promise<Map<string, string[]>> 
         ${site.translated ? '' : 'where deleted_at is null'}`,
     )
     for (const row of rows) {
-      for (const url of urls) {
-        if (!row.text.includes(url)) continue
-        if (!usage.has(url)) usage.set(url, new Set())
-        usage.get(url)!.add(await label(site, row.key))
+      for (const file of files) {
+        // Quoted, so one id or URL cannot match inside a longer one.
+        const named =
+          row.text.includes(JSON.stringify(toMediaRef(file.id))) ||
+          row.text.includes(JSON.stringify(file.url))
+        if (!named) continue
+        if (!usage.has(file.id)) usage.set(file.id, new Set())
+        usage.get(file.id)!.add(await label(site, row.key))
       }
     }
   }
 
-  return new Map([...usage].map(([url, places]) => [url, [...places].sort()]))
+  return new Map([...usage].map(([id, places]) => [id, [...places].sort()]))
 }

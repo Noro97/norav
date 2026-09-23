@@ -32,7 +32,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
   if (!media) return notFound('File')
 
   if (new URL(request.url).searchParams.get('force') !== '1') {
-    const usage = (await findUsage([media.url])).get(media.url) ?? []
+    const usage = (await findUsage([media])).get(media.id) ?? []
     if (usage.length > 0) {
       return fail(409, {
         code: 'in_use',

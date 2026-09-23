@@ -58,10 +58,10 @@ export async function GET(request: Request) {
   // Carried on the list rather than fetched per file: the whole reason to show
   // it is the moment before a delete, and a count that arrives after the click
   // is too late to be worth anything.
-  const usage = await findUsage(media.map((item) => item.url))
+  const usage = await findUsage(media)
 
   return ok({
-    media: media.map((item) => ({ ...item, usedBy: usage.get(item.url) ?? [] })),
+    media: media.map((item) => ({ ...item, usedBy: usage.get(item.id) ?? [] })),
     storage: getStorage().kind,
   })
 }
