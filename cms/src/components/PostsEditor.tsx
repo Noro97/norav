@@ -138,7 +138,8 @@ export function PostsEditor({
     setFeedback(null)
   }
 
-  async function save(): Promise<boolean> {
+  /** `status` overrides the draft's — how Publish puts a draft post live. */
+  async function save(status?: Draft['status']): Promise<boolean> {
     if (!post || !draft) return false
     setBusy('save')
     setFeedback(null)
@@ -148,7 +149,7 @@ export function PostsEditor({
       body: JSON.stringify({
         version: post.version,
         slug: draft.slug,
-        status: draft.status,
+        status: status ?? draft.status,
         publishedAt: draft.date ? new Date(draft.date).toISOString() : null,
         cover: draft.cover,
         tags: draft.tags
@@ -190,8 +191,20 @@ export function PostsEditor({
     return true
   }
 
+  /**
+   * Publish, from a post, means this post. The site-wide publish alone left a
+   * draft post a draft — the site went out without it and nothing said why —
+   * so a post that is not yet published is published first, after asking.
+   */
   async function publish() {
-    if (dirty && !(await save())) return
+    if (!draft) return
+    if (draft.status !== 'published') {
+      const when = draft.date && new Date(draft.date) > new Date() ? `on ${new Date(draft.date).toLocaleString()}` : 'now'
+      if (!window.confirm(`Publish "${draft.title || 'this post'}"? It goes on the site ${when}.`)) return
+      if (!(await save('published'))) return
+    } else if (dirty && !(await save())) {
+      return
+    }
     setBusy('publish')
     const response = await fetch('/api/admin/publish', {
       method: 'POST',
@@ -321,7 +334,7 @@ export function PostsEditor({
               {busy === 'save' ? 'Saving…' : 'Save'}
             </button>
             <button type="button" className="primary" onClick={() => void publish()} disabled={busy !== null}>
-              {busy === 'publish' ? 'Publishing…' : 'Publish'}
+              {busy === 'publish' ? 'Publishing…' : draft.status === 'published' ? 'Publish' : 'Publish post'}
             </button>
           </div>
 
@@ -373,8 +386,8 @@ export function PostsEditor({
                 </select>
                 <small className="subtle">
                   {draft.status === 'published'
-                    ? 'Goes on the site with the next Publish.'
-                    : 'Stays off the site.'}
+                    ? 'On the site from its date, once published.'
+                    : 'Stays off the site. Publish post puts it on.'}
                 </small>
               </label>
 
