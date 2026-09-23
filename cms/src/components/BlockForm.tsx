@@ -139,6 +139,7 @@ function Field({ field, prefix, ...form }: FieldProps) {
         help={help}
         rows={rows}
         itemLabel={field.itemLabel}
+        mediaFields={children.filter((child) => child.control === 'media').map((child) => child.field)}
         disabled={disabled}
         canAdd={canAdd}
         canRemove={canRemove}
@@ -313,6 +314,7 @@ function RepeaterField({
   help,
   rows,
   itemLabel,
+  mediaFields,
   disabled,
   canAdd,
   canRemove,
@@ -325,6 +327,8 @@ function RepeaterField({
   help?: string
   rows: Record<string, unknown>[]
   itemLabel?: string
+  /** The row's image fields. Only these make a thumbnail — a link is a URL too. */
+  mediaFields: string[]
   disabled?: boolean
   canAdd: boolean
   canRemove: boolean
@@ -335,9 +339,13 @@ function RepeaterField({
 }) {
   const [editing, setEditing] = useState<number | null>(null)
 
-  /** The first image in a row, if it has one — what the row looks like. */
+  /**
+   * The first image in a row, if it has one — what the row looks like. Read
+   * from the fields declared as media, not from any string that looks like a
+   * URL: that guess drew a social link's profile address as a broken image.
+   */
   const thumbnail = (row: Record<string, unknown>): string | null => {
-    for (const value of Object.values(row)) {
+    for (const value of mediaFields.map((field) => row[field])) {
       if (typeof value === 'string' && /^https?:\/\//.test(value) && !/\.pdf$/i.test(value)) {
         return value
       }
