@@ -128,7 +128,7 @@ export function AboutHero({ anchorId }: { anchorId?: string | null }) {
                             setEmailCopied({ x: e.clientX, y: e.clientY })
                             setTimeout(() => setEmailCopied(null), 600)
                           } : undefined}
-                          className={`group relative w-11 h-11 rounded-xl border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${isMail ? 'cursor-pointer' : ''}`}
+                          className={`press group relative w-11 h-11 rounded-xl border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${isMail ? 'cursor-pointer' : ''}`}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.borderColor = `${art.color}40`
                             e.currentTarget.style.color = art.color

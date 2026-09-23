@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AnimatePresence } from 'framer-motion'
 import { useSectionObserver } from '@/hooks/useSectionObserver'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
@@ -8,6 +9,8 @@ import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 import type { FilterState, Product } from '@/types'
 import { ProductDetailModal } from './ProductDetailModal'
+import { originOf } from '@/lib/motion'
+import type { ModalOrigin } from '@/components/ui/ModalShell'
 
 // A tint per category, from the three roles — the difference between two
 // tiles is the hue of the accent, not a fourth colour.
@@ -141,6 +144,8 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
   const [filters, setFilters] = useState<FilterState>(parseFiltersFromURL)
   const [page, setPage] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  // Where the card was clicked — the modal grows out of that point.
+  const [modalOrigin, setModalOrigin] = useState<ModalOrigin | null>(null)
 
   useReveal(sectionRef, '.ecom-sidebar, .ecom-grid')
 
@@ -364,8 +369,18 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
                 {paginatedProducts.map((product) => (
                   <div
                     key={product.id}
-                    onClick={() => setSelectedProduct(product)}
-                    className="case-study-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => {
+                      setModalOrigin(originOf(e))
+                      setSelectedProduct(product)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key !== 'Enter' && e.key !== ' ') return
+                      e.preventDefault()
+                      e.currentTarget.click()
+                    }}
+                    className="press case-study-card p-3 group cursor-pointer hover:-translate-y-0.5 transition-transform"
                   >
                     <div
                       className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-tertiary-ink/5 to-transparent'} border border-tertiary-ink/[0.04]`}
@@ -446,12 +461,15 @@ export function EcommerceWidget({ anchorId }: { anchorId?: string | null }) {
           </div>
         )}
       </div>
-      {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductDetailModal
+            product={selectedProduct}
+            origin={modalOrigin}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
