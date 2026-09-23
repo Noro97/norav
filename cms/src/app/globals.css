@@ -10,6 +10,10 @@
   --ok: #22c55e;
   --warn: #eab308;
   --radius: 10px;
+  /* Behind every thumbnail. Transparent files — most SVGs — show whatever is
+     under them, and no single colour suits them all: a navy drawing vanished
+     on the old black. Two far-apart tones mean any fill contrasts with half. */
+  --checker: repeating-conic-gradient(#3a3a46 0% 25%, #d8d8de 0% 50%) 50% / 12px 12px;
   --font: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
 }
@@ -335,7 +339,7 @@ fieldset > .help { margin-bottom: 14px; }
   overflow: hidden; display: block; text-align: left;
 }
 .media-card:hover { border-color: rgba(181, 26, 43, 0.4); }
-.media-card img { width: 100%; height: 100px; object-fit: cover; display: block; background: #000; }
+.media-card img { width: 100%; height: 100px; object-fit: cover; display: block; background: var(--checker); }
 .media-meta {
   display: block; padding: 6px 8px;
   font-family: var(--mono); font-size: 10px; color: var(--muted);
@@ -351,7 +355,7 @@ fieldset > .help { margin-bottom: 14px; }
 .media-field { display: flex; align-items: center; gap: 10px; }
 .media-field img {
   width: 56px; height: 40px; object-fit: cover;
-  border-radius: 6px; border: 1px solid var(--border); background: #000;
+  border-radius: 6px; border: 1px solid var(--border); background: var(--checker);
 }
 .media-field .path {
   flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -418,7 +422,7 @@ fieldset > .help { margin-bottom: 14px; }
   align-items: center;
   justify-content: center;
 }
-.media-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.media-thumb img { width: 100%; height: 100%; object-fit: cover; background: var(--checker); }
 .media-doc { font-family: var(--mono); font-size: 11px; color: var(--muted); }
 
 .media-facts { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -487,6 +491,12 @@ table.rows td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--m
 .repeat-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px; }
 .repeat-row .index { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
 .repeat-thumb { width: 34px; height: 34px; border-radius: 5px; object-fit: cover; background: var(--panel-2); flex-shrink: 0; }
+img.repeat-thumb { background: var(--checker); }
+/* A drawing cropped to fill the box loses its edges — often the whole point. */
+.media-card img[src$=".svg"],
+.media-field img[src$=".svg"],
+.media-thumb img[src$=".svg"],
+img.repeat-thumb[src$=".svg"] { object-fit: contain; }
 .repeat-thumb-empty { display: block; }
 .repeat-open {
   flex: 1; background: none; border: 0; padding: 0; cursor: pointer;

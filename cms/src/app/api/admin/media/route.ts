@@ -5,6 +5,7 @@ import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, invalid, ok } from '@/lib/http'
 import { getStorage } from '@/lib/storage'
+import { inspectSvg } from '@/lib/svg'
 import { findUsage } from '@/lib/content-references'
 
 export const runtime = 'nodejs'
@@ -92,9 +93,16 @@ export async function POST(request: Request) {
   const bytes = Buffer.from(await file.arrayBuffer())
 
   // Dimensions let the site reserve layout space, which is the difference
-  // between a smooth load and a jumping page. SVG has none to read.
+  // between a smooth load and a jumping page. An SVG's come from its own
+  // attributes, read while checking it is safe to store.
   let width: number | null = null
   let height: number | null = null
+  if (file.type === 'image/svg+xml') {
+    const svg = inspectSvg(bytes)
+    if (svg.problem) return fail(422, { code: 'unsafe_svg', message: svg.problem })
+    width = svg.width
+    height = svg.height
+  }
   if (hasDimensions(file.type)) {
     try {
       const sharp = (await import('sharp')).default
