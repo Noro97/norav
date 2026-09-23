@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Brand } from '@/components/Logo'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -35,9 +36,7 @@ export default function LoginPage() {
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
-        <p className="brand">
-          norav<span>.</span>cms
-        </p>
+        <Brand />
         <p className="brand-sub">Sign in to edit the site</p>
 
         {error && <div className="status err">{error}</div>}

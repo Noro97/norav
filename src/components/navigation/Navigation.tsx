@@ -8,6 +8,7 @@ import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
 import { SPRING } from '@/lib/motion'
+import { Logo } from '@/components/brand/Logo'
 
 /** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
 interface SiteSettings {
@@ -90,10 +91,14 @@ export function Navigation() {
       {/* Logo */}
       <Link
         to={hrefFor(HOME_SLUG, locale)}
-        className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+        aria-label="norav.dev"
+        className="flex items-center gap-2 text-tertiary-ink hover:opacity-80 transition-opacity"
       >
-        <span className="hidden sm:inline font-mono text-body-small font-semibold tracking-widest uppercase">
-          <span className="text-primary-500">nor</span><span className="text-primary-500">av</span><span className="text-tertiary-ink/45">.</span><span className="text-primary-500">dev</span>
+        {/* The mark carries its own dot, so the domain is only the word
+            after it: [NORAV.] DEV. */}
+        <Logo className="h-6 w-auto" />
+        <span className="font-mono text-body-small font-semibold tracking-widest uppercase text-primary-500">
+          dev
         </span>
       </Link>
 
