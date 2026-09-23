@@ -2,16 +2,18 @@ import { query, queryOne } from '@/lib/db'
 import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, notFound, ok } from '@/lib/http'
-import { getStorage } from '@/lib/storage'
 import { findUsage } from '@/lib/content-references'
+import { purgeIfUnpublished } from '@/lib/media-retention'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * Soft-deletes the row and removes the bytes. The row is kept so that a page
- * still pointing at the file can be traced, rather than the reference simply
- * becoming a dead URL with no way back to what it was.
+ * Soft-deletes the row and removes the bytes — unless a recent publication
+ * still shows them, in which case they stay until a publish that does not (see
+ * lib/media-retention). The row is kept so that a page still pointing at the
+ * file can be traced, rather than the reference simply becoming a dead URL
+ * with no way back to what it was.
  *
  * A file the content still names is refused. Nothing used to stop that, and the
  * result was an image that vanished for visitors while the admin looked fine —
@@ -39,8 +41,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     }
   }
 
-  await getStorage().remove(media.storage_key)
   await query(`update media set deleted_at = now() where id = $1`, [id])
+  const purged = await purgeIfUnpublished(media)
 
   await audit({
     actorId: auth.user.id,
@@ -48,7 +50,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     entityType: 'media',
     entityId: id,
     ip: clientIp(request),
+    diff: { purged },
   })
 
-  return ok({ id, deleted: true })
+  return ok({ id, deleted: true, purged })
 }

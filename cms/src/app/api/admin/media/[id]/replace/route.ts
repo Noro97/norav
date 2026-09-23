@@ -6,6 +6,7 @@ import { fail, invalid, ok } from '@/lib/http'
 import { getStorage } from '@/lib/storage'
 import { inspectSvg } from '@/lib/svg'
 import { repointReferences } from '@/lib/content-references'
+import { purgeIfUnpublished } from '@/lib/media-retention'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -35,8 +36,17 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   if ('response' in auth) return auth.response
 
   const { id } = await context.params
-  const existing = await queryOne<{ url: string; storage_key: string }>(
-    `select url, storage_key from media where id = $1 and deleted_at is null`,
+  const existing = await queryOne<{
+    url: string
+    storage_key: string
+    mime: string
+    width: number | null
+    height: number | null
+    size_bytes: string | null
+    alt: Record<string, string>
+  }>(
+    `select url, storage_key, mime, width, height, size_bytes::text, alt
+       from media where id = $1 and deleted_at is null`,
     [id],
   )
   if (!existing) return fail(404, { code: 'not_found', message: 'That file is not in the library.' })
@@ -92,12 +102,30 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
 
   const repointed = await repointReferences(existing.url, stored.url)
 
-  // Only after the content no longer names it. A failure above leaves the old
-  // file in place and the entry pointing at it, which is a state you can retry
-  // from; deleting first would not be.
-  await storage.remove(existing.storage_key).catch((error) => {
-    console.warn('[media] could not remove the replaced file', error)
-  })
+  // The old bytes outlive the drafts that named them: the live publication,
+  // and the snapshot baked into the site, still do until the next publish. So
+  // they become a retired row of their own — deleted, not yet purged — and go
+  // now only if nothing published names them; otherwise the publish sweep
+  // takes them. Only after the drafts are repointed, so a failure above leaves
+  // the old file in place and the entry pointing at it, which is a state you
+  // can retry from.
+  const retired = await queryOne<{ id: string }>(
+    `insert into media (storage_key, url, mime, width, height, size_bytes, alt, deleted_at)
+     values ($1, $2, $3, $4, $5, $6, $7, now()) returning id`,
+    [
+      existing.storage_key,
+      existing.url,
+      existing.mime,
+      existing.width,
+      existing.height,
+      existing.size_bytes,
+      JSON.stringify(existing.alt),
+    ],
+  )
+  if (retired) {
+    await purgeIfUnpublished({ id: retired.id, storage_key: existing.storage_key, url: existing.url })
+      .catch((error) => console.warn('[media] could not remove the replaced file', error))
+  }
 
   await audit({
     actorId: auth.user.id,
