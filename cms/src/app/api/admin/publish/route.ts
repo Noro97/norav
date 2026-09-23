@@ -4,6 +4,7 @@ import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, ok } from '@/lib/http'
 import { buildPublication, stampVersion } from '@/lib/publish'
+import { purgeRetired } from '@/lib/media-retention'
 import { LOCALES } from '@norav/content-schema'
 
 export const runtime = 'nodejs'
@@ -73,6 +74,13 @@ export async function POST(request: Request) {
     diff: { version, checksum: built.checksum, note },
   })
 
+  // Files retired since the last publish may have just stopped being shown.
+  // A failed sweep costs storage, not the publish, and is retried next time.
+  const purged = await purgeRetired().catch((error) => {
+    console.warn('[media] purge after publish failed', error)
+    return 0
+  })
+
   const rebuild = await triggerSiteRebuild()
 
   return ok({
@@ -80,6 +88,7 @@ export async function POST(request: Request) {
     checksum: built.checksum,
     publishedAt: row?.published_at,
     unchanged: false,
+    purged,
     rebuild,
   })
 }

@@ -834,6 +834,20 @@ await expectError(
   check('the nav indicator survives', site.value.navIndicator === 'gooey')
 }
 
+{
+  // 0028 lets a retired file keep its bytes until no recent publication names
+  // it. `purged_at` is the only thing that tells a retired row with bytes from
+  // one without, so a fresh delete must leave it null for the sweep to find.
+  const {
+    rows: [row],
+  } = await db.query(
+    `insert into media (storage_key, url, mime, deleted_at)
+     values ('retired.png', 'https://store/retired.png', 'image/png', now())
+     returning purged_at`,
+  )
+  check('a freshly retired file awaits the sweep', row.purged_at === null)
+}
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
