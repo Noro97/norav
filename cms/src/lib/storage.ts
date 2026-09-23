@@ -91,3 +91,17 @@ export function getStorage(): Storage {
   const token = process.env.BLOB_READ_WRITE_TOKEN
   return token ? createBlobStorage(token) : createLocalStorage()
 }
+
+/**
+ * Whether this process may delete stored files.
+ *
+ * Not when the files are the blob store's and the database is the embedded
+ * one. That pairing is a laptop that pulled production (`pull:production`
+ * copies the media rows, which name the live blob URLs) and has the blob token
+ * in its .env: deleting there removes a file production still shows, while
+ * production's own rows go on pointing at it. The laptop keeps its soft
+ * delete; the bytes are left for production to decide about.
+ */
+export function mayRemoveFiles(): boolean {
+  return getStorage().kind === 'local' || Boolean(process.env.DATABASE_URL)
+}

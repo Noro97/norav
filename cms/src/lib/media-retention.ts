@@ -1,5 +1,5 @@
 import { query, queryOne } from './db'
-import { getStorage } from './storage'
+import { getStorage, mayRemoveFiles } from './storage'
 
 /**
  * How many publications back a file must be unnamed before its bytes go.
@@ -35,6 +35,10 @@ export async function purgeIfUnpublished(row: {
   url: string
 }): Promise<boolean> {
   if (await isPublished(row.url)) return false
+  if (!mayRemoveFiles()) {
+    console.warn(`[media] kept ${row.storage_key}: the blob store is production's, the database is not`)
+    return false
+  }
   await getStorage().remove(row.storage_key)
   await query(`update media set purged_at = now() where id = $1`, [row.id])
   return true
