@@ -4,6 +4,7 @@ import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, invalid, ok } from '@/lib/http'
 import { getStorage } from '@/lib/storage'
+import { inspectSvg } from '@/lib/svg'
 import { repointReferences } from '@/lib/content-references'
 
 export const runtime = 'nodejs'
@@ -62,6 +63,12 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
 
   let width: number | null = null
   let height: number | null = null
+  if (file.type === 'image/svg+xml') {
+    const svg = inspectSvg(bytes)
+    if (svg.problem) return fail(422, { code: 'unsafe_svg', message: svg.problem })
+    width = svg.width
+    height = svg.height
+  }
   if (file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
     try {
       const sharp = (await import('sharp')).default

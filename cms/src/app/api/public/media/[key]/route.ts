@@ -26,6 +26,10 @@ export async function GET(request: Request, context: { params: Promise<{ key: st
       headers: {
         'Content-Type': file.contentType,
         'Cache-Control': 'public, max-age=31536000, immutable',
+        // What Vercel Blob sends for the same files in production: an SVG
+        // opened by its URL is a document, and this keeps it inert.
+        'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:",
+        'X-Content-Type-Options': 'nosniff',
       },
     }),
     request,
