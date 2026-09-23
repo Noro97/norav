@@ -13,6 +13,7 @@ import {
   PlusIcon,
   RowsIcon,
   SiteIcon,
+  PenIcon,
 } from './icons'
 
 export interface PageSummary {
@@ -34,6 +35,8 @@ export type WorkspaceView =
   | { kind: 'theme' }
   | { kind: 'media' }
   | { kind: 'site-effects' }
+  /** The writing: every post, and the one open in the editor if any. */
+  | { kind: 'posts'; id?: string }
 
 /**
  * Moves between the page and the collections. Collections hold the rows that a
@@ -110,6 +113,18 @@ export function ViewSwitcher({
 
       <nav aria-label="Library">
         <p className="views-heading">Library</p>
+        <button
+          type="button"
+          className="view-item"
+          aria-current={view.kind === 'posts'}
+          disabled={disabled}
+          onClick={() => onChange({ kind: 'posts' })}
+        >
+          <span className="view-icon">
+            <PenIcon />
+          </span>
+          <span className="view-name">Posts</span>
+        </button>
         <button
           type="button"
           className="view-item"

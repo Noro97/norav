@@ -77,3 +77,10 @@ export const RowsIcon = () => (
     <rect x="3" y="14" width="18" height="6" rx="1.5" />
   </svg>
 )
+
+export const PenIcon = () => (
+  <svg {...base}>
+    <path d="M4 20h4L19 9l-4-4L4 16v4Z" />
+    <path d="m13.5 6.5 4 4" />
+  </svg>
+)

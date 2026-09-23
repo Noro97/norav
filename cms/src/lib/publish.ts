@@ -16,6 +16,7 @@ import {
 } from '@norav/content-schema'
 import { query } from './db'
 import { resolveMediaRefs } from './media-refs'
+import { readingMinutes, resolveHtmlMedia } from './post-html'
 
 /**
  * Turns the working tables into one immutable document per locale.
@@ -48,6 +49,18 @@ interface BlockRow {
   settings: Record<string, unknown>
   page_slug: string
   translations: Record<string, Record<string, unknown>>
+}
+
+interface PostRow {
+  id: string
+  slug: string
+  published_at: string
+  cover: string
+  tags: string[]
+  translations: Record<
+    string,
+    { title: string; excerpt: string; body_html: string; seo: Record<string, unknown> }
+  >
 }
 
 interface EntryRow {
@@ -114,6 +127,24 @@ export async function buildPublication(): Promise<PublishResult> {
     }
     return resolved.value as T
   }
+
+  // Only posts whose date has come: a later date is how a post is scheduled,
+  // and it goes out with the first publish after that moment.
+  const posts = await query<PostRow>(
+    `select p.id, p.slug, p.published_at, p.cover, p.tags,
+            coalesce(
+              jsonb_object_agg(
+                t.locale,
+                jsonb_build_object('title', t.title, 'excerpt', t.excerpt, 'body_html', t.body_html, 'seo', t.seo)
+              ) filter (where t.locale is not null),
+              '{}'::jsonb
+            ) as translations
+       from posts p
+       left join post_translations t on t.post_id = p.id
+      where p.deleted_at is null and p.status = 'published' and p.published_at <= now()
+      group by p.id
+      order by p.published_at desc`,
+  )
 
   const settingsRows = await query<{ key: string; value: unknown }>(`select key, value from settings`)
   const settings = Object.fromEntries(
@@ -202,6 +233,49 @@ export async function buildPublication(): Promise<PublishResult> {
         ),
       })
     }
+
+    // Posts are written in English first. A post with no Russian copy yet
+    // publishes its English under /ru rather than being missing there.
+    collections.posts = posts.flatMap((post): SnapshotEntry[] => {
+      const copy = post.translations[locale]?.title
+        ? post.translations[locale]
+        : post.translations[SOURCE_LOCALE]
+      const where = { page: '(posts)', block: post.slug, locale }
+      if (!copy?.title.trim() || !copy.body_html.trim()) {
+        problems.push({ ...where, path: 'body', message: 'A published post needs a title and a body.' })
+        return []
+      }
+      const body = resolveHtmlMedia(copy.body_html, mediaUrls)
+      for (const id of body.missing) {
+        problems.push({
+          ...where,
+          path: 'body',
+          message: `An image in the text (${id}) is no longer in the media library.`,
+        })
+      }
+      return [
+        {
+          id: post.id,
+          slug: post.slug,
+          data: withMedia(
+            {
+              title: copy.title,
+              excerpt: copy.excerpt,
+              bodyHtml: body.html,
+              cover: post.cover,
+              tags: post.tags,
+              publishedAt: new Date(post.published_at).toISOString(),
+              readingMinutes: readingMinutes(copy.body_html),
+              seo: copy.seo,
+              // Which language the copy is actually in, so the site can mark
+              // an English post under /ru for a screen reader.
+              lang: post.translations[locale]?.title ? locale : SOURCE_LOCALE,
+            },
+            where,
+          ),
+        },
+      ]
+    })
 
     locales[locale] = {
       version: 0, // replaced with the row id once the publication is inserted
