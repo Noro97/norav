@@ -130,7 +130,21 @@ describe('pullContent', () => {
     for (const table of ['blocks', 'block_translations', 'entries', 'entry_translations', 'settings', 'media', 'revisions', 'publications'] as const) {
       expect(await count(local, table), table).toBe(await count(live, table))
     }
-    expect(await count(local, 'block_translations')).toBe(2)
+    // Not a total: migrations seed translations of their own, so the count
+    // grows with every one that adds copy. What this test planted is the
+    // hero's two languages, and those are what must have arrived.
+    const heroCopy = await local.query<{ locale: string; title: string }>(
+      `select t.locale, t.content ->> 'title' as title
+         from block_translations t
+         join blocks b on b.id = t.block_id
+         join pages p on p.id = b.page_id
+        where p.slug = 'home' and b.anchor_id = 'hero'
+        order by t.locale`,
+    )
+    expect(heroCopy).toEqual([
+      { locale: 'en', title: 'Hello' },
+      { locale: 'ru', title: 'Привет' },
+    ])
     expect(await count(local, 'publications')).toBe(2)
 
     expect(report.pages).toBe(before)
