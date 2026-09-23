@@ -27,10 +27,16 @@ export async function GET(request: Request) {
     status: string
     seo: unknown
     blocks: number
+    menuItems: number
     changed: boolean
   }>(
+    // `menuItems` is the other thing that stops a delete. Carried on the list
+    // so the settings dialog can say so before the click, not after it.
     `select p.id, p.slug, p.status, p.seo,
             count(b.id) filter (where b.deleted_at is null)::int as blocks,
+            (select count(*)::int from entries e
+              where e.collection = 'navigation' and e.data ->> 'page' = p.slug
+                and e.deleted_at is null) as "menuItems",
             coalesce(
               greatest(p.updated_at, max(b.updated_at))
                 > (select max(published_at) from publications),
@@ -73,5 +79,5 @@ export async function POST(request: Request) {
     ip: clientIp(request),
   })
 
-  return ok({ page: { ...page, blocks: 0 } }, { status: 201 })
+  return ok({ page: { ...page, blocks: 0, menuItems: 0 } }, { status: 201 })
 }

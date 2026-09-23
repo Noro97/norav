@@ -606,6 +606,7 @@ export function Editor({
           seo={(current.seo ?? {}) as Record<string, { title?: string; description?: string }>}
           locales={locales}
           blocks={current.blocks}
+          menuItems={current.menuItems}
           onClose={() => setSettingsOpen(false)}
           onSaved={(next) => {
             setSettingsOpen(false)
