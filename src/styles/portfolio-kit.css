@@ -2068,7 +2068,7 @@
 
 /* TOOLS */
 .pf-kit .tools { padding: 100px 0 80px; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.pf-kit .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .pf-kit .tool-cell { background: var(--bg); padding: 24px; display: flex; gap: 16px; align-items: center; transition: background 300ms; }
 .pf-kit .tool-cell:hover { background: var(--bg-2); }
 .pf-kit .tool-glyph { width: 48px; height: 48px; border: 1px solid; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 600; font-size: var(--text-body-regular); flex-shrink: 0; }
@@ -2124,7 +2124,7 @@
 
 /* WRITING */
 .pf-kit .writing { padding: 120px 0; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .writing-grid { display: grid; grid-template-columns: repeat(var(--writing-cols, 3), 1fr); gap: 1px; background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.pf-kit .writing-grid { display: grid; margin: 0 var(--kit-gutter); grid-template-columns: repeat(var(--writing-cols, 3), 1fr); gap: 1px; background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .pf-kit .post { background: var(--bg); padding: 32px max(28px, 3vw); display: flex; flex-direction: column; gap: 14px; transition: background 300ms; min-height: 280px; }
 .pf-kit .post:hover { background: var(--bg-2); }
 .pf-kit .post-meta { font-family: var(--mono); font-size: var(--text-label); letter-spacing: 0.06em; color: var(--fg-muted); display: flex; gap: 8px; }
@@ -2134,7 +2134,7 @@
 .pf-kit .post:hover .post-link span { transform: translateX(4px); transition: transform 300ms; }
 @media (max-width: 900px) { .pf-kit .writing-grid { grid-template-columns: 1fr; } }
 /* Said in place of the cards while no post is published. */
-.pf-kit .writing-empty { margin: 0; padding: 48px var(--kit-gutter); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); color: var(--fg-muted); font-size: var(--text-body-regular); }
+.pf-kit .writing-empty { margin: 0 var(--kit-gutter); padding: 48px 0; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); color: var(--fg-muted); font-size: var(--text-body-regular); }
 
 /* FEED */
 .pf-kit .feed { padding: 80px 0; border-bottom: 1px solid var(--line-soft); }
@@ -2342,7 +2342,7 @@
 
 /* COLOR PALETTE */
 .pf-kit .palette { padding: 100px 0; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.pf-kit .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .pf-kit .palette-swatch { aspect-ratio: 1; border: none; padding: 24px; cursor: pointer; position: relative; transition: transform 300ms; text-align: left; overflow: hidden; }
 .pf-kit .palette-swatch:hover { z-index: 5; transform: scale(1.02); }
 .pf-kit .palette-meta { position: absolute; bottom: 24px; left: 24px; right: 24px; font-family: var(--mono); }
@@ -2396,7 +2396,7 @@
 
 /* FLAP COUNTER */
 .pf-kit .flap { padding: 80px 0; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .flap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.pf-kit .flap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .pf-kit .flap-cell { background: var(--bg); padding: 48px 24px; display: flex; flex-direction: column; gap: 12px; }
 .pf-kit .flap-value { font-family: var(--serif); font-size: var(--text-heading-xlarge); font-weight: 900; line-height: var(--text-heading-xlarge--line-height); letter-spacing: var(--text-heading-xlarge--letter-spacing); }
 .pf-kit .flap-suffix { font-family: var(--serif); font-size: 0.5em; opacity: 0.7; margin-left: 4px; }
@@ -2532,7 +2532,7 @@
 
 /* CALENDAR */
 .pf-kit .cal { padding: 100px 0; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .cal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; padding: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.pf-kit .cal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 0 var(--kit-gutter); background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .pf-kit .cal-month { background: var(--bg); padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; min-height: 220px; }
 .pf-kit .cal-head { display: flex; justify-content: space-between; align-items: flex-start; }
 .pf-kit .cal-name { font-family: var(--serif); font-size: var(--text-heading-medium); font-weight: 900; line-height: var(--text-heading-medium--line-height); letter-spacing: var(--text-heading-medium--letter-spacing); }
