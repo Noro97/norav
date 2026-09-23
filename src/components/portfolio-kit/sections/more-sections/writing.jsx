@@ -27,7 +27,12 @@ export function Writing({ accent, content }) {
         titleAccent={c.titleAccent}
         titleTail={c.titleTail}
       />
-      <div className="writing-grid">
+      {c.posts.length === 0 && c.emptyText ? (
+        <p className="writing-empty">{c.emptyText}</p>
+      ) : (
+      // As many columns as cards, up to three: one post is not a third of a row
+      // beside two empty panels.
+      <div className="writing-grid" style={{ '--writing-cols': Math.min(c.posts.length, 3) || 1 }}>
         {c.posts.map((p, i) => (
           // No link yet is a card that does not pretend to be one: without an
           // address, clicking it would scroll to the top of the page.
@@ -48,6 +53,7 @@ export function Writing({ accent, content }) {
           </a>
         ))}
       </div>
+      )}
     </section>
   );
 }
