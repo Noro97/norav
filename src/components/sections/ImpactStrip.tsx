@@ -4,29 +4,38 @@ import type { ImpactStripContent, ImpactStripSettings } from '@norav/content-sch
 
 type Stat = ImpactStripContent['stats'][number]
 
-const DURATION = 1100
+const DURATION = 800
 
-function Counter({ stat, run }: { stat: Stat; run: boolean }) {
+/**
+ * Counts from 80% of the number, never from zero. A counter parked at 0 until it
+ * scrolls into view is what a screenshot, a shared link and a recruiter skimming
+ * the page see — and with counting off it used to stay at 0 for good.
+ */
+const startOf = (value: number) => Math.round(value * 0.8)
+
+function Counter({ stat, animate, run }: { stat: Stat; animate: boolean; run: boolean }) {
   const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  const [n, setN] = useState(0)
+  const counts = animate && !reduced
+  const [n, setN] = useState(() => (counts ? startOf(stat.value) : stat.value))
   const frame = useRef(0)
 
   useEffect(() => {
-    if (!run || reduced) return
+    if (!run || !counts) return
+    const from = startOf(stat.value)
     let start: number | null = null
     const step = (ts: number) => {
       if (start === null) start = ts
       const p = Math.min((ts - start) / DURATION, 1)
       // easeOutCubic
       const eased = 1 - Math.pow(1 - p, 3)
-      setN(Math.round(eased * stat.value))
+      setN(Math.round(from + eased * (stat.value - from)))
       if (p < 1) frame.current = requestAnimationFrame(step)
     }
     frame.current = requestAnimationFrame(step)
     return () => cancelAnimationFrame(frame.current)
-  }, [run, stat.value, reduced])
+  }, [run, stat.value, counts])
 
-  const display = reduced ? stat.value : n
+  const display = counts ? n : stat.value
 
   return (
     <span className="font-display text-heading-large font-black text-tertiary-ink tabular-nums">
@@ -71,7 +80,7 @@ export function ImpactStrip() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {content.stats.map((stat, index) => (
               <div key={index} className="flex flex-col items-center text-center gap-2">
-                <Counter stat={stat} run={run && settings.animateCounters} />
+                <Counter stat={stat} animate={settings.animateCounters} run={run} />
                 <span className="type-label text-tertiary-ink/40">
                   {stat.label}
                 </span>
