@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
       output: {
         manualChunks: {
           gsap: ['gsap'],
-          gmaps: ['@googlemaps/js-api-loader'],
+          leaflet: ['leaflet'],
           motion: ['framer-motion'],
         },
       },

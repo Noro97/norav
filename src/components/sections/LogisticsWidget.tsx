@@ -4,7 +4,7 @@ import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
-import type { CaseStudySettings, LogisticsContent } from '@norav/content-schema'
+import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 
 const MapView = lazy(() => import('./MapView'))
 
@@ -59,7 +59,7 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
 }
 
 export function LogisticsWidget() {
-  const block = useBlock<LogisticsContent, CaseStudySettings>('logistics')
+  const block = useBlock<CaseStudyContent, CaseStudySettings>('logistics')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
   const sectionLabel = useCaseStudyLabel('logistics', block?.content.sectionLabel ?? '')
@@ -205,7 +205,6 @@ export function LogisticsWidget() {
               markers={markers}
               connections={connections}
               onLoad={handleMapLoaded}
-              fallbackImage={block?.content.mapFallback}
             />
           </Suspense>
           {/* Overlay label */}

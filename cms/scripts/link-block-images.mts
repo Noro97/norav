@@ -32,7 +32,6 @@ const BADGES: Record<string, string> = {
   epic: '/assets/icons/badge-epic.svg',
   legendary: '/assets/icons/badge-legendary.svg',
 }
-const MAP_FALLBACK = '/assets/img/world-map.webp'
 
 async function urlFor(source: string): Promise<string> {
   const row = await queryOne<{ url: string }>(
@@ -106,25 +105,6 @@ async function main() {
       filled++
     }
 
-    await query(`update block_translations set content = $1 where block_id = $2 and locale = $3`, [
-      JSON.stringify(content),
-      row.block_id,
-      row.locale,
-    ])
-  }
-
-  // The logistics map's fallback.
-  const logistics = await query<Row>(
-    `select bt.block_id, bt.locale, bt.content
-       from block_translations bt
-       join blocks b on b.id = bt.block_id
-      where b.type = 'logistics' and b.deleted_at is null`,
-  )
-  for (const row of logistics) {
-    const content = row.content as { mapFallback?: string }
-    if (content.mapFallback) { already.push('map fallback'); continue }
-    content.mapFallback = await urlFor(MAP_FALLBACK)
-    filled++
     await query(`update block_translations set content = $1 where block_id = $2 and locale = $3`, [
       JSON.stringify(content),
       row.block_id,
