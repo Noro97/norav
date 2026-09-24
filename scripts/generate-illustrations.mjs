@@ -437,10 +437,9 @@ const scenes = {
   },
 }
 
-// Two slots draw the same scene at a different name, so each keeps its own
+// A second slot draws the same scene at a different name, so it keeps its own
 // file and can diverge later without an edit to the other.
 scenes['omnigrid-illustration'] = scenes['omnigrid-grid']
-scenes['nexusroute-fallback'] = scenes['nexusroute-map']
 
 mkdirSync(outDir, { recursive: true })
 for (const [name, draw] of Object.entries(scenes)) {

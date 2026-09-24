@@ -258,6 +258,65 @@ html { scroll-behavior: smooth; }
   padding: 0.25rem 0.75rem;
 }
 
+/* ===== CASE STUDY MAP — Leaflet, drawn in the theme's own colours =====
+   Scoped under the card: leaflet.css arrives later in its own chunk, and at
+   equal specificity its white attribution and grey background would win. */
+.logistics-map .leaflet-container {
+  background: var(--color-background);
+  font: inherit;
+}
+
+.logistics-map .map-node {
+  fill: var(--color-primary-500);
+  fill-opacity: 0.75;
+  stroke: var(--color-primary-400);
+  stroke-width: 1;
+  stroke-opacity: 0.4;
+}
+
+.logistics-map .map-route {
+  fill: none;
+  stroke: var(--color-primary-500);
+  stroke-width: 1;
+  stroke-opacity: 0.35;
+}
+
+.logistics-map .map-home {
+  fill: var(--color-primary-500);
+  fill-opacity: 1;
+  stroke: var(--color-primary-500);
+  stroke-width: 2;
+  stroke-opacity: 0.6;
+  animation: mapHomePulse 2.4s ease-out infinite;
+}
+@keyframes mapHomePulse {
+  0% { stroke-width: 2; stroke-opacity: 0.6; }
+  100% { stroke-width: 18; stroke-opacity: 0; }
+}
+
+.logistics-map .map-base img {
+  filter: var(--map-base-filter);
+}
+.logistics-map .map-labels img {
+  filter: var(--map-labels-filter);
+}
+
+.logistics-map .leaflet-container .leaflet-control-attribution {
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
+  color: var(--color-muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+.logistics-map .leaflet-container .leaflet-control-attribution a {
+  color: var(--color-primary-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logistics-map .map-home {
+    animation: none;
+  }
+}
+
 /* ===== MARQUEE ANIMATION ===== */
 .marquee-track {
   animation: marquee 20s linear infinite;

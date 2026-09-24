@@ -109,12 +109,13 @@ Copy `.env.example` to `.env`. Nothing here is required to run the site.
 | `ANTHROPIC_API_KEY` | no | Powers the terminal's `ask`. Unset, the command reports itself switched off rather than broken |
 | `CMS_URL` | no | Build-time origin for baking the snapshot. Unset = build with what is committed |
 | `VITE_CMS_URL` | **yes** | Runtime origin for revalidation. Must be set explicitly in production — a build that silently talked to localhost would ship a site that never updates |
-| `VITE_GOOGLE_MAPS_API_KEY` | **yes** | Maps needs it browser-side. Restrict it by domain in Google Cloud Console |
-| `VITE_GOOGLE_MAPS_MAP_ID` | **yes** | Map styling |
 
 The `VITE_` prefix is the whole rule: prefixed variables are inlined into the
 shipped JavaScript, unprefixed ones exist only at build time and inside the API
 handler. `ANTHROPIC_API_KEY` must never gain the prefix.
+
+The NexusRoute map draws with Leaflet on Esri's Dark Gray canvas tiles, which
+need no key.
 
 ## Layout
 

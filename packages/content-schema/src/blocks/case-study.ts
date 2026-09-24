@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { defineBlock, type BlockDefinition, type FormField } from '../define-block'
+import { defineBlock, type BlockDefinition } from '../define-block'
 import { GALLERY_STYLE_OPTIONS, galleryStyle } from './shared'
 
 /**
@@ -25,21 +25,11 @@ const settings = z.object({ galleryStyle: galleryStyle.default('grid') })
 export type CaseStudyContent = z.infer<typeof content>
 export type CaseStudySettings = z.infer<typeof settings>
 
-/** The logistics case study, which carries a fallback for its map. */
-export type LogisticsContent = CaseStudyContent & { mapFallback: string }
-
 export function defineCaseStudy(
   type: string,
   label: string,
   description: string,
   defaults: { sectionLabel: string; title: string; techStack: string[] },
-  /**
-   * Extra fields this one case study has and the others do not — the logistics
-   * map's fallback image being the only one so far. Kept as an argument rather
-   * than added to every case study, because a field that means nothing in four
-   * places out of five is noise in four admin forms.
-   */
-  extra: { schema: z.ZodRawShape; form: FormField[] } = { schema: {}, form: [] },
 ): BlockDefinition {
   return defineBlock({
     type,
@@ -47,7 +37,7 @@ export function defineCaseStudy(
     tier: 2,
     singleton: true,
     description,
-    content: content.extend(extra.schema),
+    content,
     settings,
     defaults: {
       content: {
@@ -56,12 +46,10 @@ export function defineCaseStudy(
         description: '—',
         techStack: defaults.techStack.map((name) => ({ name })),
         screenshots: [],
-        ...Object.fromEntries(Object.keys(extra.schema).map((key) => [key, ''])),
       },
       settings: { galleryStyle: 'grid' },
     },
     form: [
-      ...extra.form,
       {
         field: 'sectionLabel',
         control: 'text',
@@ -108,18 +96,6 @@ export const logisticsBlock = defineCaseStudy(
     sectionLabel: 'Case Study',
     title: 'NexusRoute',
     techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
-  },
-  {
-    schema: { mapFallback: z.string().default('') },
-    form: [
-      {
-        field: 'mapFallback',
-        control: 'media',
-        label: 'Map fallback image',
-        localized: false,
-        help: 'Drawn in place of the live map if the Maps API key is rejected. Rarely seen.',
-      },
-    ],
   },
 )
 
