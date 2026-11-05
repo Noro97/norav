@@ -19,7 +19,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
   {
     id: 'nexusroute',
     targetSectionId: 'logistics',
-    techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
+    techStack: ['Leaflet', 'React', 'GeoJSON'],
     variant: 'logistics',
   },
   {
@@ -39,7 +39,7 @@ export const BENTO_PROJECTS: BentoProject[] = [
 export const OMNIGRID_PROJECT: BentoProject = {
   id: 'omnigrid',
   targetSectionId: 'omnigrid',
-  techStack: ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll'],
+  techStack: ['TanStack Query', 'TanStack Table', 'Zod'],
   variant: 'omnigrid',
 }
 

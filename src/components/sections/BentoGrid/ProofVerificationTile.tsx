@@ -18,7 +18,7 @@ interface Props {
 const LOG_KEYS = [
   'proof.log.liveness',
   'proof.log.detecting',
-  'proof.log.confidence',
+  'proof.log.form',
   'proof.log.verified',
 ] as const
 

@@ -26,7 +26,7 @@ export const heroBlock = defineBlock({
   settings,
   defaults: {
     content: {
-      subtitle: 'Frontend-Focused Fullstack Engineer',
+      subtitle: 'Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js',
       name: {
         first: { highlight: 'Nor', rest: 'ayr' },
         last: { highlight: 'Av', rest: 'etisyan' },

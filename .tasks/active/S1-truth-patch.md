@@ -1,6 +1,6 @@
 # S1: Truth patch
 
-- **Status:** Stage 1 reported, waiting on the owner at gate G3
+- **Status:** Stage 2 PR open, waiting on the owner to merge, run `content:truth` and publish
 - **Origin:** `docs/plan/prompts/S1-truth-patch.md`, started by the planning session
 - **Branch:** `claude/sweet-darwin-0ff567`
 
@@ -41,3 +41,16 @@ The full table is in `S1-inventory.md`, beside this file.
 - The Blob CV the site links to has no phone number, but it's out of date: old title, 7+ years, no Fendr.
 
 Waiting on the owner to approve the copy (G3), and to decide on retiring `/ru` and on an owner-run script for the CMS edits.
+
+The owner approved the copy, retiring `/ru` and the script on 2026-11-05.
+
+### Stage 2: the code PR
+
+- Code strings, widgets, `/ru` retirement, redirects, CV and `content:truth` are done.
+- CV: one page, no phone number in its text or links, all links respond.
+- `content:truth` rehearsed on a local v25: `--check`, apply, rerun, a draft moved inside and outside the patch. Its result matches the admin-API run, ignoring ids and timestamps.
+- Pages checked at 1440px and 375px, console empty. Vercel redirects can only be checked on a deployment.
+
+### Left for after publish (Stage 3, in a small follow-up PR)
+
+Confirm the version from the manifest, search published content and live bundles, check pages and `/cv`, refresh `src/content/snapshot.en.json`, delete `truth-patch.*`, move these files to `.tasks/done/`, update `STATE.md` and `RETRO.md`. RETRO should note that the pending migrations can write old claims back into drafts during S3.

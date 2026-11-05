@@ -6,8 +6,12 @@ The CMS list was tested on 2026-11-05: all 104 items applied through the real CM
 
 ## Owner decisions
 
-1. **Russian.** `/ru` is live and repeats most of the claims. Recommended: retire it now, which D13 already implies ("Milestone 1 is English only"). `/ru` redirects to the English page, the language switch goes, and Russian leaves the bundle. Russian rows stay in the CMS for S12. The alternative is to correct every Russian field too, roughly doubling the CMS edits.
-2. **How the CMS edits get applied.** By hand it's 104 items across 31 forms. Recommended instead: an owner-run script, in the pattern of `content:honest:production`, that writes drafts only. It checks each current value first and refuses if a draft has moved since v25. You still preview and publish in the CMS.
+The owner approved this inventory on 2026-11-05, with both recommendations:
+
+1. **Russian is retired for now.** `/ru` redirects to the English page, the language switch is gone, and Russian has left the bundle and sitemap. Its rows stay in the CMS for S12.
+2. **The CMS edits are applied by an owner-run script, `content:truth`,** which writes drafts only and refuses if a patched field has moved since v25. It is separate from `content:honest`, because S2 and S3 use that one after the migrations. `honest-content.data.mts` is corrected, not replaced.
+
+Also removed while checking the pages: a hard-coded `<1ms` in the OmniGrid diagram and a hard-coded REAL-TIME badge on the dashboard. The hero now reserves room for its scroll hint on phones, because the longer headline collided with it at 375px.
 
 ## CMS edits
 

@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url'
 import { validateBlockContent, validateBlockSettings } from '@norav/content-schema'
 
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'content')
-const LOCALES = ['en', 'ru']
+const LOCALES = ['en']
 
 for (const locale of LOCALES) {
   const path = join(OUT_DIR, `snapshot.${locale}.json`)

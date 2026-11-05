@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router'
 import { useContent } from '@/content/ContentProvider'
 import { activeNavItem, useNavigation, type NavItem } from '@/content/navigation'
-import { HOME_SLUG, hrefFor, otherLocale, readPath } from '@/content/routing'
+import { HOME_SLUG, hrefFor, readPath } from '@/content/routing'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
 import { SPRING } from '@/lib/motion'
@@ -143,17 +143,9 @@ export function Navigation() {
             </NavLink>
           )
         })}
-        <Link
-          to={hrefFor(here, otherLocale(locale))}
-          className="type-label px-3 py-2 rounded-full text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/5 transition-all duration-300"
-          aria-label="Switch language"
-          hrefLang={otherLocale(locale)}
-        >
-          {otherLocale(locale).toUpperCase()}
-        </Link>
       </div>
 
-      {/* Mobile — current section dropdown + language toggle */}
+      {/* Mobile — current section dropdown */}
       <div className="md:hidden flex items-center gap-3" ref={dropdownRef}>
         <div className="relative">
           <button
@@ -214,15 +206,6 @@ export function Navigation() {
           )}
           </AnimatePresence>
         </div>
-
-        <Link
-          to={hrefFor(here, otherLocale(locale))}
-          className="type-label px-3 py-2 rounded-full text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/5 transition-all duration-300"
-          aria-label="Switch language"
-          hrefLang={otherLocale(locale)}
-        >
-          {otherLocale(locale).toUpperCase()}
-        </Link>
       </div>
     </nav>
   )

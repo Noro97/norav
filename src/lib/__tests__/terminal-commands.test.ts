@@ -41,7 +41,7 @@ describe('executeCommand', () => {
     const result = executeCommand('cat about.txt')
     const contents = result.map((l) => l.content).join('\n')
     expect(contents).toContain('Norayr Avetisyan')
-    expect(contents).toContain('Senior Frontend Engineer / UI Architect')
+    expect(contents).toContain('Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js')
   })
 
   it('returns experience for cat experience.txt', () => {

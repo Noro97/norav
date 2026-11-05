@@ -141,10 +141,6 @@ function OmniGridContent() {
               </div>
               <div className="space-y-2 text-caption font-mono text-tertiary-ink/45">
                 <div className="flex justify-between">
-                  <span>{t('projects:omnigrid.cache.hitRate')}</span>
-                  <span className="text-secondary-300 font-semibold">98.7%</span>
-                </div>
-                <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.lastFetch')}</span>
                   <span className="text-tertiary-ink/50">
                     {dataUpdatedAt ? `${Math.round((Date.now() - dataUpdatedAt) / 1000)}s ago` : '—'}
@@ -182,8 +178,7 @@ function OmniGridContent() {
 
                 {/* Response node */}
                 <circle cx="200" cy="40" r="18" fill="color-mix(in srgb, var(--color-secondary-500) 10%, transparent)" stroke="color-mix(in srgb, var(--color-secondary-500) 30%, transparent)" strokeWidth="1" />
-                <text x="200" y="37" textAnchor="middle" fill="color-mix(in srgb, var(--color-secondary-500) 70%, transparent)" fontSize="6" fontFamily="var(--font-mono)">&lt;1ms</text>
-                <text x="200" y="47" textAnchor="middle" fill="color-mix(in srgb, var(--color-secondary-500) 50%, transparent)" fontSize="6" fontFamily="var(--font-mono)">DATA</text>
+                <text x="200" y="43" textAnchor="middle" fill="color-mix(in srgb, var(--color-secondary-500) 50%, transparent)" fontSize="6" fontFamily="var(--font-mono)">DATA</text>
 
                 {/* Arrow cache to response */}
                 <line x1="168" y1="40" x2="180" y2="40" stroke="color-mix(in srgb, var(--color-secondary-500) 30%, transparent)" strokeWidth="1" strokeDasharray="4 2">

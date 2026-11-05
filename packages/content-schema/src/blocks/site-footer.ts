@@ -44,7 +44,7 @@ export const siteFooterBlock = defineBlock({
   settings,
   defaults: {
     content: {
-      tagline: 'Frontend-focused fullstack engineer. Yerevan, working anywhere.',
+      tagline: 'Senior fullstack engineer. Yerevan, working remotely.',
       linksLabel: 'Pages',
       reachLabel: 'Reach me',
       emailLabel: 'noroavetisyan@gmail.com',

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { Locale, SnapshotPage } from '@norav/content-schema'
 import { useContent } from './ContentProvider'
-import { DEFAULT_LOCALE, hrefFor, otherLocale } from './routing'
+import { DEFAULT_LOCALE, hrefFor } from './routing'
 
 /** Guarded against the sitemap generator's copy by a test. */
 export const SITE = 'https://norav.dev'
@@ -123,16 +123,15 @@ export function forgetShellDefaults() {
 }
 
 /**
- * The page's address in both languages, and its own copy in the head.
+ * The page's address, and its own copy in the head.
  *
- * The tags that exist only per page — the canonical and the alternates — are
- * rendered, because React 19 hoists link and meta into the head and there is
- * nothing in the shell for them to collide with. The tags the shell already
- * carries are written instead of rendered; applySeo explains why.
+ * The tags that exist only per page are rendered, because React 19 hoists link
+ * and meta into the head and there is nothing in the shell for them to collide
+ * with. The tags the shell already carries are written instead of rendered;
+ * applySeo explains why.
  *
- * hreflang is the whole reason the language sits in the path: without separate
- * addresses there is nothing to point at, and half the content stays invisible
- * to a search engine.
+ * No hreflang while the site is English only: an alternate has to point at a
+ * page that answers, and /ru redirects to English until it is retranslated.
  */
 export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
  const { snapshot, locale } = useContent()
@@ -153,19 +152,11 @@ export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
     applySeo({ title, description, image })
   }, [title, description, image])
 
- const other = otherLocale(locale)
  const here = `${SITE}${hrefFor(slug, locale)}`
- const there = `${SITE}${hrefFor(slug, other)}`
- // What a search engine offers a reader whose language is neither. English is
- // the default the site answers on without a prefix, so it is the fallback.
- const fallback = `${SITE}${hrefFor(slug, DEFAULT_LOCALE)}`
 
  return (
     <>
       <link rel="canonical" href={here} />
-      <link rel="alternate" hrefLang={locale} href={here} />
-      <link rel="alternate" hrefLang={other} href={there} />
-      <link rel="alternate" hrefLang="x-default" href={fallback} />
       <meta property="og:url" content={here} />
     </>
   )

@@ -122,9 +122,6 @@ export function BentoImpactDashboard() {
               {content.dashboard.title}
             </h3>
           </div>
-          <span className="font-mono text-caption text-primary-500/50 tracking-wider">
-            REAL-TIME
-          </span>
         </div>
 
         {/* Metrics 2x2 grid */}

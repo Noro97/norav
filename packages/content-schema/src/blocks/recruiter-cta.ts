@@ -51,7 +51,7 @@ export const recruiterCtaBlock = defineBlock({
       title: 'Senior or staff frontend and fullstack roles',
       points: [
         { text: 'Led frontend architecture on products reaching 10M+ monthly users' },
-        { text: 'Designed, shipped and operates a production AI-native platform end to end' },
+        { text: 'Built Proof App end to end as the only engineer and took it to a closed beta' },
         { text: 'Built the CMS and the infrastructure this site runs on' },
       ],
       cvLabel: 'Download CV',

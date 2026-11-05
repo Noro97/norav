@@ -43,19 +43,19 @@ export const aboutBlock = defineBlock({
     content: {
       sectionLabel: 'About Me',
       name: 'Norayr Avetisyan',
-      role: 'Frontend-Focused Fullstack Engineer',
+      role: 'Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js',
       bio: {
         lead: [{ text: 'I build interfaces that feel alive.', accent: 'main' }],
         paragraphs: [{ text: 'A second paragraph about the work.' }],
       },
       facts: [],
-      statusLabel: 'Available',
+      statusLabel: 'Open to offers',
       cvLabel: 'Download CV',
       socials: [],
     },
     settings: {
       photo: '/assets/img/my-photo.jpg',
-      cvHref: '/Norayr_Avetisyan_CV.pdf',
+      cvHref: '/cv',
       showStatusBadge: true,
       cardEffect: 'tilt',
     },
