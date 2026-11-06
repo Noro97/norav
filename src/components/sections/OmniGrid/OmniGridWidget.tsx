@@ -32,6 +32,9 @@ const CACHE_COLORS: Record<string, string> = {
   FETCHING: 'bg-secondary-500/20 text-secondary-400 border-secondary-500/30',
 }
 
+// A new `[]` each render gives the table new rows each render, and the
+// render-time effect below then sets state again until the data arrives.
+const NO_SHIPMENTS: ShipmentRecord[] = []
 
 function OmniGridContent() {
   const block = useBlock<CaseStudyContent, CaseStudySettings>('omnigrid')
@@ -48,7 +51,7 @@ function OmniGridContent() {
   const [modalOrigin, setModalOrigin] = useState<ModalOrigin | null>(null)
   const [showLightning, setShowLightning] = useState(false)
 
-  const { data: shipments = [], cacheStatus, dataUpdatedAt } = useShipments()
+  const { data: shipments = NO_SHIPMENTS, cacheStatus, dataUpdatedAt } = useShipments()
 
   useReveal(sectionRef, '.omnigrid-sidebar, .omnigrid-main')
 

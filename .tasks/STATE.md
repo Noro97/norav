@@ -98,7 +98,6 @@ Nothing.
 - `seed.mts`, `import-content.mts`, `legacy-i18n` and the kit still hold old claims. No published page uses them. S4 removes the kit, and S8's scan should catch the rest.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
 - Pending migrations 0016–0027 hold old copy. They are append-only, so `content:catch-up` puts the drafts back after they run. After S3 the rows stay hidden, and S4 soft-deletes most of them. S3 deletes the script.
-- OmniGrid can hit React's update limit while its data loads. See `.tasks/bugs/omnigrid-render-loop.md`.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
 - No prerendering, so metadata is the same on every route. S4 adds it.
 - `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. S11 builds the OG images.
