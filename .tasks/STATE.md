@@ -95,6 +95,7 @@ Nothing.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
 - Pending migrations 0016–0027 hold old copy. They are append-only, so correct what they write after they run.
 - No prerendering, so metadata is the same on every route. S4 adds it.
+- `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. S11 builds the OG images.
 
 ## Decisions
 
