@@ -17,7 +17,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix db run migrate:status
 ```
 
-On 2026-11-05, production had 17 migrations applied of the 31 in the repo, with content version 25, published 2026-09-11.
+On 2026-11-06, production had 17 migrations applied of the 31 in the repo (0001–0015, 0028 and 0030), with content version 26.
 
 ## Before any production change
 
@@ -51,7 +51,7 @@ Some of the pending migrations write content rows. **Writing them doesn't publis
 
 ## Publish
 
-Sign in at `cms.norav.dev`, preview the affected pages, then publish. The response says whether the site rebuild started. If `rebuild` comes back `failed`, the publish still succeeded, and the site picks up the content one page load later.
+Sign in at `cms.norav.dev`, preview the affected pages, then publish. The response says whether the site rebuild started. If `rebuild` comes back `failed` or `not_configured`, the publish still succeeded, and the site picks up the content after each page load. The old copy stays in the bundle and paints first until the next deploy. `SITE_DEPLOY_HOOK_URL` is set on the CMS project, so a publish from anywhere else reports `not_configured`.
 
 ## Check the result
 

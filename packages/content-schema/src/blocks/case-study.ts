@@ -91,16 +91,16 @@ export function defineCaseStudy(
 export const logisticsBlock = defineCaseStudy(
   'logistics',
   'NexusRoute',
-  'Live logistics map case study.',
+  'Logistics map demo.',
   {
-    sectionLabel: 'Case Study',
+    sectionLabel: 'Live Demo',
     title: 'NexusRoute',
-    techStack: ['Google Maps API', 'WebSocket', 'GeoJSON', 'Advanced Markers', 'Zustand'],
+    techStack: ['Leaflet', 'React', 'GeoJSON'],
   },
 )
 
-export const merchBlock = defineCaseStudy('merch', 'MerchForge', 'AI merch configurator case study.', {
-  sectionLabel: 'Case Study',
+export const merchBlock = defineCaseStudy('merch', 'MerchForge', 'Merch configurator demo.', {
+  sectionLabel: 'Live Demo',
   title: 'MerchForge',
   techStack: ['React State', 'JSON Sync', 'Derived Data', 'Typing Animation'],
 })
@@ -108,9 +108,9 @@ export const merchBlock = defineCaseStudy('merch', 'MerchForge', 'AI merch confi
 export const ecommerceBlock = defineCaseStudy(
   'ecommerce',
   'FilterGraph',
-  'Faceted commerce search case study.',
+  'Faceted commerce search demo.',
   {
-    sectionLabel: 'Case Study',
+    sectionLabel: 'Live Demo',
     title: 'FilterGraph',
     techStack: ['URL State', 'Faceted Search', 'Dependency Graph', 'React.useMemo', 'Modal', 'Multi-step Form', 'Confetti'],
   },
@@ -119,11 +119,11 @@ export const ecommerceBlock = defineCaseStudy(
 export const omniGridBlock = defineCaseStudy(
   'omnigrid',
   'OmniGrid',
-  'Operations console case study — virtualised data grid.',
+  'Data grid demo.',
   {
-    sectionLabel: 'Case Study',
+    sectionLabel: 'Live Demo',
     title: 'OmniGrid',
-    techStack: ['TanStack Query', 'TanStack Table', 'Zod', 'Virtual Scroll'],
+    techStack: ['TanStack Query', 'TanStack Table', 'Zod'],
   },
 )
 

@@ -27,10 +27,10 @@ describe('ImpactStrip', () => {
     expect(screen.getByText('8')).toBeInTheDocument()
   })
 
-  it('never shows zero before the strip has been seen', () => {
+  it('holds the real number until the strip has been seen', () => {
     withBlock({ animateCounters: true })
     render(<ImpactStrip />)
-    expect(screen.queryByText('0M+')).not.toBeInTheDocument()
-    expect(screen.getByText('8M+')).toBeInTheDocument()
+    expect(screen.getByText('10M+')).toBeInTheDocument()
+    expect(screen.getByText('8')).toBeInTheDocument()
   })
 })
