@@ -46,13 +46,16 @@ jobs:
         continue-on-error: true
         run: npx -y @lhci/cli@0.16.0 autorun
 
+      # A passing run prints no numbers, so this report is the only record of them.
+      # `.lighthouseci` is a hidden folder, which upload-artifact skips by default.
       - name: Keep the Lighthouse report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse
           path: .lighthouseci
-          if-no-files-found: ignore
+          include-hidden-files: true
+          if-no-files-found: warn
 
   cms:
     name: CMS and schema

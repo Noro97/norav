@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-06: A green CI step can still have done nothing
+
+"Keep the Lighthouse report" passed on its first run and saved nothing. `upload-artifact` skips hidden folders, and `if-no-files-found: ignore` told nobody. It only showed up by reading the run's log after the merge. Read the log of a new CI step on its first run, and don't use `ignore` on output you rely on.
+
 ### 2026-11-06: Publish validation checks shape, not truth
 
 On a copy of production, the pending migrations put back 98.4%, TON, Staff, in production and every `[Placeholder`, and validation passed all of it. Nothing automatic stops a false claim from publishing. Compare `buildPublication()` with the latest publication, and read the difference.

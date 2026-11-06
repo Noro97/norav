@@ -1,6 +1,6 @@
 # S2: Baseline and cleanup
 
-- **Status:** Done when its PR merges. Production content and schema are untouched: 17 migrations, version 26
+- **Status:** Done, merged as Noro97/norav#108. Production content and schema are untouched: 17 migrations, version 26
 - **Origin:** `docs/plan/prompts/S2-baseline-and-cleanup.md`, started by the session that closed S1
 - **Branch:** `claude/strange-sinoussi-0fecb9`
 
