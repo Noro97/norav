@@ -4,6 +4,22 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: One constant had put zod on every page
+
+`Logo.tsx` imported `NORAV_LOGO` from the package index, and zod's schemas can't be tree-shaken, so that one value put zod and every block schema in the entry chunk: 133 KB raw, 35 KB gzip. A comment in `src/content/index.ts` said it was being avoided, and nothing checked. It only surfaced because S3's new schemas went over the budget, and the source map showed why. When a budget trips, read the source map before raising the limit. Import a value from its own file, as `@norav/content-schema/brand`.
+
+### 2026-11-07: The media library's 12 MB limit never held on Vercel
+
+A function's request body stops at about 4.5 MB, and the platform answers past that before the route runs. Measured on production on 2026-11-07: 1 MB reached the route and got its 401, and 5 MB got `FUNCTION_PAYLOAD_TOO_LARGE` as plain text, which the form can't read as an error message. It looked fine locally, where there's no such limit. Anything that big now goes straight to Blob. Check a limit on the platform that enforces it.
+
+### 2026-11-07: New defaulted fields on a published block change what publish writes
+
+Publish keeps what the schema returns, so adding `context: ''` to the `*_detail` blocks would have added it to every published copy, and `content:catch-up` would have reported each one as `NOT expected`. That's one reason `case_study` is a new type. Before extending a published block, check what a publish then differs by. `.optional()` with no default adds nothing.
+
+### 2026-11-07: Check a port before starting a private Postgres
+
+Port 55432 was already held by a server another project's session left running on 3 Nov. `pg_ctl` failed, the script carried on, and `createdb` and the migrations ran happily on that server. Only a new `rehearsal` database was touched, and it's gone. Pick a port, check it's free, stop if `pg_ctl` fails, and check `show data_directory` before writing anything.
+
 ### 2026-11-06: Sessions merge their own PRs now, and nothing checks them
 
 The owner decided this on 2026-11-06 (D20), and no longer reviews or merges PRs. That removes the last person looking before `main` deploys. GitHub won't help: `main` has no branch protection, because that needs GitHub Pro or a public repo, so `gh pr merge` works on a red PR, and auto-merge is off. Read the checks on the latest commit yourself, and pin the merge to that commit. `--match-head-commit` needs the full hash, and a short one fails.
@@ -86,6 +102,7 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 - A private Postgres on macOS needs `LC_ALL=en_US.UTF-8`, or it stops with "postmaster became multithreaded during startup".
 - A CMS script that imports `src/lib/db` statically crashes on Node 20 once `DATABASE_URL` is set: `tsx` can't resolve `pg` from there. Import it dynamically, as `pull-production.mts` and `catch-up.mts` do.
 - Any edit in the worktree reloads the Vite page, because Tailwind watches it. Don't edit files while a browser check is running.
+- That also covers the embedded database. `npm --prefix cms run seed`, `import` and `user:add` fail on Node 20 with "@electric-sql/pglite is not installed". Run them on this machine's default Node.
 - `npm --prefix cms install` rewrites `cms/package-lock.json` on this machine. Restore it, and don't commit the noise.
 - The anonymous PageSpeed API quota runs out. Run Lighthouse locally.
 - Without `-L`, `curl` on `norav.dev` assets can return an empty body.

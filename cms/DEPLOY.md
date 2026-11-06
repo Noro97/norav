@@ -59,6 +59,8 @@ sends `noindex`.
 Two variables on the existing project:
 
 - `CMS_URL` — read at build time, bakes the published snapshot into the bundle.
+  `/api/chat` also reads it at runtime for the published profile. Without it there,
+  the terminal's `ask` answers from the snapshot baked at the last build.
 - `VITE_CMS_URL` — shipped to the browser, lets a running page pick up content
   published after the build.
 

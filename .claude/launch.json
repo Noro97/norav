@@ -21,6 +21,20 @@
         "dev:local"
       ],
       "port": 3300
+    },
+    {
+      "name": "site-built",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4173",
+        "--strictPort"
+      ],
+      "port": 4173,
+      "autoPort": false
     }
   ]
 }

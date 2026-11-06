@@ -1,6 +1,9 @@
 import { goesDirect, MIME_EXTENSIONS, uploadProblem } from './media-types'
 
-export type UploadResult = { ok: true; repointed?: number } | { ok: false; message: string }
+/** Past this a dropped connection retries one part instead of the whole file. */
+const MULTIPART_ABOVE = 8 * 1024 * 1024
+
+export type UploadResult ={ ok: true; repointed?: number } | { ok: false; message: string }
 
 interface UploadOptions {
   /** Where the library keeps its files: what `GET /api/admin/media` says. */
@@ -40,7 +43,7 @@ async function sendDirect(file: File, { replaces, onProgress }: UploadOptions): 
     access: 'public',
     contentType: file.type,
     handleUploadUrl: '/api/admin/media/direct',
-    multipart: true,
+    multipart: file.size > MULTIPART_ABOVE,
     onUploadProgress: ({ percentage }) => onProgress?.(Math.round(percentage)),
   })
   return fetch('/api/admin/media/register', {

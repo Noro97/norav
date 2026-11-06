@@ -44,7 +44,7 @@ npm --prefix db install
 npm --prefix db test
 ```
 
-CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173) and `cms` (3300) dev servers.
+CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173) and `cms` (3300) dev servers, and `site-built` (4173), which serves `dist` for the empty-console check.
 
 ## Rules
 
