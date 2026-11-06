@@ -1,6 +1,6 @@
 # S2: Baseline and cleanup
 
-- **Status:** In progress. Waiting on the owner for gate G4 and the copy of production
+- **Status:** In progress. Waiting on the owner for the copy of production
 - **Origin:** `docs/plan/prompts/S2-baseline-and-cleanup.md`, started by the session that closed S1
 - **Branch:** `claude/strange-sinoussi-0fecb9`
 
@@ -41,7 +41,7 @@ Done. The numbers are in `STATE.md`.
 
 ### Stage 3: branches
 
-The full list is in `S2-branches.md`, beside this file. Waiting on the owner.
+The full list and the result are in `S2-branches.md`, beside this file. The owner approved it as proposed (G4). Before deleting, the session confirmed the list still matched `origin`, no PR was open, and the worktrees were clean. Afterwards, `git ls-remote` shows only `main` and this branch. One worktree stays until the S1 session is archived.
 
 ### Stage 4: rehearsal
 

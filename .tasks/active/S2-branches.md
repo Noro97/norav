@@ -1,6 +1,28 @@
 # S2 branches and worktrees (gate G4)
 
-Counted 2026-11-06 against `origin`. Nothing here has been deleted. The owner decides.
+Counted 2026-11-06 against `origin`. The owner approved this list as proposed on 2026-11-06, and it was carried out the same day.
+
+## Result
+
+- **`origin`:** 59 branches deleted. `main` and this session's branch remain.
+- **Local:** 56 branches deleted. `main`, this session's branch and `claude/s1-after-publish` remain.
+- **Worktrees:** 4 removed. The main checkout, this session's and `sweet-darwin-0ff567` remain.
+- **Still to do:** `sweet-darwin-0ff567` and its branch `claude/s1-after-publish` go once the S1 session is archived.
+- **Not on the list, so left alone:** one old stash, `WIP on feat/cms-theme`.
+
+Tips of the unmerged branches, for as long as GitHub or a local clone still holds the commits:
+
+| Branch | Tip |
+| --- | --- |
+| `claude/react-components-animations-l7oltw` | `b2dd4cc` |
+| `claude/relaxed-mccarthy-eqacxq` | `b1f4195` |
+| `feat/cms-media` | `1abbed7` |
+| `feat/motion-that-can-be-grabbed` | `54ee22c` |
+| `feat/the-routes-are-the-structure` (local only) | `3e9677e` |
+
+The routes worktree's ignored working notes (`.superpowers/`, 104 KB) were copied out of the repo first, to `deleted-worktree-notes/` in the session notes folder.
+
+The sections below are what the owner was shown.
 
 ## Merged into `main`: 55 remote branches
 
