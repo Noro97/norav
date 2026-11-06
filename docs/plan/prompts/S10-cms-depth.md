@@ -35,7 +35,7 @@ You're filling the CMS's real gaps, so it's a product worth showing and safer to
 2. Decide what a block-level revision restore would need. Build it only if it's small. Otherwise say so and leave it.
 3. Add per-page title, description and Open Graph fields, and make prerendering use them.
 4. Update `README.md`, `cms/README.md` and the rollback section of the runbook.
-5. Open the PR. **Report to me and wait** for merge and any production migration.
+5. Open the PR. **Report to me and wait** for any production migration it needs, then merge it.
 6. After it merges, recount the routes and migrations mentioned in the site's norav.dev case study, and report any that changed.
 
 ## 7. At the end

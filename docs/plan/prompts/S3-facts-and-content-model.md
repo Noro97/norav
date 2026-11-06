@@ -62,7 +62,7 @@ You're giving the site one source of truth for facts about the owner, adding wha
 ### Stage 4: docs and PR
 
 9. Bring the READMEs into line with what now exists.
-10. Open the PR. Before merging, confirm it renders correctly against the currently published snapshot.
+10. Open the PR. Before merging, confirm it renders correctly against the currently published snapshot and works on production's current schema, then merge it.
 
 ### Stage 5: production catch-up
 

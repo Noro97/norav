@@ -99,6 +99,7 @@ Nothing.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
 - Pending migrations 0016–0027 hold old copy. They are append-only, so `content:catch-up` puts the drafts back after they run. After S3 the rows stay hidden, and S4 soft-deletes most of them. S3 deletes the script.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
+- Nothing enforces CI on a merge, and sessions merge their own PRs (D20). Branch protection needs GitHub Pro or a public repo, so it becomes possible at S8. Turning it on then is gate G6.
 - No prerendering, so metadata is the same on every route. S4 adds it.
 - `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. S11 builds the OG images.
 

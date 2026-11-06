@@ -39,7 +39,7 @@ The site works and is live. Its visuals are monoline SVG and real captures. The 
 3. **Report to me and wait** while the owner generates the images. Review the results honestly, and reject any that look like a fake screenshot.
 4. Build per-page OG images at build time.
 5. Optimize and integrate, then add motion polish if it earns its place. Measure Lighthouse before and after.
-6. Open the PR. **Report to me and wait** for merge and publish.
+6. Open the PR and merge it. **Report to me and wait** for the publish.
 
 ## 7. At the end
 

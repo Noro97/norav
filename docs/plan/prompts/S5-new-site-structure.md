@@ -77,7 +77,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 ### Stage 4: publish
 
-12. Give the owner the exact order. Merge and publish in the same sitting, because the redirects point at routes that only exist after the publish.
+12. Don't merge yet, because the redirects point at routes that only exist after the publish. Give the owner the exact order, and merge when they're ready to publish, in the same sitting.
 
 **Report to me and wait.**
 

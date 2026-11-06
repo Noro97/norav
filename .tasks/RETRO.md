@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-06: Sessions merge their own PRs now, and nothing checks them
+
+The owner decided this on 2026-11-06 (D20), and no longer reviews or merges PRs. That removes the last person looking before `main` deploys. GitHub won't help: `main` has no branch protection, because that needs GitHub Pro or a public repo, so `gh pr merge` works on a red PR, and auto-merge is off. Read the checks on the latest commit yourself, and pin the merge to that commit. `--match-head-commit` needs the full hash, and a short one fails.
+
 ### 2026-11-06: A green CI step can still have done nothing
 
 "Keep the Lighthouse report" passed on its first run and saved nothing. `upload-artifact` skips hidden folders, and `if-no-files-found: ignore` told nobody. It only showed up by reading the run's log after the merge. Read the log of a new CI step on its first run, and don't use `ignore` on output you rely on.
