@@ -185,7 +185,7 @@ const CASE_STUDY_TECH: Record<string, string[]> = {
 }
 
 const VIBE_SYSTEMS = [
-  { name: 'TON / Web3', tone: 'sky' },
+  { name: 'TON wallet', tone: 'sky' },
   { name: 'Gemini AI', tone: 'violet' },
   { name: 'Supabase', tone: 'emerald' },
 ]
@@ -202,7 +202,7 @@ const SOCIAL_HREFS = {
 } as const
 
 const EXPERIENCE_SHAPES = [
-  { slug: 'proof-app', period: 'Feb 2026 — Present', image: '/assets/img/exp-startup.png', stack: ['React', 'Vite', 'Supabase', 'Telegram TMA', 'AI Agents'] },
+  { slug: 'proof-app', period: 'Nov 2025 — Jun 2026', image: '/assets/img/exp-startup.png', stack: ['React', 'Vite', 'Supabase', 'Telegram TMA', 'AI Agents'] },
   { slug: 'vizogen', period: 'Sep 2025 — Feb 2026', image: '/assets/img/exp-dataviz.png', stack: ['React', 'TypeScript', 'Generative AI', 'SSE', 'Vercel'] },
   { slug: 'mts-web-services', period: 'Feb 2024 — Jun 2025', image: '/assets/img/exp-logistics.png', stack: ['React', 'TypeScript', 'Design Systems', 'Module Federation'] },
   { slug: 'appfox', period: 'Sep 2023 — Jan 2024', image: '/assets/img/exp-merch.png', stack: ['Next.js', 'TypeScript', 'Fintech', 'iGaming'] },

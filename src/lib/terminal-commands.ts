@@ -1,6 +1,7 @@
 import type { TerminalLine } from '@/types'
 import i18n from '@/i18n'
-import { currentBlockContent } from '@/content/current'
+import { currentBlockContent, currentSettings } from '@/content/current'
+import { bareUrl, profileOf, wrapWords } from '@/lib/profile'
 import type { TerminalFooterContent } from '@norav/content-schema'
 
 type CommandHandler = (args: string[]) => string[]
@@ -13,6 +14,8 @@ const t = (key: string) => i18n.t(key, { ns: 'terminal' })
  * these are plain functions called from an event handler.
  */
 const copy = () => currentBlockContent<TerminalFooterContent>('terminal_footer', i18n.language)
+
+const profile = () => profileOf(currentSettings())
 
 /**
  * Whether the terminal offers `ask`.
@@ -114,22 +117,23 @@ const COMMANDS: Record<string, CommandHandler> = {
     }
 
     if (file === 'about.txt') {
+      const { name, headline, experience, availability } = profile()
+      const open = `Currently ${availability.charAt(0).toLowerCase()}${availability.slice(1)}.`
       return [
         '',
-        t('cat.about.name'),
-        t('cat.about.role'),
+        `  ${name}`,
+        `  ${headline}`,
         '',
         t('cat.about.bio1'),
         t('cat.about.bio2'),
         t('cat.about.bio3'),
         '',
-        t('cat.about.bio4'),
+        `  ${experience.summary}.`,
         t('cat.about.bio5'),
         t('cat.about.bio6'),
         t('cat.about.bio7'),
         '',
-        t('cat.about.bio8'),
-        t('cat.about.bio9'),
+        ...wrapWords(open, 40).map((line) => `  ${line}`),
         '',
       ]
     }
@@ -228,14 +232,15 @@ const COMMANDS: Record<string, CommandHandler> = {
 
   sudo: (args) => {
     if (args[0] === 'hire') {
+      const { email, links } = profile()
       const rows = [
         '',
         '   ' + (copy()?.hire.message ?? ''),
         '',
-        '   ✉  noroavetisyan@gmail.com',
-        '   ◆  github.com/Noro97',
-        '   ●  linkedin.com/in/norayravetisyan',
-        '   ✈  t.me/antarber',
+        `   ✉  ${email}`,
+        `   ◆  ${bareUrl(links.github)}`,
+        `   ●  ${bareUrl(links.linkedin)}`,
+        ...(links.telegram ? [`   ✈  ${bareUrl(links.telegram)}`] : []),
         '',
         '   ' + (copy()?.hire.openTo ?? ''),
         '   ' + (copy()?.hire.location ?? ''),

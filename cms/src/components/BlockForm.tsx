@@ -89,6 +89,7 @@ function Field({ field, prefix, ...form }: FieldProps) {
         id={id}
         label={field.label}
         help={help}
+        accept={field.accept}
         value={typeof value === 'string' ? value : ''}
         disabled={disabled}
         error={error}
@@ -140,7 +141,9 @@ function Field({ field, prefix, ...form }: FieldProps) {
         help={help}
         rows={rows}
         itemLabel={field.itemLabel}
-        mediaFields={children.filter((child) => child.control === 'media').map((child) => child.field)}
+        mediaFields={children
+          .filter((child) => child.control === 'media' && !child.accept)
+          .map((child) => child.field)}
         disabled={disabled}
         canAdd={canAdd}
         canRemove={canRemove}
@@ -250,6 +253,7 @@ function MediaField({
   id,
   label,
   help,
+  accept,
   value,
   disabled,
   error,
@@ -258,6 +262,7 @@ function MediaField({
   id: string
   label: string
   help?: string
+  accept?: 'video'
   value: string
   disabled?: boolean
   error?: string
@@ -270,7 +275,11 @@ function MediaField({
       <label htmlFor={id}>{label}</label>
 
       <div className="media-field">
-        {value ? <img src={mediaDisplaySrc(value)} alt="" /> : null}
+        {!value ? null : accept === 'video' ? (
+          <video src={mediaDisplaySrc(value)} preload="metadata" muted playsInline />
+        ) : (
+          <img src={mediaDisplaySrc(value)} alt="" />
+        )}
         <input
           id={id}
           type="text"
@@ -289,6 +298,7 @@ function MediaField({
 
       {picking && (
         <MediaPicker
+          accept={accept}
           onClose={() => setPicking(false)}
           onSelect={(item) => {
             // The entry, not where its bytes are today — see lib/media-refs.

@@ -24,6 +24,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@norav/content-schema": ["./packages/content-schema/src/index.ts"],
+      "@norav/content-schema/*": ["./packages/content-schema/src/*"],
       "@norav/design-tokens": ["./packages/design-tokens/src/index.ts"]
     },
 
@@ -34,6 +35,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src", "packages/content-schema/src", "packages/design-tokens/src", "server", "api", "vite-api-plugin.ts", "vitest.setup.ts"],
+  "include": ["src", "packages/content-schema/src", "packages/design-tokens/src", "server", "api", "vite-api-plugin.ts", "vite-profile-plugin.ts", "vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

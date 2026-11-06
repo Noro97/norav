@@ -2,7 +2,7 @@
 
 Every claim on the site, in the CMS, in the terminal's prompt and in page metadata comes from this file or from code a session has read. If a fact isn't here, ask the owner. Don't infer it.
 
-S3 moves the profile facts into the CMS as the single source of truth. This file stays as the review record.
+The facts the site reads live in the CMS, in the Profile screen (`settings.profile`). Migration 0032 seeded them from this file. This file stays as the review record, so change it first and the Profile screen second.
 
 ## Identity
 
@@ -14,9 +14,11 @@ S3 moves the profile facts into the CMS as the single source of truth. This file
 | Location | Yerevan, Armenia (UTC+4). Remote, EU/US overlap |
 | Experience | 8+ years in JavaScript and TypeScript, since August 2018 |
 | Email | noroavetisyan@gmail.com |
-| Links | linkedin.com/in/norayravetisyan, github.com/Noro97, norav.dev |
+| Links | linkedin.com/in/norayravetisyan, github.com/Noro97, t.me/antarber, norav.dev |
+| Availability | Open to senior fullstack roles at remote EU/US product companies |
 | Education | BSc Computer Science, Armenian State University of Economics |
 | Languages | Armenian (native), Russian (fluent), English (professional) |
+| Site description | Building high-performance interfaces at the intersection of engineering precision and visual storytelling. |
 
 Phone numbers don't go on the site or in this repo.
 

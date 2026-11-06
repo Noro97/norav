@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { useContent } from '@/content/ContentProvider'
-import { PageHead, SITE } from '@/content/PageHead'
+import { PageHead, SITE, siteName } from '@/content/PageHead'
 import { hrefFor } from '@/content/routing'
 import { postDate, WRITING_SLUG, type Post } from '@/content/posts'
 
@@ -27,7 +27,7 @@ export function PostPage({ post }: { post: Post }) {
         <PageHead
           slug={slug}
           seo={{
-            title: post.seo.title || `${post.title} — Norayr Avetisyan`,
+            title: post.seo.title || `${post.title} — ${siteName()}`,
             description: post.seo.description || post.excerpt,
             image,
           }}

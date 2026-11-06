@@ -55,6 +55,8 @@ export interface FormField {
   /** `repeater` only. */
   min?: number
   max?: number
+  /** `media` only — a field that holds a video. Every other media field lists the rest of the library. */
+  accept?: 'video'
   /** `collection` only — which collection this block pulls its rows from. */
   collection?: string
 }

@@ -109,5 +109,12 @@
   "proof.result.xpGained": "+{{count}} XP",
   "proof.result.premium": "2x Premium",
   "proof.result.share": "Share to Telegram",
-  "proof.windowLabel": "verification.pipeline"
+  "proof.windowLabel": "verification.pipeline",
+
+  "caseStudy.context": "Context",
+  "caseStudy.problem": "The problem",
+  "caseStudy.decisions": "Decisions",
+  "caseStudy.outcome": "Outcome",
+  "caseStudy.retro": "What I'd do differently",
+  "video.play": "Play video: {{title}}"
 }

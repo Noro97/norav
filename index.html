@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a1a" />
     <meta name="color-scheme" content="dark" />
-    <!-- Replaced per page by PageHead; this is what a reader sees for the one
+    <!-- The PROFILE placeholders come from the published profile, when Vite builds
+         this file. See vite-profile-plugin.ts.
+
+         Replaced per page by PageHead; this is what a reader sees for the one
          frame before React runs, and what a crawler without JS is left with. -->
-    <title>Norayr Avetisyan — Senior Fullstack Engineer</title>
-    <meta name="author" content="Norayr Avetisyan" />
+    <title>%PROFILE_TITLE%</title>
+    <meta name="author" content="%PROFILE_NAME%" />
     <meta
       name="description"
-      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+      content="%PROFILE_DESCRIPTION%"
     />
 
     <!-- The site's own copy, and the floor under every page.
@@ -28,51 +31,26 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Norayr Avetisyan" />
-    <meta property="og:title" content="Norayr Avetisyan — Senior Fullstack Engineer" />
+    <meta property="og:site_name" content="%PROFILE_NAME%" />
+    <meta property="og:title" content="%PROFILE_TITLE%" />
     <meta
       property="og:description"
-      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+      content="%PROFILE_DESCRIPTION%"
     />
     <meta property="og:image" content="https://norav.dev/assets/img/logo-new.svg" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Norayr Avetisyan — Senior Fullstack Engineer" />
+    <meta name="twitter:title" content="%PROFILE_TITLE%" />
     <meta
       name="twitter:description"
-      content="Building high-performance interfaces at the intersection of engineering precision and visual storytelling."
+      content="%PROFILE_DESCRIPTION%"
     />
     <meta name="twitter:image" content="https://norav.dev/assets/img/logo-new.svg" />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Norayr Avetisyan",
-      "jobTitle": "Senior Fullstack Engineer",
-      "url": "https://norav.dev",
-      "email": "noroavetisyan@gmail.com",
-      "sameAs": [
-        "https://github.com/Noro97",
-        "https://www.linkedin.com/in/norayravetisyan/",
-        "https://t.me/antarber"
-      ],
-      "knowsAbout": ["React", "Next.js", "TypeScript", "Vue.js", "Design Systems", "Micro-frontends", "Storybook", "Telegram Mini Apps"],
-      "knowsLanguage": ["Armenian", "Russian", "English"],
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "Armenian State University of Economics"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Yerevan",
-        "addressCountry": "AM"
-      }
-    }
-    </script>
+    <script type="application/ld+json">%PROFILE_JSON_LD%</script>
 
     <!-- Fonts: preconnect + display=swap for fast loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

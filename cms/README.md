@@ -169,10 +169,37 @@ the token set they go to Vercel Blob and are served from its CDN. Either way the
 media row stores an absolute URL, so the site never learns which driver produced
 it.
 
-Files are accepted up to 12 MB (jpeg, png, webp, avif, gif, svg, pdf); anything
-else is refused before it is stored. Dimensions are read on upload so the site can
-reserve layout space. Deleting removes the bytes and soft-deletes the row —
+What's accepted:
+
+| Type | Limit |
+| --- | --- |
+| jpeg, png, webp, avif, gif, pdf | 12 MB |
+| mp4, webm | 50 MB |
+| svg | 4 MB |
+
+Anything else is refused before it is stored. Dimensions are read on upload so the
+site can reserve layout space, except for video, which reserves its frame from the
+block's Portrait switch. Deleting removes the bytes and soft-deletes the row —
 nothing here knows which pages point at a file, so the history stays.
+
+**Two ways in.** A Vercel function's request body stops at about 4.5 MB, and the
+platform answers past that before the route runs. So on the blob store, every video
+and any file over 4 MB goes straight from the browser to the store: `media/direct`
+hands out a token for one pathname, one content type and that type's limit, and
+`media/register` then records what the store says it received. Everything else goes
+through `POST /api/admin/media`, including everything on the embedded setup. An SVG
+always takes that route, because the server has to read it to check it's safe.
+
+An image field lists the library's images and documents, and a video field lists its
+videos.
+
+## Profile
+
+The facts about the owner are one `settings` row, edited on the Profile screen:
+title, location, links, employers, approved numbers. Publishing carries them in the
+snapshot like the palette, and validates them first. The page shell, its JSON-LD and
+the terminal read them from there. [`docs/plan/facts.md`](../docs/plan/facts.md) stays
+as the review record, so change that first.
 
 Images that predate the library still live in the site's `public/` folder and
 are referenced by path. Image fields keep their text input for exactly that
@@ -197,7 +224,11 @@ Admin (session cookie, same-origin only):
 | GET | `/api/admin/pages/:slug` | page with blocks and every translation |
 | PATCH | `/api/admin/blocks/:id` | save settings / visibility / one locale |
 | POST | `/api/admin/publish` | validate everything and cut a new version |
+| GET/PUT | `/api/admin/settings/:key` | read or save `theme`, `site` or `profile` |
 | GET/POST | `/api/admin/media` | list the library / upload a file |
+| POST | `/api/admin/media/direct` | a token to send one file straight to the blob store |
+| POST | `/api/admin/media/register` | record a file sent that way, as new or as a replacement |
+| POST | `/api/admin/media/:id/replace` | swap a file and carry its references across |
 | DELETE | `/api/admin/media/:id` | remove a file |
 
 Responses are `{ data }` or `{ error: { code, message, fields } }`, where

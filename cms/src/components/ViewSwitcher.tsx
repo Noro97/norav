@@ -14,6 +14,7 @@ import {
   RowsIcon,
   SiteIcon,
   PenIcon,
+  ProfileIcon,
 } from './icons'
 
 export interface PageSummary {
@@ -35,6 +36,7 @@ export type WorkspaceView =
   | { kind: 'theme' }
   | { kind: 'media' }
   | { kind: 'site-effects' }
+  | { kind: 'profile' }
   /** The writing: every post, and the one open in the editor if any. */
   | { kind: 'posts'; id?: string }
 
@@ -124,6 +126,18 @@ export function ViewSwitcher({
             <PenIcon />
           </span>
           <span className="view-name">Posts</span>
+        </button>
+        <button
+          type="button"
+          className="view-item"
+          aria-current={view.kind === 'profile'}
+          disabled={disabled}
+          onClick={() => onChange({ kind: 'profile' })}
+        >
+          <span className="view-icon">
+            <ProfileIcon />
+          </span>
+          <span className="view-name">Profile</span>
         </button>
         <button
           type="button"

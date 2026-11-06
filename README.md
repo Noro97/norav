@@ -110,7 +110,7 @@ Copy `.env.example` to `.env`. Nothing here is required to run the site.
 | Variable | Reaches the browser | What it does |
 | --- | --- | --- |
 | `ANTHROPIC_API_KEY` | no | Powers the terminal's `ask`. Unset, the command reports itself switched off rather than broken |
-| `CMS_URL` | no | Build-time origin for baking the snapshot. Unset = build with what is committed |
+| `CMS_URL` | no | Origin for baking the snapshot at build time, and for the profile behind the terminal's `ask` at runtime. Unset = both use what is committed |
 | `VITE_CMS_URL` | **yes** | Runtime origin for revalidation. Must be set explicitly in production — a build that silently talked to localhost would ship a site that never updates |
 
 The `VITE_` prefix is the whole rule: prefixed variables are inlined into the
@@ -126,6 +126,7 @@ need no key.
 api/chat.ts              Vercel edge entry — a four-line adapter
 server/chat.ts           the actual /api/chat handler, shared by both environments
 vite-api-plugin.ts       serves that same handler in dev, so the two cannot drift
+vite-profile-plugin.ts   fills index.html from the published profile
 
 scripts/
   fetch-content.mjs      bakes the published snapshot into src/content
@@ -143,12 +144,13 @@ src/
     sections/            one folder or file per block type
     ui/  navigation/
   i18n/locales/{en,ru}/  interface chrome only — see below
-  lib/                   terminal commands, SSE reader, web vitals, the AI system prompt
+  lib/                   terminal commands, SSE reader, web vitals, the AI system prompt, the shell's metadata
   hooks/  store/  types/
 
 packages/content-schema/src/
   blocks/                one zod schema per block type
   collections/           repeatable content (experience entries)
+  profile.ts             the facts about the owner: their schema and their form
   snapshot.ts            the contract the publish step produces
 ```
 
@@ -182,12 +184,23 @@ paint, and remembered by version so a reload does not flash the shipped palette.
 `src/content/theme.ts` also dispatches a `norav:themechange` event when the palette
 changes.
 
+**The facts.** The title, the years, the employers and the approved numbers live
+in one `settings` row, edited on the CMS's Profile screen and published in the
+snapshot. `vite-profile-plugin.ts` fills the page shell and its JSON-LD from it at
+build time, `server/chat.ts` builds the terminal's prompt from it at runtime, and
+the terminal's commands and a few components read it through `useProfile`. Page
+copy, like the hero and the career timeline, stays in its own block or collection
+and is reviewed as copy. A test fails if anything from "Do not use" in
+[`docs/plan/facts.md`](./docs/plan/facts.md) appears in the source, the shell or
+the seed data.
+
 **What the head says.** Two audiences read it and they do not overlap. Google
 runs the JavaScript and sees whatever `PageHead` ends up writing; every link
 unfurler that matters — Telegram, Slack, LinkedIn, Facebook, X — fetches
 `index.html` and never executes it, so the static tags are the only card it will
 ever see. Both are served by having one tag each: `index.html` carries the
-site's own title, description and card, and `PageHead` **rewrites those tags in
+site's own title, description and card, filled from the profile when it is built,
+and `PageHead` **rewrites those tags in
 place** once React runs, rather than rendering copies beside them. The tags that
 exist only per page — `canonical`, the `hreflang` alternates, `og:url` — are
 rendered normally, because there is nothing in the shell for them to collide
@@ -206,13 +219,26 @@ are simply visible from the start — without touching the widgets' own motion.
 
 **The terminal.** `help`, `ls`, `cat`, `whoami`, `date`, `echo`, `neofetch`,
 `pwd`, `cd`, `sudo` and `clear` are local. `ask` streams from Claude through
-`/api/chat`, with the system prompt in `src/lib/portfolio-context.ts`. That
+`/api/chat`, with the system prompt built by `src/lib/portfolio-context.ts` from the
+profile the CMS publishes now, kept for five minutes per instance, and from the baked
+snapshot if the CMS doesn't answer in two seconds. That
 handler lives in `server/chat.ts` and is imported by both the Vite dev plugin and the edge
 function, because it once existed only in dev and production answered "could not
 reach AI service" to everyone. It caps the model at 512 tokens, keeps the last
 10 messages, truncates each to 600 characters, and rate-limits 5 requests per
 minute per IP — in memory, so it bounds a loop from one machine and nothing
 more.
+
+**Case studies.** `case_study` is one block type placed once per study, reading its
+own row by id. It holds context, the problem, footage, decisions, the outcome and what
+you'd do differently, and every empty part hides. A study with a demo places the
+widget's block above it and leaves its heading empty. The live demos keep their
+`*_detail` blocks, which only need a short explanation.
+
+**Video.** `src/components/ui/VideoPlayer.tsx` loads only the poster with the page.
+The `<video>` doesn't exist until someone presses play or, for a clip marked to
+autoplay, until it nears the screen. Under reduced motion it always waits for a
+click. Every clip has a poster, because a figure can't be saved without an image.
 
 ## Checks
 

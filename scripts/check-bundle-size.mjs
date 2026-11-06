@@ -20,10 +20,13 @@ import { gzipSync } from 'node:zlib'
  * Bytes. The baseline from 2026-11-06, measured on CI's Node 20 and rounded up to a
  * whole KB. Gzip output differs slightly between Node versions, so a local run on
  * another Node can read a little differently from CI. S4 lowers these.
+ *
+ * S3 raised CSS to fit the case-study and video utilities. One stylesheet holds every
+ * class in `src`, lazy or not, so a lazy section still counts here.
  */
 export const LIMITS = {
   js: { raw: 910_000, gzip: 293_000 },
-  css: { raw: 149_000, gzip: 21_000 },
+  css: { raw: 151_000, gzip: 21_000 },
 }
 
 const ASSET = /^\/assets\//
