@@ -15,7 +15,7 @@ Neon, or any Postgres. The schema uses no extensions.
 ```bash
 cp db/.env.example db/.env          # fill in DATABASE_URL
 npm --prefix db install
-npm --prefix db run migrate:status  # six pending
+npm --prefix db run migrate:status  # lists what is applied and what is pending
 npm --prefix db run migrate
 ```
 
@@ -71,11 +71,12 @@ curl https://cms.norav.dev/api/health
 ```
 
 ```json
-{ "status": "ok", "database": "reachable", "migrations": 6,
-  "publishedVersion": 1, "storage": "blob" }
+{ "status": "ok", "database": "reachable", "migrations": 31,
+  "publishedVersion": 1, "publishedAt": "2026-11-06T09:04:07.445Z", "storage": "blob" }
 ```
 
-`migrations: 0` means the runner never ran. `storage: "local"` in production
+`migrations` counts the files applied, and a brand-new database has every file in
+`db/migrations`. `migrations: 0` means the runner never ran. `storage: "local"` in production
 means the blob token is missing and uploads will not survive a redeploy.
 
 Then sign in, change a word, publish, and load the site. If `rebuild` comes
@@ -88,8 +89,11 @@ publish itself still succeeded.
 `npm --prefix db run migrate`. Migrations are append-only; never edit one that
 has shipped.
 
-**Rolling back content** does not need a deploy. Every publish is an immutable
-row in `publications`, and `/api/public/content?v=<n>` serves any of them.
+**Rolling back content**: revision restore isn't built yet (S10 in
+[the plan](../docs/plan/README.md)). Every publish is an immutable row in
+`publications`, and `/api/public/content?v=<n>` serves any of them, but nothing puts
+an older one back on the site. See "Roll back" in
+[the publish runbook](../docs/plan/runbook-publish.md).
 
 **Backups**: the content of record is the `publications` table. `pg_dump` of it
 is enough to reconstruct the site; the rest of the schema is working state.

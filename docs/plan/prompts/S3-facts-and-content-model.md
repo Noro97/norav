@@ -15,8 +15,8 @@ You're giving the site one source of truth for facts about the owner, adding wha
 - The title, years, employers and numbers are repeated across CMS blocks, `index.html` metadata and JSON-LD, `src/i18n/locales`, and the terminal's prompt in `src/lib/portfolio-context.ts`. They've drifted apart before.
 - The five `*_detail` blocks have thin fields. The spec's `context`, `problem`, `retro` and `widgetCaption` aren't built.
 - CMS uploads allow images, SVG and PDF up to 12 MB, and no video.
-- Production is behind on migrations. The rehearsed sequence is in the runbook. S1 corrected v26 by hand-picked edits, and pending migrations can write claims from "Do not use" back into drafts, so check drafts before publishing.
-- `site_footer` on the `site` page is hidden in production, with default copy that says "Frontend-focused". Migration 0023 sees the row and creates no footer, so unhide and correct it after the catch-up, or the site has no footer.
+- Production is behind on migrations. The rehearsed sequence is in the runbook. The pending migrations write claims from "Do not use" back into drafts, and `content:catch-up` then puts the drafts back to the latest publication, so catching up changes nothing a visitor sees. Your own migrations run after that step, or it would hide what they add.
+- `site_footer` on the `site` page stays hidden, with default copy that says "Frontend-focused". `content:catch-up` moves the terminal back to `site`, so pages keep it at the bottom as they do now. S5 does the real footer.
 
 ## 3. Goal and principles
 
@@ -70,7 +70,7 @@ You're giving the site one source of truth for facts about the owner, adding wha
 
 **Report to me and wait for the owner to run it.**
 
-12. Verify: `api/health` shows every migration applied, the published version moved, no `[Placeholder` text, nothing from "Do not use", and the pages still load at desktop and 375px. Refresh the committed snapshots in a small follow-up commit or PR.
+12. Verify: `api/health` shows every migration applied, the published version moved, no `[Placeholder` text, nothing from "Do not use", and the pages still load at desktop and 375px. Refresh the committed snapshots in a small follow-up commit or PR, and delete `cms/scripts/catch-up.mts` and `cms/src/lib/restore-published.ts` with its test there too.
 
 ## 7. At the end
 

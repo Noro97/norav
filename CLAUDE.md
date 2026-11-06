@@ -30,6 +30,7 @@ npx tsc --noEmit
 npm run lint
 npm test
 npm run build
+npm run size:check
 
 # CMS, on the embedded database
 npm --prefix cms install

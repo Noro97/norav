@@ -21,8 +21,9 @@ edit ──► save ──► publish ──► immutable snapshot ──► sit
    checksum means it pulls the new snapshot and swaps the copy in — no redeploy
    for a typo fix.
 
-Rolling back is picking an older `publications` row: the payload is already
-fully resolved.
+Revision restore isn't built yet. Every `publications` row keeps its resolved
+payload, and `/api/public/content?v=<n>` serves any of them, but nothing puts an
+older one back on the site. S10 in [the plan](../docs/plan/README.md) adds it.
 
 ## Local development
 
@@ -52,8 +53,8 @@ npm run user:add -- --email you@example.com
 ## Working on the site against the CMS
 
 ```bash
-npm --prefix cms run dev     # the CMS on :3300
-npm run dev                  # the site on :5173
+npm --prefix cms run dev:local   # the CMS on :3300, embedded database
+npm run dev                      # the site on :5173
 ```
 
 In development the site assumes the CMS is on `http://localhost:3300`, so a
@@ -73,12 +74,6 @@ when no CMS is reachable at build time):
 ```bash
 npm run content:pull
 ```
-
-**Restart `npm run dev` after pulling this branch.** The site gained a workspace
-dependency, and a Vite dev server that was already running re-optimises its
-dependencies underneath itself — which leaves react-three-fiber with two copies
-of its store and throws *"R3F: Hooks can only be used within the Canvas
-component!"*, blanking the page.
 
 ## Getting the site's files into the library
 
@@ -151,10 +146,14 @@ settings, the media library, the revision and publication history — in one
 transaction, so a failure halfway leaves the laptop as it was. Accounts are the
 one thing it never moves in either direction: your local login stays, and
 production's password hashes stay in production. A revision keeps its content
-and loses its author; sign-in attempts in the audit log stay behind. Both
-databases have to be on the same migration, and the CMS has to be stopped
-while it runs (PGlite is single-writer). The site picks the content up on its
-next load.
+and loses its author; sign-in attempts in the audit log stay behind. The CMS has
+to be stopped while it runs (PGlite is single-writer). The site picks the content
+up on its next load.
+
+Both databases have to be on the same migrations, and the embedded one applies
+every migration each time it opens. So this refuses while production is behind the
+repository. [The publish runbook](../docs/plan/runbook-publish.md) says how to copy
+production until then.
 
 To try something against real Postgres without touching live content, branch
 the database in Neon and point `cms/.env` at the branch. The same applies to
@@ -170,8 +169,8 @@ the token set they go to Vercel Blob and are served from its CDN. Either way the
 media row stores an absolute URL, so the site never learns which driver produced
 it.
 
-Images are accepted up to 12 MB (jpeg, png, webp, avif, gif, svg); anything else
-is refused before it is stored. Dimensions are read on upload so the site can
+Files are accepted up to 12 MB (jpeg, png, webp, avif, gif, svg, pdf); anything
+else is refused before it is stored. Dimensions are read on upload so the site can
 reserve layout space. Deleting removes the bytes and soft-deletes the row —
 nothing here knows which pages point at a file, so the history stays.
 

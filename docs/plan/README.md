@@ -14,8 +14,8 @@ A hiring manager or tech lead spends 2–3 minutes on the site and concludes thi
 | --- | --- |
 | This plan | Current |
 | [Redesign brief, Sep 2026](https://claude.ai/artifact/Jn3Se1kLhN6vToytzj9DvT) | Base for audit, voice, structure, copy and image prompts, except where the decisions below override it |
-| `docs/superpowers/specs/2026-09-22-site-redesign-design.md` | Same. S2 moves it to `docs/archive/2026-09-redesign/` |
-| `docs/superpowers/plans/` | Replaced by this plan. Don't work from them |
+| `docs/archive/2026-09-redesign/specs/2026-09-22-site-redesign-design.md` | Same |
+| `docs/archive/2026-09-redesign/plans/` | Replaced by this plan. Don't work from them |
 
 Most of the brief's code cleanup shipped: the ambient layer, three.js and fragment navigation are gone. Its copy, new structure, kit deletion and redirects did not, and production content has not changed since 11 Sep. So this plan finishes that work and doesn't start another redesign.
 

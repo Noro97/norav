@@ -4,6 +4,7 @@
 //
 //   node --env-file=.env scripts/migrate.mjs          apply pending
 //   node --env-file=.env scripts/migrate.mjs --status  list without applying
+//   node --env-file=.env scripts/migrate.mjs --through=0031  stop after that number
 //
 // Each file runs inside its own transaction together with its schema_migrations
 // row, so a failure leaves the database on the last fully-applied version.
@@ -16,6 +17,11 @@ import pg from 'pg'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const migrationsDir = join(root, 'migrations')
 const statusOnly = process.argv.includes('--status')
+const through = process.argv.find((arg) => arg.startsWith('--through='))?.slice('--through='.length)
+if (through !== undefined && !/^\d{4}$/.test(through)) {
+  console.error('--through takes a four-digit migration number, like --through=0031.')
+  process.exit(1)
+}
 
 const connectionString = process.env.DATABASE_URL
 if (!connectionString) {
@@ -37,7 +43,7 @@ try {
 
   const { rows } = await client.query('select version from schema_migrations')
   const applied = new Set(rows.map((r) => r.version))
-  const pending = files.filter((f) => !applied.has(f))
+  const pending = files.filter((f) => !applied.has(f) && (through === undefined || f.slice(0, 4) <= through))
 
   if (statusOnly) {
     for (const f of files) console.log(`${applied.has(f) ? '  applied' : '  PENDING'}  ${f}`)
