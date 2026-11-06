@@ -82,3 +82,5 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 - `select version::text ... order by version` sorts as text, so 9 beats 26. Qualify it as `publications.version`.
 - `cd` in one Bash call carries into the next. Use a subshell or an absolute path.
 - Vercel previews sit behind Vercel sign-in. Check redirects on production after the merge, with `curl` without `-L`.
+- Another project's Vite can already hold port 5173, and `.claude/launch.json` pins `site` to it. Check with `lsof -nP -iTCP:5173 -sTCP:LISTEN` before trusting what's on that port.
+- The dev console is never empty: it logs web vitals and, with no local CMS, a refused connection to `localhost:3300`. For the empty-console check, use `npm run build` then `npm run preview`, which calls no CMS unless `VITE_CMS_URL` is set.

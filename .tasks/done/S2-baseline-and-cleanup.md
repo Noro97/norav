@@ -76,7 +76,7 @@ The search also matches some harmless words ("Make it fast", "virtualised"), so 
 - The site from that CMS, on `localhost`: swapped to version 27. The 11 published pages at 1440px and 375px: no claim, no broken image, no sideways scroll, except that `/work/omnigrid` went blank once at 1440px (below). `/contact` and `/writing` aren't published, as today. The search's only other hits were a sample weight ("6,598.4 kg") and the impact counter caught mid-count, which rests at 8+.
 - `pullContent` refuses on the copy before the catch-up, and copies it after.
 
-**Found on the way, not fixed:** `.tasks/bugs/omnigrid-render-loop.md`. One blank `/work/omnigrid` in the dev build. Three live loads with real 4x CPU throttling had no error.
+**Found on the way, not fixed in S2:** `.tasks/done/omnigrid-render-loop.md`. One blank `/work/omnigrid` in the dev build. Three live loads with real 4x CPU throttling had no error.
 
 **Not rehearsed:** the deploy hook, because the session forced it empty, and storage on Blob. A publish that retires files has nothing to purge today: 0 files are awaiting purge.
 

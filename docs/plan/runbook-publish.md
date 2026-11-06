@@ -97,7 +97,7 @@ So the migrations run as written, and `content:catch-up` then puts the drafts ba
    ```bash
    curl https://cms.norav.dev/api/health
    ```
-   Expect every migration applied, and `publishedVersion` unchanged. On the copy, the publish made version 27 with `purged: 0`. The 11 published pages rendered at 1440px and 375px with no claim and no broken image, apart from one OmniGrid error in the dev build, logged in `.tasks/bugs/omnigrid-render-loop.md`, which isn't caused by the content.
+   Expect every migration applied, and `publishedVersion` unchanged. On the copy, the publish made version 27 with `purged: 0`. The 11 published pages rendered at 1440px and 375px with no claim and no broken image, apart from one OmniGrid error in the dev build, which the content didn't cause and which is now fixed. See `.tasks/done/omnigrid-render-loop.md`.
 
 The script refuses if a migration through 0031 is still pending, or if a later one has already run, because it would hide what that migration added. Rerunning it is safe. S3 deletes it afterwards.
 
