@@ -15,7 +15,7 @@ You're measuring where the site stands, clearing old noise out of the repo, and 
 - `docs/superpowers/` holds a replaced spec and two stale checkbox plans.
 - At last count: 92 merged remote branches, 4 unmerged (`feat/cms-media`, `feat/motion-that-can-be-grabbed`, `claude/react-components-animations-l7oltw`, `claude/relaxed-mccarthy-eqacxq`), and 5 worktrees. Recount them.
 - Known doc conflicts are listed in the tech debt register in `STATE.md`.
-- Production is behind on migrations. Some pending ones write placeholder content rows, and `cms/scripts/honest-content.mts` exists to hide those.
+- Production is behind on migrations. Some pending ones write placeholder content rows, and `cms/scripts/honest-content.mts` exists to hide those. They also write claims from "Do not use" (at least 0017, 0019 and 0026), and publishing would release them, so the rehearsal has to show exactly what comes back.
 
 ## 3. Goal and principles
 

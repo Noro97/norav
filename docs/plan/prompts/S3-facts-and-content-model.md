@@ -15,7 +15,8 @@ You're giving the site one source of truth for facts about the owner, adding wha
 - The title, years, employers and numbers are repeated across CMS blocks, `index.html` metadata and JSON-LD, `src/i18n/locales`, and the terminal's prompt in `src/lib/portfolio-context.ts`. They've drifted apart before.
 - The five `*_detail` blocks have thin fields. The spec's `context`, `problem`, `retro` and `widgetCaption` aren't built.
 - CMS uploads allow images, SVG and PDF up to 12 MB, and no video.
-- Production is behind on migrations. The rehearsed sequence is in the runbook.
+- Production is behind on migrations. The rehearsed sequence is in the runbook. S1 corrected v26 by hand-picked edits, and pending migrations can write claims from "Do not use" back into drafts, so check drafts before publishing.
+- `site_footer` on the `site` page is hidden in production, with default copy that says "Frontend-focused". Migration 0023 sees the row and creates no footer, so unhide and correct it after the catch-up, or the site has no footer.
 
 ## 3. Goal and principles
 

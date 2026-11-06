@@ -7,16 +7,16 @@ type Stat = ImpactStripContent['stats'][number]
 const DURATION = 800
 
 /**
- * Counts from 80% of the number, never from zero. A counter parked at 0 until it
- * scrolls into view is what a screenshot, a shared link and a recruiter skimming
- * the page see — and with counting off it used to stay at 0 for good.
+ * Counts up from 80% of the number once the strip is seen. Until then it holds
+ * the real number, because that is what a screenshot, a shared link and a
+ * recruiter skimming the page see, and 80% of a true number is a false one.
  */
 const startOf = (value: number) => Math.round(value * 0.8)
 
 function Counter({ stat, animate, run }: { stat: Stat; animate: boolean; run: boolean }) {
   const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const counts = animate && !reduced
-  const [n, setN] = useState(() => (counts ? startOf(stat.value) : stat.value))
+  const [n, setN] = useState<number | null>(null)
   const frame = useRef(0)
 
   useEffect(() => {
@@ -35,11 +35,9 @@ function Counter({ stat, animate, run }: { stat: Stat; animate: boolean; run: bo
     return () => cancelAnimationFrame(frame.current)
   }, [run, stat.value, counts])
 
-  const display = counts ? n : stat.value
-
   return (
     <span className="font-display text-heading-large font-black text-tertiary-ink tabular-nums">
-      {stat.prefix}{display}{stat.suffix}
+      {stat.prefix}{n ?? stat.value}{stat.suffix}
     </span>
   )
 }

@@ -1,6 +1,6 @@
 # S1 inventory (gate G3)
 
-Everything that has to change so the live site stops contradicting `docs/plan/facts.md`. Nothing here is live until the owner publishes.
+Everything that had to change so the live site stops contradicting `docs/plan/facts.md`. Published as version 26 on 2026-11-06. See `S1-truth-patch.md` for how, and for the footer change found on the way.
 
 The CMS list was tested on 2026-11-05: all 104 items applied through the real CMS on a local copy of v25, on the expected production schema, then published. A search of the result found no "Do not use" claim in either language. Production's own drafts weren't visible to this test.
 
