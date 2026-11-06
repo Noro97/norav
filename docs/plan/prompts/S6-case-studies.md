@@ -64,7 +64,7 @@ Each story answers what an interviewer would ask: context, the actual problem, 2
 ### Stage 3: check and publish
 
 10. Check desktop and 375px, video loading and poster behaviour, reduced motion, and Lighthouse on all three pages.
-11. Open the PR, then give the owner the publish order.
+11. Open the PR and merge it, then give the owner the publish order. If the pages only work after the publish, merge at that point in the order instead.
 
 **Report to me and wait.**
 

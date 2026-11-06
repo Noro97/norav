@@ -50,7 +50,7 @@ You're removing the imported kit and everything else the site no longer uses, th
 3. Add the migration that soft-deletes rows of removed types, with its test.
 4. Open PR A.
 
-**Report to me and wait.** The owner merges it, applies it to production, and publishes. Verify with `api/health` and the manifest before going on.
+**Merge it, then report to me and wait.** The owner applies it to production and publishes. Verify with `api/health` and the manifest before going on.
 
 ### Stage 2: PR B, code
 

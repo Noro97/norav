@@ -42,6 +42,7 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D17 | The terminal stays as a footer easter egg. Its prompt reads from the facts source, and its API key has a monthly spending cap |
 | D18 | This repo goes public at the end of Milestone 1, after a fresh secrets scan. `creative-lab` goes public when `/lab` goes live, after its own scan. Proof App and Nova Prism stay private |
 | D19 | Testimonials and writing stay hidden until they're real. Neither blocks Milestone 1 |
+| D20 | Sessions merge their own PRs once CI passes. The owner doesn't review or merge them, and keeps the gates on copy, production and publishing |
 
 ## Non-goals
 
@@ -65,7 +66,7 @@ Old URLs redirect: `/experience` and `/skills` to `/about`, `/automation` to `/`
 
 ## Sessions
 
-Each session is one branch and one PR, except S4, which needs two. The owner merges a PR before the next session starts. The schedule assumes about 10 hours a week of the owner's time, and roughly 1–2 hours of attention per session, mostly reviewing.
+Each session is one branch and one PR, except S4, which needs two. A session merges its own PR before the next one starts. The schedule assumes about 10 hours a week of the owner's time, and roughly 1–2 hours of attention per session, mostly on copy and production steps.
 
 **Publishing happens throughout, not only at the end.** S1, S3, S4, S5 and S6 each end with a production publish, so the live site improves in steps, and a stalled session can't leave everything unpublished again.
 
@@ -75,7 +76,7 @@ Each session is one branch and one PR, except S4, which needs two. The owner mer
 | --- | --- | --- | --- | --- |
 | S1 | `prompts/S1-truth-patch.md` | Unsupported claims gone from the live site, Fendr added, CV at `/cv` | This plan merged | Approve and publish |
 | S2 | `prompts/S2-baseline-and-cleanup.md` | Lighthouse baseline, CI budgets, old plans archived, branch cleanup, runbook rehearsed | S1 | Approve the deletion list, decide 4 unmerged branches |
-| S3 | `prompts/S3-facts-and-content-model.md` | Profile facts source, case-study block, video support, production caught up | S2 | Review, run production catch-up |
+| S3 | `prompts/S3-facts-and-content-model.md` | Profile facts source, case-study block, video support, production caught up | S2 | Run production catch-up |
 | S4 | `prompts/S4-deletion-and-speed.md` | Kit and unused blocks gone, Leaflet and motion off the landing page, prerendering | S3 | Publish between the two PRs |
 | S5 | `prompts/S5-new-site-structure.md` | Home, Live demos, About, Contact, palette, new copy, redirects | S4 | Correct all copy, publish |
 | S6 | `prompts/S6-case-studies.md` | Proof App, Nova Prism and norav.dev with real footage | S5 | Record Proof App, correct copy, publish |
@@ -101,7 +102,7 @@ S7 doesn't block S8. If it isn't ready, launch without it, and `/lab` follows.
 2. Open a new session in the Claude app, on this project, with a worktree.
 3. Send one line: `Read docs/plan/prompts/S1-truth-patch.md and follow it.`
 4. Answer its questions when it stops at a gate.
-5. Review the PR, including the preview deployment, and merge it.
+5. Read its final message. It merges its own PR, and says what's left for you, if anything.
 
 For S7, use `~/Desktop/projects/pet-pr/creative-lab` as the project and give it the full path to its prompt: `~/Desktop/projects/webapp/docs/plan/prompts/S7-creative-lab.md`. The main checkout has to be on an up-to-date `main` for that path to work.
 
@@ -117,13 +118,18 @@ For S7, use `~/Desktop/projects/pet-pr/creative-lab` as the project and give it 
 
 Every prompt inherits these.
 
-**A session does these without asking:** read code, run local checks and dev servers, make a branch, commit, push, open a PR, write tests, and update `.tasks/`.
+**A session does these without asking:** read code, run local checks and dev servers, make a branch, commit, push, open a PR, merge its own PR, write tests, and update `.tasks/`.
+
+**Merging (D20).** A session doesn't ask the owner to review or merge its PR.
+
+- Merge once CI passes on the PR's latest commit, pinned to that commit: `gh pr merge --merge --match-head-commit <full sha>`. Nothing on GitHub stops a merge past a red check, because branch protection isn't available on this plan. Read the checks first.
+- Merging deploys. If the change only works after a production step, such as a migration or a publish, don't merge yet. Give the owner the order, and merge at that point in it.
 
 **Approval gates. Stop and wait for the owner's "yes" before:**
 
 | Gate | What |
 | --- | --- |
-| G1 | Merging any PR |
+| G1 | Merging a PR whose CI hasn't passed, or one another session opened |
 | G2 | Anything touching production: migrations, `:production` scripts, publishing, environment variables |
 | G3 | Publishing new content. Show the copy first |
 | G4 | Deleting anything outside the current diff: branches, worktrees, media, repos |
@@ -153,4 +159,5 @@ Every prompt inherits these.
 - The change renders correctly with the content that's published now.
 - Every claim added traces to `facts.md` or to code that was read.
 - The PR body has a Summary, Changes and Test plan, with only what was actually run ticked.
+- CI passes on the PR's latest commit, and the session has merged it, or says what it's waiting for: CI still running, or a production step.
 - The session's final message says what's done, what isn't, and exactly what the owner must do next.

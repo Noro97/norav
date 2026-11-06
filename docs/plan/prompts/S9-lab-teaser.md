@@ -32,7 +32,7 @@ You're connecting Creative-Lab to the main site properly, now that both are live
 1. Add the catalog model and CMS editing, with a migration and tests.
 2. Add the teaser block to the home page. Measure Lighthouse before and after.
 3. Capture posters and clips from the live exhibits.
-4. Open the PR. **Report to me and wait** for merge and publish.
+4. Open the PR and merge it. **Report to me and wait** for the publish.
 5. In a separate PR in the `creative-lab` repo, split the stylesheet. Measure the size before and after, and check every public exhibit.
 
 ## 7. At the end

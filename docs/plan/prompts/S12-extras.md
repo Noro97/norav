@@ -34,7 +34,7 @@ Ask the owner which of these to do, and what material they have. For each one:
 1. Prepare the content for review.
 2. **Report to me and wait.**
 3. Add migrations or give CMS steps, unhide the section, and check desktop and 375px.
-4. Open the PR. **Report to me and wait** for merge and publish.
+4. Open the PR and merge it. **Report to me and wait** for the publish.
 
 ## 7. At the end
 

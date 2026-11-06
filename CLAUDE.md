@@ -48,7 +48,7 @@ CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173)
 
 ## Rules
 
-- **One session, one branch, one PR.** Commit, push and open the PR without asking. Never merge.
+- **One session, one branch, one PR.** Commit, push, open the PR and merge it without asking, once CI passes on its latest commit. If it only works after a production step, hold the merge and give the owner the order. See "Session rules" in `docs/plan/README.md`.
 - **Stop for the owner's "yes"** before anything in the approval gates in `docs/plan/README.md`.
 - **Merging to `main` deploys the site.** Every change must render correctly with the content that is published right now. Check it with `curl https://cms.norav.dev/api/health`.
 - **Never run a `:production` script or touch production content.** The owner does that, using `docs/plan/runbook-publish.md`.
