@@ -159,5 +159,5 @@ Every prompt inherits these.
 - The change renders correctly with the content that's published now.
 - Every claim added traces to `facts.md` or to code that was read.
 - The PR body has a Summary, Changes and Test plan, with only what was actually run ticked.
-- CI passes on the PR's latest commit, and the session has merged it, or says which production step it's waiting for.
+- CI passes on the PR's latest commit, and the session has merged it, or says what it's waiting for: CI still running, or a production step.
 - The session's final message says what's done, what isn't, and exactly what the owner must do next.
