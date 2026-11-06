@@ -4,11 +4,9 @@ import { motion, useInView, useMotionValue, useTransform, animate } from 'framer
 
 type WalletState = 'idle' | 'connecting' | 'connected'
 
-function AnimatedBalance({ target, decimals = 0, active }: { target: number; decimals?: number; active: boolean }) {
+function AnimatedBalance({ target, active }: { target: number; active: boolean }) {
   const motionValue = useMotionValue(0)
-  const display = useTransform(motionValue, (v) =>
-    decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString()
-  )
+  const display = useTransform(motionValue, (v) => Math.round(v).toLocaleString())
 
   useEffect(() => {
     if (!active) {
@@ -20,7 +18,7 @@ function AnimatedBalance({ target, decimals = 0, active }: { target: number; dec
       ease: [0.16, 1, 0.3, 1],
     })
     return controls.stop
-  }, [active, target, motionValue, decimals])
+  }, [active, target, motionValue])
 
   return (
     <motion.span className="font-mono text-body-large font-semibold text-tertiary-ink tabular-nums">
@@ -67,8 +65,8 @@ export function ProofEconomyTile() {
         </h3>
       </div>
 
-      {/* Balance cards */}
-      <div className="grid grid-cols-2 gap-2 mb-4">
+      {/* Balance card */}
+      <div className="mb-4">
         <div className="p-2.5 rounded-lg bg-tertiary-shade/30 border border-tertiary-ink/[0.04]">
           <div className="flex items-center gap-1.5 mb-1.5">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-secondary-300/70">
@@ -79,17 +77,6 @@ export function ProofEconomyTile() {
             </span>
           </div>
           <AnimatedBalance target={2450} active={isConnected && isInView} />
-        </div>
-        <div className="p-2.5 rounded-lg bg-tertiary-shade/30 border border-tertiary-ink/[0.04]">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-secondary-400/70">
-              <path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z" />
-            </svg>
-            <span className="type-label text-tertiary-ink/40">
-              {t('proof.economy.tonBalance')}
-            </span>
-          </div>
-          <AnimatedBalance target={0.85} decimals={2} active={isConnected && isInView} />
         </div>
       </div>
 

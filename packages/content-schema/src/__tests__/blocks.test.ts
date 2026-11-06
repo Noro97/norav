@@ -57,7 +57,7 @@ describe('hero block', () => {
 
   it('stays valid after a partial translation is overlaid', () => {
     const translated = mergeLocale<HeroContent>(heroBlock.defaults.content, {
-      subtitle: 'Frontend-focused fullstack-инженер',
+      subtitle: 'Senior fullstack-инженер',
       name: { first: { highlight: 'Нор', rest: 'айр' } },
       tagline: [{ text: 'Создаю высокопроизводительные интерфейсы на стыке' }],
     })

@@ -32,7 +32,7 @@ export const impactStripBlock = defineBlock({
   defaults: {
     content: {
       label: 'By the numbers',
-      stats: [{ value: 7, prefix: '', suffix: '+', label: 'Years shipping' }],
+      stats: [{ value: 8, prefix: '', suffix: '+', label: 'Years shipping' }],
     },
     settings: { animateCounters: true },
   },

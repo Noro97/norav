@@ -62,8 +62,6 @@ export function ProofWidget() {
     Array(PIPELINE_NODES.length).fill('idle') as NodeStatus[]
   )
   const [logLines, setLogLines] = useState<string[]>([])
-  const [confidence, setConfidence] = useState(0)
-  const [processingTime, setProcessingTime] = useState(0)
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
   const [repCount, setRepCount] = useState(0)
@@ -108,8 +106,6 @@ export function ProofWidget() {
       setPipelineStatus('idle')
       setNodeStatuses(Array(PIPELINE_NODES.length).fill('idle') as NodeStatus[])
       setLogLines([])
-      setConfidence(0)
-      setProcessingTime(0)
       setPoints(0)
       setStreak(0)
       setRepCount(0)
@@ -126,8 +122,6 @@ export function ProofWidget() {
     setPipelineStatus('running')
     setNodeStatuses(Array(PIPELINE_NODES.length).fill('idle') as NodeStatus[])
     setLogLines([])
-    setConfidence(0)
-    setProcessingTime(0)
     setPoints(0)
     setStreak(0)
     setRepCount(0)
@@ -198,8 +192,6 @@ export function ProofWidget() {
         if (cancelledRef.current) { clearInterval(interval); return }
         step++
         const progress = step / steps
-        setConfidence(Math.round(984 * progress) / 10)
-        setProcessingTime(Math.round(12 * progress) / 10)
         setPoints(Math.round(activity.basePoints * progress))
         setStreak(Math.round(streakTarget * progress))
         if (step >= steps) clearInterval(interval)
@@ -220,8 +212,6 @@ export function ProofWidget() {
     setPipelineStatus('idle')
     setNodeStatuses(Array(PIPELINE_NODES.length).fill('idle') as NodeStatus[])
     setLogLines([])
-    setConfidence(0)
-    setProcessingTime(0)
     setPoints(0)
     setStreak(0)
     setRepCount(0)
@@ -328,14 +318,6 @@ export function ProofWidget() {
 
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="case-study-card p-3 text-center">
-                <div className="text-heading-small font-black text-primary-400 font-mono">{confidence}%</div>
-                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.confidence')}</div>
-              </div>
-              <div className="case-study-card p-3 text-center">
-                <div className="text-heading-small font-black text-primary-400 font-mono">{processingTime}s</div>
-                <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.processingTime')}</div>
-              </div>
               <div className="case-study-card p-3 text-center border-secondary-500/30">
                 <div className="text-heading-small font-black text-secondary-300 font-mono">+{points}</div>
                 <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.points')}</div>
@@ -345,6 +327,7 @@ export function ProofWidget() {
                 <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.streak')}</div>
               </div>
             </div>
+            <p className="text-caption text-tertiary-ink/40 font-mono">{t('projects:proof.simulated')}</p>
 
             {/* Pipeline log */}
             <div className="font-mono text-caption space-y-1 max-h-28 overflow-y-auto">

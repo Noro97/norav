@@ -7,11 +7,6 @@ import bentoEn from './locales/en/bento.json'
 import projectsEn from './locales/en/projects.json'
 import terminalEn from './locales/en/terminal.json'
 
-import commonRu from './locales/ru/common.json'
-import bentoRu from './locales/ru/bento.json'
-import projectsRu from './locales/ru/projects.json'
-import terminalRu from './locales/ru/terminal.json'
-
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -22,12 +17,6 @@ i18n
         bento: bentoEn,
         projects: projectsEn,
         terminal: terminalEn,
-      },
-      ru: {
-        common: commonRu,
-        bento: bentoRu,
-        projects: projectsRu,
-        terminal: terminalRu,
       },
     },
     lng: 'en',

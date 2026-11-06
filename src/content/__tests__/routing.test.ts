@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { HOME_SLUG, hrefFor, otherLocale, readPath } from '../routing'
+import { HOME_SLUG, hrefFor, readPath } from '../routing'
 
 describe('readPath', () => {
   it('reads the root as the home page in English', () => {
@@ -44,12 +44,5 @@ describe('hrefFor', () => {
   it('prefixes the other one', () => {
     expect(hrefFor(HOME_SLUG, 'ru')).toBe('/ru')
     expect(hrefFor('work/proof', 'ru')).toBe('/ru/work/proof')
-  })
-})
-
-describe('otherLocale', () => {
-  it('swaps', () => {
-    expect(otherLocale('en')).toBe('ru')
-    expect(otherLocale('ru')).toBe('en')
   })
 })

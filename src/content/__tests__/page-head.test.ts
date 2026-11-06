@@ -62,7 +62,7 @@ describe('resolveSeo', () => {
   })
 })
 
-const SHELL_TITLE = 'Norayr Avetisyan — Frontend-Focused Fullstack Engineer'
+const SHELL_TITLE = 'Norayr Avetisyan — Senior Fullstack Engineer'
 const SHELL_DESCRIPTION = 'What the shell says.'
 const SHELL_IMAGE = `${SITE}/assets/img/logo-new.svg`
 

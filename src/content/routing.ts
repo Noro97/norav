@@ -46,8 +46,3 @@ export function hrefFor(slug: string, locale: Locale): string {
   const path = slug === HOME_SLUG ? '' : `/${slug}`
   return locale === DEFAULT_LOCALE ? path || '/' : `/${locale}${path}`
 }
-
-/** The same page in the other language, for the toggle and for hreflang. */
-export function otherLocale(locale: Locale): Locale {
-  return locale === 'en' ? 'ru' : 'en'
-}

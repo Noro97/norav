@@ -120,7 +120,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
           <span className="type-label text-primary-500">
-            Case Study {caseNum}
+            Live Demo {caseNum}
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
         </div>

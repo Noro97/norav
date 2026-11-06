@@ -70,23 +70,10 @@ export function LogisticsWidget() {
   const [mapLoaded, setMapLoaded] = useState(false)
   const [markers, setMarkers] = useState<GeoJSON.FeatureCollection | null>(null)
   const [connections, setConnections] = useState<GeoJSON.FeatureCollection | null>(null)
-  const [wsMessages, setWsMessages] = useState(0)
-  const [latency, setLatency] = useState(12)
-  const [throughput, setThroughput] = useState(0)
   const stressRafRef = useRef(0)
+  const routeCount = connections?.features.length ?? 0
 
   useReveal(sectionRef, '.logistics-content, .logistics-map')
-
-  // Simulated live telemetry
-  useEffect(() => {
-    if (!mapLoaded) return
-    const interval = setInterval(() => {
-      setWsMessages((p) => p + Math.floor(Math.random() * 3 + 1))
-      setLatency(Math.round(8 + Math.random() * 12))
-      setThroughput((p) => p + Math.floor(Math.random() * 30 + 10))
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [mapLoaded])
 
   // Cancel stress test rAF on unmount
   useEffect(() => {
@@ -148,27 +135,19 @@ export function LogisticsWidget() {
             ))}
           </div>
 
-          {/* Live metrics */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
+          {/* Counted from what the map is drawing */}
+          <div className="grid grid-cols-3 gap-4 py-4">
             <div className="case-study-card p-4 text-center">
               <div className="text-heading-small font-black text-secondary-300 font-mono">{markerCount}</div>
               <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.nodes')}</div>
             </div>
             <div className="case-study-card p-4 text-center">
-              <div className="text-heading-small font-black text-primary-400 font-mono">{latency}ms</div>
-              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.latency')}</div>
+              <div className="text-heading-small font-black text-primary-400 font-mono">{routeCount}</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.routes')}</div>
             </div>
             <div className="case-study-card p-4 text-center">
-              <div className="text-heading-small font-black text-primary-400 font-mono">
-                {wsMessages > 1000 ? `${(wsMessages / 1000).toFixed(1)}k` : wsMessages}
-              </div>
-              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.wsEvents')}</div>
-            </div>
-            <div className="case-study-card p-4 text-center">
-              <div className="text-heading-small font-black text-primary-400 font-mono">
-                {throughput > 1000 ? `${(throughput / 1000).toFixed(1)}k` : throughput}
-              </div>
-              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.throughput')}</div>
+              <div className="text-heading-small font-black text-primary-400 font-mono">{HUBS.length}</div>
+              <div className="text-caption text-tertiary-ink/60 font-mono mt-1">{t('logistics.metrics.hubs')}</div>
             </div>
           </div>
 
@@ -185,9 +164,7 @@ export function LogisticsWidget() {
           {/* Live log */}
           {mapLoaded && (
             <div className="font-mono text-caption text-tertiary-ink/40 space-y-1 max-h-20 overflow-hidden">
-              <div>{t('logistics.log.eventBatch', { count: wsMessages % 30 + 5 })}</div>
-              <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: connections?.features.length ?? 0 })}</div>
-              <div>{t('logistics.log.frameBudget', { time: (16.6 - (latency % 4)).toFixed(1) })}</div>
+              <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: routeCount })}</div>
             </div>
           )}
         </div>

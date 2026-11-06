@@ -8,9 +8,6 @@ const ICONS: Record<string, React.ComponentType<{ size?: number; className?: str
   zap: Zap, shield: Shield, user: User, brain: Brain, database: Database,
 }
 
-// Pull the hero stat from each micro-tile description
-const HERO_STATS = ['60%', '99%', '15s', '98.4%', '10K+']
-
 interface BentoMicroTileProps {
   index: number
   icon: string
@@ -52,11 +49,6 @@ export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProp
         })()}
         <div className="absolute inset-0 rounded-lg bg-primary-500/10 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
-
-      {/* Hero stat — the number that pops */}
-      <span className="font-mono text-heading-small font-black text-tertiary-ink/90 mb-1">
-        {HERO_STATS[index]}
-      </span>
 
       {/* Title */}
       <h3 className="text-caption font-semibold text-tertiary-ink/70 uppercase tracking-wide mb-2">

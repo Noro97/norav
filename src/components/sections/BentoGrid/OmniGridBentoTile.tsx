@@ -144,7 +144,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
           <span className="type-label text-secondary-400/70">
-            Case Study 04
+            Live Demo 04
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
         </div>

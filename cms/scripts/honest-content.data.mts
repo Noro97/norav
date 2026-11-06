@@ -1,6 +1,8 @@
 /**
  * The copy and visibility changes applied by `honest-content.mts`, kept apart
  * so they can be checked against the schemas without a database.
+ *
+ * Every claim here traces to docs/plan/facts.md or to code in this repository.
  */
 export type Content = Record<string, unknown>
 
@@ -13,6 +15,9 @@ const socials = [
   { icon: 'linkedin', label: 'LinkedIn', href: LINKEDIN },
   { icon: 'telegram', label: 'Telegram', href: TELEGRAM },
 ]
+
+/** Tools that aren't claimed, whatever a pending migration wrote. */
+const NOT_CLAIMED = new Set(['n8n', 'Make', 'Zapier', 'LangChain'])
 
 /** Top-level fields to overwrite on a block; the function form sees the current content. */
 export type Patch = Content | ((current: Content) => Content)
@@ -30,48 +35,59 @@ export const changes: BlockChange[] = [
     page: 'home',
     type: 'bento_grid',
     patch: (current) => ({
-      // The two claims nobody measured go; the facts behind them stay.
+      // The numbers nobody measured go, and what the code does stays.
       tiles: (current.tiles as Content[]).map((tile) => {
         switch (tile.title) {
+          case 'Performance Audit':
+            return {
+              ...tile,
+              title: 'Stress Test',
+              description:
+                "NexusRoute's stress test adds 40 simulated markers and their routes to a Leaflet map in batches, one batch per animation frame.",
+            }
           case 'Type-Safe Architecture':
             return {
               ...tile,
               description:
-                'One type system across a Node.js backend and a React frontend: a renamed field fails the build instead of blanking a column.',
+                'At Fendr: typed API clients generated from OpenAPI with Orval, so a renamed field fails the build.',
             }
           case 'User Experience':
             return {
               ...tile,
-              description: 'Predictive inputs for long shipment forms, so the common case takes a few keystrokes.',
+              description: 'FilterGraph keeps every filter in the URL, so any view is a link you can send.',
+            }
+          case 'AI Liveness':
+            return {
+              ...tile,
+              description: "One Gemini 2.5 Flash pass judges reps, form and liveness from a user's video in Proof App.",
             }
           case 'Cache Hit-Rate':
             return {
               ...tile,
               title: 'Cached, then fresh',
               description:
-                'A virtualised 10K-row grid. TanStack Query serves the cached page at once and refreshes it in the background.',
+                'A 100-row data grid. TanStack Query serves the cached rows at once and refetches them in the background.',
             }
           default:
             return tile
         }
       }),
-      // "DRY but not die" read as a joke to a staff-level panel. These are the
-      // four habits from the About page, where each one is explained.
+      // These are the four habits from the About page, where each one is
+      // explained.
       principles: [
         { text: 'Understand first' },
         { text: 'Decide in writing' },
         { text: 'Ship in slices' },
         { text: 'Leave it operable' },
       ],
-      // Every number here now has a source on the site. The 42 KB bundle and
-      // the LCP figure did not.
+      // Approved numbers only, each one named with where it happened.
       dashboard: {
         ...(current.dashboard as Content),
         metrics: [
-          { key: 'markers', color: '#22c55e', label: 'Live markers', value: 500, prefix: '', suffix: '+', detail: 'NexusRoute, at 60 FPS' },
-          { key: 'scripting', color: '#22c55e', label: 'Scripting time', value: 70, prefix: '−', suffix: '%', detail: 'Advanced Markers migration' },
-          { key: 'migrations', color: '#eab308', label: 'DB migrations', value: 27, prefix: '', suffix: '', detail: 'Proof App' },
-          { key: 'testCoverage', color: '#22c55e', label: 'Test coverage', value: 92, prefix: '', suffix: '%', detail: 'Proof App' },
+          { key: 'lcp', color: '#22c55e', label: 'LCP', value: 1.3, prefix: '', suffix: 's', detail: 'Vizogen, down from 4.1s' },
+          { key: 'components', color: '#22c55e', label: 'Design system', value: 200, prefix: '', suffix: '+', detail: 'Components at MTS Web Services' },
+          { key: 'sessions', color: '#eab308', label: 'Concurrent sessions', value: 50, prefix: '', suffix: 'K+', detail: 'Appfox, zero state-desync incidents' },
+          { key: 'testCoverage', color: '#22c55e', label: 'Unit-test coverage', value: 78, prefix: '', suffix: '%', detail: 'Vizogen, up from 22% in three months' },
         ],
       },
     }),
@@ -83,9 +99,7 @@ export const changes: BlockChange[] = [
     page: 'about',
     type: 'kit_tool_stack',
     patch: (current) => ({
-      tools: (current.tools as Content[]).map((tool) =>
-        tool.name === 'n8n' ? { ...tool, note: 'learning now' } : tool,
-      ),
+      tools: (current.tools as Content[]).filter((tool) => !NOT_CLAIMED.has(tool.name as string)),
     }),
   },
   {
@@ -95,27 +109,19 @@ export const changes: BlockChange[] = [
       items: [
         {
           q: 'What level are you looking for?',
-          a: 'Senior, frontend-focused or fullstack. The work I am best at is owning a platform other engineers build on, and being the person who is called when it is slow.',
+          a: 'Senior fullstack, at remote EU/US product companies. The work I am best at is owning a platform other engineers build on, and being the person who is called when it is slow.',
         },
         {
-          q: 'When can you start?',
-          a: 'Right away. I am not tied to a notice period, so I can start as soon as we agree on the details.',
-        },
-        {
-          q: 'Remote, hybrid, relocation?',
-          a: 'Remote by default, from Yerevan (GMT+4), with full overlap for European teams and a working overlap for the US East Coast. Relocation is on the table for the right role.',
+          q: 'Where do you work from?',
+          a: 'Yerevan, Armenia (UTC+4), remotely, with EU/US overlap.',
         },
         {
           q: 'How much backend do you actually do?',
-          a: "Enough to own it when nobody else does: Postgres schemas and migrations, Node APIs, queues. Proof App's backend and this site's CMS are both mine end to end. Frontend is still where I am strongest, and backend is where I am growing.",
+          a: "Enough to own it when nobody else does: Postgres schemas and row-level security, Node APIs, queues. Proof App's backend and this site's CMS are both mine end to end.",
         },
         {
           q: 'How do you use AI in your work?',
           a: 'Two ways. In the product: Gemini checks workout videos in Proof App, and a Claude-backed terminal answers questions on this site. In the workflow: Claude Code every day for the mechanical parts, with a human review wherever a mistake would ship.',
-        },
-        {
-          q: 'Are you moving into AI engineering?',
-          a: 'Toward it, from where I am strong. I have shipped AI features inside products; now I am learning what sits under them: agents with LangChain, local models with Ollama, automation with n8n. I am not applying for ML research roles.',
         },
         {
           q: 'Can I see code?',
@@ -131,13 +137,11 @@ export const changes: BlockChange[] = [
     type: 'kit_stats_marquee',
     patch: {
       items: [
-        { label: '8 YEARS SHIPPING' },
-        { label: '10M+ MONTHLY USERS' },
-        { label: '50K EVENTS A SECOND' },
-        { label: '18 HUBS ON ONE MAP' },
-        { label: '−70% SCRIPTING TIME' },
-        { label: '98.4% VERIFICATION CONFIDENCE' },
-        { label: '92% TEST COVERAGE' },
+        { label: '8+ YEARS IN JS AND TS' },
+        { label: '10M+ MAU ECOSYSTEM' },
+        { label: '200+ DESIGN-SYSTEM COMPONENTS' },
+        { label: '50K+ CONCURRENT SESSIONS' },
+        { label: 'LCP 4.1S TO 1.3S' },
         { label: '1 CMS WRITTEN FROM SCRATCH' },
       ],
     },
@@ -157,10 +161,10 @@ export const changes: BlockChange[] = [
     page: 'contact',
     type: 'contact_cta',
     patch: {
-      availability: 'Open to frontend and fullstack roles',
+      availability: 'Open to senior fullstack roles',
       label: 'Get in touch',
       title: "Let's talk about your team.",
-      body: 'Email is fastest, and you will hear back within two days. LinkedIn and Telegram work too.',
+      body: 'Email is fastest. LinkedIn and Telegram work too.',
       socials,
     },
   },
@@ -170,14 +174,14 @@ export const changes: BlockChange[] = [
     patch: {
       whoami: {
         visitor: 'visitor: someone reading a portfolio, probably with a job opening in mind.',
-        exploring: 'You are looking at the work of a frontend-focused fullstack engineer.',
+        exploring: 'You are looking at the work of a senior fullstack engineer.',
         welcome: 'Glad you found the terminal. Most people scroll past it.',
         hint: 'Try `sudo hire`, or `ask` a question about my experience.',
       },
       hire: {
         message: 'Good call. Here is how to reach me:',
-        openTo: 'Open to senior frontend and fullstack roles.',
-        location: 'Yerevan, Armenia · GMT+4 · remote or relocation',
+        openTo: 'Open to senior fullstack roles.',
+        location: 'Yerevan, Armenia · UTC+4 · remote',
         burst: 'Hired. Well, almost: email me and it becomes true.',
         niceTry: 'Nice try. This terminal cannot delete anything, not even as root.',
       },

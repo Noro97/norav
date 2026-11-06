@@ -34,7 +34,7 @@ export function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[80vh] flex flex-col items-center justify-center px-gutter-x text-center"
+      className="relative min-h-[80vh] flex flex-col items-center justify-center px-gutter-x pb-32 md:pb-0 text-center"
     >
       <div className="relative z-10 w-full max-w-content mx-auto pt-[20vh]">
         <p className="type-label md:text-body-small text-primary-500 mb-6">{content.subtitle}</p>

@@ -1,5 +1,27 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/cv",
+      "destination": "/Norayr_Avetisyan_CV.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/automation",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/ru",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/ru/:path*",
+      "destination": "/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!assets/).*)",

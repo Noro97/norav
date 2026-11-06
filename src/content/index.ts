@@ -1,6 +1,5 @@
 import type { Snapshot, SnapshotBlock } from '@norav/content-schema'
 import enSnapshot from './snapshot.en.json'
-import ruSnapshot from './snapshot.ru.json'
 
 /**
  * The published copy, baked into the bundle at build time by
@@ -15,7 +14,9 @@ import ruSnapshot from './snapshot.ru.json'
  */
 export const BAKED_SNAPSHOTS = {
   en: enSnapshot as unknown as Snapshot,
-  ru: ruSnapshot as unknown as Snapshot,
+  // Russian is retired until it is retranslated (docs/plan D13). /ru redirects
+  // to English, so this only keeps the locale record whole.
+  ru: enSnapshot as unknown as Snapshot,
 } as const
 
 export { HOME_SLUG } from './routing'

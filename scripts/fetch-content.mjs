@@ -14,7 +14,8 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const LOCALES = ['en', 'ru']
+// English only until Russian is retranslated (docs/plan D13).
+const LOCALES = ['en']
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'content')
 const base = process.env.CMS_URL?.replace(/\/$/, '')
 const check = process.argv.includes('--check')

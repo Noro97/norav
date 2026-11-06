@@ -117,11 +117,9 @@ async function fetchLocale(baseUrl: string, locale: Locale, manifest: Manifest):
 }
 
 async function fetchLatest(baseUrl: string, manifest: Manifest): Promise<Record<Locale, Snapshot>> {
- const [en, ru] = await Promise.all([
-    fetchLocale(baseUrl, 'en', manifest),
-    fetchLocale(baseUrl, 'ru', manifest),
-  ])
- return { en, ru }
+ // Russian is retired until it is retranslated, so English stands in for it.
+ const en = await fetchLocale(baseUrl, 'en', manifest)
+ return { en, ru: en }
 }
 
 export function ContentProvider({ children }: { children: React.ReactNode }) {
