@@ -32,6 +32,28 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Bundle size
+        run: npm run size:check
+
+      # @lhci/cli 0.16 needs Node 22. It brings Lighthouse 13, the version behind the
+      # baseline in .tasks/STATE.md: 12 reads about twice as slow on the same build.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Warn-only until S4 makes these the D11 failure.
+      - name: Lighthouse (warn-only)
+        continue-on-error: true
+        run: npx -y @lhci/cli@0.16.0 autorun
+
+      - name: Keep the Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci
+          if-no-files-found: ignore
+
   cms:
     name: CMS and schema
     runs-on: ubuntu-latest

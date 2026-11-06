@@ -51,3 +51,6 @@ skills-lock.json
 
 # code-quality skill artifacts
 .code-quality/
+
+# Lighthouse CI reports
+.lighthouseci/

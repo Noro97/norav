@@ -41,10 +41,10 @@ CMS edit ──► publish ──► immutable snapshot (one JSON per locale)
 1. **Publish** resolves ordering, visibility and locale fallback, validates every
    block against the registry, and writes one immutable row to `publications`.
    A publish that would render a broken page is refused, naming the field.
-2. **`prebuild`** runs `scripts/fetch-content.mjs`, which pulls the latest
-   snapshot for each locale into `src/content/snapshot.{en,ru}.json`. Those files
-   are committed: with `CMS_URL` unset, or the CMS unreachable, the build uses
-   them and exits successfully. A content service being down is not a deploy
+2. **`prebuild`** runs `scripts/fetch-content.mjs`, which pulls the latest English
+   snapshot into `src/content/snapshot.en.json`. That file is committed: with
+   `CMS_URL` unset, or the CMS unreachable, the build uses it and exits
+   successfully. A content service being down is not a deploy
    failure. `scripts/generate-sitemap.mjs` then writes `public/sitemap.xml` from
    whichever snapshot won, so the map always describes the content that shipped.
    It strikes the same bargain: an unreadable snapshot is reported and stepped
@@ -59,7 +59,10 @@ CMS edit ──► publish ──► immutable snapshot (one JSON per locale)
    through the real site with a fixed `DRAFT PREVIEW` badge, and is forgotten on
    the next reload.
 
-Rolling content back is picking an older `publications` row. It needs no deploy.
+Revision restore isn't built yet. Every publication stays readable at
+`/api/public/content?v=<n>`, but nothing puts an older one back on the site. S10
+in [the plan](./docs/plan/README.md) adds it. Until then, see "Roll back" in
+[the publish runbook](./docs/plan/runbook-publish.md).
 
 ## Quick start
 
@@ -168,15 +171,16 @@ without a component knowing. [docs/DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md).
 descriptions, the terminal's narrative — comes from the CMS. Interface chrome
 that has no editorial meaning stays in `src/i18n/locales`. If a non-developer
 would ever want to change a string, it belongs in the CMS; if changing it is a
-code change anyway, it belongs in i18n. Both halves are English and Russian.
+code change anyway, it belongs in i18n. The site serves English only for now: `/ru`
+redirects to English, and the Russian files and CMS rows wait for S12.
 
 **Theme.** The published palette is a set of `--color-*` custom properties
 written onto `:root`, so every Tailwind utility referencing them repaints and no
 component learns that a colour changed. Only `--color-*` names are accepted — a
 published theme must not be able to set arbitrary CSS. Applied before first
 paint, and remembered by version so a reload does not flash the shipped palette.
-Canvas and WebGL copy their colours on mount, so they listen for a
-`norav:themechange` event instead.
+`src/content/theme.ts` also dispatches a `norav:themechange` event when the palette
+changes.
 
 **What the head says.** Two audiences read it and they do not overlap. Google
 runs the JavaScript and sees whatever `PageHead` ends up writing; every link
@@ -188,8 +192,8 @@ place** once React runs, rather than rendering copies beside them. The tags that
 exist only per page — `canonical`, the `hreflang` alternates, `og:url` — are
 rendered normally, because there is nothing in the shell for them to collide
 with. `public/sitemap.xml` is generated, never edited: it lists every published
-page in both languages, and skips the `site` page and any page with no sections,
-which the site renders as a 404.
+page in each language baked into `src/content`, and skips the `site` page and any
+page with no sections, which the site renders as a 404.
 
 **Motion.** GSAP ScrollTrigger still does the scroll work its own widgets need,
 and Framer Motion still handles component transitions. Everything else below
@@ -197,7 +201,7 @@ the fold shares one entrance — a 300ms fade and rise from `useReveal`
 (`src/hooks/useReveal.ts`) applied once, on mount, to whatever starts off
 screen. `prefers-reduced-motion: reduce` turns that entrance off — elements
 are simply visible from the start — without touching the widgets' own motion.
-`gsap`, `gmaps` and `motion` are each split into their own chunk in
+`gsap`, `leaflet` and `motion` are each split into their own chunk in
 `vite.config.ts`.
 
 **The terminal.** `help`, `ls`, `cat`, `whoami`, `date`, `echo`, `neofetch`,
@@ -218,13 +222,19 @@ npx tsc --noEmit      # the build runs this first anyway
 npm test              # vitest + jsdom
 npm --prefix db test  # every migration applied to an ephemeral PGlite, invariants asserted
 npm --prefix cms test
+npm run build && npm run size:check # entry JS and CSS against their limits
 npm run content:check # the committed snapshots still match what the CMS publishes
 ```
 
-`.github/workflows/ci.yml` runs all of it on every push and pull request to
-`main`: typecheck, tests and build for the site, plus schema tests and a Next
-build for the CMS. It does not deploy. `claude.yml` answers `@claude` mentions
-in issues and reviews.
+`.github/workflows/ci.yml` runs on every push and pull request to `main`: typecheck,
+lint, tests, build and `size:check` for the site, a warn-only Lighthouse run of `/`,
+plus schema tests and a Next build for the CMS. It does not deploy. `claude.yml`
+answers `@claude` mentions in issues and reviews.
+
+Two choices there are deliberate. `content:check` stays out of CI, because a publish
+would turn every open pull request red until someone rebaked the snapshot. And
+`size:check` stays out of `npm run build`, because the Vercel build bakes whatever is
+published, and publishing content must never be able to fail a deploy.
 
 ## Deployment
 

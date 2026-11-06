@@ -13,3 +13,5 @@ today — for that, start at the [root README](../../README.md) and
 | 2026-03-18 | [visual-density-overhaul-design](./2026-03-18-visual-density-overhaul-design.md) | Design for the visual-density overhaul |
 | 2026-03-18 | [visual-density-overhaul-plan](./2026-03-18-visual-density-overhaul-plan.md) | Its implementation plan |
 | 2026-06-10 | [code-quality-audit](./2026-06-10-code-quality-audit.md) | Full-project audit and the fixes it shipped; predates the CMS |
+| 2026-09-22 | [2026-09-redesign/specs](./2026-09-redesign/specs/2026-09-22-site-redesign-design.md) | Redesign spec. [docs/plan](../plan/README.md) overrides it, and still uses it as a base |
+| 2026-09-22 | [2026-09-redesign/plans](./2026-09-redesign/plans/) | Its two checkbox plans, replaced by [docs/plan](../plan/README.md). Their ticks don't reflect what shipped |
