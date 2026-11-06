@@ -19,12 +19,12 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. Current session: **S2, baseline and cleanup**.
+Milestone 1. Next session: **S3, facts and content model**. S7 can start any time after S2 merges.
 
 | Session | Status |
 | --- | --- |
 | S1 Truth patch | Done, version 26 live |
-| S2 Baseline and cleanup | In progress. See `.tasks/active/S2-baseline-and-cleanup.md` |
+| S2 Baseline and cleanup | Done when its PR merges. The owner has run nothing on production except a read-only dump |
 | S3 Facts and content model | Not started |
 | S4 Deletion and speed | Not started |
 | S5 New site structure | Not started |
@@ -35,7 +35,8 @@ Milestone 1. Current session: **S2, baseline and cleanup**.
 ## Production, as of 2026-11-06
 
 - `cms.norav.dev/api/health`: 17 migrations applied of 31 in the repo, `publishedVersion` 26, published 2026-11-06. The 17 are 0001–0015, 0028 and 0030, not the first 17.
-- Drafts match version 26, except that `site_footer` is hidden on the `site` page with its default copy. See the S3 prompt.
+- Drafts match version 26 exactly: on a copy taken 2026-11-06, a publish reproduced its checksum, `27bcc9657276`. `site_footer` is hidden on the `site` page, with its default copy.
+- **The catch-up is rehearsed and written down in `docs/plan/runbook-publish.md`.** Don't run `npm --prefix db run migrate` on production any other way: it writes 72 search hits for claims and placeholders into the drafts, and publish validation passes them.
 - English only: `/ru` redirects to English until S12. The CMS keeps Russian rows, and `?locale=ru` still returns the old Russian copy.
 
 ## Baseline, 2026-11-06
@@ -86,6 +87,9 @@ Nothing.
 - Decide whether to delete the old CV from the media library. It has no phone number, but it's out of date and reachable by direct link.
 - Keep or delete `~/Desktop/norav-backup-2026-11-06.sql`. It holds password hashes and sessions.
 - Collect two real testimonials. They don't block anything.
+- Archive the S1 session, so its worktree `sweet-darwin-0ff567` and branch `claude/s1-after-publish` can go. The owner already approved removing them.
+- Decide what to do with the old stash `WIP on feat/cms-theme`. Nothing has touched it.
+- Consider OG images before S11. A link shared today shows no image, and Milestone 1 is meant to be shared.
 
 ## Tech debt register
 
@@ -93,7 +97,9 @@ Nothing.
 - Facts are hardcoded in many places, including `index.html`, `src/lib/portfolio-context.ts` and `src/i18n/locales`. S1 corrected them and S3 centralises them.
 - `seed.mts`, `import-content.mts`, `legacy-i18n` and the kit still hold old claims. No published page uses them. S4 removes the kit, and S8's scan should catch the rest.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
-- Pending migrations 0016–0027 hold old copy. They are append-only, so correct what they write after they run.
+- Pending migrations 0016–0027 hold old copy. They are append-only, so `content:catch-up` puts the drafts back after they run. After S3 the rows stay hidden, and S4 soft-deletes most of them. S3 deletes the script.
+- OmniGrid can hit React's update limit while its data loads. See `.tasks/bugs/omnigrid-render-loop.md`.
+- Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
 - No prerendering, so metadata is the same on every route. S4 adds it.
 - `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. S11 builds the OG images.
 

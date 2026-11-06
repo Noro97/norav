@@ -4,6 +4,18 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-06: Publish validation checks shape, not truth
+
+On a copy of production, the pending migrations put back 98.4%, TON, Staff, in production and every `[Placeholder`, and validation passed all of it. Nothing automatic stops a false claim from publishing. Compare `buildPublication()` with the latest publication, and read the difference.
+
+### 2026-11-06: A cleanup script is only as good as the database it was written against
+
+`content:honest` had never met production. It refused outright, because `home/bento_grid` and `contact/contact_cta` exist only in a local database built another way. With both names fixed it still left 34 hits, because it was written before the case-study copy mattered. A restored copy found this in minutes, where reading the script would not have. Rehearse any production script on a copy of production first.
+
+### 2026-11-06: Going back to the publication beats correcting the copy
+
+Correcting what the migrations wrote would have meant 70 reviewed edits, on rows S4 deletes and copy S5 replaces. Restoring the drafts from the latest publication needs no new copy and no review, and its success is checkable: the difference from the publication is empty, or it isn't.
+
 ### 2026-11-06: A Lighthouse number means nothing without its version
 
 The same build read LCP 3.5s and score 84 on Lighthouse 12, and 1.58s and 99 on Lighthouse 13. Pin the version, and compare a number only with others from that version. `@lhci/cli` 0.16 brings 13 and needs Node 22, so CI gives that one step its own Node.
@@ -62,6 +74,9 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 - zsh has no `PIPESTATUS`, so a piped command's exit code comes back blank. Check `$?` without the pipe.
 - This machine runs Node 26, and CI runs 20. Gzip sizes differ by about 0.3% between them. Use `PATH="$HOME/.nvm/versions/node/v20.20.2/bin:$PATH"` to match CI.
 - A private Postgres on macOS needs `LC_ALL=en_US.UTF-8`, or it stops with "postmaster became multithreaded during startup".
+- A CMS script that imports `src/lib/db` statically crashes on Node 20 once `DATABASE_URL` is set: `tsx` can't resolve `pg` from there. Import it dynamically, as `pull-production.mts` and `catch-up.mts` do.
+- Any edit in the worktree reloads the Vite page, because Tailwind watches it. Don't edit files while a browser check is running.
+- `npm --prefix cms install` rewrites `cms/package-lock.json` on this machine. Restore it, and don't commit the noise.
 - The anonymous PageSpeed API quota runs out. Run Lighthouse locally.
 - Without `-L`, `curl` on `norav.dev` assets can return an empty body.
 - `select version::text ... order by version` sorts as text, so 9 beats 26. Qualify it as `publications.version`.

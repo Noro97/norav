@@ -18,6 +18,7 @@ cp .env.example .env      # fill in the Neon connection string
 npm install
 npm run migrate:status    # what is applied / pending
 npm run migrate           # apply pending
+npm run migrate -- --through=0031   # apply pending, stopping after that number
 ```
 
 Each file runs in its own transaction alongside its `schema_migrations` row, so a
