@@ -75,7 +75,7 @@ What the runs point at:
 
 Limits are these rounded up to a whole KB, in `scripts/check-bundle-size.mjs`. KB here is 1,000 bytes, as in Vite's output. The snapshot sits inside `index` (45 KB raw, 10 KB gzip at version 26), so a rebake after a big publish can need a higher limit.
 
-**Lighthouse CI.** The same build served locally reads 99 and 1.58s LCP on Lighthouse 13, three times running. It sits about 0.3s under the live number because local has almost no time to first byte, so compare CI runs with each other and not with the table above. On GitHub's runner it met every target with no warning, including LCP under 1.5s, while the live site reads 1.88s. **So a CI pass doesn't prove D11 on the live site. S4 still has to measure the live site.** Each CI run keeps its reports in a `lighthouse` artifact, because a passing run prints no numbers.
+**Lighthouse CI.** The same build served locally reads 99 and 1.58s LCP on Lighthouse 13, three times running. It sits about 0.3s under the live number because local has almost no time to first byte, so compare CI runs with each other and not with the table above. On GitHub's runner, three runs on 2026-11-06 read LCP 1.39s, performance 85, 97 and 98, and TBT from 52 to 577 ms, so only the median run means anything, and that's what the assertions use. The live site reads 1.88s. **So a CI pass doesn't prove D11 on the live site. S4 still has to measure the live site.** Each CI run keeps its reports in a `lighthouse` artifact, because a passing run prints no numbers.
 
 ## Blocked
 
