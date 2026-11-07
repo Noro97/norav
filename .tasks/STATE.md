@@ -79,6 +79,16 @@ These are S3's, measured 2026-11-07 with version 27 baked. S2's baseline read 53
 
 **Lighthouse CI.** The same build served locally reads 99 and 1.58s LCP on Lighthouse 13, three times running. It sits about 0.3s under the live number because local has almost no time to first byte, so compare CI runs with each other and not with the table above. On GitHub's runner, three runs on 2026-11-06 read LCP 1.39s, performance 85, 97 and 98, and TBT from 52 to 577 ms, so only the median run means anything, and that's what the assertions use. The live site reads 1.88s. **So a CI pass doesn't prove D11 on the live site. S4 still has to measure the live site.** Each CI run keeps its reports in a `lighthouse` artifact, because a passing run prints no numbers.
 
+## Audit, 2026-11-07
+
+`web-quality-audit` on the live site, content version 27. Lighthouse 13.6.0, mobile preset, median of 3 runs: `/` 98 with LCP 1.92s, `/about` 71 with 8.89s, `/work` 78 with 5.24s, `/work/proof` 88 with 3.59s. No regression from the baseline above.
+
+- **Passed:** reduced motion (no running animations at 375px, against 1–7 without it), no sideways scroll at 375px, no site errors in the console, source maps closed, admin APIs return 401 without a session.
+- **Now in S4:** self-hosted fonts, no count-up on the numbers strip, real 404s, long cache on hashed files.
+- **Now in S5:** H1 on every page, skip link, contrast, the Email link on `/about`, photo delivery, the sitemap check.
+- **Still open:** no security headers beyond HSTS on the site or the CMS, for S8. The terminal's rate limit is per instance, so the spending cap is the real limit.
+- **Not checked:** field data, screen readers, real phones, keyboard use inside widgets and modals, and `ask`, because it spends the API key. S8 should confirm that `claude-sonnet-5` in `server/chat.ts:14` still answers.
+
 ## Blocked
 
 Nothing.

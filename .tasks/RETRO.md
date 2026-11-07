@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: A good Lighthouse score hides what it doesn't test
+
+Accessibility read 95 and SEO 100 on pages with no H1, and Lighthouse's only hint about the Email link on `/about` with no `href` was an SEO warning. It also said nothing about `/assets/*` at `max-age=0`, 200 responses for unknown URLs, or a count-up that can show "7+ years" mid-animation. Walk the page with the keyboard and read the response headers as well.
+
 ### 2026-11-07: A reply button isn't the action
 
 The catch-up stalled for an hour because the owner pressed "Done" and "It finished" before anything had run. Those buttons were ours, they read like the step itself, and they sit right under the command. An uncached `api/health`, the main checkout and the terminal showed the truth each time, so nothing was run out of order. Don't offer a "done" button for a command: running it from its block sends the output to the session anyway. For a step in the browser, watch `api/health` in the background. Give one or two commands at a time, and check each result. Then read what the sequence needs beyond the commands: the owner had also forgotten the CMS password, which nothing had checked.
@@ -114,6 +118,8 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 
 - Chrome's window stops at 500px wide, so `resize_window` can't reach 375px on the live site. Load each page in a 375px same-origin iframe instead: media queries follow the frame.
 - A hidden browser pane reports `innerWidth` 0. Give it a size with `resize_window` before measuring anything.
+- Headless Chrome also stops at 500px wide, so `--window-size=375` crops a wider layout and looks like overflow. Use Puppeteer's `setViewport` with `isMobile`, and `emulateMediaFeatures` for reduced motion.
+- zsh treats an unquoted `--include=*.tsx` as a glob and stops with "no matches found", so a grep loop can print zeros that read as a clean result. Quote it, or put the script in a file and run it with `bash`.
 - The default shell is zsh, and unquoted variables don't split into words. `for x in $LIST` runs once. Pipe to `while read -r x` instead.
 - zsh has no `PIPESTATUS`, so a piped command's exit code comes back blank. Check `$?` without the pipe.
 - This machine runs Node 26, and CI runs 20. Gzip sizes differ by about 0.3% between them. Use `PATH="$HOME/.nvm/versions/node/v20.20.2/bin:$PATH"` to match CI.
