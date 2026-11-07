@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: A green merge job can still have merged nothing
+
+The first run of `Merge when green` passed and left its PR open for over an hour. The token couldn't read check statuses, the failed read came back empty, and the script took empty for "no label" and exited 0. An automation that exits cleanly when it can't see the state hides the failure, and here it also cost the owner the wait the job existed to remove. Make a failed read fail the job, and after a change like this, look at the result as well as the check.
+
 ### 2026-11-07: The owner was the slowest part of the pipeline, by our design
 
 The owner pressed "check and merge" six times on one PR, ran commands sessions could have run, and got the same question from two sessions. Sessions can't wait for CI, each production step needed a paste, and every doubt became a stop. So a CI job merges labelled PRs, sessions run production through a rehearsed runbook, and they ask only what the owner alone can answer. The first three uses of each are worth watching. This replaces "the owner delegated S1's production steps, once".
