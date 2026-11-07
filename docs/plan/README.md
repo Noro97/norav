@@ -123,8 +123,8 @@ Every prompt inherits these.
 
 **Merging (D20).**
 
-- Open the PR with `gh pr create --label merge-when-green`, then turn Auto-fix on with `set_monitor`. The `Merge when green` job in `ci.yml` waits for every check, Vercel included, comments on the PR and merges it, pinned to that commit.
-- End your turn after that. Don't watch CI. The comment and any failure both reach you through Auto-fix.
+- Open the PR with `gh pr create --label merge-when-green`, then turn Auto-fix on with `set_monitor`. The `Merge when green` job in `ci.yml` waits for every check, Vercel included, comments on the PR, and merges it two minutes later, pinned to that commit.
+- End your turn after that. Don't watch CI. The comment and any failure both reach you through Auto-fix. If the comment says every check passed, you can merge straight away with the command below and carry on.
 - Merging deploys. If the change only works after a production step, leave the label off. At that point in the order, read the checks and merge yourself: `gh pr merge --merge --match-head-commit <full sha>`.
 
 **When to ask (D22).** Only about copy and voice, personal facts, money and accounts, visibility, or irreversible deletion outside the plan.
