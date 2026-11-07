@@ -32,9 +32,9 @@ You're removing the imported kit and everything else the site no longer uses, th
 - Manual chunks are in `vite.config.ts`. Check `modulepreload` links in the built `index.html`.
 - `vercel.json` rewrites everything to `index.html`, but real files win, so prerendered pages serve directly.
 - **Skills:**
-  - Task 7: `remove-animations`, on the hiring path only and never inside a widget. Task 5 already approves removing dependencies, so its ask-first rule doesn't apply to those.
-  - Tasks 6 and 10: `performance` and `core-web-vitals`. D11's LCP target is stricter than theirs. Analytics is a non-goal, so skip their real-user monitoring advice.
-  - Task 8: `seo`, for metadata and canonicals.
+  - Task 8: `remove-animations`, on the hiring path only and never inside a widget. Task 5 already approves removing dependencies, so its ask-first rule doesn't apply to those.
+  - Tasks 6, 7 and 13: `performance` and `core-web-vitals`. D11's LCP target is stricter than theirs. Analytics is a non-goal, so skip their real-user monitoring advice.
+  - Tasks 9 and 10: `seo`, for metadata, canonicals and status codes.
   - PR B: `vercel-react-best-practices`. Don't add a dependency to satisfy one of its rules.
 
 ## 5. Rules
@@ -61,15 +61,18 @@ You're removing the imported kit and everything else the site no longer uses, th
 
 5. Start PR B from the updated `main`. Delete the kit sections, block types, styles and dependencies.
 6. Move Leaflet and motion off the landing page, and make sure they aren't preloaded there.
-7. Replace hiring-path animation with the single approach.
-8. Add prerendering for every published route, including per-route metadata. Check that hydration has no mismatch warnings.
-9. Lower the CI budget to the new sizes, and turn Lighthouse CI into a failure at the D11 targets.
-10. Measure again with the method from S2, and put before-and-after numbers in the PR.
-11. Check all five widgets still work at desktop and 375px.
+7. Self-host Inter and JetBrains Mono, with only the weights in use, and drop the Google Fonts stylesheet. The 2026-11-07 audit put it at about 990 ms of estimated savings on `/`, the largest single block on LCP. D11 is missed by about 0.4s.
+8. Replace hiring-path animation with the single approach. That includes the numbers strip: `ImpactStrip.tsx` counts up from 80%, so a screenshot can catch "7+ years", which is in "Do not use". Show the final numbers from the first frame.
+9. Add prerendering for every published route, including per-route metadata. Check that hydration has no mismatch warnings.
+10. Make unknown URLs return a real 404. Today the catch-all rewrite answers everything with 200, including `/favicon.ico` and `/llms.txt`. Check what this does to a page published since the last build, and leave room for S7's `/lab` rewrite.
+11. Cache hashed build output for a year with `immutable`, in `vercel.json`. Today `/assets/*` is served with `max-age=0`. `/assets/img/` holds files without a hash, so match only hashed names.
+12. Lower the CI budget to the new sizes, and turn Lighthouse CI into a failure at the D11 targets.
+13. Measure again with the method from S2, and put before-and-after numbers in the PR.
+14. Check all five widgets still work at desktop and 375px.
 
 ### Stage 3: finish
 
-12. Open PR B, and report if any D11 target is missed and what it would take.
+15. Open PR B, and report if any D11 target is missed and what it would take.
 
 ## 7. At the end
 

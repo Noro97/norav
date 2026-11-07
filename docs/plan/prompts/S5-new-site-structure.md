@@ -35,11 +35,14 @@ You're building the site a hiring manager will actually see: the new home, Live 
 - Engineered restraint: type-led and mostly still. The widgets are the one flourish.
 - Sentences are plain, short and first person. Every number names its source. Nothing reads as generated.
 - A block with no real content hides.
+- **Every page has one H1, and a skip link comes first in the tab order.** The 2026-11-07 audit found no H1 on `/about`, `/work` or `/work/proof`, and 8 Tab stops before the content.
+- **Text meets 4.5:1 on the D5 background.** `text-tertiary-ink/40` gives 3.77:1 and 50% gives 5.32:1. The `/40` class is on about 95 lines, and `/35`, `/20` and `/15` also carry text. Purely decorative marks can stay lower.
+- **Contacts are real links.** Email in `AboutHero.tsx:120` has no `href` and only copies the address, so a keyboard can't reach it. Give it a `mailto:` link. If copying stays, make it a separate button.
 
 ## 4. Reference
 
 - **Logo:** `~/Desktop/projects/webapp/norav-logo.svg`, untracked in the main checkout. Commit it as the single source. It's a small mark and favicon, and the name is the main identity.
-- **Photo:** check `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg`, and that file only. If it doesn't work for a professional About section, ask for another. Strip its metadata and optimize it. Never generate a portrait.
+- **Photo:** check `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg`, and that file only. If it doesn't work for a professional About section, ask for another. Strip its metadata and optimize it. Never generate a portrait. The photo there today is 860 KB at 1639×2173, shown 325px wide with `loading="lazy"`, and it makes `/about`'s LCP 8.89s. Size the new one for display and don't lazy-load it. The same goes for `/work`'s collage if it stays (`ProjectsIntro.tsx:90`, 5.24s).
 - **Palette:** D5. Change values, not token names.
 - `cwebp` and `ffmpeg` are installed.
 - Redirects go in `vercel.json`, per "Target structure".
@@ -84,7 +87,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 **Report to me and wait.**
 
-13. After publishing, check every old URL redirects, every page loads, and the live content has nothing from "Do not use". Refresh the committed snapshots.
+13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Refresh the committed snapshots.
 
 ## 7. At the end
 
