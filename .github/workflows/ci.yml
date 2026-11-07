@@ -93,8 +93,11 @@ jobs:
       github.event.pull_request.user.login == github.repository_owner
     runs-on: ubuntu-latest
     permissions:
+      actions: read
+      checks: read
       contents: write
       pull-requests: write
+      statuses: read
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
@@ -119,7 +122,9 @@ jobs:
 
           # Vercel reports separately, and can still be building when CI ends.
           for attempt in $(seq 1 40); do
-            read -r labelled current failed waiting <<< "$(read_state)"
+            # On its own line, so a failed read stops the job instead of looking like no label.
+            state="$(read_state)"
+            read -r labelled current failed waiting <<< "$state"
             if [ "$labelled" != "true" ]; then echo "No merge-when-green label, so this PR waits."; exit 0; fi
             if [ "$current" != "true" ]; then echo "A newer commit or a closed PR: nothing to merge here."; exit 0; fi
             if [ "$failed" != "0" ]; then echo "$failed check(s) failed."; exit 1; fi
