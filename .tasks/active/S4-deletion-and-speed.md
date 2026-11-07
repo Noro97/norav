@@ -10,6 +10,10 @@
 - The owner applies it to production and publishes.
 - PR B: delete the code, take Leaflet and motion off the landing page, self-host fonts, single animation approach, prerender, real 404s, long cache on hashed files, lower budgets, Lighthouse as a failure.
 
+## Decisions
+
+**`tech_marquee`, `projects_intro` and `bento_grid` stay until S5.** The owner decided on 2026-11-07, after Stage 0 reported them visible on the live site. Without the last two, `/work` answers 404, and two menu items lead there. S5's prompt now has the removal: rows with their replacements, code in a follow-up PR after the publish.
+
 ## How it'll be verified
 
 - Site, CMS and schema checks on Node 20.

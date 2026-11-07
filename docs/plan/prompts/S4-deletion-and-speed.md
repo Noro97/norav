@@ -21,6 +21,7 @@ You're removing the imported kit and everything else the site no longer uses, th
 
 - **Keep only the six kit sections:** `kit_process`, `kit_faq`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`, `kit_writing`.
 - **Remove everything the spec lists,** and anything else nothing places. Check against published content, not just the spec.
+- **Except three types, by the owner's decision of 2026-11-07:** `tech_marquee`, `projects_intro` and `bento_grid` are what `/about` and `/work` show, and `/work` would answer 404 without them. They stay until S5 replaces them.
 - **On the landing page:** no Leaflet, no framer-motion, no GSAP unless truly needed, no WebGL. Above-the-fold content is visible at first paint.
 - **One animation approach on the hiring path:** CSS, with a 300 ms fade at most. GSAP and framer-motion stay only inside the widgets that need them.
 - **Prerender with a small build step,** not a framework. Each route gets real HTML, its own title, description, canonical and Open Graph tags.

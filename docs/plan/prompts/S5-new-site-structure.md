@@ -13,7 +13,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 ## 2. Where we are
 
-- S4 removed the old sections. S3 added facts and case-study models. Production is current.
+- S4 removed the old sections, except `tech_marquee` on `/about` and `projects_intro` and `bento_grid` on `/work`. The owner kept those three on 2026-11-07, because `/work` would answer 404 without them. S5 removes them. S3 added facts and case-study models. Production is current.
 - The brief's copy has never been implemented. Much of it is good, but it predates this plan.
 
 **Where the brief is overridden:**
@@ -72,7 +72,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 ### Stage 2: content and routes
 
-7. Add migrations for the approved copy, the slug changes and the navigation.
+7. Add migrations for the approved copy, the slug changes and the navigation. They also soft-delete the rows of `tech_marquee`, `projects_intro` and `bento_grid`, once `/about` and `/work` have what replaces them.
 8. Add the redirects.
 9. Keep the terminal hidden by default behind the footer toggle, as a footer easter egg.
 
@@ -88,6 +88,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 **Report to me and wait.**
 
 13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Refresh the committed snapshots.
+14. In a follow-up PR, after the publish, delete the code for `tech_marquee`, `projects_intro` and `bento_grid`: their sections, schemas, tests and registry entries, and `@warmbros/warmbros-components`, which only `ProjectsIntro` uses. Rows go before code, as in S4.
 
 ## 7. At the end
 
