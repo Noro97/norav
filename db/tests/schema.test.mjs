@@ -785,8 +785,11 @@ await expectError(
 {
   // 0026 places the last seven promoted sections on work, skills and
   // experience. All three pages come from 0012, so the migration set already
-  // placed them; the replay proves it is placed once.
-  await db.exec(readFileSync(join(root, 'migrations', '0026_work_skills_and_experience_say_more.sql'), 'utf8'))
+  // placed them. 0033 has soft-deleted five of those since, and the first replay
+  // places them again, so it takes a second replay to prove they're placed once.
+  const sectionsSql = readFileSync(join(root, 'migrations', '0026_work_skills_and_experience_say_more.sql'), 'utf8')
+  await db.exec(sectionsSql)
+  await db.exec(sectionsSql)
   const placed = async (slug) => {
     const { rows } = await db.query(
       `select b.type from blocks b join pages p on p.id = b.page_id
@@ -800,7 +803,8 @@ await expectError(
   check('experience gets the milestones', (await placed('experience')) === 'kit_timeline')
   const { rows: copy } = await db.query(
     `select b.type, t.locale, t.status, t.content from block_translations t join blocks b on b.id = t.block_id
-      where b.type in ('kit_stats_marquee','kit_visual_feed','kit_press','kit_awards','kit_show_reel','kit_compare_table','kit_timeline')`,
+      where b.deleted_at is null
+        and b.type in ('kit_stats_marquee','kit_visual_feed','kit_press','kit_awards','kit_show_reel','kit_compare_table','kit_timeline')`,
   )
   check('seven sections, two languages each', copy.length === 14)
   const drafts = copy.filter((row) => ['kit_press', 'kit_awards', 'kit_show_reel'].includes(row.type))
@@ -936,6 +940,109 @@ await expectError(
     rows: [after],
   } = await db.query(`select value from settings where key = 'profile'`)
   check('running it again keeps a hand edit', after.value.availability === 'Edited by hand')
+}
+
+// ---------------------------------------------------------------------------
+// 0033: what nothing places any more
+// ---------------------------------------------------------------------------
+{
+  const removed = [
+    'vibecoding',
+    'skills',
+    'workflow',
+    'recruiter_cta',
+    'gallery',
+    'metrics',
+    'cta_banner',
+    'portfolio_section',
+    'kit_stats_marquee',
+    'kit_services',
+    'kit_pricing',
+    'kit_press',
+    'kit_awards',
+    'kit_big_marquee',
+    'kit_show_reel',
+    'kit_timeline',
+    'kit_visual_feed',
+  ]
+  const kept = [
+    'kit_process',
+    'kit_faq',
+    'kit_compare_table',
+    'kit_tool_stack',
+    'kit_cta_banner',
+    'kit_writing',
+    'tech_marquee',
+    'projects_intro',
+    'bento_grid',
+    'hero',
+    'testimonials',
+    'case_study',
+  ]
+  const {
+    rows: [page],
+  } = await db.query(`insert into pages (slug, status) values ('what-goes', 'published') returning id`)
+
+  const place = async (type, isVisible, position) => {
+    const {
+      rows: [row],
+    } = await db.query(
+      `insert into blocks (page_id, type, position, is_visible) values ($1, $2, $3, $4) returning id`,
+      [page.id, type, position, isVisible],
+    )
+    return row.id
+  }
+
+  const gone = []
+  for (const [index, type] of removed.entries()) {
+    gone.push(await place(type, index % 2 === 0, 1000 + index))
+  }
+  const stay = []
+  for (const [index, type] of kept.entries()) {
+    stay.push(await place(type, true, 2000 + index))
+  }
+  const {
+    rows: [earlier],
+  } = await db.query(
+    `insert into blocks (page_id, type, position, deleted_at)
+     values ($1, 'kit_pricing', 3000, '2026-01-01T00:00:00Z') returning id`,
+    [page.id],
+  )
+
+  const sql = readFileSync(join(root, 'migrations', '0033_what_nothing_places_any_more.sql'), 'utf8')
+  await db.exec(sql)
+
+  const {
+    rows: [removedLeft],
+  } = await db.query(
+    `select count(*)::int as n from blocks where deleted_at is null and type = any($1::text[])`,
+    [removed],
+  )
+  const {
+    rows: [goneDeleted],
+  } = await db.query(`select count(*)::int as n from blocks where id = any($1::uuid[]) and deleted_at is not null`, [gone])
+  const {
+    rows: [stayLive],
+  } = await db.query(`select count(*)::int as n from blocks where id = any($1::uuid[]) and deleted_at is null`, [stay])
+  check('no live row of a removed type is left, hidden or not', removedLeft.n === 0, String(removedLeft.n))
+  check('every removed row was soft-deleted, not dropped', goneDeleted.n === removed.length, String(goneDeleted.n))
+  check('the six kit sections and what /work and /about show stay', stayLive.n === kept.length, String(stayLive.n))
+
+  const dates = async () =>
+    (
+      await db.query(
+        `select id, deleted_at from blocks where id = any($1::uuid[]) order by id`,
+        [[...gone, earlier.id]],
+      )
+    ).rows.map((row) => `${row.id} ${new Date(row.deleted_at).toISOString()}`)
+  const first = await dates()
+  await db.exec(sql)
+  const second = await dates()
+  check('a second run keeps every deleted date', first.join() === second.join())
+  check(
+    'a row deleted earlier keeps its own date',
+    first.some((line) => line === `${earlier.id} 2026-01-01T00:00:00.000Z`),
+  )
 }
 
 // ---------------------------------------------------------------------------
