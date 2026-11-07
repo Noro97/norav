@@ -115,7 +115,7 @@ npm run dev                        # the site on :5173, which finds it by defaul
 ```
 
 The scripts that write — `seed`, `import`, `import:media`, `link:images`,
-`user:add` — are forced onto the embedded database the same way, and refuse to
+`user:add`, `release` — are forced onto the embedded database the same way, and refuse to
 run if `DATABASE_URL` reaches them regardless. Each has a `:production` twin
 that is the only way to point it at the live database:
 

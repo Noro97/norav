@@ -42,7 +42,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 ## 4. Reference
 
 - **Logo:** `~/Desktop/projects/webapp/norav-logo.svg`, untracked in the main checkout. Commit it as the single source. It's a small mark and favicon, and the name is the main identity.
-- **Photo:** check `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg`, and that file only. If it doesn't work for a professional About section, ask for another. Strip its metadata and optimize it. Never generate a portrait. The photo there today is 860 KB at 1639×2173, shown 325px wide with `loading="lazy"`, and it makes `/about`'s LCP 8.89s. Size the new one for display and don't lazy-load it. The same goes for `/work`'s collage if it stays (`ProjectsIntro.tsx:90`, 5.24s).
+- **Photo:** check `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg`, and that file only. If it doesn't work for a professional About section, keep the current one for now and raise it in the review. Strip its metadata and optimize it. Never generate a portrait. The photo there today is 860 KB at 1639×2173, shown 325px wide with `loading="lazy"`, and it makes `/about`'s LCP 8.89s. Size the new one for display and don't lazy-load it. The same goes for `/work`'s collage if it stays (`ProjectsIntro.tsx:90`, 5.24s).
 - **Palette:** D5. Change values, not token names.
 - **Share image:** one static 1200×630 PNG, committed, so a link pasted into LinkedIn or Telegram shows a card. `og:image` and `twitter:image` in `index.html` still point at the SVG logo, and link unfurlers drop SVG. `PageHead.tsx` falls back to those tags, so replacing them covers every page, but check what S4's prerendering writes too. Show the name and the D2 headline in the D5 palette, rendered from code with the real font. "Reference" in the S11 prompt describes the method. Add `og:image:width`, `og:image:height` and `og:image:alt`. Per-page images stay in S11.
 - `cwebp` and `ffmpeg` are installed.
@@ -53,7 +53,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 ## 5. Rules
 
-"Session rules" in `docs/plan/README.md` apply. Publishing is gates G2 and G3. Nothing goes live until the owner has corrected the copy.
+"Session rules" in `docs/plan/README.md` apply. Publishing is gate G3. Nothing goes live until the owner has reviewed the copy.
 
 ## 6. Tasks in order
 
@@ -62,7 +62,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 1. Write all copy for Home, Live demos, About, Contact, nav, footer, metadata and FAQ into `.tasks/active/S5-copy.md`, applying the overrides.
 2. For each number, note its source in `facts.md`.
 
-**Report to me and wait.** The owner corrects it, and you don't build on unapproved copy.
+Don't stop here. Build on this draft, and the owner reads it once, in Stage 3 (D23).
 
 ### Stage 1: blocks and layout
 
@@ -73,24 +73,23 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 ### Stage 2: content and routes
 
-7. Add migrations for the approved copy, the slug changes and the navigation. They also soft-delete the rows of `tech_marquee`, `projects_intro` and `bento_grid`, once `/about` and `/work` have what replaces them.
+7. Add migrations for the copy, the slug changes and the navigation. They also soft-delete the rows of `tech_marquee`, `projects_intro` and `bento_grid`, once `/about` and `/work` have what replaces them.
 8. Add the redirects.
 9. Keep the terminal hidden by default behind the footer toggle, as a footer easter egg.
 
 ### Stage 3: check
 
 10. Check desktop and 375px, keyboard-only use, reduced motion, an empty console, and that D11 targets still hold.
-11. Open the PR, with a preview link and screenshots of every page.
+11. Open the PR, without the `merge-when-green` label.
+
+**Report to me and wait.** This is the one review (D23): `.tasks/active/S5-copy.md`, screenshots of every page at desktop and 375px, and one list of anything only the owner can answer. Apply the corrections.
 
 ### Stage 4: publish
 
-12. Don't merge yet, because the redirects point at routes that only exist after the publish. Give the owner the exact order, and merge when they're ready to publish, in the same sitting.
-
-**Report to me and wait.**
-
-13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Check that `og:image` returns a PNG, and ask the owner to paste a link into Telegram to see the card. Refresh the committed snapshots.
+12. After the owner's yes, follow "The order" in the runbook. The redirects point at routes that only exist after the publish, so merge just before the release, in the same sitting.
+13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Check that `og:image` returns a PNG, and tell the owner they can paste a link into Telegram to see the card. Refresh the committed snapshots.
 14. In a follow-up PR, after the publish, delete the code for `tech_marquee`, `projects_intro` and `bento_grid`: their sections, schemas, tests and registry entries, and `@warmbros/warmbros-components`, which only `ProjectsIntro` uses. Rows go before code, as in S4.
 
 ## 7. At the end
 
-Update `.tasks/`. Your final message says the new site is live, or exactly what's stopping it. S6 is next.
+Update `.tasks/`. Your final message says the new site is live, or exactly what's stopping it. Then start S6 (D24).

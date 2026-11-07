@@ -21,7 +21,7 @@ Milestone 1 is met: the site is true, fast and clear, and the repo is safe to re
 
 - D11 for targets.
 - **Skills:** `web-quality-audit` for the shape of Stage 1, using `STATE.md`'s Lighthouse method, with `seo` for task 6 and `accessibility` for task 7. Use `best-practices` for headers and source maps, and `web-design-guidelines` for a last pass over the UI code. They find problems. They don't widen this session.
-- `gitleaks` isn't installed. Ask before installing it. If the owner declines, write a pattern scan in your scratchpad that covers keys, tokens, database URLs and private keys across `git log --all -p`. Print masked results only.
+- `gitleaks` isn't installed. Install it with `brew install gitleaks`, which the owner approved on 2026-11-07. If that fails, write a pattern scan in your scratchpad that covers keys, tokens, database URLs and private keys across `git log --all -p`. Print masked results only.
 
 ## 5. Rules
 
@@ -41,7 +41,7 @@ Milestone 1 is met: the site is true, fast and clear, and the repo is safe to re
 5. Crawl for broken links, and check `/cv`, every redirect, and `/lab` if it's live.
 6. Check per-route metadata and link previews.
 7. Test keyboard-only use, reduced motion, 375px, and a slow connection.
-8. Confirm with the owner that the terminal's API key has a spending cap, then try `ask` with a few questions and check its answers against `facts.md`.
+8. Try `ask` with a few questions and check its answers against `facts.md`. Put the terminal's API spending cap on the list for the owner in your report.
 
 ### Stage 2: repo readiness
 
@@ -50,18 +50,18 @@ Milestone 1 is met: the site is true, fast and clear, and the repo is safe to re
 11. Scan tracked files and history for phone numbers and other personal data, printing masked results only. Include `.tasks/` and `docs/`.
 12. Check `README.md` as a stranger's first read. It should say what this is, how it works and how to run it.
 13. List remaining branches and worktrees.
-14. Ask the owner whether they want a licence file. Without one, the code stays all rights reserved even when public.
+14. Add no licence file. The owner decided on 2026-11-07 that the code stays all rights reserved, even when public. Say so in `README.md`.
 
 ### Stage 3: report
 
-15. Give a pass or fail against each item above.
+15. Give a pass or fail against each item above, and fix what's small.
 
-**Report to me and wait.** List what must be fixed before going public, and what can follow.
+**Report to me and wait.** This is the one stop: what must still be fixed before going public, what can follow, the spending cap, and the yes on going public.
 
 ### Stage 4: go public
 
-16. Fix what's approved, then open the PR.
-17. When the owner says yes, give them the command, or run it if they ask:
+16. Fix what the owner wants fixed first, then open the PR.
+17. When the owner says yes, run it:
     ```bash
     gh repo edit --visibility public --accept-visibility-change-consequences
     ```

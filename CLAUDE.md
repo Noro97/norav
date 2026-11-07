@@ -48,10 +48,10 @@ CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173)
 
 ## Rules
 
-- **One session, one branch, one PR.** Commit, push, open the PR and merge it without asking, once CI passes on its latest commit. If it only works after a production step, hold the merge and give the owner the order. See "Session rules" in `docs/plan/README.md`.
-- **Stop for the owner's "yes"** before anything in the approval gates in `docs/plan/README.md`.
+- **One session, one branch, one PR.** Commit, push and open the PR without asking, with the `merge-when-green` label and Auto-fix on. CI merges it once every check passes on its latest commit. If it only works after a production step, leave the label off and merge at that point in the order. See "Session rules" in `docs/plan/README.md`.
+- **Ask the owner only what they alone can answer** (D22), in one list with a recommendation for each. Decide the rest and record it in the PR. Stop for the owner's "yes" before anything in the approval gates in `docs/plan/README.md`.
 - **Merging to `main` deploys the site.** Every change must render correctly with the content that is published right now. Check it with `curl https://cms.norav.dev/api/health`.
-- **Never run a `:production` script or touch production content.** The owner does that, using `docs/plan/runbook-publish.md`.
+- **Production goes through `docs/plan/runbook-publish.md`, and sessions run it themselves** (D21): backup, rehearsal on a copy, migration, release, check. Don't run any other `:production` script. Accounts, passwords and environment variables stay with the owner.
 - **Migrations are append-only.** Never edit one that has shipped. Number new ones after the highest in `db/migrations`, and add a test block in `db/tests/schema.test.mjs`.
 - **Removing a block type is two steps.** Its rows are soft-deleted and published first. Only then can the code go, because publish validates every block against the registry.
 - **Facts come from `docs/plan/facts.md` or from code you have read.** No invented numbers, testimonials, clients or results.

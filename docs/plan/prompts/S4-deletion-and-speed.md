@@ -49,14 +49,14 @@ You're removing the imported kit and everything else the site no longer uses, th
 1. For every block type and kit section: is it placed in published content, in the local database, or nowhere? Is it on the removal list?
 2. List dependencies that become unused.
 
-**Report to me if anything on the removal list is still placed and visible on the live site,** because removing it changes what visitors see.
+Anything on the removal list that's still placed and visible on the live site stays until its replacement is live (D22). Name it in the S5 prompt and in the PR.
 
 ### Stage 1: PR A, content
 
 3. Add the migration that soft-deletes rows of removed types, with its test.
 4. Open PR A.
 
-**Merge it, then report to me and wait.** The owner applies it to production and publishes. Verify with `api/health` and the manifest before going on.
+Merge it, then follow "The order" in the runbook: backup, rehearsal, migration, release, check. Verify with `api/health` and the manifest before going on. Nothing visible should change. If the dry run says otherwise, stop and report it.
 
 ### Stage 2: PR B, code
 
@@ -77,4 +77,4 @@ You're removing the imported kit and everything else the site no longer uses, th
 
 ## 7. At the end
 
-Update `.tasks/`, including removed items from the tech debt register and the new baseline. S5 is next.
+Delete the old CV from the production media library, if nothing references it, which the owner approved on 2026-11-07. `/cv` serves a separate PDF from the repo. Update `.tasks/`, including removed items from the tech debt register and the new baseline. Then start S5 (D24).
