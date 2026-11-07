@@ -28,6 +28,8 @@ for (const route of routes()) {
   if (!html.includes(`<link rel="canonical" href="${route.canonical}"`)) problems.push(`${route.path}: no canonical`)
   if (!html.includes(`<meta property="og:url" content="${route.canonical}"`)) problems.push(`${route.path}: no og:url`)
   if (!/<main\b/.test(html)) problems.push(`${route.path}: no content`)
+  // A section React held back to swap in by script isn't in the first paint.
+  if (html.includes('<!--$?-->') || html.includes('$RC')) problems.push(`${route.path}: a section arrives by script`)
 }
 
 const notFound = existsSync(join(dist, '404.html')) ? readFileSync(join(dist, '404.html'), 'utf8') : ''

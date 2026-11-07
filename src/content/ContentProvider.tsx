@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, startTransition, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
 import { readPath } from './routing'
@@ -14,6 +14,9 @@ import { applyTheme } from './theme'
  * The baked snapshot renders immediately. Once the page is idle the provider
  * asks the CMS for its manifest; if a newer version has been published since
  * this bundle was built, it swaps the content in without a redeploy.
+ *
+ * Those updates are transitions. An urgent one that reaches a section still waiting
+ * for its chunk makes React throw away that section's prerendered HTML.
  */
 
 interface ContentValue {
@@ -164,12 +167,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           ])
  if (cancelled) return
  const draft = { en, ru }
-          setSnapshots(draft)
+          startTransition(() => setSnapshots(draft))
           setCurrentSnapshots(draft)
  // No version: a draft palette must not be remembered, or leaving the
  // preview would take its colours along to the published page.
           applyTheme(draft.en.settings)
-          setIsPreview(true)
+          startTransition(() => setIsPreview(true))
           return
         }
 
@@ -187,10 +190,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           return
         }
 
-        setIsRefreshing(true)
+        startTransition(() => setIsRefreshing(true))
  const latest = await fetchLatest(baseUrl, manifest)
  if (cancelled) return
-        setSnapshots(latest)
+        startTransition(() => setSnapshots(latest))
  // Keep the non-React readers (the terminal) on the same content.
         setCurrentSnapshots(latest)
         applyTheme(latest.en.settings, manifest.version)
@@ -219,7 +222,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           )
         }
       } finally {
- if (!cancelled) setIsRefreshing(false)
+ if (!cancelled) startTransition(() => setIsRefreshing(false))
       }
     }
 
