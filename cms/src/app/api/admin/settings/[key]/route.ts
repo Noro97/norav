@@ -18,15 +18,10 @@ export const dynamic = 'force-dynamic'
 const SCHEMAS: Record<string, z.ZodType> = {
   theme: themeSchema,
   profile: profileSchema,
-  site: z.object({
-    /** Which shape the active-link indicator in the nav takes. */
-    navIndicator: z.enum(['dot', 'gooey']).default('dot'),
-  }),
 }
 
 const DEFAULTS: Record<string, unknown> = {
   theme: DEFAULT_THEME,
-  site: { navIndicator: 'dot' },
 }
 
 export async function GET(request: Request, context: { params: Promise<{ key: string }> }) {

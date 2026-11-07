@@ -170,12 +170,11 @@ Give it a tone: `type-label text-tertiary-ink/40` for a table header,
 
 ### The imported kit
 
-The fifty-three sections imported from the portfolio project arrive with type
-in pixels of their own — a 66px section title, 700-weight headings, ten sizes
-under 16px. They are put on this scale by `scripts/port-portfolio-kit-css.mjs`
-when the stylesheet is generated, so `src/styles/portfolio-kit.css` never holds
-a pixel size: each one is mapped to a token by where it sits, a fixed size by
-its value and a `clamp()` by its ceiling.
+The six sections kept from the portfolio project arrived with type in pixels of
+their own — a 66px section title, 700-weight headings, ten sizes under 16px. They
+were put on this scale when the stylesheet was ported, so
+`src/styles/portfolio-kit.css` never holds a pixel size: each one was mapped to a
+token by where it sits, a fixed size by its value and a `clamp()` by its ceiling.
 
 | The kit wrote | It becomes |
 | --- | --- |

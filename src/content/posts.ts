@@ -24,6 +24,16 @@ export interface Post {
 /** Where posts live: /writing/<slug>, under the Writing page. */
 export const WRITING_SLUG = 'writing'
 
+/** What a post says about itself in the head, with the site's name when it says nothing. */
+export function postSeo(post: Post, siteName: string, site: string) {
+  const image = post.cover ? (/^https?:\/\//.test(post.cover) ? post.cover : `${site}${post.cover}`) : undefined
+  return {
+    title: post.seo.title || `${post.title} — ${siteName}`,
+    description: post.seo.description || post.excerpt,
+    image,
+  }
+}
+
 export function postsOf(snapshot: Snapshot): Post[] {
   return (snapshot.collections.posts ?? []).map((entry) => ({
     ...(entry.data as Omit<Post, 'slug'>),

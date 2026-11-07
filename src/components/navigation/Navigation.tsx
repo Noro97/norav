@@ -1,19 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router'
 import { useContent } from '@/content/ContentProvider'
 import { activeNavItem, useNavigation, type NavItem } from '@/content/navigation'
 import { HOME_SLUG, hrefFor, readPath } from '@/content/routing'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { GooeyNavIndicator } from '@/components/ui/effects/GooeyNavIndicator'
-import { SPRING } from '@/lib/motion'
 import { Logo } from '@/components/brand/Logo'
-
-/** Site-wide chrome settings, not a block — see `settings.site` in the published snapshot. */
-interface SiteSettings {
-  navIndicator?: 'dot' | 'gooey'
-}
 
 /** A menu link: a route through the router, or a plain link out of the site. */
 function NavLink({
@@ -41,16 +32,10 @@ function NavLink({
 export function Navigation() {
   // isRefreshing is set the moment the manifest's checksum disagrees with the
   // one baked into this bundle — that is, when a different menu is already on
-  // its way. Painting the bundle's copy in that window shows items that are
-  // about to vanish, which is what "hidden item visible for a second" is.
-  //
-  // Holding the items for that fetch is the lesser fault: a menu that appears a
-  // moment late is a load, a menu that offers a section which is not there is a
+  // its way. Holding the items for that fetch is the lesser fault: a menu that
+  // blinks is a load, a menu that offers a section which is not there is a
   // broken promise.
-  const { locale, isRefreshing, snapshot } = useContent()
-  const reducedMotion = useReducedMotion()
-  const siteSettings = snapshot.settings.site as SiteSettings | undefined
-  const navIndicator = reducedMotion ? 'dot' : (siteSettings?.navIndicator ?? 'dot')
+  const { locale, isRefreshing } = useContent()
   const here = readPath(useLocation().pathname).slug
   // The menu is content. An item whose page or section is hidden in the CMS
   // drops out on its own: the item names a page, and the snapshot only carries
@@ -112,18 +97,17 @@ export function Navigation() {
               item={section}
               className={`
                 relative flex items-center gap-2 px-3 py-2 rounded-full
-                transition-all duration-300 ease-out
-                ${isActive && navIndicator === 'dot'
+                transition-colors duration-150
+                ${isActive
                   ? 'bg-primary-500/10'
                   : 'hover:bg-tertiary-ink/5'
                 }
               `}
             >
-              {isActive && navIndicator === 'gooey' && <GooeyNavIndicator />}
               <span
                 className={`
                   block w-1.5 h-1.5 rounded-full shrink-0
-                  transition-all duration-300
+                  transition-colors duration-150
                   ${isActive
                     ? 'bg-primary-500 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-primary-500)_60%,_transparent)]'
                     : 'bg-tertiary-ink/25 group-hover:bg-tertiary-ink/40'
@@ -131,7 +115,7 @@ export function Navigation() {
                 `}
               />
               <span
-                className={`type-label transition-all duration-300
+                className={`type-label transition-colors duration-150
                   ${isActive
                     ? 'text-primary-400'
                     : 'text-tertiary-ink/40 hover:text-tertiary-ink/60'
@@ -159,19 +143,10 @@ export function Navigation() {
             />
           </button>
 
-          {/* Grows out of its top-right corner, where the button that opened
-              it sits, and shrinks back into it — so the menu and the button
-              read as one thing. */}
-          <AnimatePresence>
           {dropdownOpen && (
-            <motion.div
+            <div
               data-surface="chrome"
               className="absolute top-full right-0 mt-2 min-w-[180px] rounded-xl border border-tertiary-ink/10 bg-tertiary-bg/90 backdrop-blur-md py-1.5 shadow-xl"
-              style={{ originX: 1, originY: 0 }}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={SPRING.settle}
             >
               {sections.map((section) => {
                 const isActive = section === active
@@ -202,9 +177,8 @@ export function Navigation() {
                   </NavLink>
                 )
               })}
-            </motion.div>
+            </div>
           )}
-          </AnimatePresence>
         </div>
       </div>
     </nav>

@@ -10,7 +10,7 @@
  * own phone breakpoint, 720px.
  *
  * Type is not set here. The kit's sizes are mapped onto the site's fluid
- * scale by the port script, and a fluid size already knows what a phone is;
+ * scale, and a fluid size already knows what a phone is;
  * a pixel size written here would only fight it. Layout — columns, gaps,
  * paddings the kit sized for a desktop — is what this file is for.
  */
@@ -18,12 +18,9 @@
   /* Every section: a smaller title and less air above and below it. */
   .pf-kit .section-title { margin-bottom: 32px; }
   .pf-kit .section-eyebrow { margin-bottom: 20px; }
-  .pf-kit .timeline,
   .pf-kit .tools,
   .pf-kit .compare,
-  .pf-kit .awards,
-  .pf-kit .writing,
-  .pf-kit .feed { padding-top: 64px; padding-bottom: 56px; }
+  .pf-kit .writing { padding-top: 64px; padding-bottom: 56px; }
 
   /* Buttons: a pill that was a thumb-and-a-half tall. */
   .pf-kit .btn { padding: 11px 18px; gap: 8px; }
@@ -40,17 +37,9 @@
 
   /* Services: a 320px minimum height stacked one card under another leaves
      a screen of nothing between the blurb and the tags. */
-  .pf-kit .services { padding: 64px 0 56px; }
-  .pf-kit .svc { padding: 28px var(--kit-gutter); min-height: 0; gap: 12px; }
-  .pf-kit .svc-tags { margin-top: 4px; padding-top: 12px; }
-  .pf-kit .svc-arrow { display: none; }
 
   /* Pricing: a 56px price and a 40px name in a card a phone wide. */
   .pf-kit .pricing { padding: 64px 0 56px; }
-  .pf-kit .pricing-grid { padding: 0 var(--kit-gutter); gap: 12px; }
-  .pf-kit .tier { padding: 28px 20px 24px; gap: 10px; }
-  .pf-kit .tier-features { gap: 8px; }
-  .pf-kit .tier .btn { margin-top: 8px; }
 
   /* CTA banner: 140px above and below, a 112px headline, and a 360px
      watermark the copy floats over. */
@@ -61,15 +50,9 @@
   .pf-kit .cta-bg-text { bottom: -14px; }
 
   /* Timeline: the year column was a third of the screen. */
-  .pf-kit .tl-row { grid-template-columns: 52px 20px 1fr; gap: 12px; padding: 20px 0; }
-  .pf-kit .tl-row:hover { padding-left: 0; }
-  .pf-kit .tl-bullet span { width: 8px; height: 8px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent); }
 
   /* Awards: the count was a 56px numeral beside a 24px name, in a column
      100px wide — on a phone the count is a badge, not a headline. */
-  .pf-kit .awards-inner { gap: 24px; padding: 0 var(--kit-gutter); }
-  .pf-kit .award-row { grid-template-columns: 56px 1fr; gap: 16px; padding: 18px 0; }
-  .pf-kit .award-row:hover { padding-left: 0; }
 
   /* Compare table: three columns still, but each cell earns its width. */
   .pf-kit .compare-table { padding: 0 var(--kit-gutter); }
@@ -79,23 +62,4 @@
 
   /* Showreel: a taller frame so the play button has a band of its own between
      the eyebrow and the title, and the corner labels stay out of the copy. */
-  .pf-kit .reel { padding: 56px var(--kit-gutter); }
-  .pf-kit .reel-frame { aspect-ratio: 4 / 3; max-height: none; border-radius: 12px; }
-  /* The frame's children are spaced evenly, which puts the title in the
-     middle — under the button. Pin the eyebrow to the top and the copy to the
-     bottom instead, and the button keeps the centre of the frame, which is
-     where the rings are drawn from. */
-  .pf-kit .reel-content { padding: 44px 20px; justify-content: flex-end; gap: 6px; }
-  .pf-kit .reel-eyebrow { margin-bottom: auto; }
-  .pf-kit .reel-play { width: 60px; height: 60px; }
-  .pf-kit .reel-play svg { width: 20px; height: 20px; }
-  .pf-kit .reel-sub { margin-top: 4px; }
-  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-bl { left: 16px; }
-  .pf-kit .reel-corner-tr, .pf-kit .reel-corner-br { right: 16px; }
-  .pf-kit .reel-corner-tl, .pf-kit .reel-corner-tr { top: 16px; }
-  .pf-kit .reel-corner-bl, .pf-kit .reel-corner-br { bottom: 16px; }
-}
-
-@media (max-width: 480px) {
-  .pf-kit .reel-frame { aspect-ratio: 1 / 1; }
 }

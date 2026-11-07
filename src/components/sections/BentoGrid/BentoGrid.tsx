@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { BENTO_PROJECTS, MICRO_TILES } from './bento.data'
 import { useBlock } from '@/content/ContentProvider'
@@ -12,6 +13,8 @@ import { ProofVerificationTile } from './ProofVerificationTile'
 import { ProofEconomyTile } from './ProofEconomyTile'
 import { ProofGamificationTile } from './ProofGamificationTile'
 import { OmniGridBentoTile } from './OmniGridBentoTile'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function BentoIllustration({ src, alt }: { src: string; alt: string }) {
   // Coalesce the tilt write to one per frame instead of per mousemove event.

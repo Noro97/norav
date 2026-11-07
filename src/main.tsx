@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-import { MotionConfig } from 'framer-motion'
-import '@fontsource/inter-tight/900.css'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import '@fontsource/inter-tight/latin-900.css'
+import '@fontsource/inter/latin-400.css'
+import '@fontsource/inter/latin-500.css'
+import '@fontsource/inter/latin-600.css'
+import '@fontsource/jetbrains-mono/latin-400.css'
+import '@fontsource/jetbrains-mono/latin-500.css'
+import '@fontsource/jetbrains-mono/latin-600.css'
 import './i18n'
 import App from './App'
 import { ContentProvider } from '@/content/ContentProvider'
@@ -12,10 +15,6 @@ import { BAKED_SNAPSHOTS } from '@/content'
 import { applyTheme, applyRememberedTheme } from '@/content/theme'
 import { reportWebVitals } from '@/lib/webVitals'
 import './index.css'
-import '@warmbros/warmbros-components/styles.css'
-
-// Register GSAP plugins once
-gsap.registerPlugin(ScrollTrigger)
 
 // Both before the first render. The bundle's palette is as new as the last
 // deploy; the remembered one is as new as the last visit, and wins when it is
@@ -24,21 +23,23 @@ gsap.registerPlugin(ScrollTrigger)
 applyTheme(BAKED_SNAPSHOTS.en.settings)
 applyRememberedTheme(BAKED_SNAPSHOTS.en.version)
 
-createRoot(document.getElementById('root')!).render(
+const app = (
   <StrictMode>
     <BrowserRouter>
-      {/* `user`: when the OS asks for less motion, Framer keeps the opacity
-          animations and drops the transforms — a slide becomes a cross-fade,
-          which is what reduced motion means, not no feedback. This is the
-          one switch every motion.* on the site answers to. */}
-      <MotionConfig reducedMotion="user">
-        <ContentProvider>
-          <App />
-        </ContentProvider>
-      </MotionConfig>
+      <ContentProvider>
+        <App />
+      </ContentProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Only hydrate markup written for this address. 404.html answers any path it doesn't
+// know, and that path may be a page published since this build, so there the browser
+// renders from scratch.
+const root = document.getElementById('root')!
+const here = window.location.pathname.replace(/(.)\/$/, '$1')
+if (root.dataset.prerendered === here) hydrateRoot(root, app)
+else createRoot(root).render(app)
 
 // Core Web Vitals: logs to the console in dev, no-op in prod unless configured.
 reportWebVitals()

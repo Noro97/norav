@@ -2,9 +2,7 @@ import { z } from 'zod'
 import {
   defineKitBlock,
   kitHead,
-  kitLabels,
   KIT_HEAD_FIELDS,
-  KIT_LABEL_FIELDS,
 } from './shared'
 
 /**
@@ -14,80 +12,6 @@ import {
  * less. The defaults are that copy, so creating a block gives an editor a
  * working section to rewrite rather than an empty form to fill in.
  */
-
-const servicesContent = kitHead.extend({
-  services: z
-    .array(
-      z.object({
-        n: z.string().max(6),
-        title: z.string().min(1).max(80),
-        blurb: z.string().max(300),
-        tags: kitLabels(8),
-      }),
-    )
-    .min(1)
-    .max(8),
-})
-
-export const kitServicesBlock = defineKitBlock({
-  type: 'kit_services',
-  label: 'Services',
-  description: 'Numbered service cards, each with a blurb and a row of tags.',
-  content: servicesContent,
-  defaults: {
-    headNumber: '02',
-    headLabel: 'What I do',
-    title: 'Four ways we can',
-    titleAccent: 'work together',
-    titleTail: '.',
-    services: [
-      {
-        n: '01',
-        title: 'Product design sprints',
-        blurb:
-          'Two- to six-week engagements where I plug into your team and ship a defined surface end-to-end.',
-        tags: [{ label: 'Research' }, { label: 'IA' }, { label: 'IxD' }, { label: 'Visual' }],
-      },
-      {
-        n: '02',
-        title: 'Fractional design lead',
-        blurb:
-          'I run your design org one or two days a week. Hiring, rituals, system, taste calibration.',
-        tags: [{ label: 'Strategy' }, { label: 'Hiring' }, { label: 'Systems' }, { label: 'Reviews' }],
-      },
-      {
-        n: '03',
-        title: 'Brand & motion identity',
-        blurb: 'Wordmark, motion grammar, and the system that lets your team apply it without me.',
-        tags: [{ label: 'Identity' }, { label: 'Motion' }, { label: 'Print' }, { label: 'Guidelines' }],
-      },
-      {
-        n: '04',
-        title: 'Design audits',
-        blurb:
-          'Five working days. I tear the surface apart and hand back a prioritized list with mockups.',
-        tags: [{ label: 'Audit' }, { label: 'Heuristics' }, { label: 'Roadmap' }],
-      },
-    ],
-  },
-  form: [
-    ...KIT_HEAD_FIELDS,
-    {
-      field: 'services',
-      control: 'repeater',
-      label: 'Services',
-      itemLabel: 'title',
-      min: 1,
-      max: 8,
-      fields: [
-        { field: 'n', control: 'text', label: 'Number', localized: false },
-        { field: 'title', control: 'text', label: 'Title' },
-        { field: 'blurb', control: 'textarea', label: 'Blurb' },
-        { field: 'tags', control: 'repeater', label: 'Tags', itemLabel: 'label', max: 8, fields: KIT_LABEL_FIELDS },
-      ],
-    },
-  ],
-})
 
 const processContent = kitHead
   .omit({ titleAccent: true, titleTail: true })
@@ -163,47 +87,6 @@ export const kitProcessBlock = defineKitBlock({
   ],
 })
 
-const pressContent = kitHead.pick({ headNumber: true, headLabel: true }).extend({
-  features: z
-    .array(z.object({ name: z.string().min(1).max(80), note: z.string().max(120) }))
-    .min(1)
-    .max(12),
-})
-
-export const kitPressBlock = defineKitBlock({
-  type: 'kit_press',
-  label: 'Press',
-  description: 'A numbered list of mentions — publication on the left, the note beside it.',
-  content: pressContent,
-  defaults: {
-    headNumber: '06',
-    headLabel: 'Recent press',
-    features: [
-      { name: 'Bloomberg Green', note: 'Atlas of carbon flows — Aug 2024' },
-      { name: 'Fast Company', note: 'Innovation by Design finalist — 2024' },
-      { name: "It's Nice That", note: 'Interview + studio visit — 2025' },
-      { name: 'The Webby Awards', note: 'Winner, Financial Services — 2025' },
-      { name: 'Sidebar.io', note: 'Featured five times' },
-    ],
-  },
-  form: [
-    { field: 'headNumber', control: 'text', label: 'Number', localized: false, placeholder: '01' },
-    { field: 'headLabel', control: 'text', label: 'Eyebrow' },
-    {
-      field: 'features',
-      control: 'repeater',
-      label: 'Mentions',
-      itemLabel: 'name',
-      min: 1,
-      max: 12,
-      fields: [
-        { field: 'name', control: 'text', label: 'Publication', localized: false },
-        { field: 'note', control: 'text', label: 'Note' },
-      ],
-    },
-  ],
-})
-
 const faqContent = kitHead.extend({
   items: z
     .array(z.object({ q: z.string().min(1).max(160), a: z.string().max(600) }))
@@ -266,116 +149,6 @@ export const kitFaqBlock = defineKitBlock({
   ],
 })
 
-const pricingContent = kitHead.extend({
-  /** The ribbon on the highlighted tier. Empty hides it. */
-  featuredTag: z.string().max(30),
-  tiers: z
-    .array(
-      z.object({
-        n: z.string().max(12),
-        name: z.string().min(1).max(40),
-        price: z.string().max(24),
-        cycle: z.string().max(40),
-        blurb: z.string().max(200),
-        features: kitLabels(10),
-        cta: z.string().max(40),
-        href: z.string().max(200),
-        featured: z.boolean(),
-      }),
-    )
-    .min(1)
-    .max(4),
-})
-
-export const kitPricingBlock = defineKitBlock({
-  type: 'kit_pricing',
-  label: 'Pricing',
-  description: 'Up to four packages side by side, one of them highlighted.',
-  content: pricingContent,
-  defaults: {
-    headNumber: '05',
-    headLabel: 'Engagement & pricing',
-    title: 'Honest pricing.',
-    titleAccent: 'No hourly games.',
-    titleTail: '',
-    featuredTag: 'MOST CHOSEN',
-    tiers: [
-      {
-        n: 'PKG/01',
-        name: 'Audit',
-        price: '$4,800',
-        cycle: 'fixed · 5 days',
-        blurb: 'A full review of one product surface with prioritized fixes.',
-        features: [
-          { label: 'Up to 30 screens reviewed' },
-          { label: 'Heuristic write-up + Loom walkthrough' },
-          { label: '10 prioritized mockups' },
-          { label: '60-min handoff call' },
-        ],
-        cta: 'Book audit',
-        href: '#contact',
-        featured: false,
-      },
-      {
-        n: 'PKG/02',
-        name: 'Sprint',
-        price: '$22,000',
-        cycle: 'fixed · 4 weeks',
-        blurb: 'Ship one significant feature or surface, end-to-end.',
-        features: [
-          { label: 'Discovery + research' },
-          { label: 'Full IxD + visual design' },
-          { label: 'Motion prototype' },
-          { label: 'Engineering handoff doc' },
-          { label: 'Two weeks Slack support' },
-        ],
-        cta: 'Reserve sprint',
-        href: '#contact',
-        featured: true,
-      },
-      {
-        n: 'PKG/03',
-        name: 'Fractional',
-        price: '$12k/mo',
-        cycle: 'monthly · 3-month min',
-        blurb: 'Embedded design lead, two days a week.',
-        features: [
-          { label: 'Hiring + interviewing' },
-          { label: 'Weekly design crit' },
-          { label: 'Roadmap + system work' },
-          { label: 'Anything else you need' },
-        ],
-        cta: 'Start retainer',
-        href: '#contact',
-        featured: false,
-      },
-    ],
-  },
-  form: [
-    ...KIT_HEAD_FIELDS,
-    { field: 'featuredTag', control: 'text', label: 'Ribbon on the highlighted tier' },
-    {
-      field: 'tiers',
-      control: 'repeater',
-      label: 'Packages',
-      itemLabel: 'name',
-      min: 1,
-      max: 4,
-      fields: [
-        { field: 'n', control: 'text', label: 'Code', localized: false },
-        { field: 'name', control: 'text', label: 'Name' },
-        { field: 'price', control: 'text', label: 'Price', localized: false },
-        { field: 'cycle', control: 'text', label: 'Terms' },
-        { field: 'blurb', control: 'textarea', label: 'Blurb' },
-        { field: 'features', control: 'repeater', label: "What's included", itemLabel: 'label', max: 10, fields: KIT_LABEL_FIELDS },
-        { field: 'cta', control: 'text', label: 'Button' },
-        { field: 'href', control: 'text', label: 'Button link', localized: false, placeholder: '#contact' },
-        { field: 'featured', control: 'boolean', label: 'Highlight this one', localized: false },
-      ],
-    },
-  ],
-})
-
 const ctaContent = z.object({
   /** The oversized word behind the banner. Empty leaves the panel plain. */
   backdropText: z.string().max(24),
@@ -421,38 +194,6 @@ export const kitCtaBannerBlock = defineKitBlock({
   ],
 })
 
-const statsMarqueeContent = z.object({
-  glyph: z.string().max(4),
-  items: kitLabels(60).min(1),
-})
-
-export const kitStatsMarqueeBlock = defineKitBlock({
-  type: 'kit_stats_marquee',
-  label: 'Stats marquee',
-  description: 'A single scrolling line of claims, separated by a glyph.',
-  content: statsMarqueeContent,
-  defaults: {
-    glyph: '✦',
-    items: [
-      { label: '42 SHIPPED PROJECTS' },
-      { label: '$420M IN FUNDING RAISED BY CLIENTS' },
-      { label: '11 AWWWARDS' },
-      { label: '3 WEBBY NOMINATIONS' },
-      { label: '8 YEARS INDEPENDENT' },
-      { label: '100% NDA-FRIENDLY' },
-      { label: 'AVERAGE NPS 9.6 / 10' },
-    ],
-  },
-  form: [
-    { field: 'glyph', control: 'text', label: 'Separator glyph', localized: false },
-    { field: 'items', control: 'repeater', label: 'Claims', itemLabel: 'label', min: 1, max: 60, fields: KIT_LABEL_FIELDS },
-  ],
-})
-
-export type KitServicesContent = z.infer<typeof servicesContent>
 export type KitProcessContent = z.infer<typeof processContent>
-export type KitPressContent = z.infer<typeof pressContent>
 export type KitFaqContent = z.infer<typeof faqContent>
-export type KitPricingContent = z.infer<typeof pricingContent>
 export type KitCtaBannerContent = z.infer<typeof ctaContent>
-export type KitStatsMarqueeContent = z.infer<typeof statsMarqueeContent>

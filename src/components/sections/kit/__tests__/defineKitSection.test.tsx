@@ -1,18 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineKitSection } from '../defineKitSection'
-import { kitFaqBlock, kitPricingBlock } from '@norav/content-schema'
+import { kitFaqBlock } from '@norav/content-schema'
 
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
 vi.mock('@/content/theme', () => ({ useAccentColor: () => '#00ff00' }))
 
 const Faq = defineKitSection('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ')
-const Pricing = defineKitSection(
-  'kit_pricing',
-  () => import('@/components/portfolio-kit/sections/extra-sections/pricing'),
-  'Pricing',
-)
 
 describe('a promoted kit section', () => {
   beforeEach(() => useBlock.mockReset())
@@ -48,14 +43,14 @@ describe('a promoted kit section', () => {
 
   it('takes the published accent unless the block overrides it', async () => {
     useBlock.mockReturnValue({
-      content: kitPricingBlock.defaults.content,
+      content: { ...kitFaqBlock.defaults.content, titleAccent: 'answered' },
       settings: { accent: '' },
       anchorId: null,
     })
-    const { container } = render(<Pricing />)
-    await screen.findByText('Sprint')
+    const { container } = render(<Faq />)
+    await screen.findByText('answered')
 
-    expect(container.querySelector('.tier-tag')).toHaveStyle({ background: '#00ff00' })
+    expect(container.querySelector('.section-title em')).toHaveStyle({ color: '#00ff00' })
   })
 
   it('scopes the imported stylesheet to a wrapper of its own', async () => {

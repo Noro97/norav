@@ -1,9 +1,5 @@
 import { useEffect } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function useScrollTracking() {
   useEffect(() => {

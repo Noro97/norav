@@ -35,7 +35,6 @@
   background: color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
 
-
 /* ===== VIEW TRANSITIONS (cross-document opt-in) ===== */
 @view-transition {
   navigation: auto;
@@ -72,8 +71,7 @@ html { scroll-behavior: smooth; }
 
   /* Near zero rather than zero, so `transitionend` and `animationend` still
      fire for anything waiting on them. Covers every Tailwind transition and
-     the whole imported kit — 24 keyframes and 90 transitions that never heard
-     of the setting — without touching either. */
+     the kit's, which never heard of the setting, without touching either. */
   *,
   *::before,
   *::after {
@@ -82,14 +80,6 @@ html { scroll-behavior: smooth; }
     transition-duration: 0.01ms !important;
   }
 
-  /* The kit's arrival reveal keeps its fade and loses its rise: the fade is
-     what tells the reader a section has loaded, the 24px climb is what makes
-     someone motion-sensitive close the tab. */
-  .pf-kit .reveal.will-animate {
-    transform: none;
-    transition-duration: 200ms !important;
-    transition-property: opacity;
-  }
 }
 
 /* Translucent chrome — the nav, a dropdown, a modal panel — reads its
@@ -98,9 +88,7 @@ html { scroll-behavior: smooth; }
    the reader has said they do not want. */
 @media (prefers-reduced-transparency: reduce) {
   [class*="backdrop-blur"],
-  .case-study-card,
-  .pf-kit .nav-scrolled,
-  .pf-kit .mobile-backdrop {
+  .case-study-card {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -126,30 +114,7 @@ html { scroll-behavior: smooth; }
      wide, centred, inside the page gutter — so every left edge on the site is
      the same edge. Gives the `max-w-content` class; the kit reads the variable. */
   --container-content: 1280px;
-  --animate-glitch: glitch 0.4s infinite alternate;
-  --animate-shift: shift 1s ease-in-out infinite alternate;
 }
-
-@keyframes glitch {
-  0%   { transform: translate(0); }
-  20%  { transform: translate(-3px, 3px); }
-  40%  { transform: translate(-3px, -3px); }
-  60%  { transform: translate(3px, 3px); }
-  80%  { transform: translate(3px, -3px); }
-  to   { transform: translate(0); }
-}
-
-@keyframes shift {
-  0%, 40%, 44%, 58%, 61%, 65%, 69%, 73%, 100% { transform: skewX(0deg); }
-  41% { transform: skewX(10deg); }
-  42% { transform: skewX(-10deg); }
-  59% { transform: skewX(40deg) skewY(10deg); }
-  60% { transform: skewX(-40deg) skewY(-10deg); }
-  63% { transform: skewX(10deg) skewY(-5deg); }
-  70% { transform: skewX(-50deg) skewY(-20deg); }
-  71% { transform: skewX(10deg) skewY(-10deg); }
-}
-
 
 /* ===== TYPE ROLES =====
    `type-label` is generated with the tokens; this is the one site-specific
@@ -167,26 +132,8 @@ html { scroll-behavior: smooth; }
 }
 
 /* ===== PRIMARY GLOW ===== */
-.crimson-glow::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
 
 /* ===== SECTION DIVIDER ===== */
-.section-divider {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-primary-500), transparent);
-  margin: 0 auto 2rem;
-}
 
 /* ===== REVEAL — the one entrance, see src/hooks/useReveal.ts =====
    `transition` is a shorthand: whichever rule wins replaces the other's
@@ -334,38 +281,6 @@ html { scroll-behavior: smooth; }
 }
 
 /* ===== GOOGLE MAPS ADVANCED MARKER PULSE ===== */
-.gmap-marker {
-  position: relative;
-  width: 24px;
-  height: 24px;
-}
-.gmap-marker-pulse {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-500) 40%, transparent) 0%, transparent 70%);
-  animation: gmap-pulse 2s ease-in-out infinite;
-  animation-delay: calc(var(--intensity) * -2s);
-}
-.gmap-marker-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(3px + var(--intensity) * 4px);
-  height: calc(3px + var(--intensity) * 4px);
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--color-primary-500) 80%, transparent);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--color-primary-500) 50%, transparent);
-}
-@keyframes gmap-pulse {
-  0%, 100% { transform: scale(0.7); opacity: 0.5; }
-  50% { transform: scale(1.3); opacity: 1; }
-}
-
-/* Google Maps container fixes */
-.gm-style { background-color: var(--color-card) !important; }
-.gm-style * { border-style: initial; }
 
 /* ===== PROOF PROJECT ANIMATIONS ===== */
 @keyframes dash-flow {
@@ -383,32 +298,12 @@ html { scroll-behavior: smooth; }
   animation: cursor-blink 0.8s step-end infinite;
 }
 
-
 /* Bento grid: `bento_grid.settings.glowBorder` makes every tile's border glow
    permanently instead of only on hover. Cascaded from the grid container so no
    individual tile component (there are eight) needs to know about it. */
 .bento-glow .bento-tile {
   border-color: color-mix(in srgb, var(--color-primary-500) 25%, transparent);
   box-shadow: 0 0 24px -8px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
-}
-
-/* ===== SHARED EFFECT COMPONENTS (src/components/ui/effects) ===== */
-@keyframes starBorderSpin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes clickSparkRay {
-  0% { opacity: 1; transform: rotate(var(--spark-angle, 0rad)) translateX(0) scaleX(1); }
-  100% { opacity: 0; transform: rotate(var(--spark-angle, 0rad)) translateX(16px) scaleX(0.4); }
-}
-
-@keyframes beamsRotate {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes orbPulse {
-  0%, 100% { transform: scale(1); opacity: 0.15; }
-  50% { transform: scale(1.08); opacity: 0.25; }
 }
 
 /* ===== SCROLL CONTAINER =====
@@ -429,15 +324,13 @@ html { position: relative; }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   .press,
-  .pf-kit .btn,
-  .pf-kit .nav-cta {
+  .pf-kit .btn {
     transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   button:not(:disabled):active,
   [role="button"]:not([aria-disabled="true"]):active,
   .press:active,
-  .pf-kit .btn:active,
-  .pf-kit .nav-cta:active {
+  .pf-kit .btn:active {
     scale: 0.97;
     transition-duration: 100ms;
   }

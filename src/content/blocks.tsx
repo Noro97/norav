@@ -1,22 +1,15 @@
-import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import { lazy, Suspense, useSyncExternalStore, type ComponentType, type LazyExoticComponent, type ReactNode } from 'react'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { useWritingPosts } from '@/components/sections/kit/useWritingPosts'
 import { defineKitSection } from '@/components/sections/kit/defineKitSection'
+import { WidgetPlaceholder } from '@/components/sections/WidgetPlaceholder'
+import { SectionLoader } from './SectionLoader'
 import type {
-  KitStatsMarqueeContent,
-  KitServicesContent,
   KitProcessContent,
-  KitPricingContent,
-  KitPressContent,
   KitFaqContent,
   KitCtaBannerContent,
-  KitAwardsContent,
-  KitBigMarqueeContent,
   KitCompareTableContent,
-  KitShowReelContent,
-  KitTimelineContent,
   KitToolStackContent,
-  KitVisualFeedContent,
   KitWritingContent,
 } from '@norav/content-schema'
 
@@ -43,6 +36,48 @@ type BlockComponent = ComponentType<BlockComponentProps> | LazyExoticComponent<C
 const named = <T extends string>(loader: () => Promise<Record<T, ComponentType<BlockComponentProps>>>, name: T) =>
   lazy(() => loader().then((module) => ({ default: module[name] })))
 
+/**
+ * A section built on framer-motion. The library arrives with the section rather
+ * than with the site, and so does the switch that makes it answer to reduced motion:
+ * under `user`, Framer keeps the opacity and drops the transforms.
+ */
+const animated = <T extends string>(loader: () => Promise<Record<T, ComponentType<BlockComponentProps>>>, name: T) =>
+  lazy(async () => {
+    const [{ MotionConfig }, module] = await Promise.all([import('framer-motion'), loader()])
+    const Section = module[name] as ComponentType<BlockComponentProps>
+    return {
+      default: (props: BlockComponentProps) => (
+        <MotionConfig reducedMotion="user">
+          <Section {...props} />
+        </MotionConfig>
+      ),
+    }
+  })
+
+const neverChanges = () => () => {}
+
+/**
+ * A section that only exists in a browser: a live demo needs the DOM, a clock and
+ * random numbers, so it has no HTML that would match on hydration. The prerendered
+ * page and the first render in the browser both show the placeholder, and the
+ * section mounts straight after.
+ */
+const inBrowserOnly = (Section: BlockComponent, placeholder: ReactNode): BlockComponent =>
+  function InBrowserOnly(props: BlockComponentProps) {
+    const inBrowser = useSyncExternalStore(
+      neverChanges,
+      () => true,
+      () => false,
+    )
+    return inBrowser ? (
+      <Suspense fallback={placeholder}>
+        <Section {...props} />
+      </Suspense>
+    ) : (
+      placeholder
+    )
+  }
+
 export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
  // The hero is the LCP element: it stays in the entry chunk.
  hero: HeroSection,
@@ -51,16 +86,14 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   impact_strip: named(() => import('@/components/sections/ImpactStrip'), 'ImpactStrip'),
  capabilities: named(() => import('@/components/sections/Capabilities'), 'Capabilities'),
  experience: named(() => import('@/components/sections/ExperienceTimeline'), 'ExperienceTimeline'),
- skills: named(() => import('@/components/sections/SkillsMatrix'), 'SkillsMatrix'),
   tech_marquee: named(() => import('@/components/sections/TechMarquee'), 'TechMarquee'),
-  bento_grid: named(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'),
- vibecoding: named(() => import('@/components/sections/VibeCoding/VibeCoding'), 'VibeCoding'),
+  bento_grid: inBrowserOnly(animated(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'), <SectionLoader tall />),
   projects_intro: named(() => import('@/components/sections/ProjectsIntro'), 'ProjectsIntro'),
- logistics: named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'),
- merch: named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'),
- ecommerce: named(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'),
- omnigrid: named(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'),
- proof: named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'),
+ logistics: inBrowserOnly(named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'), <WidgetPlaceholder type="logistics" />),
+ merch: inBrowserOnly(named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'), <WidgetPlaceholder type="merch" />),
+ ecommerce: inBrowserOnly(animated(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'), <WidgetPlaceholder type="ecommerce" />),
+ omnigrid: inBrowserOnly(animated(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'), <WidgetPlaceholder type="omnigrid" />),
+ proof: inBrowserOnly(named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'), <WidgetPlaceholder type="proof" />),
 
  // The reasoning under each demo. One component, five types — a type names
  // exactly one block, so each study needs its own.
@@ -73,43 +106,20 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
  // A full case study, with or without a demo above it. Repeatable: the one type
  // is placed once per study, so it reads its own row.
  case_study: named(() => import('@/components/sections/CaseStudy'), 'CaseStudy'),
- workflow: named(
-    () => import('@/components/sections/WorkflowAutomation/WorkflowAutomation'),
-    'WorkflowAutomation',
-  ),
   contact_cta: named(() => import('@/components/sections/ContactCTA'), 'ContactCTA'),
-  recruiter_cta: named(() => import('@/components/sections/RecruiterCTA'), 'RecruiterCTA'),
-  terminal_footer: named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'),
+  terminal_footer: inBrowserOnly(named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'), <SectionLoader />),
   site_footer: named(() => import('@/components/sections/SiteFooter'), 'SiteFooter'),
 
- // Assembled from the shared effects rather than built around a widget of
- // their own, and usable on any page as many times as it needs them.
- gallery: named(() => import('@/components/sections/GallerySection'), 'GallerySection'),
-  cta_banner: named(() => import('@/components/sections/CtaBanner'), 'CtaBanner'),
+ // Usable on any page, as many times as it needs them.
  testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),
- metrics: named(() => import('@/components/sections/MetricsSection'), 'MetricsSection'),
 
- // Any one of the 53 sections imported from the portfolio project, picked in
- // the CMS. One type, because the choice is a setting rather than a schema.
-  portfolio_section: named(() => import('@/components/sections/PortfolioSection'), 'PortfolioSection'),
-
- // The promoted kit sections: same components, now reading their copy from the
- // CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
+ // The six kit sections that stayed, reading their copy from the CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
  // every one of them needs, so a section is one line here.
-  kit_stats_marquee: defineKitSection<KitStatsMarqueeContent>('kit_stats_marquee', () => import('@/components/portfolio-kit/sections/extra-sections/stats-marquee'), 'StatsMarquee'),
-  kit_services: defineKitSection<KitServicesContent>('kit_services', () => import('@/components/portfolio-kit/sections/extra-sections/services'), 'Services'),
   kit_process: defineKitSection<KitProcessContent>('kit_process', () => import('@/components/portfolio-kit/sections/extra-sections/process'), 'Process'),
-  kit_pricing: defineKitSection<KitPricingContent>('kit_pricing', () => import('@/components/portfolio-kit/sections/extra-sections/pricing'), 'Pricing'),
-  kit_press: defineKitSection<KitPressContent>('kit_press', () => import('@/components/portfolio-kit/sections/extra-sections/press'), 'Press'),
   kit_faq: defineKitSection<KitFaqContent>('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ'),
   kit_cta_banner: defineKitSection<KitCtaBannerContent>('kit_cta_banner', () => import('@/components/portfolio-kit/sections/extra-sections/cta-banner'), 'CTABanner'),
-  kit_awards: defineKitSection<KitAwardsContent>('kit_awards', () => import('@/components/portfolio-kit/sections/more-sections/awards'), 'Awards'),
-  kit_big_marquee: defineKitSection<KitBigMarqueeContent>('kit_big_marquee', () => import('@/components/portfolio-kit/sections/more-sections/big-marquee'), 'BigMarquee'),
   kit_compare_table: defineKitSection<KitCompareTableContent>('kit_compare_table', () => import('@/components/portfolio-kit/sections/more-sections/compare-table'), 'CompareTable'),
-  kit_show_reel: defineKitSection<KitShowReelContent>('kit_show_reel', () => import('@/components/portfolio-kit/sections/more-sections/show-reel'), 'ShowReel'),
-  kit_timeline: defineKitSection<KitTimelineContent>('kit_timeline', () => import('@/components/portfolio-kit/sections/more-sections/timeline'), 'Timeline'),
   kit_tool_stack: defineKitSection<KitToolStackContent>('kit_tool_stack', () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'), 'ToolStack'),
-  kit_visual_feed: defineKitSection<KitVisualFeedContent>('kit_visual_feed', () => import('@/components/portfolio-kit/sections/more-sections/visual-feed'), 'VisualFeed'),
   // Its cards come from published posts once there are any.
   kit_writing: defineKitSection<KitWritingContent>('kit_writing', () => import('@/components/portfolio-kit/sections/more-sections/writing'), 'Writing', useWritingPosts),
 }

@@ -18,7 +18,6 @@ const content = z.object({
 
 const settings = z.object({
   /** The counters animate from zero when the strip scrolls into view. */
-  animateCounters: z.boolean(),
 })
 
 export const impactStripBlock = defineBlock({
@@ -34,7 +33,7 @@ export const impactStripBlock = defineBlock({
       label: 'By the numbers',
       stats: [{ value: 8, prefix: '', suffix: '+', label: 'Years shipping' }],
     },
-    settings: { animateCounters: true },
+    settings: {},
   },
   form: [
     { field: 'label', control: 'text', label: 'Eyebrow' },
@@ -52,7 +51,6 @@ export const impactStripBlock = defineBlock({
         { field: 'label', control: 'text', label: 'Caption' },
       ],
     },
-    { field: 'animateCounters', control: 'boolean', label: 'Count up on scroll', source: 'settings' },
   ],
 })
 

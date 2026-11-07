@@ -4,7 +4,6 @@ import type { SerializedCollectionDefinition } from '@norav/content-schema'
 import { ROOT_SLUG, SITE_SLUG } from '@/lib/pages'
 import { usePages } from './PagesContext'
 import {
-  EffectsIcon,
   HomeIcon,
   MediaIcon,
   MenuIcon,
@@ -35,7 +34,6 @@ export type WorkspaceView =
   | { kind: 'collection'; key: string }
   | { kind: 'theme' }
   | { kind: 'media' }
-  | { kind: 'site-effects' }
   | { kind: 'profile' }
   /** The writing: every post, and the one open in the editor if any. */
   | { kind: 'posts'; id?: string }
@@ -162,18 +160,6 @@ export function ViewSwitcher({
             <MediaIcon />
           </span>
           <span className="view-name">Media</span>
-        </button>
-        <button
-          type="button"
-          className="view-item"
-          aria-current={view.kind === 'site-effects'}
-          disabled={disabled}
-          onClick={() => onChange({ kind: 'site-effects' })}
-        >
-          <span className="view-icon">
-            <EffectsIcon />
-          </span>
-          <span className="view-name">Effects</span>
         </button>
         {collections.map((collection) => (
           <button

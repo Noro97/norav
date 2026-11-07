@@ -62,13 +62,6 @@ export const SECTION_HEADER_FIELDS: FormField[] = [
  * choice of visual treatment isn't copy, so it never differs per locale.
  */
 
-export const CARD_EFFECT_OPTIONS: { value: string; label: string }[] = [
-  { value: 'none', label: 'None' },
-  { value: 'tilt', label: 'Tilt + glare' },
-  { value: 'spotlight', label: 'Cursor spotlight' },
-]
-export const cardEffect = z.enum(['none', 'tilt', 'spotlight'])
-
 export const TEXT_REVEAL_OPTIONS: { value: string; label: string }[] = [
   { value: 'none', label: 'None' },
   { value: 'scramble', label: 'Scramble' },
@@ -85,17 +78,3 @@ export const GALLERY_STYLE_OPTIONS: { value: string; label: string }[] = [
 ]
 export const galleryStyle = z.enum(['grid', 'circular', 'dome', 'card-swap'])
 
-export const BACKGROUND_EFFECT_OPTIONS: { value: string; label: string }[] = [
-  { value: 'none', label: 'None' },
-  { value: 'threads', label: 'Threads' },
-  { value: 'beams', label: 'Beams' },
-  { value: 'orb', label: 'Orb' },
-  { value: 'particles', label: 'Particles' },
-]
-export const backgroundEffect = z.enum(['none', 'threads', 'beams', 'orb', 'particles'])
-
-export const CTA_STYLE_OPTIONS: { value: string; label: string }[] = [
-  { value: 'solid', label: 'Solid' },
-  { value: 'star-border', label: 'Star border' },
-]
-export const ctaStyle = z.enum(['solid', 'star-border'])

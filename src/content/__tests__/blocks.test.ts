@@ -41,23 +41,23 @@ describe('finding one block among several of a type', () => {
       {
         slug: 'home',
         blocks: [
-          { id: 'a', type: 'metrics', anchorId: null, content: {}, settings: { countUp: true } },
-          { id: 'b', type: 'metrics', anchorId: null, content: {}, settings: { countUp: false } },
+          { id: 'a', type: 'testimonials', anchorId: null, content: {}, settings: { cardEffect: 'spotlight' } },
+          { id: 'b', type: 'testimonials', anchorId: null, content: {}, settings: { cardEffect: 'none' } },
         ],
       },
-      { slug: 'work', blocks: [{ id: 'c', type: 'gallery', anchorId: null, content: {}, settings: {} }] },
+      { slug: 'work', blocks: [{ id: 'c', type: 'case_study', anchorId: null, content: {}, settings: {} }] },
     ],
   } as unknown as Parameters<typeof findBlock>[0]
 
   it('reads the row it was asked for, not the first of the type', () => {
     // Four galleries on a page used to render the first one four times over,
     // because a type was assumed to name exactly one block.
-    expect(findBlockById(snapshot, 'b')?.settings).toEqual({ countUp: false })
-    expect(findBlock(snapshot, 'metrics')?.id).toBe('a')
+    expect(findBlockById(snapshot, 'b')?.settings).toEqual({ cardEffect: 'none' })
+    expect(findBlock(snapshot, 'testimonials')?.id).toBe('a')
   })
 
   it('looks across pages, the way finding by type does', () => {
-    expect(findBlockById(snapshot, 'c')?.type).toBe('gallery')
+    expect(findBlockById(snapshot, 'c')?.type).toBe('case_study')
   })
 
   it('has no answer for an id that is not published', () => {

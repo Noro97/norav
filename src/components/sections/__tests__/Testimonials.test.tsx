@@ -21,7 +21,7 @@ describe('Testimonials', () => {
   beforeEach(() => useBlock.mockReset())
 
   it('renders one card per quote, with its attribution', () => {
-    withBlock({ cardEffect: 'spotlight' })
+    withBlock({})
     const { container } = render(<Testimonials />)
 
     expect(container.querySelectorAll('.quote-card')).toHaveLength(2)
@@ -40,7 +40,7 @@ describe('Testimonials', () => {
         description: '',
         quotes: [{ quote: 'No title given.', author: 'C. Reviewer', role: '' }],
       },
-      settings: { cardEffect: 'none' },
+      settings: {},
       anchorId: null,
     })
     const { container } = render(<Testimonials />)
@@ -49,9 +49,4 @@ describe('Testimonials', () => {
     expect(container.querySelector('figcaption')?.children).toHaveLength(1)
   })
 
-  it('applies the card effect the settings ask for', () => {
-    withBlock({ cardEffect: 'tilt' })
-    const { container } = render(<Testimonials />)
-    expect(container.querySelector('[style*="perspective"]')).not.toBeNull()
-  })
 })

@@ -98,60 +98,6 @@ const STAT_SHAPES = [
 
 const CAPABILITY_ICONS = ['Layers', 'Bot', 'Component', 'Gauge'] as const
 
-const SKILL_SHAPES = [
-  {
-    color: '#B51A2B',
-    skills: [
-      { name: 'React.js', level: 95, years: 7 },
-      { name: 'TypeScript', level: 95, years: 6 },
-      { name: 'Next.js (SSR/ISR)', level: 90, years: 5 },
-      { name: 'Vue.js / Nuxt.js', level: 85, years: 4 },
-      { name: 'HTML5 / CSS3', level: 95, years: 7 },
-      { name: 'Micro-frontends', level: 75, years: 2 },
-    ],
-  },
-  {
-    color: '#d63040',
-    skills: [
-      { name: 'Redux Toolkit', level: 90, years: 5 },
-      { name: 'Zustand / Pinia', level: 85, years: 3 },
-      { name: 'TanStack Query/Table', level: 85, years: 3 },
-      { name: 'Context API / MobX', level: 80, years: 4 },
-      { name: 'GraphQL / REST API', level: 90, years: 6 },
-    ],
-  },
-  {
-    color: '#8c1523',
-    skills: [
-      { name: 'Tailwind CSS', level: 95, years: 5 },
-      { name: 'Styled Components', level: 90, years: 4 },
-      { name: 'Material UI', level: 80, years: 3 },
-      { name: 'Sass / Bootstrap', level: 85, years: 6 },
-      { name: 'Design Systems', level: 85, years: 3 },
-    ],
-  },
-  {
-    color: '#541A2E',
-    skills: [
-      { name: 'Vite / Webpack', level: 90, years: 5 },
-      { name: 'Storybook', level: 85, years: 3 },
-      { name: 'Vitest / Jest', level: 80, years: 4 },
-      { name: 'Docker / CI/CD', level: 70, years: 3 },
-      { name: 'Git / GitHub', level: 90, years: 7 },
-    ],
-  },
-  {
-    color: '#6C3AED',
-    skills: [
-      { name: 'Telegram Mini Apps', level: 85, years: 2 },
-      { name: 'Supabase / PostgreSQL', level: 75, years: 3 },
-      { name: 'Node.js / Vercel', level: 80, years: 5 },
-      { name: 'Claude Code', level: 70, years: 1 },
-      { name: 'Feature-Sliced Design', level: 80, years: 3 },
-    ],
-  },
-]
-
 const TECH = [
   'React', 'TypeScript', 'Next.js', 'Node.js', 'Tailwind CSS', 'GraphQL',
   'Supabase', 'PostgreSQL', 'Zustand', 'GSAP', 'Three.js', 'Vite',
@@ -183,16 +129,6 @@ const CASE_STUDY_TECH: Record<string, string[]> = {
     'Telegram Mini App SDK',
   ],
 }
-
-const VIBE_SYSTEMS = [
-  { name: 'TON wallet', tone: 'sky' },
-  { name: 'Gemini AI', tone: 'violet' },
-  { name: 'Supabase', tone: 'emerald' },
-]
-
-const VIBE_STATS = ['92%', '27', '3']
-
-const WORKFLOW_TECH = ['n8n', 'Claude API', 'Webhooks', 'SSE Streaming', 'Slack API', 'GitHub Actions']
 
 const SOCIAL_HREFS = {
   github: 'https://github.com/Noro97',
@@ -236,8 +172,6 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
   const skills = namespace(locale, 'skills')
   const experience = namespace(locale, 'experience')
   const common = namespace(locale, 'common')
-  const workflow = namespace(locale, 'workflow')
-  const vibe = namespace(locale, 'vibecoding')
   const projects = namespace(locale, 'projects')
   const bento = namespace(locale, 'bento')
   const terminal = namespace(locale, 'terminal')
@@ -326,19 +260,6 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
       description: experience.description,
     },
 
-    skills: {
-      sectionLabel: skills.sectionLabel,
-      title: skills.title,
-      description: skills.description,
-      proficiencyOverview: skills.proficiencyOverview,
-      skillsTracked: skills.skillsTracked,
-      categories: SKILL_SHAPES.map((shape, index) => ({
-        name: skillsTree.categories[index]!.name,
-        color: shape.color,
-        skills: shape.skills,
-      })),
-    },
-
     tech_marquee: {
       label: skills.marqueeLabel,
       items: TECH.map((name) => ({ name })),
@@ -398,46 +319,6 @@ function buildBlocks(locale: Locale): Record<string, unknown> {
       principles: [0, 1, 2, 3].map((i) => ({ text: bento[`marquee.principles.${i}`] })),
     },
 
-    vibecoding: {
-      sectionLabel: vibe.sectionLabel,
-      title: vibe.title,
-      body: vibe.body,
-      microCopy: vibe.microCopy,
-      slider: {
-        lowVibe: vibe['slider.lowVibe'],
-        highVibe: vibe['slider.highVibe'],
-        boringLabel: vibe['slider.boringLabel'],
-        archLabel: vibe['slider.archLabel'],
-      },
-      systemsSyncedLabel: vibe.systemsSynced,
-      systems: VIBE_SYSTEMS,
-      stats: [
-        { value: VIBE_STATS[0], label: vibe['stats.coverage'] },
-        { value: VIBE_STATS[1], label: vibe['stats.migrations'] },
-        { value: VIBE_STATS[2], label: vibe['stats.systems'] },
-      ],
-      archNodes: ['tma', 'auth', 'storage', 'edge', 'gemini', 'db', 'feed'].map((node) => ({
-        node,
-        label: vibe[`arch.${node}`],
-      })),
-    },
-
-    workflow: {
-      sectionLabel: workflow.sectionLabel,
-      title: workflow.title,
-      description: workflow.description,
-      workflows: [
-        ['lead-pipeline', 'lead'],
-        ['content-gen', 'content'],
-        ['ci-cd', 'cicd'],
-      ].map(([diagram, key]) => ({
-        diagram,
-        title: workflow[`workflows.${key}.title`],
-        description: workflow[`workflows.${key}.description`],
-      })),
-      techStack: wrap(WORKFLOW_TECH, 'name'),
-    },
-
     projects_intro: PROJECTS_INTRO,
 
     contact_cta: {
@@ -493,17 +374,14 @@ const BLOCK_ORDER: { type: string; anchor: string | null }[] = [
   { type: 'impact_strip', anchor: null },
   { type: 'capabilities', anchor: null },
   { type: 'experience', anchor: 'experience' },
-  { type: 'skills', anchor: 'skills' },
   { type: 'tech_marquee', anchor: null },
   { type: 'bento_grid', anchor: 'overview' },
-  { type: 'vibecoding', anchor: 'vibecoding' },
   { type: 'projects_intro', anchor: 'projects-intro' },
   { type: 'logistics', anchor: 'logistics' },
   { type: 'merch', anchor: 'merch' },
   { type: 'ecommerce', anchor: 'ecommerce' },
   { type: 'omnigrid', anchor: 'omnigrid' },
   { type: 'proof', anchor: 'proof' },
-  { type: 'workflow', anchor: 'workflows' },
   { type: 'contact_cta', anchor: null },
   { type: 'terminal_footer', anchor: 'terminal' },
 ]
