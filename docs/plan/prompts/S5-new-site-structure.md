@@ -43,6 +43,9 @@ You're building the site a hiring manager will actually see: the new home, Live 
 - **Palette:** D5. Change values, not token names.
 - `cwebp` and `ffmpeg` are installed.
 - Redirects go in `vercel.json`, per "Target structure".
+- **Skills:**
+  - Stage 1: `vercel-composition-patterns` and `vercel-react-best-practices` for new blocks, and `emil-design-eng` for interaction detail. Skip its stagger and entrance examples, because S4's single animation approach stands and nothing above the fold starts invisible.
+  - Task 10: `accessibility`, `web-design-guidelines` and `break-ui`. Use `break-ui` on anything that renders CMS text. `web-design-guidelines` fetches its rules when it runs, and its "Content & Copy" section doesn't apply, because D15 sets the voice.
 
 ## 5. Rules
 
