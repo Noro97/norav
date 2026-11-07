@@ -104,7 +104,6 @@ Nothing.
 - Collect two real testimonials. They don't block anything.
 - Archive the S1 session, so its worktree `sweet-darwin-0ff567` and branch `claude/s1-after-publish` can go. The owner already approved removing them.
 - Decide what to do with the old stash `WIP on feat/cms-theme`. Nothing has touched it.
-- Consider OG images before S11. A link shared today shows no image, and Milestone 1 is meant to be shared.
 
 ## Tech debt register
 
@@ -123,7 +122,7 @@ Nothing.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
 - Nothing enforces CI on a merge, and sessions merge their own PRs (D20). Branch protection needs GitHub Pro or a public repo, so it becomes possible at S8. Turning it on then is gate G6.
 - No prerendering, so metadata is the same on every route. S4 adds it.
-- `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. S11 builds the OG images.
+- `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. The owner moved one static PNG up to S5, because Milestone 1 is meant to be shared. S11 adds per-page images.
 
 ## Decisions
 

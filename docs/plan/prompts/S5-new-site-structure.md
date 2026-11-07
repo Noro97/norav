@@ -44,6 +44,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 - **Logo:** `~/Desktop/projects/webapp/norav-logo.svg`, untracked in the main checkout. Commit it as the single source. It's a small mark and favicon, and the name is the main identity.
 - **Photo:** check `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg`, and that file only. If it doesn't work for a professional About section, ask for another. Strip its metadata and optimize it. Never generate a portrait. The photo there today is 860 KB at 1639×2173, shown 325px wide with `loading="lazy"`, and it makes `/about`'s LCP 8.89s. Size the new one for display and don't lazy-load it. The same goes for `/work`'s collage if it stays (`ProjectsIntro.tsx:90`, 5.24s).
 - **Palette:** D5. Change values, not token names.
+- **Share image:** one static 1200×630 PNG, committed, so a link pasted into LinkedIn or Telegram shows a card. `og:image` and `twitter:image` in `index.html` still point at the SVG logo, and link unfurlers drop SVG. `PageHead.tsx` falls back to those tags, so replacing them covers every page, but check what S4's prerendering writes too. Show the name and the D2 headline in the D5 palette, rendered from code with the real font. "Reference" in the S11 prompt describes the method. Add `og:image:width`, `og:image:height` and `og:image:alt`. Per-page images stay in S11.
 - `cwebp` and `ffmpeg` are installed.
 - Redirects go in `vercel.json`, per "Target structure".
 - **Skills:**
@@ -66,7 +67,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 ### Stage 1: blocks and layout
 
 3. Build the home structure and the block changes it needs, following the spec where it still applies.
-4. Apply the palette, logo and photo.
+4. Apply the palette, logo and photo, and add the share image.
 5. Add the Live demos section and the `/demos/*` routes. Label demos as demos.
 6. Build `/work` as the index. Case-study pages get their real content in S6, and their entries can stay hidden until then.
 
@@ -87,7 +88,7 @@ You're building the site a hiring manager will actually see: the new home, Live 
 
 **Report to me and wait.**
 
-13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Refresh the committed snapshots.
+13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Check that `og:image` returns a PNG, and ask the owner to paste a link into Telegram to see the card. Refresh the committed snapshots.
 
 ## 7. At the end
 
