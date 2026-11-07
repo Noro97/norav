@@ -11,8 +11,8 @@ import { describe, expect, it } from 'vitest'
  * runbook's job.
  *
  * Left out on purpose: `docs/`, which lists the claims in order to ban them, and
- * migrations through 0031, which can't be edited once shipped. The catch-up undoes
- * what they write.
+ * migrations through 0031, which can't be edited once shipped. On production, what
+ * they wrote was undone on 2026-11-07, before version 27 was published.
  */
 const ROOT = resolve(__dirname, '../../..')
 const THIS_FILE = 'src/content/__tests__/banned-claims.test.ts'

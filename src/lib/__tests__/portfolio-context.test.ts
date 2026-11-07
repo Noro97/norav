@@ -1,10 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { DEFAULT_PROFILE } from '../../../packages/content-schema/src/profile-defaults'
+import baked from '@/content/snapshot.en.json'
 import { buildPortfolioContext } from '../portfolio-context'
-import { bareUrl, wrapWords } from '../profile'
+import { bareUrl, profileOf, wrapWords } from '../profile'
+
+const PROFILE = profileOf(baked.settings)
 
 describe('buildPortfolioContext', () => {
-  const prompt = buildPortfolioContext(DEFAULT_PROFILE)
+  const prompt = buildPortfolioContext(PROFILE)
 
   it('holds the identity from facts.md', () => {
     for (const fact of [
@@ -21,11 +23,11 @@ describe('buildPortfolioContext', () => {
   })
 
   it('holds every role and the numbers approved for it, in order', () => {
-    const order = DEFAULT_PROFILE.roles.map(({ company, role }) => prompt.indexOf(`${role} @ ${company}`))
+    const order = PROFILE.roles.map(({ company, role }) => prompt.indexOf(`${role} @ ${company}`))
     expect(order.every((position) => position > 0)).toBe(true)
     expect(order).toEqual([...order].sort((a, b) => a - b))
 
-    for (const { highlights } of DEFAULT_PROFILE.roles) {
+    for (const { highlights } of PROFILE.roles) {
       for (const { text } of highlights) expect(prompt).toContain(text)
     }
     expect(prompt).toContain('It has not been in production')
@@ -37,7 +39,7 @@ describe('buildPortfolioContext', () => {
   })
 
   it('answers from whatever the profile says, not a copy of its own', () => {
-    const edited = buildPortfolioContext({ ...DEFAULT_PROFILE, name: 'Someone Else', availability: 'Not looking' })
+    const edited = buildPortfolioContext({ ...PROFILE, name: 'Someone Else', availability: 'Not looking' })
     expect(edited).toContain('Name: Someone Else')
     expect(edited).toContain('Status: Not looking')
     expect(edited).not.toContain('Norayr')
@@ -60,7 +62,7 @@ describe('the helpers the terminal prints with', () => {
 })
 
 describe('the prompt /api/chat sends', () => {
-  const published = { settings: { profile: { ...DEFAULT_PROFILE, availability: 'Published just now' } } }
+  const published = { settings: { profile: { ...PROFILE, availability: 'Published just now' } } }
 
   /** Answers the CMS with `cms`, and records what Anthropic was sent. */
   function stubNetwork(cms: () => Promise<Response>) {

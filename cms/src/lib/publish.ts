@@ -322,12 +322,10 @@ export async function buildPublication(): Promise<PublishResult> {
 }
 
 /**
- * The site's metadata and the terminal read the profile as it's published, so a
- * bad one is refused like a broken block. A database with no profile row isn't a
- * problem: production has none until migration 0032, and the site copes.
+ * The site's metadata and the terminal read the profile as it's published, and have
+ * nothing to fall back on, so a bad or missing one is refused like a broken block.
  */
 export function profileProblems(profile: unknown): PublishProblem[] {
-  if (profile === undefined) return []
   const parsed = profileSchema.safeParse(profile)
   if (parsed.success) return []
   return parsed.error.issues.map((issue) => ({

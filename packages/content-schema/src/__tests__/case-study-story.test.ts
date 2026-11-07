@@ -41,16 +41,3 @@ describe('the case_study block', () => {
     expect(fields.find((field) => field.field === 'image')!.accept).toBeUndefined()
   })
 })
-
-describe('the *_detail blocks', () => {
-  it('stay as they are: new defaults would show up as differences in the catch-up', () => {
-    const result = validateBlockContent('proof_detail', { title: 'Why' })
-    expect(result.ok && Object.keys(result.data as object).sort()).toEqual([
-      'decisions',
-      'intro',
-      'metrics',
-      'sectionLabel',
-      'title',
-    ])
-  })
-})

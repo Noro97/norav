@@ -1,12 +1,8 @@
 import type { Profile } from '@norav/content-schema'
-import { DEFAULT_PROFILE } from '../../packages/content-schema/src/profile-defaults'
 
-/**
- * The published profile. A relative import, because the edge function behind the
- * terminal's `ask` reads this too and knows nothing of Vite's aliases.
- */
+/** The published profile. Publish refuses a version without one, so it's always there. */
 export function profileOf(settings: Record<string, unknown>): Profile {
-  return (settings.profile as Profile | undefined) ?? DEFAULT_PROFILE
+  return settings.profile as Profile
 }
 
 /** `https://www.linkedin.com/in/x/` as a person would write it: `linkedin.com/in/x`. */

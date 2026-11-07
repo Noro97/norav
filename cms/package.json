@@ -18,8 +18,6 @@
     "seed:production": "tsx --env-file-if-exists=.env scripts/seed.mts --production",
     "import": "DATABASE_URL= tsx --env-file-if-exists=.env scripts/import-content.mts",
     "import:production": "tsx --env-file-if-exists=.env scripts/import-content.mts --production",
-    "content:catch-up": "DATABASE_URL= tsx --env-file-if-exists=.env scripts/catch-up.mts",
-    "content:catch-up:production": "tsx --env-file-if-exists=.env scripts/catch-up.mts --production",
     "import:media": "DATABASE_URL= tsx --env-file-if-exists=.env scripts/import-media.mts",
     "import:media:production": "tsx --env-file-if-exists=.env scripts/import-media.mts --production",
     "pull:production": "tsx --env-file-if-exists=.env scripts/pull-production.mts",

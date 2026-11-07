@@ -153,7 +153,7 @@ up on its next load.
 Both databases have to be on the same migrations, and the embedded one applies
 every migration each time it opens. So this refuses while production is behind the
 repository. [The publish runbook](../docs/plan/runbook-publish.md) says how to copy
-production until then.
+production in the meantime.
 
 To try something against real Postgres without touching live content, branch
 the database in Neon and point `cms/.env` at the branch. The same applies to

@@ -4,6 +4,22 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: A reply button isn't the action
+
+The catch-up stalled for an hour because the owner pressed "Done" and "It finished" before anything had run. Those buttons were ours, they read like the step itself, and they sit right under the command. An uncached `api/health`, the main checkout and the terminal showed the truth each time, so nothing was run out of order. Don't offer a "done" button for a command: running it from its block sends the output to the session anyway. For a step in the browser, watch `api/health` in the background. Give one or two commands at a time, and check each result. Then read what the sequence needs beyond the commands: the owner had also forgotten the CMS password, which nothing had checked.
+
+### 2026-11-07: The rehearsal predicted production exactly
+
+14 migrations, 44 restored places and 20 expected values all matched the runbook on the first real run, and version 27 differed from 26 by exactly the expected values. That's what S2's restored copy bought. Rehearse the next production script the same way.
+
+### 2026-11-07: `user:add` shows the password as it's typed
+
+It's a plain readline prompt, and the owner typed it into the app's Terminal panel, which a session can read. The session didn't read that tab, and used `list_terminal_tabs` to see that the command had ended. Before reading a terminal, think about what was typed in it. Give that command for the Mac's Terminal app, and say why.
+
+### 2026-11-07: An empty dump can be a dump in progress
+
+`pg_dump --format=custom` creates its file first and writes it at the end, so 0 bytes doesn't mean it failed. Check for the process before saying so, and print only its pid and name, because the connection string is in its arguments.
+
 ### 2026-11-07: One constant had put zod on every page
 
 `Logo.tsx` imported `NORAV_LOGO` from the package index, and zod's schemas can't be tree-shaken, so that one value put zod and every block schema in the entry chunk: 133 KB raw, 35 KB gzip. A comment in `src/content/index.ts` said it was being avoided, and nothing checked. It only surfaced because S3's new schemas went over the budget, and the source map showed why. When a budget trips, read the source map before raising the limit. Import a value from its own file, as `@norav/content-schema/brand`.
@@ -96,6 +112,8 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 
 ### 2026-11-05: Tool notes
 
+- Chrome's window stops at 500px wide, so `resize_window` can't reach 375px on the live site. Load each page in a 375px same-origin iframe instead: media queries follow the frame.
+- A hidden browser pane reports `innerWidth` 0. Give it a size with `resize_window` before measuring anything.
 - The default shell is zsh, and unquoted variables don't split into words. `for x in $LIST` runs once. Pipe to `while read -r x` instead.
 - zsh has no `PIPESTATUS`, so a piped command's exit code comes back blank. Check `$?` without the pipe.
 - This machine runs Node 26, and CI runs 20. Gzip sizes differ by about 0.3% between them. Use `PATH="$HOME/.nvm/versions/node/v20.20.2/bin:$PATH"` to match CI.
