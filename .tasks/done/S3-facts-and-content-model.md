@@ -1,6 +1,6 @@
 # S3: Facts and content model
 
-- **Status:** Done, 2026-11-07. Production has every migration and version 27. The owner's test uploads are left
+- **Status:** Done, 2026-11-07. Production has every migration and version 27
 - **Origin:** `docs/plan/prompts/S3-facts-and-content-model.md`, started from `main` at `1ae3c3f`, after merging #111
 - **Branches:** `claude/s3-facts-and-content-model` (#112), `claude/s3-after-catch-up` (the follow-up)
 
@@ -69,17 +69,8 @@
 ### Not verified
 
 - Reduced motion has unit tests only. The browser pane can't emulate it.
-- The browser's PUT to Blob. No local setup has a blob store, so the first real one is the owner's test upload.
 - `/api/chat` end to end. `ask` is switched off, so only the handler's tests and a bad-request probe cover it.
 
-### Left for the owner
+### Direct upload, tested by the owner on production
 
-Make two clips, upload both under Media, check their thumbnails, delete them, and report any failure. The second is over the 4.5 MB a Vercel function accepts, so it proves the direct upload.
-
-```bash
-ffmpeg -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30:duration=2 -c:v libx264 -pix_fmt yuv420p ~/Desktop/norav-test-small.mp4
-```
-
-```bash
-ffmpeg -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30:duration=10 -vf noise=alls=60:allf=t -c:v libx264 -b:v 10M -pix_fmt yuv420p ~/Desktop/norav-test-large.mp4
-```
+The owner uploaded a 766 KB clip and an 18.3 MB clip in the Media screen on 2026-11-07, and reports that both appear with a thumbnail. The larger one is over the 4.5 MB a Vercel function accepts and over the 8 MB where uploads go multipart, so it proves both paths. Their first report said they couldn't upload, with no error text, and the next said it had worked, so whatever stopped the first try is unknown. Sessions can't sign in there, so this rests on the owner's report. The Replace button and a clip placed on a live page haven't been tried on production.
