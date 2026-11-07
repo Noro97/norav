@@ -31,6 +31,7 @@ npm run lint
 npm test
 npm run build
 npm run size:check
+npm run prerender:check
 
 # CMS, on the embedded database
 npm --prefix cms install
@@ -44,7 +45,7 @@ npm --prefix db install
 npm --prefix db test
 ```
 
-CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173) and `cms` (3300) dev servers, and `site-built` (4173), which serves `dist` for the empty-console check.
+CI runs all of these on Node 20. `.claude/launch.json` defines the `site` (5173) and `cms` (3300) dev servers, and `site-built` (4173), which serves `dist` the way Vercel does: real files, then a real 404. Use it for the empty-console and hydration checks.
 
 ## Rules
 

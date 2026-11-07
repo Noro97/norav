@@ -4,6 +4,26 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: Prerendered isn't the same as in the first paint
+
+React 19.2 writes a Suspense boundary over about 12.8 KB as its fallback, with the content after it and an inline script that swaps them. So `/about`, `/work` and three other routes had all their text in the file and still painted a spinner, and `/work` read CLS 0.54. Every local check passed, because each one read the page after hydration, and `prerender:check` only looked for `<main`. Measuring the live site found it. Read the raw HTML: `<!--$?-->` means a section arrives by script. `progressiveChunkSize` turns this off, and `prerender:check` now fails on it.
+
+### 2026-11-07: Check that the re-measure measured the new code
+
+The first theory for that shift was a re-render after hydration. I removed it, re-measured, saw the same 0.54, and nearly read it as a second cause: `npm run build` starts with `tsc &&`, a test had failed to compile, and `dist` was still the old build, twice. Compare the entry file's hash before and after. Once a real build still read 0.54, the theory was plainly wrong, and looking at the shift's rectangles showed the real cause in minutes. Look at the evidence before fixing, and say which change did what: the PR records that the first two didn't move the number.
+
+### 2026-11-07: A manual chunk swallows what it depends on
+
+With no static import of framer-motion left in the entry, `manualChunks: { motion: ['framer-motion'] }` still got `motion` preloaded on every page. The chunk had grown from 153.5 KB to 189.2 KB, most likely by absorbing React, so the entry had to import it. I didn't confirm what it absorbed. Deleting the manual chunks fixed it. `entry-imports.test.ts` guards the source, and `size:check` guards the result.
+
+### 2026-11-07: A wake can miss a merge
+
+`Merge when green` commented and merged #124, and no event reached the session, which sat idle for 40 minutes until the owner asked how long to wait. Don't promise to continue on a signal you can't see. After a labelled PR, start one background wait on what the merge changes, such as a `curl` of the live page or `git ls-remote` of `main`, as #122's wait for the deploy did, and it wakes you. Polling CI itself stays off the table.
+
+### 2026-11-07: Preloading the fonts bought nothing
+
+Same-origin fonts in a small render-blocking stylesheet are found almost at once. With and without `rel="preload"`, `/` read the same 0.90s LCP, and CLS differed by 0.001. The preload also warned in the console, even on `/`, for a reason I didn't pin down. Measure before adding a hint.
+
 ### 2026-11-07: A green merge job can still have merged nothing
 
 The first run of `Merge when green` passed and left its PR open for over an hour. The token couldn't read check statuses, the failed read came back empty, and the script took empty for "no label" and exited 0. An automation that exits cleanly when it can't see the state hides the failure, and here it also cost the owner the wait the job existed to remove. Make a failed read fail the job, and after a change like this, look at the result as well as the check.
@@ -143,4 +163,8 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 - `cd` in one Bash call carries into the next. Use a subshell or an absolute path.
 - Vercel previews sit behind Vercel sign-in. Check redirects on production after the merge, with `curl` without `-L`.
 - Another project's Vite can already hold port 5173, and `.claude/launch.json` pins `site` to it. Check with `lsof -nP -iTCP:5173 -sTCP:LISTEN` before trusting what's on that port.
+- `vite preview` now answers like Vercel, so a subpage hydrates its own file. Before S4's plugin it served the home page for every address, and hydration of subpages went untested.
+- To check real hydration races, serve `dist` with lazy chunks held back 500 ms. Local chunks arrive too fast to expose them.
+- `puppeteer-core` installed in the scratchpad, with `executablePath` set to the system Chrome, gives a true 375px mobile viewport, reduced-motion emulation and Tab key presses, on production too. It replaces the 375px iframe for anything but a quick look.
+- A Vercel preview can be read in the owner's signed-in Chrome, with `fetch` from a tab on the preview. `vercel curl` would handle protection bypass by itself, so it may change the project's settings. Avoid it without a yes.
 - The dev console is never empty: it logs web vitals and, with no local CMS, a refused connection to `localhost:3300`. For the empty-console check, use `npm run build` then `npm run preview`, which calls no CMS unless `VITE_CMS_URL` is set.
