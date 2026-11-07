@@ -75,6 +75,8 @@ What the runs point at:
 
 These are S3's, measured 2026-11-07 with version 27 baked. S2's baseline read 535.6 KB for `index` and 909.1 KB in total. The difference is zod and the block schemas, which a logo constant had pulled into `index`, and `schema-imports.test.ts` now stops that coming back. The Lighthouse table above predates it.
 
+The security update of 2026-11-07 moved Vite to 6.4.5, and the build stopped preloading `leaflet`, so the entry total is now 629.1 KB raw and 215.3 KB gzip on Node 20. The map still loads where it's needed. The limits stay where they are until S4 lowers them.
+
 `scripts/check-bundle-size.mjs` holds these numbers, rounded up to a whole KB. KB here is 1,000 bytes, as in Vite's output. The snapshot sits inside `index`, so a rebake after a big publish can need a higher limit.
 
 **Lighthouse CI.** The same build served locally reads 99 and 1.58s LCP on Lighthouse 13, three times running. It sits about 0.3s under the live number because local has almost no time to first byte, so compare CI runs with each other and not with the table above. On GitHub's runner, three runs on 2026-11-06 read LCP 1.39s, performance 85, 97 and 98, and TBT from 52 to 577 ms, so only the median run means anything, and that's what the assertions use. The live site reads 1.88s. **So a CI pass doesn't prove D11 on the live site. S4 still has to measure the live site.** Each CI run keeps its reports in a `lighthouse` artifact, because a passing run prints no numbers.
@@ -106,6 +108,7 @@ Nothing.
 
 ## Tech debt register
 
+- `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Later releases of those packages clear them, so check again at S8. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
 - `src/components/portfolio-kit`: 68 of 229 `src` files, plus a 2,564-line stylesheet, and some of it has invented copy. S4 removes it.
 - `cat experience.txt` prints every highlight in the profile, 76 lines in a box that doesn't wrap, so at 375px its longest lines scroll sideways inside the box. So do `cat about.txt` and `sudo hire`. S5 can decide what the terminal should say.
 - `npm run user:add` shows the password as it's typed. The runbook says to run it in the Mac's Terminal app. Hiding the input would be a small fix.
