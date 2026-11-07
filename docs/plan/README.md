@@ -30,7 +30,7 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D5 | Visual direction: engineered restraint, type-led and mostly still. Crimson `#B51A2B` on near-black `#0a0a1a`, cyan `#22d3ee` only for live states inside widgets. Token names don't change |
 | D6 | The brief's "Learning now" section and status ledger are removed. n8n, Make, Zapier and LangChain aren't claimed. The automation page stays gone |
 | D7 | Creative-Lab keeps its own repo and deployment and is served at `norav.dev/lab`. The hiring path loads none of its code. "Lab" means Creative-Lab only |
-| D8 | 8–10 Lab exhibits go public, in English, chosen by audit for mobile, performance and asset licences. The owner approves the list |
+| D8 | 8–10 Lab exhibits go public, in English, chosen by audit for mobile, performance and asset licences. The session chooses, and the owner can veto any of them once they're live |
 | D9 | No framework migration. Vite, React, the snapshot pipeline, tokens and block registry stay. Routes get prerendered at build time |
 | D10 | The custom CMS stays, and it's shown as a product. Milestone 1 adds a profile-facts source, a case-study block and video support. Milestone 2 adds revision restore, metadata editing and a Lab catalog |
 | D11 | Targets for the landing page: LCP under 1.5s on mobile, Lighthouse 95+, no WebGL on the hiring path, full keyboard use, reduced-motion support. Enforced in CI |
@@ -42,7 +42,11 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D17 | The terminal stays as a footer easter egg. Its prompt reads from the facts source, and its API key has a monthly spending cap |
 | D18 | This repo goes public at the end of Milestone 1, after a fresh secrets scan. `creative-lab` goes public when `/lab` goes live, after its own scan. Proof App and Nova Prism stay private |
 | D19 | Testimonials and writing stay hidden until they're real. Neither blocks Milestone 1 |
-| D20 | Sessions merge their own PRs once CI passes. The owner doesn't review or merge them, and keeps the gates on copy, production and publishing |
+| D20 | The owner doesn't review or merge PRs. A PR labelled `merge-when-green` merges itself once every check passes on its latest commit |
+| D21 | Sessions run production themselves through the runbook: backup, rehearsal on a copy, migration, release, check. The owner keeps accounts, passwords and environment variables |
+| D22 | A session asks the owner only about copy and voice, personal facts, money and accounts, visibility, and irreversible deletion outside the plan. It decides everything else and records it in the PR. Visible content stays until its replacement is live |
+| D23 | A session with copy gets one review, on the finished pages, before it publishes. Nothing publishes without that "yes" |
+| D24 | Sessions run one at a time, and each starts the next: S4, S5, S6, S7, S8. The owner talks only to the current session |
 
 ## Non-goals
 
@@ -66,7 +70,7 @@ Old URLs redirect: `/experience` and `/skills` to `/about`, `/automation` to `/`
 
 ## Sessions
 
-Each session is one branch and one PR, except S4, which needs two. A session merges its own PR before the next one starts. The schedule assumes about 10 hours a week of the owner's time, and roughly 1–2 hours of attention per session, mostly on copy and production steps.
+Each session is one branch and one PR, except S4, which needs two. A session's PR merges before the next one starts. The owner's attention goes to copy reviews and the few things only they can do, listed in the table below.
 
 **Publishing happens throughout, not only at the end.** S1, S3, S4, S5 and S6 each end with a production publish, so the live site improves in steps, and a stalled session can't leave everything unpublished again.
 
@@ -77,13 +81,13 @@ Each session is one branch and one PR, except S4, which needs two. A session mer
 | S1 | `prompts/S1-truth-patch.md` | Unsupported claims gone from the live site, Fendr added, CV at `/cv` | This plan merged | Approve and publish |
 | S2 | `prompts/S2-baseline-and-cleanup.md` | Lighthouse baseline, CI budgets, old plans archived, branch cleanup, runbook rehearsed | S1 | Approve the deletion list, decide 4 unmerged branches |
 | S3 | `prompts/S3-facts-and-content-model.md` | Profile facts source, case-study block, video support, production caught up | S2 | Run production catch-up |
-| S4 | `prompts/S4-deletion-and-speed.md` | Kit and unused blocks gone, Leaflet and motion off the landing page, prerendering | S3 | Publish between the two PRs |
-| S5 | `prompts/S5-new-site-structure.md` | Home, Live demos, About, Contact, palette, new copy, redirects, share image | S4 | Correct all copy, publish |
-| S6 | `prompts/S6-case-studies.md` | Proof App, Nova Prism and norav.dev with real footage | S5 | Record Proof App, correct copy, publish |
-| S7 | `prompts/S7-creative-lab.md` | Exhibit audit, 8–10 exhibits, live at `/lab` | S2. Runs alongside, in the `creative-lab` repo | Approve the list, create the Vercel project |
-| S8 | `prompts/S8-launch.md` | Final checks, fresh secrets scan, repo public | S6 | Approve each gate |
+| S4 | `prompts/S4-deletion-and-speed.md` | Kit and unused blocks gone, Leaflet and motion off the landing page, prerendering | S3 | Nothing |
+| S5 | `prompts/S5-new-site-structure.md` | Home, Live demos, About, Contact, palette, new copy, redirects, share image | S4 | One copy review |
+| S6 | `prompts/S6-case-studies.md` | Proof App, Nova Prism and norav.dev with real footage | S5 | Record Proof App, one copy review |
+| S7 | `prompts/S7-creative-lab.md` | Exhibit audit, 8–10 exhibits, live at `/lab` | S6. In the `creative-lab` repo | Say yes to making `creative-lab` public |
+| S8 | `prompts/S8-launch.md` | Final checks, fresh secrets scan, repo public | S7, or S6 if S7 is cut | Set the API spending cap, say yes to going public |
 
-S7 doesn't block S8. If it isn't ready, launch without it, and `/lab` follows.
+S7 doesn't block S8. If it isn't ready, or the usage limit is short, launch without it, and `/lab` follows.
 
 ### Milestone 2
 
@@ -96,17 +100,14 @@ S7 doesn't block S8. If it isn't ready, launch without it, and `/lab` follows.
 
 ## Operating instructions
 
-**To run a session:**
+**Sessions start each other (D24).** When a session's last stage is done, it starts the next with `start_session`, as the owner's standing instruction: `initiation: "user_asked"`, `context: "fresh"`, its own worktree, and one line: `Read docs/plan/prompts/S5-new-site-structure.md and follow it.` The app refuses a start on a turn that an automated event began, so the session leaves a card there instead, and one click starts it.
 
-1. Make sure the previous PR is merged.
-2. Open a new session in the Claude app, on this project, with a worktree.
-3. Send one line: `Read docs/plan/prompts/S1-truth-patch.md and follow it.`
-4. Answer its questions when it stops at a gate.
-5. Read its final message. It merges its own PR, and says what's left for you, if anything.
+- **First check the limits** with `get_usage`. At 85% or more of the weekly limit, don't start. Say so, and say when it resets.
+- **S7** runs with `cwd: ~/Desktop/projects/pet-pr/creative-lab`, the full path to its prompt, and `model: claude-sonnet-5-5`. The main checkout has to be on an up-to-date `main`, so pull it first. If the limits are short, S6 starts S8 and S7 waits.
 
-For S7, use `~/Desktop/projects/pet-pr/creative-lab` as the project and give it the full path to its prompt: `~/Desktop/projects/webapp/docs/plan/prompts/S7-creative-lab.md`. The main checkout has to be on an up-to-date `main` for that path to work.
+**To start one by hand:** open a new session in the Claude app, on this project, with a worktree, and send that one line.
 
-**Run one session at a time, except S7.** S3–S6 touch the same files.
+**Run one session at a time.** S4–S6 touch the same files, and the plan's usage limit is shared.
 
 **If a session runs out of context or stops early,** open a new one with the same line. `.tasks/active/` and `.tasks/STATE.md` say where it got to.
 
@@ -118,31 +119,39 @@ For S7, use `~/Desktop/projects/pet-pr/creative-lab` as the project and give it 
 
 Every prompt inherits these.
 
-**A session does these without asking:** read code, run local checks and dev servers, make a branch, commit, push, open a PR, merge its own PR, write tests, and update `.tasks/`.
+**A session does these without asking:** read code, run local checks and dev servers, make a branch, commit, push, open a PR, write tests, update `.tasks/`, run the publish runbook, and delete merged branches and its own finished worktrees.
 
-**Merging (D20).** A session doesn't ask the owner to review or merge its PR.
+**Merging (D20).**
 
-- Merge once CI passes on the PR's latest commit, pinned to that commit: `gh pr merge --merge --match-head-commit <full sha>`. Nothing on GitHub stops a merge past a red check, because branch protection isn't available on this plan. Read the checks first.
-- Merging deploys. If the change only works after a production step, such as a migration or a publish, don't merge yet. Give the owner the order, and merge at that point in it.
+- Open the PR with `gh pr create --label merge-when-green`, then turn Auto-fix on with `set_monitor`. The `Merge when green` job in `ci.yml` waits for every check, Vercel included, comments on the PR and merges it, pinned to that commit.
+- End your turn after that. Don't watch CI. The comment and any failure both reach you through Auto-fix.
+- Merging deploys. If the change only works after a production step, leave the label off. At that point in the order, read the checks and merge yourself: `gh pr merge --merge --match-head-commit <full sha>`.
+
+**When to ask (D22).** Only about copy and voice, personal facts, money and accounts, visibility, or irreversible deletion outside the plan.
+
+- Everything else is yours to decide. Record it in the PR, and in the plan if it changes one.
+- Anything visible on the live site stays until its replacement is live.
+- Ask once, in one list, with a recommendation for each. Keep working on whatever doesn't depend on the answers.
+- Don't offer a "done" button for a command. Run it yourself.
 
 **Approval gates. Stop and wait for the owner's "yes" before:**
 
 | Gate | What |
 | --- | --- |
 | G1 | Merging a PR whose CI hasn't passed, or one another session opened |
-| G2 | Anything touching production: migrations, `:production` scripts, publishing, environment variables |
-| G3 | Publishing new content. Show the copy first |
-| G4 | Deleting anything outside the current diff: branches, worktrees, media, repos |
+| G2 | Production outside the runbook: accounts, passwords, environment variables, or a release whose dry run shows something nobody approved |
+| G3 | Publishing new copy. One review, on the finished pages (D23) |
+| G4 | Deleting anything outside the current diff, except merged branches and your own finished worktrees |
 | G5 | Making a repo public, or changing a repo's visibility |
-| G6 | Creating or changing accounts, projects, domains or paid services |
+| G6 | Creating or changing accounts, projects, domains or paid services, except the Lab's Vercel project in S7 |
 | G7 | Changing a decision in this plan |
 
 **Hard limits:**
 
-- Never read `.env*` files. Outside the repo, read only the paths the prompt names.
+- Never read or print `.env*` files. Scripts may load them, as the runbook's do. Outside the repo, read only the paths the prompt names.
 - Never enter passwords or keys. The owner signs in.
 - Never record or screenshot production admin panels or real user data.
-- Don't touch `feat/*` or `claude/*` branches you didn't create.
+- Don't touch `feat/*` or `claude/*` branches you didn't create, unless they're merged.
 
 **Skills:**
 

@@ -1,6 +1,6 @@
 # S7: Creative-Lab at /lab
 
-You're working in the `creative-lab` repo, at `~/Desktop/projects/pet-pr/creative-lab`. You're auditing its 30 exhibits, publishing the best 8–10, and serving them at `norav.dev/lab`. This runs alongside S3–S6 and doesn't block launch. Reply in whichever language the owner writes in.
+You're working in the `creative-lab` repo, at `~/Desktop/projects/pet-pr/creative-lab`. You're auditing its 30 exhibits, publishing the best 8–10, and serving them at `norav.dev/lab`. This runs after S6 and doesn't block launch. Reply in whichever language the owner writes in.
 
 ## 1. Read first
 
@@ -39,7 +39,7 @@ From this repo:
 
 ## 5. Rules
 
-"Session rules" in `docs/plan/README.md` apply. Creating the Vercel project is gate G6, and making this repo public is gate G5. Only the owner does these.
+"Session rules" in `docs/plan/README.md` apply. Making this repo public is gate G5, and only the owner says yes to it. `merge-when-green` exists only in the Norav repo, so here, read the checks and merge yourself.
 
 ## 6. Tasks in order
 
@@ -56,23 +56,18 @@ From this repo:
    - are there console errors?
    - what's its asset size?
    - where do its assets come from, and what's the licence?
-3. Recommend 8–10, with at least one from most groups, and give your reasons.
-
-**Report to me and wait.** The owner approves the list.
+3. Choose 8–10, with at least one from most groups, and record your reasons. The owner sees the list with the result, and can veto any of them then (D8).
 
 ### Stage 2: publish the set
 
-4. Add a public allow-list to the catalog, so only approved exhibits are listed and routable in production. Keep the others for development.
+4. Add a public allow-list to the catalog, so only the chosen exhibits are listed and routable in production. Keep the others for development.
 5. Set the base path, add a title and metadata, and a link back to `norav.dev`. Handle reduced motion, and give a clear message where WebGL isn't available.
-6. Fix what the approved exhibits need to work under `/lab/`.
+6. Fix what the chosen exhibits need to work under `/lab/`.
 7. Open a PR in this repo.
 
 ### Stage 3: deploy
 
-8. Give the owner exact steps to create the Vercel project: root directory, Node version, build command and output directory.
-
-**Report to me and wait.**
-
+8. Create the Vercel project with the `vercel` CLI, which the owner approved on 2026-11-07: root directory, Node version, build command and output directory. Never sign in yourself. If the CLI isn't signed in, give the owner those steps in one message and wait.
 9. Check the deployment at its own URL.
 10. Open a second small PR in the Norav repo, with the `/lab` rewrite above the catch-all. Add a footer link only if S5 has merged. Otherwise leave a note for S9.
 11. After both merge, check `norav.dev/lab` and each exhibit at desktop and 375px, and confirm the main site's bundles are unchanged.
@@ -85,4 +80,4 @@ From this repo:
 
 ## 7. At the end
 
-Update `.tasks/` in the Norav repo through its PR: the approved list, the live URL, and what's left for S9.
+Update `.tasks/` in the Norav repo through its PR: the chosen list, the live URL, and what's left for S9. Then start S8 (D24).

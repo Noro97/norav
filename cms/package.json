@@ -21,6 +21,8 @@
     "import:media": "DATABASE_URL= tsx --env-file-if-exists=.env scripts/import-media.mts",
     "import:media:production": "tsx --env-file-if-exists=.env scripts/import-media.mts --production",
     "pull:production": "tsx --env-file-if-exists=.env scripts/pull-production.mts",
+    "release": "DATABASE_URL= BLOB_READ_WRITE_TOKEN= SITE_DEPLOY_HOOK_URL= tsx --env-file-if-exists=.env scripts/release.mts",
+    "release:production": "tsx --env-file-if-exists=.env scripts/release.mts --production",
     "link:images": "DATABASE_URL= tsx --env-file-if-exists=.env scripts/link-block-images.mts",
     "link:images:production": "tsx --env-file-if-exists=.env scripts/link-block-images.mts --production",
     "db:reset": "rm -rf .pglite && npm run seed && npm run import"

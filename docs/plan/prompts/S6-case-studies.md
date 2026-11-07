@@ -38,7 +38,7 @@ Each story answers what an interviewer would ask: context, the actual problem, 2
 
 ## 5. Rules
 
-"Session rules" in `docs/plan/README.md` apply. Never capture a production admin panel or real user data. Publishing is gates G2 and G3.
+"Session rules" in `docs/plan/README.md` apply. Never capture a production admin panel or real user data. Publishing is gate G3. The owner decided on 2026-11-07 that the Nova Prism case study goes up with no link to the product, so don't ask again.
 
 ## 6. Tasks in order
 
@@ -53,24 +53,24 @@ Each story answers what an interviewer would ask: context, the actual problem, 2
 4. Mark anything you inferred about motive or history, because only the owner knows why something was decided.
 5. Write the Nova Prism and norav.dev shot lists.
 
-**Report to me and wait.** The owner corrects the copy and records the footage. Also ask whether they're comfortable with the Nova Prism draft and its link on the public site.
+**Ask once, in one message:** the owner records the Proof App footage, and answers anything you marked as inferred. Don't wait. Carry on with Stage 2, and put the footage in when it arrives.
 
 ### Stage 2: build
 
 6. Process the media and check file sizes.
-7. Add migrations for the content, and upload instructions for media that needs the production store.
+7. Add migrations for the content, and upload the media that needs the production store yourself if a script can do it. Otherwise give the owner one short instruction.
 8. Unhide the case studies on `/` and `/work`.
 9. Remove the Proof App widget's unsupported text if any remains, and keep its behaviour.
 
 ### Stage 3: check and publish
 
 10. Check desktop and 375px, video loading and poster behaviour, reduced motion, and Lighthouse on all three pages.
-11. Open the PR and merge it, then give the owner the publish order. If the pages only work after the publish, merge at that point in the order instead.
+11. Open the PR, without the `merge-when-green` label.
 
-**Report to me and wait.**
+**Report to me and wait.** This is the one review (D23): `.tasks/active/S6-copy.md`, screenshots of all three pages, and one list of anything only the owner can answer. Apply the corrections.
 
-12. After publishing, check all three pages live and refresh the committed snapshots.
+12. After the owner's yes, merge and follow "The order" in the runbook. If the pages only work after the publish, merge just before the release instead. Then check all three pages live and refresh the committed snapshots.
 
 ## 7. At the end
 
-Update `.tasks/`, including the new code-derived numbers. S8 is next, whether or not S7 is finished.
+Update `.tasks/`, including the new code-derived numbers. Then start S7, or S8 if the usage limit is short (D24).

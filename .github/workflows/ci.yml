@@ -80,3 +80,54 @@ jobs:
           npm run typecheck
           npm test
           npx next build
+
+  # D20: a PR labelled merge-when-green merges itself once every check on its latest
+  # commit has passed. GitHub's own auto-merge needs branch protection, which a private
+  # repo on this plan can't have. The comment wakes the session through Auto-fix.
+  merge-when-green:
+    name: Merge when green
+    needs: [ci, cms]
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Merge if labelled and green
+        run: |
+          read_state() {
+            gh pr view "$PR" --json labels,headRefOid,state,statusCheckRollup --jq '
+              [.labels[].name] as $labels
+              | [.statusCheckRollup[]
+                  | select((.name // .context) != "Merge when green")
+                  | (if (.conclusion // "") != "" then .conclusion else (.state // .status // "") end)] as $checks
+              | {
+                  labelled: ($labels | index("merge-when-green") != null),
+                  current: (.headRefOid == env.HEAD_SHA and .state == "OPEN"),
+                  failed: ($checks | map(select(IN("SUCCESS", "SKIPPED", "NEUTRAL") | not) | select(IN("PENDING", "IN_PROGRESS", "QUEUED", "WAITING", "EXPECTED", "") | not)) | length),
+                  waiting: ($checks | map(select(IN("PENDING", "IN_PROGRESS", "QUEUED", "WAITING", "EXPECTED", ""))) | length)
+                } | "\(.labelled) \(.current) \(.failed) \(.waiting)"'
+          }
+
+          # Vercel reports separately, and can still be building when CI ends.
+          for attempt in $(seq 1 40); do
+            read -r labelled current failed waiting <<< "$(read_state)"
+            if [ "$labelled" != "true" ]; then echo "No merge-when-green label, so this PR waits."; exit 0; fi
+            if [ "$current" != "true" ]; then echo "A newer commit or a closed PR: nothing to merge here."; exit 0; fi
+            if [ "$failed" != "0" ]; then echo "$failed check(s) failed."; exit 1; fi
+            if [ "$waiting" = "0" ]; then break; fi
+            echo "Waiting for $waiting check(s), attempt $attempt."
+            sleep 30
+          done
+          if [ "$waiting" != "0" ]; then echo "Checks still running after 20 minutes."; exit 1; fi
+
+          gh pr comment "$PR" --body "Every check passed on ${HEAD_SHA:0:7}. Merging."
+          gh pr merge "$PR" --merge --match-head-commit "$HEAD_SHA"

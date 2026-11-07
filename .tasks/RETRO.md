@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-07: The owner was the slowest part of the pipeline, by our design
+
+The owner pressed "check and merge" six times on one PR, ran commands sessions could have run, and got the same question from two sessions. Sessions can't wait for CI, each production step needed a paste, and every doubt became a stop. So a CI job merges labelled PRs, sessions run production through a rehearsed runbook, and they ask only what the owner alone can answer. The first three uses of each are worth watching. This replaces "the owner delegated S1's production steps, once".
+
 ### 2026-11-07: A good Lighthouse score hides what it doesn't test
 
 Accessibility read 95 and SEO 100 on pages with no H1, and Lighthouse's only hint about the Email link on `/about` with no `href` was an SEO warning. It also said nothing about `/assets/*` at `max-age=0`, 200 responses for unknown URLs, or a count-up that can show "7+ years" mid-animation. Walk the page with the keyboard and read the response headers as well.
@@ -120,6 +124,7 @@ In earlier projects, `STATE.md` claimed things were real that were stubs, and mi
 - A hidden browser pane reports `innerWidth` 0. Give it a size with `resize_window` before measuring anything.
 - Headless Chrome also stops at 500px wide, so `--window-size=375` crops a wider layout and looks like overflow. Use Puppeteer's `setViewport` with `isMobile`, and `emulateMediaFeatures` for reduced motion.
 - zsh treats an unquoted `--include=*.tsx` as a glob and stops with "no matches found", so a grep loop can print zeros that read as a clean result. Quote it, or put the script in a file and run it with `bash`.
+- `preview_start` runs `.claude/launch.json` from the main checkout if the session moved into its worktree later. That serves an old `dist` with no error. Check the page's title, or `lsof` the port's working directory.
 - The default shell is zsh, and unquoted variables don't split into words. `for x in $LIST` runs once. Pipe to `while read -r x` instead.
 - zsh has no `PIPESTATUS`, so a piped command's exit code comes back blank. Check `$?` without the pipe.
 - This machine runs Node 26, and CI runs 20. Gzip sizes differ by about 0.3% between them. Use `PATH="$HOME/.nvm/versions/node/v20.20.2/bin:$PATH"` to match CI.

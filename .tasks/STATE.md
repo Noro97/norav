@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S3 is done and production is current.** S4 is next. S7 can start any time.
+Milestone 1. **S3 is done and production is current.** S4 is running. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -97,13 +97,8 @@ Nothing.
 
 ## Owner's open items
 
-- Delete `~/Desktop/norav-content-2026-11-07.dump`, now that the catch-up has been checked, and the two test videos beside it.
 - Set a monthly spending cap on the terminal's Anthropic API key before launch.
-- Decide whether to delete the old CV from the media library. It has no phone number, but it's out of date and reachable by direct link.
-- Keep or delete `~/Desktop/norav-backup-2026-11-06.sql`. It holds password hashes and sessions.
 - Collect two real testimonials. They don't block anything.
-- Archive the S1 session, so its worktree `sweet-darwin-0ff567` and branch `claude/s1-after-publish` can go. The owner already approved removing them.
-- Decide what to do with the old stash `WIP on feat/cms-theme`. Nothing has touched it.
 
 ## Tech debt register
 
@@ -120,7 +115,7 @@ Nothing.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
 - Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. Production's rows are hidden, and S4 soft-deletes most of them.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
-- Nothing enforces CI on a merge, and sessions merge their own PRs (D20). Branch protection needs GitHub Pro or a public repo, so it becomes possible at S8. Turning it on then is gate G6.
+- CI guards a merge only through the `merge-when-green` job (D20). A session can still merge by hand, and nothing stops a merge past a red check until branch protection, which needs GitHub Pro or a public repo. It becomes possible at S8, and turning it on then is gate G6. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
 - No prerendering, so metadata is the same on every route. S4 adds it.
 - `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. The owner moved one static PNG up to S5, because Milestone 1 is meant to be shared. S11 adds per-page images.
 
