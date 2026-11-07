@@ -2,7 +2,9 @@ import { describe, it, expect, beforeAll } from 'vitest'
 import { executeCommand } from '../terminal-commands'
 import { BAKED_SNAPSHOTS } from '@/content'
 import { setCurrentSnapshots } from '@/content/current'
-import { DEFAULT_PROFILE } from '../../../packages/content-schema/src/profile-defaults'
+import { profileOf } from '../profile'
+
+const PROFILE = profileOf(BAKED_SNAPSHOTS.en.settings)
 
 // Initialize i18n before tests
 beforeAll(async () => {
@@ -78,11 +80,11 @@ describe('executeCommand', () => {
       settings: {
         ...BAKED_SNAPSHOTS.en.settings,
         profile: {
-          ...DEFAULT_PROFILE,
+          ...PROFILE,
           name: 'Someone Else',
           email: 'someone@example.com',
           availability: 'Not looking right now',
-          links: { ...DEFAULT_PROFILE.links, telegram: '' },
+          links: { ...PROFILE.links, telegram: '' },
         },
       },
     }
@@ -100,11 +102,41 @@ describe('executeCommand', () => {
     }
   })
 
-  it('returns experience for cat experience.txt', () => {
-    const result = executeCommand('cat experience.txt')
-    const contents = result.map((l) => l.content).join('\n')
-    expect(contents).toContain('2025')
-    expect(contents).toContain('Vizogen')
+  it('prints every role and highlight in the profile for cat experience.txt', () => {
+    const lines = executeCommand('cat experience.txt').map((l) => l.content)
+    const flat = lines.join(' ').replace(/\s+/g, ' ')
+    for (const { role, company, dates, highlights } of PROFILE.roles) {
+      expect(lines).toContain(`  ${dates}`)
+      expect(flat).toContain(`${role} @ ${company}`)
+      for (const { text } of highlights) expect(flat).toContain(`- ${text}`)
+    }
+  })
+
+  it('keeps cat experience.txt narrow, because terminal lines do not wrap', () => {
+    for (const { content } of executeCommand('cat experience.txt')) {
+      expect(content.length).toBeLessThanOrEqual(50)
+    }
+  })
+
+  it('reads the roles from the published snapshot', () => {
+    const published = {
+      ...BAKED_SNAPSHOTS.en,
+      settings: {
+        ...BAKED_SNAPSHOTS.en.settings,
+        profile: {
+          ...PROFILE,
+          roles: [{ role: 'Tester', company: 'Acme', dates: '2030', type: 'Remote', highlights: [{ text: 'Found it' }] }],
+        },
+      },
+    }
+    setCurrentSnapshots({ en: published, ru: published })
+    try {
+      const lines = executeCommand('cat experience.txt').map((l) => l.content)
+      expect(lines).toEqual(expect.arrayContaining(['  2030', '  Tester @ Acme', '    - Found it']))
+      expect(lines.join('\n')).not.toContain('Vizogen')
+    } finally {
+      setCurrentSnapshots(BAKED_SNAPSHOTS)
+    }
   })
 
   it('handles missing file for cat', () => {

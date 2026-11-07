@@ -1,9 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { DEFAULT_PROFILE } from '../../../packages/content-schema/src/profile-defaults'
+import baked from '@/content/snapshot.en.json'
+import { profileOf } from '../profile'
 import { renderShell } from '../shell-metadata'
 
+const PROFILE = profileOf(baked.settings)
 const shell = readFileSync(resolve(__dirname, '../../../index.html'), 'utf8')
 
 const parse = (html: string) => new DOMParser().parseFromString(html, 'text/html')
@@ -11,11 +13,11 @@ const content = (doc: Document, selector: string) => doc.querySelector(selector)
 
 describe('renderShell', () => {
   it('fills every placeholder index.html has', () => {
-    expect(renderShell(shell, DEFAULT_PROFILE)).not.toMatch(/%PROFILE_/)
+    expect(renderShell(shell, PROFILE)).not.toMatch(/%PROFILE_/)
   })
 
   it('says what the live site says today, with the published profile missing', () => {
-    const doc = parse(renderShell(shell, DEFAULT_PROFILE))
+    const doc = parse(renderShell(shell, PROFILE))
 
     expect(doc.title).toBe('Norayr Avetisyan — Senior Fullstack Engineer')
     expect(content(doc, 'meta[name="author"]')).toBe('Norayr Avetisyan')
@@ -30,7 +32,7 @@ describe('renderShell', () => {
   })
 
   it('writes the JSON-LD from the profile', () => {
-    const doc = parse(renderShell(shell, DEFAULT_PROFILE))
+    const doc = parse(renderShell(shell, PROFILE))
     const person = JSON.parse(doc.querySelector('script[type="application/ld+json"]')!.textContent!)
 
     expect(person).toEqual({
@@ -51,9 +53,9 @@ describe('renderShell', () => {
   it('follows the published profile, and leaves out an empty link', () => {
     const doc = parse(
       renderShell(shell, {
-        ...DEFAULT_PROFILE,
+        ...PROFILE,
         jobTitle: 'Engineer',
-        links: { ...DEFAULT_PROFILE.links, telegram: '' },
+        links: { ...PROFILE.links, telegram: '' },
       }),
     )
     const person = JSON.parse(doc.querySelector('script[type="application/ld+json"]')!.textContent!)
@@ -65,7 +67,7 @@ describe('renderShell', () => {
 
   it('keeps a value inside the tag it was written into', () => {
     const html = renderShell(shell, {
-      ...DEFAULT_PROFILE,
+      ...PROFILE,
       description: 'Quotes " and <tags> & $& stay text',
       name: '</script><img src=x>',
     })

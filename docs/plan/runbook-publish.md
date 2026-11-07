@@ -1,6 +1,6 @@
 # Publish runbook
 
-How production content changes. **The owner runs every command here.** Sessions prepare and verify, and never run them. S2 rehearsed the catch-up below on a restored copy of production on 2026-11-06.
+How production content changes. **The owner runs every command here.** Sessions prepare and verify, and never run them.
 
 ## How production works
 
@@ -24,7 +24,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-06, production had 17 migrations applied of the 32 in the repo (0001–0015, 0028 and 0030), with content version 26.
+On 2026-11-07, production had all 32 migrations in the repo applied, with content version 27.
 
 ## Before any production change
 
@@ -40,71 +40,7 @@ On 2026-11-06, production had 17 migrations applied of the 32 in the repo (0001�
 
 The backup command above is the copy. Give it a path the session names, and the session restores the file into a private Postgres. The restore has to clear `author_id` on `revisions` and `publications` before foreign keys go on, because `admin_users` stays behind.
 
-`npm --prefix cms run pull:production` also copies production, into the embedded database. It refuses while production is behind the repository, because both sides have to be on the same migrations and the embedded one always applies all of them. It works again after the catch-up.
-
-## Catch up production
-
-S3 runs this once. It brings production to every migration **without changing anything a visitor sees**.
-
-**Why it needs two steps.** Migrations 0016–0027 write the September copy. Publishing straight after them passes validation, and on the copy it did this:
-
-- 15 new sections on existing pages, and 2 new pages, `contact` and `writing`, all carrying unreviewed copy.
-- S1's corrected text on About overwritten, with "Seven-plus years" and "Open to senior/staff roles" back.
-- All five case-study pages filled in, including 98.4%, "TON only for the premium tier", `<1 ms` and Google Maps.
-- `[Placeholder` testimonials, press, awards, a show reel, FAQ answers and articles.
-- The terminal gone from every page but `/contact`, with no footer, because `site_footer` stays hidden.
-- 72 hits in a search for "Do not use" claims and placeholders. Version 26 has 4, all approved facts.
-
-So the migrations run as written, and `content:catch-up` then puts the drafts back to the latest publication. It writes no new copy and deletes nothing. S5 brings the new copy, with the owner's review.
-
-**Do steps 2–5 in one sitting, and don't publish until step 5 has passed.** After step 3 the drafts hold all of the above, and a publish would release it.
-
-1. Take the backup above, and check the state:
-   ```bash
-   curl https://cms.norav.dev/api/health
-   ```
-   Expect `"migrations":17`, and note `publishedVersion`.
-
-2. Update the main checkout:
-   ```bash
-   cd ~/Desktop/projects/webapp && git switch main && git pull
-   ```
-
-3. Apply the migrations that write old copy. Stop at 0031, because S3's own migration comes after the restore:
-   ```bash
-   npm --prefix db run migrate -- --through=0031
-   ```
-   Expect 14 lines ending in `ok`, then `Applied 14 migration(s).`
-
-4. See what the restore would change. This writes nothing:
-   ```bash
-   npm --prefix cms run content:catch-up:production
-   ```
-   On the copy it listed 44 changes: 2 pages unpublished, 17 sections and 1 menu item hidden, the terminal moved back to `site`, `tech_marquee` back on About, and the copy of About, the bento grid, the home hero's Russian, the five case studies, the experience images and the Contact menu item restored.
-
-5. Write it:
-   ```bash
-   npm --prefix cms run content:catch-up:production -- --yes
-   ```
-   Expect `A publish now differs from version 26 in 20 values`, all of them marked expected, then `Nothing a visitor can see changes.` The 20 are menu anchors (0031) and ambient-layer settings (0027), counted across two languages, and nothing on the site reads them. **If it prints `NOT expected`, stop and send the output to a session.**
-
-6. Apply the rest. That's 0032, which seeds the profile as a draft:
-   ```bash
-   npm --prefix db run migrate
-   ```
-   Expect `Applied 1 migration(s).`
-
-7. Check:
-   ```bash
-   curl https://cms.norav.dev/api/health
-   ```
-   Expect `"migrations":32`, and `publishedVersion` unchanged.
-
-8. Review the profile, on the Profile screen at `cms.norav.dev`. It's new content, so it's gate G3, even though it matches `docs/plan/facts.md` and what the site already says.
-
-9. Publish as below. Besides the 20 values above, the only change is `settings.profile`, which nothing shows differently: the site has been rendering the same values from code. On S2's copy, the publish made version 27 with `purged: 0`. The 11 published pages rendered at 1440px and 375px with no claim and no broken image, apart from one OmniGrid error in the dev build, which the content didn't cause and which is now fixed. See `.tasks/done/omnigrid-render-loop.md`.
-
-The script refuses if a migration through 0031 is still pending, or if a later one has already run, because it would hide what that migration added. Rerunning it is safe. S3 deletes it afterwards.
+`npm --prefix cms run pull:production` also copies production, into the embedded database. It refuses while production is behind the repository, because both sides have to be on the same migrations and the embedded one always applies all of them. To rehearse a migration that hasn't reached production, use the backup above.
 
 ## Small content edit
 
@@ -115,7 +51,7 @@ The script refuses if a migration through 0031 is still pending, or if a later o
 
 ## Apply migrations
 
-**Until the catch-up has run, don't use this. It releases everything above into the drafts.** After that, from the main checkout, on the commit the session names:
+From the main checkout, on the commit the session names:
 
 ```bash
 cd ~/Desktop/projects/webapp && git switch main && git pull
@@ -148,6 +84,16 @@ curl https://cms.norav.dev/api/public/manifest
 ```
 
 Then open the site in a private window, at desktop and phone widths, and check the pages the session named.
+
+## Forgot the CMS password
+
+```bash
+npm --prefix ~/Desktop/projects/webapp/cms run user:add:production -- --email you@example.com
+```
+
+Run it in the Mac's Terminal app, not the Terminal panel in the Claude app: the prompt shows what you type, and a session can read that panel. Use the email you sign in with, because any other one creates a second owner account. It should say `Password updated`, and it signs you out everywhere.
+
+Five failed sign-ins for one email from one address lock it for up to 15 minutes after the first failure. A new password doesn't lift that.
 
 ## Roll back
 

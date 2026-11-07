@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DEFAULT_PROFILE, DEFAULT_THEME, deriveThemeTokens, profileSchema, themeSchema } from '@norav/content-schema'
+import { DEFAULT_THEME, deriveThemeTokens, profileSchema, themeSchema } from '@norav/content-schema'
 import { query, queryOne } from '@/lib/db'
 import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
@@ -26,7 +26,6 @@ const SCHEMAS: Record<string, z.ZodType> = {
 
 const DEFAULTS: Record<string, unknown> = {
   theme: DEFAULT_THEME,
-  profile: DEFAULT_PROFILE,
   site: { navIndicator: 'dot' },
 }
 
@@ -40,7 +39,10 @@ export async function GET(request: Request, context: { params: Promise<{ key: st
 
   const row = await queryOne<{ value: unknown }>(`select value from settings where key = $1`, [key])
   const parsed = schema.safeParse(row?.value)
-  const value = parsed.success ? parsed.data : DEFAULTS[key]
+  // The profile has no default: migration 0032 seeds it. A stored one that no longer
+  // fits the schema still comes back, so the form can show it and it can be fixed.
+  const value = parsed.success ? parsed.data : (DEFAULTS[key] ?? row?.value)
+  if (value === undefined) return fail(404, { code: 'unknown_setting', message: `"${key}" has no value.` })
 
   // The derived palette travels with the theme so the editor can preview what
   // publishing would produce, without duplicating the derivation.
