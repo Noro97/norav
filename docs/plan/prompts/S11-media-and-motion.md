@@ -27,7 +27,7 @@ The site works and is live. Its visuals are monoline SVG and real captures. The 
 - The owner runs prompts in the image tool they already pay for. Ask which one, and write prompts that work in any tool unless they say.
 - Sessions can't run the generators. The flow is: you write the sheet, the owner generates, and you optimize and integrate.
 - `cwebp` and `ffmpeg` are installed. `blender` and `magick` aren't.
-- `og:image` in `index.html` is still the SVG logo, and link unfurlers drop SVG, so the OG template has to end up as a 1200×630 raster. A branch deleted in S2 had `scripts/generate-og-card.mjs` for this: a seeded layout rendered by the Chrome already on the machine, so the type is the real Inter Tight 900, with the palette read from the baked snapshot and the PNG committed. Its last commit was `b1f4195`, but GitHub may no longer serve it, so work from this description. Its copy was out of date anyway.
+- S5 added one static share image. Per-page images build on it, and they also have to be 1200×630 rasters, because link unfurlers drop SVG. A branch deleted in S2 had `scripts/generate-og-card.mjs` for this: a seeded layout rendered by the Chrome already on the machine, so the type is the real Inter Tight 900, with the palette read from the baked snapshot and the PNG committed. Its last commit was `b1f4195`, but GitHub may no longer serve it, so work from this description. Its copy was out of date anyway.
 
 ## 5. Rules
 
