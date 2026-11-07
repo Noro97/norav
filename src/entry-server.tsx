@@ -58,6 +58,9 @@ export async function renderRoute(path: string): Promise<string> {
         </ContentProvider>
       </StaticRouter>
     </StrictMode>,
+    // By default React writes a large section as its fallback, with the content after it
+    // and a script to swap them. That shows a spinner first and shifts the page.
+    { progressiveChunkSize: Number.MAX_SAFE_INTEGER },
   )
   const chunks: Buffer[] = []
   for await (const chunk of prelude) chunks.push(Buffer.from(chunk as Uint8Array))

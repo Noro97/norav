@@ -1,7 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useLocation } from 'react-router'
-import { useAppStore } from '@/store/useAppStore'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useScrollTracking } from '@/hooks/useScrollTracking'
 import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate'
 import { useRouterLinks } from '@/hooks/useRouterLinks'
@@ -31,13 +29,6 @@ function App() {
   // A post is not a page in the CMS: /writing/<slug> is answered from the
   // `posts` collection, under the Writing page it belongs to.
   const post = page ? undefined : postAt(snapshot, slug)
-  const isMobile = useMediaQuery('(max-width: 768px)')
-  const setIsMobile = useAppStore((s) => s.setIsMobile)
-
-  useEffect(() => {
-    setIsMobile(isMobile)
-  }, [isMobile, setIsMobile])
-
   useScrollTracking()
   useScrollToTopOnNavigate()
 
