@@ -137,10 +137,9 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
   }, [i18n, locale])
  const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
- // Starts true when a CMS is configured, because at the first paint nothing
- // has been checked yet and "up to date" would be a guess. Cleared the moment
- // the manifest answers, either way.
- const [isRefreshing, setIsRefreshing] = useState(() => cmsOrigin() !== undefined)
+ // Set only once the manifest disagrees with the bundle. The first render has to
+ // match the prerendered page, which carries the menu.
+ const [isRefreshing, setIsRefreshing] = useState(false)
  const [isPreview, setIsPreview] = useState(false)
  const [refusal, setRefusal] = useState<PreviewRefusal | null>(null)
 

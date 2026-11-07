@@ -16,8 +16,8 @@ import '@/styles/portfolio-kit-mobile.css'
  * This module owns the stylesheet imports — the generated kit stylesheet, the
  * laptop breakpoint generated from it, and the hand-written phone overrides
  * on top of both, in that order so each smaller screen wins — and is only ever reached
- * through a `lazy()` boundary: 92 kB of CSS should not be on a page with no
- * kit section on it.
+ * through a `lazy()` boundary: its CSS should not be on a page with no kit
+ * section on it.
  */
 export function KitFrame({ children }: { children: ReactNode }) {
   return (

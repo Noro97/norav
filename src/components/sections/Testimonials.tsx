@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
-import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { TestimonialsContent, TestimonialsSettings } from '@norav/content-schema'
 
 export function Testimonials({ blockId }: { blockId?: string }) {
@@ -11,7 +10,7 @@ export function Testimonials({ blockId }: { blockId?: string }) {
   useReveal(sectionRef, '.quote-card')
 
   if (!block) return null
-  const { content, settings } = block
+  const { content } = block
 
   return (
     <section
@@ -29,9 +28,8 @@ export function Testimonials({ blockId }: { blockId?: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
           {content.quotes.map((quote, index) => (
-            <EffectCard
+            <div
               key={index}
-              effect={settings.cardEffect}
               className="quote-card group relative overflow-hidden rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl p-6 flex flex-col gap-5 transition-all duration-300 hover:border-primary-500/20"
             >
               <span aria-hidden="true" className="font-display text-heading-medium text-primary-500/40">
@@ -46,7 +44,7 @@ export function Testimonials({ blockId }: { blockId?: string }) {
                   <span className="block font-mono text-caption text-tertiary-ink/40 mt-0.5">{quote.role}</span>
                 )}
               </figcaption>
-            </EffectCard>
+            </div>
           ))}
         </div>
       </div>

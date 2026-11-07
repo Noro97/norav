@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { useContent } from '@/content/ContentProvider'
-import { PageHead, SITE, siteName } from '@/content/PageHead'
+import { PageHead, SITE } from '@/content/PageHead'
+import { useProfile } from '@/content/useProfile'
 import { hrefFor } from '@/content/routing'
-import { postDate, WRITING_SLUG, type Post } from '@/content/posts'
+import { postDate, postSeo, WRITING_SLUG, type Post } from '@/content/posts'
 
 /**
  * One post, at /writing/<slug>.
@@ -16,8 +17,8 @@ import { postDate, WRITING_SLUG, type Post } from '@/content/posts'
 export function PostPage({ post }: { post: Post }) {
   const { t } = useTranslation('common')
   const { locale } = useContent()
+  const { name } = useProfile()
   const slug = `${WRITING_SLUG}/${post.slug}`
-  const image = post.cover ? (/^https?:\/\//.test(post.cover) ? post.cover : `${SITE}${post.cover}`) : undefined
 
   return (
     // The same column as every section: the gutter outside, the content width
@@ -26,11 +27,7 @@ export function PostPage({ post }: { post: Post }) {
       <div className="mx-auto w-full max-w-content">
         <PageHead
           slug={slug}
-          seo={{
-            title: post.seo.title || `${post.title} — ${siteName()}`,
-            description: post.seo.description || post.excerpt,
-            image,
-          }}
+          seo={postSeo(post, name, SITE)}
         />
 
         <Link to={hrefFor(WRITING_SLUG, locale)} className="label-mono text-tertiary-ink/60 hover:text-primary-500">

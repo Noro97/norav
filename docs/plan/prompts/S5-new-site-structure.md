@@ -88,7 +88,7 @@ Don't stop here. Build on this draft, and the owner reads it once, in Stage 3 (D
 
 12. After the owner's yes, follow "The order" in the runbook. The redirects point at routes that only exist after the publish, so merge just before the release, in the same sitting.
 13. After publishing, check every old URL redirects, every page loads, the live content has nothing from "Do not use", and `sitemap.xml` lists no redirected URL. It's generated from the published snapshot, and 6 of its 10 URLs are on the redirect list today. Check that `og:image` returns a PNG, and tell the owner they can paste a link into Telegram to see the card. Refresh the committed snapshots.
-14. In a follow-up PR, after the publish, delete the code for `tech_marquee`, `projects_intro` and `bento_grid`: their sections, schemas, tests and registry entries, and `@warmbros/warmbros-components`, which only `ProjectsIntro` uses. Rows go before code, as in S4.
+14. In a follow-up PR, after the publish, delete the code for `tech_marquee`, `projects_intro` and `bento_grid`: their sections, schemas, tests and registry entries, and `gsap`, `@gsap/react` and `useMagneticEffect` if nothing else reads them. Rows go before code, as in S4.
 
 ## 7. At the end
 

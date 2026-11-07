@@ -9,53 +9,27 @@
     <!-- The PROFILE placeholders come from the published profile, when Vite builds
          this file. See vite-profile-plugin.ts.
 
-         Replaced per page by PageHead; this is what a reader sees for the one
-         frame before React runs, and what a crawler without JS is left with. -->
+         scripts/prerender.mjs writes each page's own values over these. -->
     <title>%PROFILE_TITLE%</title>
     <meta name="author" content="%PROFILE_NAME%" />
-    <meta
-      name="description"
-      content="%PROFILE_DESCRIPTION%"
-    />
-
-    <!-- The site's own copy, and the floor under every page.
-
-         PageHead rewrites these in place once React runs, so a page carries its
-         own title and card. It cannot render its own copies: React appends to
-         the head rather than replacing, and a consumer meeting two of a tag
-         reads the first.
-
-         They stay because most link unfurlers — Telegram, Slack, LinkedIn,
-         Facebook, X — fetch this HTML and never execute it. What is written
-         here is the only card they will ever see. -->
+    <meta name="description" content="%PROFILE_DESCRIPTION%" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="%PROFILE_NAME%" />
     <meta property="og:title" content="%PROFILE_TITLE%" />
-    <meta
-      property="og:description"
-      content="%PROFILE_DESCRIPTION%"
-    />
+    <meta property="og:description" content="%PROFILE_DESCRIPTION%" />
     <meta property="og:image" content="https://norav.dev/assets/img/logo-new.svg" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="%PROFILE_TITLE%" />
-    <meta
-      name="twitter:description"
-      content="%PROFILE_DESCRIPTION%"
-    />
+    <meta name="twitter:description" content="%PROFILE_DESCRIPTION%" />
     <meta name="twitter:image" content="https://norav.dev/assets/img/logo-new.svg" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">%PROFILE_JSON_LD%</script>
-
-    <!-- Fonts: preconnect + display=swap for fast loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <div id="root"></div>

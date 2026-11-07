@@ -1,13 +1,8 @@
 import { Suspense } from 'react'
 import { BLOCK_COMPONENTS } from './blocks'
 import { useContent } from './ContentProvider'
+import { SectionLoader } from './SectionLoader'
 import { SITE_SLUG } from './routing'
-
-const SectionLoader = () => (
-  <div className="min-h-[50vh] flex items-center justify-center">
-    <div className="w-5 h-5 border-2 border-primary-500/20 border-t-crimson-500 rounded-full animate-spin" />
-  </div>
-)
 
 /**
  * Renders the page in the order the CMS published it.

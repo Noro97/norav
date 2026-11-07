@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { impactStripBlock, skillsBlock, techMarqueeBlock } from '../blocks'
-import { pickLocalized } from '../define-block'
+import { impactStripBlock, techMarqueeBlock } from '../blocks'
+import { pickLocalized, type FormField } from '../define-block'
 import { mergeLocale } from '../locales'
 import { validateBlockContent } from '../blocks'
 import type { ImpactStripContent } from '../blocks'
@@ -37,12 +37,27 @@ describe('pickLocalized', () => {
   })
 
   it('descends into a repeater nested in a repeater', () => {
-    const picked = pickLocalized(skillsBlock.form, {
+    const form: FormField[] = [
+      { field: 'sectionLabel', control: 'text', label: 'Eyebrow' },
+      {
+        field: 'categories',
+        control: 'repeater',
+        label: 'Categories',
+        fields: [
+          { field: 'name', control: 'text', label: 'Name' },
+          { field: 'color', control: 'text', label: 'Colour', localized: false },
+          {
+            field: 'skills',
+            control: 'repeater',
+            label: 'Skills',
+            localized: false,
+            fields: [{ field: 'name', control: 'text', label: 'Name', localized: false }],
+          },
+        ],
+      },
+    ]
+    const picked = pickLocalized(form, {
       sectionLabel: 'Expertise',
-      title: 'Skills & Tools',
-      description: '',
-      proficiencyOverview: 'Proficiency Overview',
-      skillsTracked: '{{count}} skills tracked',
       categories: [
         { name: 'Frontend Core', color: '#B51A2B', skills: [{ name: 'React.js', level: 95, years: 7 }] },
       ],

@@ -32,7 +32,7 @@ From this repo:
 
 ## 4. Reference
 
-- The main site's `vercel.json` has a catch-all rewrite to `index.html`. A `/lab` rewrite must come before it, pointing at the Lab's Vercel deployment.
+- The main site's `vercel.json` has no catch-all since S4: real files win and everything else gets `404.html`. Add a `rewrites` entry for `/lab`, pointing at the Lab's Vercel deployment.
 - The Lab's Vite `base` must become `/lab/`, including assets and workers.
 - Exhibits use `document.body` in 8 places, and `eyewear` and `health` need `ToastProvider` from the host. These matter only for exhibits you keep.
 - **Skills:** this repo doesn't load the Norav project's skills, so read them from `~/Desktop/projects/webapp/.claude/skills/<name>/SKILL.md`. Use `animation-performance` for the smoothness check in task 2, `performance` for the asset sizes, and `accessibility` for task 5.
@@ -69,7 +69,7 @@ From this repo:
 
 8. Create the Vercel project with the `vercel` CLI, which the owner approved on 2026-11-07: root directory, Node version, build command and output directory. Never sign in yourself. If the CLI isn't signed in, give the owner those steps in one message and wait.
 9. Check the deployment at its own URL.
-10. Open a second small PR in the Norav repo, with the `/lab` rewrite above the catch-all. Add a footer link only if S5 has merged. Otherwise leave a note for S9.
+10. Open a second small PR in the Norav repo, with the `/lab` rewrite. Add a footer link only if S5 has merged. Otherwise leave a note for S9.
 11. After both merge, check `norav.dev/lab` and each exhibit at desktop and 375px, and confirm the main site's bundles are unchanged.
 
 ### Stage 4: going public

@@ -35,15 +35,18 @@ jobs:
       - name: Bundle size
         run: npm run size:check
 
+      - name: Every route is real HTML
+        run: npm run prerender:check
+
       # @lhci/cli 0.16 needs Node 22. It brings Lighthouse 13, the version behind the
       # baseline in .tasks/STATE.md: 12 reads about twice as slow on the same build.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      # Warn-only until S4 makes these the D11 failure.
-      - name: Lighthouse (warn-only)
-        continue-on-error: true
+      # D11, on the median of three runs. This measures a local server, which reads about
+      # 0.3s under the live site, so a pass doesn't prove the target on production.
+      - name: Lighthouse
         run: npx -y @lhci/cli@0.16.0 autorun
 
       # A passing run prints no numbers, so this report is the only record of them.

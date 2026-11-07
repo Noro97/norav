@@ -7,12 +7,7 @@ const content = z.object({
   items: z.array(z.object({ name: z.string().min(1).max(40) })).min(3).max(40),
 })
 
-const layoutOptions = [
-  { value: 'scroll', label: 'Scrolling ribbon' },
-  { value: 'logo-wall', label: 'Static grid' },
-]
-
-const settings = z.object({ layout: z.enum(['scroll', 'logo-wall']).default('scroll') })
+const settings = z.object({})
 
 export const techMarqueeBlock = defineBlock({
   type: 'tech_marquee',
@@ -24,18 +19,10 @@ export const techMarqueeBlock = defineBlock({
   settings,
   defaults: {
     content: { label: 'Tools & Technologies', items: [{ name: 'React' }, { name: 'TypeScript' }, { name: 'Vite' }] },
-    settings: { layout: 'scroll' },
+    settings: {},
   },
   form: [
     { field: 'label', control: 'text', label: 'Eyebrow' },
-    {
-      field: 'layout',
-      control: 'select',
-      label: 'Layout',
-      source: 'settings',
-      localized: false,
-      options: layoutOptions,
-    },
     {
       field: 'items',
       control: 'repeater',

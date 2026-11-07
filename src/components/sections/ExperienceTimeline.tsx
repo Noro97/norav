@@ -1,22 +1,20 @@
 import { useRef } from 'react'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock, useCollection } from '@/content/ContentProvider'
-import { EffectCard, type CardEffect } from '@/components/ui/effects/EffectCard'
 import type { ExperienceBlockContent, ExperienceContent, ExperienceData, ExperienceSettings } from '@norav/content-schema'
 
 /** A published row: the non-localized columns composed with the translated ones. */
 type ExperienceRow = ExperienceData & ExperienceContent
 
-function InteractiveImageCard({ src, alt, effect }: { src: string; alt: string; effect: CardEffect }) {
+function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
   return (
-    <EffectCard
-      effect={effect}
+    <div
       className="rounded-xl overflow-hidden border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-primary-500)_20%,_transparent)]"
     >
       <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover" />
       {/* Edge highlight */}
       <div className="pointer-events-none absolute inset-0 rounded-xl border border-tertiary-ink/[0.08]" />
-    </EffectCard>
+    </div>
   )
 }
 
@@ -74,7 +72,7 @@ export function ExperienceTimeline() {
                       isLeft ? 'md:pr-12 md:text-right' : 'md:pl-12'
                     }`}
                   >
-                    <div className="glass-card p-6 hover:translate-y-[-2px] transition-transform">
+                    <div className="glass-card p-6">
                       {/* Header */}
                       <div className={`flex items-start gap-3 mb-4 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
                         {/* Company logo placeholder */}
@@ -136,7 +134,7 @@ export function ExperienceTimeline() {
                         isLeft ? 'md:pl-12' : 'md:pr-12'
                       }`}
                     >
-                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} effect={settings.imageEffect} />
+                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} />
                     </div>
                   )}
                 </div>

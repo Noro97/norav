@@ -10,25 +10,16 @@ const stats = [
   { value: 8, prefix: '', suffix: '', label: 'Years shipping' },
 ]
 
-const withBlock = (settings: Record<string, unknown>) =>
-  useBlock.mockReturnValue({
-    content: { label: 'By the numbers', stats },
-    settings,
-    anchorId: null,
-  })
-
 describe('ImpactStrip', () => {
   beforeEach(() => useBlock.mockReset())
 
-  it('prints the number as written when counting is off', () => {
-    withBlock({ animateCounters: false })
-    render(<ImpactStrip />)
-    expect(screen.getByText('10M+')).toBeInTheDocument()
-    expect(screen.getByText('8')).toBeInTheDocument()
-  })
-
-  it('holds the real number until the strip has been seen', () => {
-    withBlock({ animateCounters: true })
+  it('prints the final numbers from the first render', () => {
+    // A block published before the count-up went still carries this setting.
+    useBlock.mockReturnValue({
+      content: { label: 'By the numbers', stats },
+      settings: { animateCounters: true },
+      anchorId: null,
+    })
     render(<ImpactStrip />)
     expect(screen.getByText('10M+')).toBeInTheDocument()
     expect(screen.getByText('8')).toBeInTheDocument()

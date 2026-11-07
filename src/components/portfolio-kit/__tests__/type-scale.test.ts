@@ -3,10 +3,9 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 /**
- * The kit's type is mapped onto the site's scale by the port script. A re-sync
- * that forgets to re-run it, or a hand edit to the generated file, would put
- * the kit back on pixel sizes of its own — and a 66px title beside a 60px one
- * is exactly the difference this guards against.
+ * The kit's type sits on the site's scale. A hand edit that goes back to pixel
+ * sizes of its own — and a 66px title beside a 60px one — is what this guards
+ * against.
  */
 const root = process.cwd()
 const css = readFileSync(join(root, 'src/styles/portfolio-kit.css'), 'utf8')

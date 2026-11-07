@@ -59,25 +59,32 @@ const metaOf = (kind: 'name' | 'property', key: string) =>
  *
  * These are the site's defaults and the shell is their only source, so a page
  * that says nothing of its own falls back to them rather than to a constant
- * kept in step by hand.
+ * kept in step by hand. A prerendered page has its own values in those tags and
+ * keeps the shell's in `data-shell`.
  */
 let shell: { title: string; description: string; image: string } | null = null
 
 function shellDefaults() {
+ const defaultOf = (tag: HTMLElement | null, value: string) => tag?.dataset.shell ?? value
+ const description = metaOf('name', 'description')
+ const image = metaOf('property', 'og:image')
  shell ??= {
- title: document.title,
- description: metaOf('name', 'description')?.content ?? '',
- image: metaOf('property', 'og:image')?.content ?? '',
+ title: defaultOf(document.querySelector('title'), document.title),
+ description: defaultOf(description, description?.content ?? ''),
+ image: defaultOf(image, image?.content ?? ''),
   }
  return shell
 }
 
-/**
- * The owner's name, as the build wrote it into the shell from the profile. For
- * code in the entry chunk, which can't afford to import the profile for one word.
- */
-export function siteName(): string {
-  return metaOf('property', 'og:site_name')?.content ?? ''
+/** The canonical address of a page. The prerender writes the same one into the HTML. */
+function writeCanonical(href: string) {
+ let tag = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+ if (!tag) {
+ tag = document.createElement('link')
+    tag.rel = 'canonical'
+    document.head.appendChild(tag)
+  }
+  tag.href = href
 }
 
 function write(kind: 'name' | 'property', key: string, value: string) {
@@ -93,18 +100,15 @@ function write(kind: 'name' | 'property', key: string, value: string) {
 }
 
 /**
- * Writes the page's own copy over the tags index.html already carries.
+ * Writes the page's own copy over the tags the document already carries.
  *
  * Rendering these as JSX appends rather than replaces — React 19 hoists a
  * second tag into the head, and a consumer that meets a duplicated tag reads
- * the first one it finds. That is how every address on the site came to answer
- * to the home page's title.
+ * the first one it finds.
  *
- * The static tags stay for a second reason, which is why they are rewritten
- * rather than dropped: Telegram, Slack, LinkedIn, Facebook and X fetch the HTML
- * and never execute it. What index.html ships is the only card they will ever
- * see. This leaves them a floor and gives the crawlers that do run JavaScript
- * the page's own copy.
+ * A first load already has the right tags, from the prerender: Telegram, Slack,
+ * LinkedIn, Facebook and X fetch the HTML and never execute it. This is what
+ * keeps them right as the reader moves between pages.
  */
 export function applySeo(seo: ResolvedSeo) {
  const fallback = shellDefaults()
@@ -133,11 +137,6 @@ export function forgetShellDefaults() {
 /**
  * The page's address, and its own copy in the head.
  *
- * The tags that exist only per page are rendered, because React 19 hoists link
- * and meta into the head and there is nothing in the shell for them to collide
- * with. The tags the shell already carries are written instead of rendered;
- * applySeo explains why.
- *
  * No hreflang while the site is English only: an alternate has to point at a
  * page that answers, and /ru redirects to English until it is retranslated.
  */
@@ -162,10 +161,10 @@ export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
 
  const here = `${SITE}${hrefFor(slug, locale)}`
 
- return (
-    <>
-      <link rel="canonical" href={here} />
-      <meta property="og:url" content={here} />
-    </>
-  )
+  useEffect(() => {
+    writeCanonical(here)
+    write('property', 'og:url', here)
+  }, [here])
+
+ return null
 }

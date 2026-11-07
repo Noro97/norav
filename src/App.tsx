@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAppStore } from '@/store/useAppStore'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useScrollTracking } from '@/hooks/useScrollTracking'
@@ -44,25 +43,6 @@ function App() {
 
   const mainRef = useRef<HTMLElement>(null)
   useRouterLinks(mainRef)
-
-  // Refresh ScrollTrigger when lazy sections change page height — the progress
-  // bar is still measured by it.
-  useEffect(() => {
-    const main = mainRef.current
-    if (!main) return
-
-    let timerId: ReturnType<typeof setTimeout>
-    const observer = new ResizeObserver(() => {
-      clearTimeout(timerId)
-      timerId = setTimeout(() => ScrollTrigger.refresh(), 300)
-    })
-    observer.observe(main)
-
-    return () => {
-      observer.disconnect()
-      clearTimeout(timerId)
-    }
-  }, [])
 
   return (
     <>

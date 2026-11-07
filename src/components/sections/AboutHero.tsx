@@ -3,7 +3,6 @@ import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import { useProfile } from '@/content/useProfile'
 import { toneOf, type Tone } from '@/content/accent'
-import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { AboutContent, AboutSettings } from '@norav/content-schema'
 
 // Third-party brand marks. A GitHub icon in GitHub's colour is content, like a
@@ -83,8 +82,7 @@ export function AboutHero() {
               {/* Ambient glow behind card */}
               <div className="absolute -inset-4 rounded-3xl bg-primary-500/[0.06] blur-2xl pointer-events-none transition-opacity duration-500" />
 
-              <EffectCard
-                effect={settings.cardEffect}
+              <div
                 className="rounded-2xl border border-tertiary-ink/[0.08] bg-gradient-to-br from-tertiary-ink/[0.04] to-tertiary-ink/[0.01] backdrop-blur-xl overflow-hidden"
               >
                 {/* Photo */}
@@ -100,7 +98,7 @@ export function AboutHero() {
 
                   {/* Status badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-tertiary-shade/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-status-success/20">
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-status-success " />
                     <span className="font-mono text-caption text-status-success/80">{content.statusLabel}</span>
                   </div>
                 </div>
@@ -158,7 +156,7 @@ export function AboutHero() {
                     {content.cvLabel}
                   </a>
                 </div>
-              </EffectCard>
+              </div>
             </div>
           </div>
 

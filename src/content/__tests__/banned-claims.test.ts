@@ -44,21 +44,6 @@ const BANNED: Record<string, RegExp[]> = {
   '42 KB bundle, sub-millisecond': [/\b42 ?KB\b/i, /sub-millisecond/i],
 }
 
-/**
- * Still there because the `workflow` and `vibecoding` blocks are, and S4 deletes
- * those. An entry that stops matching fails below, so this list only gets shorter.
- */
-const UNTIL_S4: { file: string; pattern: RegExp }[] = [
-  { file: 'src/components/sections/WorkflowAutomation/WorkflowAutomation.tsx', pattern: /\bn8n\b/i },
-  { file: 'cms/scripts/import-content.mts', pattern: /\bn8n\b/i },
-  { file: 'cms/scripts/legacy-i18n/en/workflow.json', pattern: /\bn8n\b/i },
-  { file: 'cms/scripts/legacy-i18n/ru/workflow.json', pattern: /\bn8n\b/i },
-  { file: 'cms/scripts/legacy-i18n/en/vibecoding.json', pattern: /\bvibe coding\b/i },
-  { file: 'cms/scripts/legacy-i18n/ru/vibecoding.json', pattern: /\bvibe coding\b/i },
-  { file: 'packages/content-schema/src/blocks/vibecoding.ts', pattern: /\bvibe coding\b/i },
-  { file: 'packages/content-schema/src/blocks/workflow.ts', pattern: /\bn8n\b/i },
-]
-
 const TEXT = /\.(ts|tsx|js|jsx|mjs|mts|json|css|html|md|sql|svg)$/
 
 function filesUnder(path: string): string[] {
@@ -98,16 +83,11 @@ describe('claims from "Do not use" in docs/plan/facts.md', () => {
       const text = readFileSync(join(ROOT, file), 'utf8')
       for (const [claim, patterns] of Object.entries(BANNED)) {
         for (const pattern of patterns) {
-          const allowed = UNTIL_S4.some((entry) => entry.file === file && entry.pattern.source === pattern.source)
-          if (!allowed && pattern.test(text)) hits.push(`${relative('.', file)}: ${claim}`)
+          if (pattern.test(text)) hits.push(`${relative('.', file)}: ${claim}`)
         }
       }
     }
     expect(hits).toEqual([])
   })
 
-  it('stay on the S4 list only while they are still there', () => {
-    const gone = UNTIL_S4.filter(({ file, pattern }) => !pattern.test(readFileSync(join(ROOT, file), 'utf8')))
-    expect(gone).toEqual([])
-  })
 })

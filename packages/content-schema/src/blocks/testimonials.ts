@@ -1,13 +1,9 @@
 import { z } from 'zod'
 import { defineBlock } from '../define-block'
-import { CARD_EFFECT_OPTIONS, SECTION_HEADER_FIELDS, cardEffect, sectionHeader } from './shared'
+import { SECTION_HEADER_FIELDS, sectionHeader } from './shared'
 
 /**
  * What other people say, as a grid of cards.
- *
- * The card treatment is the shared one (`CARD_EFFECT_OPTIONS`), so a quote card
- * hovers the same way a capability card does — the site has one idea of what a
- * card does under the cursor, not one per section.
  */
 const content = sectionHeader.extend({
   quotes: z
@@ -23,7 +19,7 @@ const content = sectionHeader.extend({
     .max(9),
 })
 
-const settings = z.object({ cardEffect: cardEffect.default('spotlight') })
+const settings = z.object({})
 
 export const testimonialsBlock = defineBlock({
   type: 'testimonials',
@@ -40,7 +36,7 @@ export const testimonialsBlock = defineBlock({
       description: '',
       quotes: [{ quote: '—', author: '—', role: '' }],
     },
-    settings: { cardEffect: 'spotlight' },
+    settings: {},
   },
   form: [
     ...SECTION_HEADER_FIELDS,
@@ -56,14 +52,6 @@ export const testimonialsBlock = defineBlock({
         { field: 'author', control: 'text', label: 'Name', localized: false },
         { field: 'role', control: 'text', label: 'Role' },
       ],
-    },
-    {
-      field: 'cardEffect',
-      control: 'select',
-      label: 'Card hover effect',
-      source: 'settings',
-      localized: false,
-      options: CARD_EFFECT_OPTIONS,
     },
   ],
 })

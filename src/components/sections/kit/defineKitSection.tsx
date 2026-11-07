@@ -17,12 +17,11 @@ interface KitBlockSettings {
  *
  * Every one of them needs the same three things and nothing else: its own row
  * from the snapshot, an accent resolved against the published theme, and the
- * `.pf-kit` wrapper the imported stylesheet is scoped to. Fifty-three copies of
- * that would be fifty-three chances to forget one, so it is written once.
+ * `.pf-kit` wrapper the imported stylesheet is scoped to, so it is written once.
  *
  * The frame is imported inside the `lazy()` rather than at the top of this
  * file: `BLOCK_COMPONENTS` reaches this module eagerly, and a static import
- * would drag the kit's 92 kB stylesheet into the entry bundle — onto every
+ * would drag the kit's stylesheet into the entry bundle — onto every
  * page, including the ones with no kit section on them.
  */
 export function defineKitSection<TContent>(

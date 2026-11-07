@@ -4,86 +4,11 @@
     .pf-kit .section-title {
         margin: 0 0 44.8px 0
     }
-    .pf-kit .mobile-menu {
-        padding-top: 64px
-    }
-    .pf-kit .mobile-menu-inner {
-        padding: 24px max(24px, 4vw) 32px;
-        gap: 32px
-    }
-    .pf-kit .hero {
-        padding: 112px var(--kit-gutter) 64px
-    }
-    .pf-kit .hero-inner {
-        gap: 51.2px
-    }
-    .pf-kit .hero-eyebrow {
-        margin-bottom: 28.8px
-    }
-    .pf-kit .hero-headline {
-        margin: 0 0 25.6px 0
-    }
-    .pf-kit .hero-sub {
-        margin: 0 0 32px 0
-    }
-    .pf-kit .hero-ctas {
-        margin-bottom: 64px
-    }
-    .pf-kit .hero-meta {
-        gap: 44.8px
-    }
-    .pf-kit .proof {
-        padding: 38.4px 0 41.6px
-    }
-    .pf-kit .proof-marquee-item {
-        padding: 22px 32px
-    }
-    .pf-kit .gallery {
-        padding: 96px 0 64px
-    }
     .pf-kit .about {
         padding: 96px 0
     }
-    .pf-kit .bio {
-        gap: 25.6px;
-        padding: 44.8px var(--kit-gutter) 44.8px var(--kit-gutter)
-    }
-    .pf-kit .testimonials {
-        padding: 44.8px var(--kit-gutter)
-    }
     .pf-kit .contact {
         padding: 96px var(--kit-gutter)
-    }
-    .pf-kit .contact-grid {
-        gap: 64px
-    }
-    .pf-kit .contact-blurb {
-        margin-bottom: 38.4px
-    }
-    .pf-kit .contact-sent {
-        padding: 64px 0
-    }
-    .pf-kit .contact-sent p {
-        margin: 0 0 25.6px 0
-    }
-    .pf-kit .footer {
-        padding: 64px var(--kit-gutter) 25.6px
-    }
-    .pf-kit .footer-top {
-        margin-bottom: 44.8px
-    }
-    .pf-kit .footer-grid {
-        gap: 44.8px;
-        margin-bottom: 64px
-    }
-    .pf-kit .marquee-track {
-        gap: 44.8px
-    }
-    .pf-kit .services {
-        padding: 96px 0 64px
-    }
-    .pf-kit .svc {
-        padding: 32px var(--kit-gutter)
     }
     .pf-kit .process {
         padding: 96px 0 80px
@@ -93,12 +18,6 @@
     }
     .pf-kit .pricing {
         padding: 96px 0 80px
-    }
-    .pf-kit .tier {
-        padding: 28.8px 25.6px 25.6px
-    }
-    .pf-kit .press {
-        padding: 80px 0 64px
     }
     .pf-kit .faq {
         padding: 96px 0 80px
@@ -115,62 +34,11 @@
     .pf-kit .cta-sub {
         margin: 0 0 28.8px 0
     }
-    .pf-kit .stat-pills {
-        padding: 48px var(--kit-gutter)
-    }
-    .pf-kit .media-tiles {
-        padding: 96px 0 80px
-    }
-    .pf-kit .tiles-cta {
-        margin-top: 32px
-    }
-    .pf-kit .bento {
-        padding: 96px 0 80px
-    }
-    .pf-kit .mentor {
-        padding: 64px var(--kit-gutter)
-    }
-    .pf-kit .mentor-card {
-        padding: 44.8px max(28px, 3vw)
-    }
-    .pf-kit .mentor-headline {
-        margin-bottom: 44.8px
-    }
-    .pf-kit .mentor-meta {
-        margin-bottom: 38.4px
-    }
-    .pf-kit .mentor-illos {
-        margin-bottom: 38.4px
-    }
-    .pf-kit .mentor-classes {
-        padding: 32px max(24px, 3vw)
-    }
-    .pf-kit .mentor-classes-head {
-        margin-bottom: 25.6px
-    }
-    .pf-kit .classes-row {
-        margin-bottom: 32px
-    }
-    .pf-kit .timeline {
-        padding: 80px 0 64px
-    }
     .pf-kit .tools {
         padding: 80px 0 64px
     }
     .pf-kit .compare {
         padding: 80px 0
-    }
-    .pf-kit .awards {
-        padding: 96px 0
-    }
-    .pf-kit .awards-inner {
-        gap: 51.2px
-    }
-    .pf-kit .reel {
-        padding: 64px var(--kit-gutter)
-    }
-    .pf-kit .reel-content {
-        padding: 38.4px
     }
     .pf-kit .writing {
         padding: 96px 0
@@ -181,144 +49,10 @@
     .pf-kit .writing-empty {
         padding: 38.4px 0
     }
-    .pf-kit .feed {
-        padding: 64px 0
-    }
-    .pf-kit .feed-cta {
-        padding: 25.6px var(--kit-gutter) 0
-    }
-    .pf-kit .big-marq {
-        padding: 25.6px 0
-    }
-    .pf-kit .big-marq-track {
-        gap: 38.4px
-    }
-    .pf-kit .big-marq-word {
-        gap: 38.4px
-    }
     .pf-kit .brief {
         padding: 80px var(--kit-gutter) 64px
     }
-    .pf-kit .agent-plan {
-        padding: 80px 0
-    }
-    .pf-kit .agent-plan-inner {
-        gap: 51.2px
-    }
-    .pf-kit .cmdk-empty {
-        padding: 25.6px
-    }
-    .pf-kit .anim-sub {
-        padding: 96px var(--kit-gutter)
-    }
-    .pf-kit .anim-sub-title {
-        margin: 0 0 32px
-    }
-    .pf-kit .priority {
-        padding: 80px 0 64px
-    }
-    .pf-kit .sticky-board {
-        padding: 80px 0
-    }
-    .pf-kit .scrub {
-        padding: 80px 0 96px
-    }
-    .pf-kit .scrub-year {
-        font-size: clamp(96px, 17.6vw, 224px)
-    }
-    .pf-kit .scrub-scene {
-        margin-bottom: 48px
-    }
-    .pf-kit .expand {
-        padding: 80px 0
-    }
-    .pf-kit .expand-body {
-        padding: 0 28px 0 86.4px
-    }
-    .pf-kit .logowall {
-        padding: 64px 0
-    }
-    .pf-kit .logowall-track {
-        gap: 44.8px
-    }
-    .pf-kit .logowall-logo {
-        gap: 44.8px
-    }
     .pf-kit .palette {
         padding: 80px 0
-    }
-    .pf-kit .magnetic {
-        padding: 64px var(--kit-gutter)
-    }
-    .pf-kit .magnetic-content {
-        padding: 38.4px
-    }
-    .pf-kit .magnetic-btn {
-        padding: 16px 25.6px
-    }
-    .pf-kit .typer {
-        padding: 96px var(--kit-gutter)
-    }
-    .pf-kit .typer-line {
-        margin: 25.6px 0 44.8px
-    }
-    .pf-kit .tilt-section {
-        padding: 80px 0 64px
-    }
-    .pf-kit .flap {
-        padding: 64px 0
-    }
-    .pf-kit .flap-cell {
-        padding: 38.4px 24px
-    }
-    .pf-kit .type-tester {
-        padding: 80px 0 64px
-    }
-    .pf-kit .tt-canvas {
-        padding: 44.8px 24px
-    }
-    .pf-kit .tt-controls {
-        gap: 25.6px;
-        margin-top: 25.6px
-    }
-    .pf-kit .chat-test {
-        padding: 80px 0
-    }
-    .pf-kit .kbd-sheet {
-        padding: 80px 0 64px
-    }
-    .pf-kit .kbd-grid {
-        gap: 8px 44.8px
-    }
-    .pf-kit .spotlight {
-        padding: 112px var(--kit-gutter)
-    }
-    .pf-kit .trail {
-        padding: 112px var(--kit-gutter)
-    }
-    .pf-kit .hshelf {
-        padding: 80px 0 64px
-    }
-    .pf-kit .hshelf-end {
-        padding: 25.6px
-    }
-    .pf-kit .hover-rows {
-        padding: 80px 0
-    }
-    .pf-kit .glitch {
-        padding: 96px var(--kit-gutter)
-    }
-    .pf-kit .glitch-text {
-        font-size: clamp(51.2px, 9.6vw, 144px);
-        margin: 25.6px 0
-    }
-    .pf-kit .cal {
-        padding: 80px 0
-    }
-    .pf-kit .scratch {
-        padding: 80px 0 64px
-    }
-    .pf-kit .scratch-bg {
-        padding: 38.4px
     }
 }

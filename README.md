@@ -14,7 +14,7 @@ does not need a deploy.
 
 | Path | What it is | Its own docs |
 | --- | --- | --- |
-| `src/`, `api/`, `server/` | The site: React 19, Vite 6, Tailwind 4, GSAP | this file |
+| `src/`, `api/`, `server/` | The site: React 19, Vite 6, Tailwind 4 | this file |
 | `packages/content-schema/` | Block registry and snapshot contract shared by both sides | — |
 | `cms/` | Admin UI and content API — Next.js App Router, `pg`, zod | [cms/README.md](./cms/README.md), [cms/DEPLOY.md](./cms/DEPLOY.md) |
 | `db/` | PostgreSQL schema — numbered SQL migrations, PGlite-tested | [db/README.md](./db/README.md) |
@@ -127,9 +127,11 @@ api/chat.ts              Vercel edge entry — a four-line adapter
 server/chat.ts           the actual /api/chat handler, shared by both environments
 vite-api-plugin.ts       serves that same handler in dev, so the two cannot drift
 vite-profile-plugin.ts   fills index.html from the published profile
+vite-preview-plugin.ts   makes `vite preview` answer the way Vercel does
 
 scripts/
   fetch-content.mjs      bakes the published snapshot into src/content
+  prerender.mjs          writes one HTML file per route, and 404.html, into dist
   generate-sitemap.mjs   writes public/sitemap.xml from it — both run in prebuild
 
 src/
@@ -194,28 +196,42 @@ and is reviewed as copy. A test fails if anything from "Do not use" in
 [`docs/plan/facts.md`](./docs/plan/facts.md) appears in the source, the shell or
 the seed data.
 
-**What the head says.** Two audiences read it and they do not overlap. Google
-runs the JavaScript and sees whatever `PageHead` ends up writing; every link
-unfurler that matters — Telegram, Slack, LinkedIn, Facebook, X — fetches
-`index.html` and never executes it, so the static tags are the only card it will
-ever see. Both are served by having one tag each: `index.html` carries the
-site's own title, description and card, filled from the profile when it is built,
-and `PageHead` **rewrites those tags in
-place** once React runs, rather than rendering copies beside them. The tags that
-exist only per page — `canonical`, the `hreflang` alternates, `og:url` — are
-rendered normally, because there is nothing in the shell for them to collide
-with. `public/sitemap.xml` is generated, never edited: it lists every published
+**What the head says.** Every link unfurler that matters — Telegram, Slack,
+LinkedIn, Facebook, X — fetches the HTML and never executes it. So
+`scripts/prerender.mjs` writes one HTML file per published route after the build,
+from the server build of `src/entry-server.tsx`: the page's real content, its own
+title, description, canonical and Open Graph tags, and the published palette on
+`<html>`. `index.html` holds the site's defaults, filled from the profile, and a
+prerendered page keeps them in `data-shell`. As the reader moves between pages,
+`PageHead` **rewrites those tags in place**, rather than rendering copies beside
+them. A live demo needs the DOM, a clock and random numbers, so it only exists in
+a browser: its route carries the demo's own words, from `WidgetPlaceholder`, until
+it mounts. `public/sitemap.xml` is generated, never edited: it lists every published
 page in each language baked into `src/content`, and skips the `site` page and any
 page with no sections, which the site renders as a 404.
 
-**Motion.** GSAP ScrollTrigger still does the scroll work its own widgets need,
-and Framer Motion still handles component transitions. Everything else below
-the fold shares one entrance — a 300ms fade and rise from `useReveal`
-(`src/hooks/useReveal.ts`) applied once, on mount, to whatever starts off
-screen. `prefers-reduced-motion: reduce` turns that entrance off — elements
-are simply visible from the start — without touching the widgets' own motion.
-`gsap`, `leaflet` and `motion` are each split into their own chunk in
-`vite.config.ts`.
+**What an address answers.** There is no catch-all rewrite. A real file wins, a
+folder's `index.html` answers without a redirect, and everything else gets
+`dist/404.html` with a 404. That file is the shell with the not-found page in it,
+and `main.tsx` only hydrates markup written for the address it's on, so on a 404
+the browser renders from scratch. A page published since the last build therefore
+still shows up for a reader once the manifest answers, while its status is 404
+until the rebuild finishes. `vite preview` answers the same way, through
+`vite-preview-plugin.ts`. Files in `/assets/` with a hash in their name are cached
+for a year as `immutable`. The ones in `/assets/img/` have no hash and aren't.
+
+**Motion.** The hiring path has one entrance: a 300ms fade and rise from
+`useReveal` (`src/hooks/useReveal.ts`), in CSS, applied once to whatever starts off
+screen. Numbers are final from the first frame, and hovers are colour changes.
+`prefers-reduced-motion: reduce` turns the entrance off without touching the
+widgets' own motion. Framer Motion stays inside `ecommerce`, `omnigrid` and
+`bento_grid`, which get it and its reduced-motion switch through `animated` in
+`src/content/blocks.tsx`. GSAP stays inside `bento_grid`, and Leaflet inside
+NexusRoute. A test keeps all three out of what the first page loads.
+
+**Fonts.** Inter, Inter Tight and JetBrains Mono are self-hosted from `@fontsource`,
+Latin subset only, in the weights the site uses. Russian needs the Cyrillic subsets
+added when it comes back in S12.
 
 **The terminal.** `help`, `ls`, `cat`, `whoami`, `date`, `echo`, `neofetch`,
 `pwd`, `cd`, `sudo` and `clear` are local. `ask` streams from Claude through
@@ -249,18 +265,20 @@ npm test              # vitest + jsdom
 npm --prefix db test  # every migration applied to an ephemeral PGlite, invariants asserted
 npm --prefix cms test
 npm run build && npm run size:check # entry JS and CSS against their limits
+npm run prerender:check # every route is real HTML with a head of its own, after a build
 npm run content:check # the committed snapshots still match what the CMS publishes
 ```
 
 `.github/workflows/ci.yml` runs on every push and pull request to `main`: typecheck,
-lint, tests, build and `size:check` for the site, a warn-only Lighthouse run of `/`,
-plus schema tests and a Next build for the CMS. It does not deploy. `claude.yml`
+lint, tests, build, `size:check` and `prerender:check` for the site, Lighthouse on `/`
+as a failure at D11's targets, plus schema tests and a Next build for the CMS. It does not deploy. `claude.yml`
 answers `@claude` mentions in issues and reviews.
 
 Two choices there are deliberate. `content:check` stays out of CI, because a publish
 would turn every open pull request red until someone rebaked the snapshot. And
 `size:check` stays out of `npm run build`, because the Vercel build bakes whatever is
-published, and publishing content must never be able to fail a deploy.
+published, and publishing content must never be able to fail a deploy. For the same
+reason, a route that fails to prerender keeps the empty shell and the build goes on.
 
 ## Deployment
 
@@ -290,7 +308,7 @@ nothing.
 shutdown and a hard kill can leave it unopenable. It is disposable —
 `npm --prefix cms run db:reset` — but you will have to re-add your user.
 
-**Do not render a `<title>` or an `og:` tag that `index.html` already has.**
+**Do not render a `<title>`, an `og:` tag or a canonical that the HTML already has.**
 React 19 hoists meta into the head by appending, not replacing, and a browser —
 like a crawler — reads the first one it finds. A second tag is therefore not an
 override but dead weight: for a while every address on the site answered to the
