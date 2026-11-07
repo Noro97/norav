@@ -78,7 +78,7 @@ Each session is one branch and one PR, except S4, which needs two. A session mer
 | S2 | `prompts/S2-baseline-and-cleanup.md` | Lighthouse baseline, CI budgets, old plans archived, branch cleanup, runbook rehearsed | S1 | Approve the deletion list, decide 4 unmerged branches |
 | S3 | `prompts/S3-facts-and-content-model.md` | Profile facts source, case-study block, video support, production caught up | S2 | Run production catch-up |
 | S4 | `prompts/S4-deletion-and-speed.md` | Kit and unused blocks gone, Leaflet and motion off the landing page, prerendering | S3 | Publish between the two PRs |
-| S5 | `prompts/S5-new-site-structure.md` | Home, Live demos, About, Contact, palette, new copy, redirects | S4 | Correct all copy, publish |
+| S5 | `prompts/S5-new-site-structure.md` | Home, Live demos, About, Contact, palette, new copy, redirects, share image | S4 | Correct all copy, publish |
 | S6 | `prompts/S6-case-studies.md` | Proof App, Nova Prism and norav.dev with real footage | S5 | Record Proof App, correct copy, publish |
 | S7 | `prompts/S7-creative-lab.md` | Exhibit audit, 8–10 exhibits, live at `/lab` | S2. Runs alongside, in the `creative-lab` repo | Approve the list, create the Vercel project |
 | S8 | `prompts/S8-launch.md` | Final checks, fresh secrets scan, repo public | S6 | Approve each gate |
@@ -91,7 +91,7 @@ S7 doesn't block S8. If it isn't ready, launch without it, and `/lab` follows.
 | --- | --- | --- |
 | S9 | `prompts/S9-lab-teaser.md` | Landing-page teaser, Lab catalog in the CMS, smaller Lab stylesheet |
 | S10 | `prompts/S10-cms-depth.md` | Revision restore, editable metadata |
-| S11 | `prompts/S11-media-and-motion.md` | Generated images from the brief, OG images, motion polish |
+| S11 | `prompts/S11-media-and-motion.md` | Generated images from the brief, per-page OG images, motion polish |
 | S12 | `prompts/S12-extras.md` | Russian, testimonials, first post |
 
 ## Operating instructions
