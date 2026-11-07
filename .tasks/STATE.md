@@ -85,8 +85,7 @@ Nothing.
 
 ## Owner's open items
 
-- Upload the two test videos in the Media screen and delete them, or report what fails. The commands are in the S3 task file. It's the first real run of direct upload to Blob.
-- Delete `~/Desktop/norav-content-2026-11-07.dump`, now that the catch-up has been checked.
+- Delete `~/Desktop/norav-content-2026-11-07.dump`, now that the catch-up has been checked, and the two test videos beside it.
 - Set a monthly spending cap on the terminal's Anthropic API key before launch.
 - Decide whether to delete the old CV from the media library. It has no phone number, but it's out of date and reachable by direct link.
 - Keep or delete `~/Desktop/norav-backup-2026-11-06.sql`. It holds password hashes and sessions.
@@ -105,7 +104,7 @@ Nothing.
 - Block copy still states facts in its own words: the hero, the career timeline, `terminal_footer.hire`. S5 rewrites and reviews it from `facts.md`. Nothing keeps it in step with the profile.
 - The `workflow` and `vibecoding` blocks still say n8n and "Vibe Coding". `banned-claims.test.ts` allows those exact hits until S4 deletes the blocks, and fails when one goes stale.
 - The seed data no longer holds banned claims, but `seed.mts`, `import-content.mts` and `legacy-i18n` still hold other old copy, and so does the kit. No published page uses them. S4 removes the kit, and S8's scan should catch the rest.
-- Direct upload to Blob has only been tested up to the browser's PUT. The token, the checks and the recording have tests, and no local setup has a blob store. Its first real run is the owner's test upload.
+- No local setup has a blob store, so a change to direct upload can only be tested for real on production. The token, the checks and the recording have tests.
 - `vibecoding` and `workflow` blocks are hidden or unpublished, and their code still ships as unused chunks until S4 removes them.
 - Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. Production's rows are hidden, and S4 soft-deletes most of them.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
