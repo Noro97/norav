@@ -144,6 +144,12 @@ Every prompt inherits these.
 - Never record or screenshot production admin panels or real user data.
 - Don't touch `feat/*` or `claude/*` branches you didn't create.
 
+**Skills:**
+
+- Project skills live in `.claude/skills/`, in the main checkout only, because the folder is gitignored. Sessions in `.claude/worktrees/` still load them. A prompt's Reference section says which to use and when.
+- `~/Desktop/projects/webapp/.claude/skills/SOURCES.md` records where each one came from, what to watch for, and what was left out and why.
+- **This plan and the session's prompt win over any skill.** A skill's advice that conflicts with a decision here doesn't apply, and following it isn't a reason to add a dependency or widen the session.
+
 **Every session keeps state:**
 
 - At the start, create `.tasks/active/<session>-<slug>.md` with status, origin, what's being done and how it'll be verified.

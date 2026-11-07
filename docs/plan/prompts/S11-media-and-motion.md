@@ -23,6 +23,7 @@ The site works and is live. Its visuals are monoline SVG and real captures. The 
 
 ## 4. Reference
 
+- **Skills:** for motion polish in task 5, `emil-design-eng` and `animation-performance`, then review the result with `review-animations`. That one doesn't start by itself, so read `~/Desktop/projects/webapp/.claude/skills/review-animations/SKILL.md`. It flags plain fades and entrances without a stagger, but D5 and "nothing above the fold starts invisible" win.
 - The owner runs prompts in the image tool they already pay for. Ask which one, and write prompts that work in any tool unless they say.
 - Sessions can't run the generators. The flow is: you write the sheet, the owner generates, and you optimize and integrate.
 - `cwebp` and `ffmpeg` are installed. `blender` and `magick` aren't.
