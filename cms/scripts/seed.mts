@@ -16,7 +16,7 @@ import { assertExclusiveLocalDb, assertIntendedDatabase, closeDb, query, queryOn
  * i18n namespace is retired.
  */
 const HERO_RU = {
-  subtitle: 'Frontend-focused fullstack-инженер',
+  subtitle: 'Senior Fullstack Engineer',
   name: {
     first: { highlight: 'Нор', rest: 'айр' },
     last: { highlight: 'Ав', rest: 'етисян' },
@@ -42,11 +42,11 @@ const page = await queryOne<{ id: string }>(
   [
     JSON.stringify({
       en: {
-        title: 'Norayr Avetisyan — Frontend-Focused Fullstack Engineer',
+        title: 'Norayr Avetisyan — Senior Fullstack Engineer',
         description: 'Building high-performance interfaces at the intersection of engineering precision and visual storytelling.',
       },
       ru: {
-        title: 'Норайр Аветисян — Frontend-focused fullstack-инженер',
+        title: 'Норайр Аветисян — Senior Fullstack Engineer',
         description: 'Создаю высокопроизводительные интерфейсы на стыке инженерной точности и визуального повествования.',
       },
     }),

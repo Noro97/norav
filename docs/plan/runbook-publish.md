@@ -24,7 +24,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-06, production had 17 migrations applied of the 31 in the repo (0001–0015, 0028 and 0030), with content version 26.
+On 2026-11-06, production had 17 migrations applied of the 32 in the repo (0001–0015, 0028 and 0030), with content version 26.
 
 ## Before any production change
 
@@ -70,7 +70,7 @@ So the migrations run as written, and `content:catch-up` then puts the drafts ba
    cd ~/Desktop/projects/webapp && git switch main && git pull
    ```
 
-3. Apply the migrations that write old copy. Stop at 0031, because S3's own migrations come after the restore:
+3. Apply the migrations that write old copy. Stop at 0031, because S3's own migration comes after the restore:
    ```bash
    npm --prefix db run migrate -- --through=0031
    ```
@@ -88,16 +88,21 @@ So the migrations run as written, and `content:catch-up` then puts the drafts ba
    ```
    Expect `A publish now differs from version 26 in 20 values`, all of them marked expected, then `Nothing a visitor can see changes.` The 20 are menu anchors (0031) and ambient-layer settings (0027), counted across two languages, and nothing on the site reads them. **If it prints `NOT expected`, stop and send the output to a session.**
 
-6. Apply the rest. S3 replaces this line if its own migrations need more:
+6. Apply the rest. That's 0032, which seeds the profile as a draft:
    ```bash
    npm --prefix db run migrate
    ```
+   Expect `Applied 1 migration(s).`
 
-7. Check, then publish as below:
+7. Check:
    ```bash
    curl https://cms.norav.dev/api/health
    ```
-   Expect every migration applied, and `publishedVersion` unchanged. On the copy, the publish made version 27 with `purged: 0`. The 11 published pages rendered at 1440px and 375px with no claim and no broken image, apart from one OmniGrid error in the dev build, which the content didn't cause and which is now fixed. See `.tasks/done/omnigrid-render-loop.md`.
+   Expect `"migrations":32`, and `publishedVersion` unchanged.
+
+8. Review the profile, on the Profile screen at `cms.norav.dev`. It's new content, so it's gate G3, even though it matches `docs/plan/facts.md` and what the site already says.
+
+9. Publish as below. Besides the 20 values above, the only change is `settings.profile`, which nothing shows differently: the site has been rendering the same values from code. On S2's copy, the publish made version 27 with `purged: 0`. The 11 published pages rendered at 1440px and 375px with no claim and no broken image, apart from one OmniGrid error in the dev build, which the content didn't cause and which is now fixed. See `.tasks/done/omnigrid-render-loop.md`.
 
 The script refuses if a migration through 0031 is still pending, or if a later one has already run, because it would hide what that migration added. Rerunning it is safe. S3 deletes it afterwards.
 

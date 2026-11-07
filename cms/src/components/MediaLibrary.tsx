@@ -6,6 +6,8 @@ import { type WorkspaceView } from './ViewSwitcher'
 import { Workspace, FeedbackBanner, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
 import type { MediaItem } from './MediaPicker'
+import { isVideo } from '@/lib/media-types'
+import { uploadMedia } from '@/lib/upload-media'
 
 /**
  * Everything the site is made of that is not words.
@@ -59,14 +61,15 @@ export function MediaLibrary({
     if (!files?.length) return
     setBusy(true)
     for (const file of Array.from(files)) {
-      const form = new FormData()
-      form.append('file', file)
-      const response = await fetch('/api/admin/media', { method: 'POST', body: form })
-      if (!response.ok) {
-        const body = await response.json().catch(() => null)
-        setStatus({ kind: 'err', message: body?.error?.message ?? `Could not upload ${file.name}.` })
+      const result = await uploadMedia(file, {
+        storage,
+        onProgress: (percent) => setStatus({ kind: 'ok', message: `Uploading ${file.name}: ${percent}%` }),
+      })
+      if (!result.ok) {
+        setStatus({ kind: 'err', message: result.message })
         break
       }
+      setStatus(null)
     }
     if (uploadRef.current) uploadRef.current.value = ''
     await load()
@@ -76,17 +79,15 @@ export function MediaLibrary({
     const target = replacing
     if (!files?.length || !target) return
     setBusy(true)
-    const form = new FormData()
-    form.append('file', files[0]!)
-    const response = await fetch(`/api/admin/media/${target.id}/replace`, {
-      method: 'POST',
-      body: form,
+    const result = await uploadMedia(files[0]!, {
+      storage,
+      replaces: target.id,
+      onProgress: (percent) => setStatus({ kind: 'ok', message: `Uploading: ${percent}%` }),
     })
-    const body = await response.json().catch(() => null)
-    if (!response.ok) {
-      setStatus({ kind: 'err', message: body?.error?.message ?? 'Could not replace that file.' })
+    if (!result.ok) {
+      setStatus({ kind: 'err', message: result.message })
     } else {
-      const places = body.data.repointed
+      const places = result.repointed ?? 0
       setStatus({
         kind: 'ok',
         message:
@@ -142,8 +143,9 @@ export function MediaLibrary({
       <>
         <h1>Media</h1>
         <p className="subtle">
-          Images and documents the content points at. Replacing a file carries every reference with
-          it, so the swap is complete or it does not happen.
+          Images, video and documents the content points at. Replacing a file carries every reference
+          with it, so the swap is complete or it does not happen. Images and documents go up to 12 MB,
+          video to 50 MB, as mp4 or webm.
         </p>
 
         <div className="row" style={{ marginTop: 20 }}>
@@ -159,14 +161,14 @@ export function MediaLibrary({
             ref={uploadRef}
             type="file"
             multiple
-            accept="image/*,application/pdf"
+            accept="image/*,application/pdf,video/mp4,video/webm"
             hidden
             onChange={(event) => void upload(event.target.files)}
           />
           <input
             ref={replaceRef}
             type="file"
-            accept="image/*,application/pdf"
+            accept="image/*,application/pdf,video/mp4,video/webm"
             hidden
             onChange={(event) => void replace(event.target.files)}
           />
@@ -185,6 +187,8 @@ export function MediaLibrary({
                 <div className="media-thumb">
                   {item.mime === 'application/pdf' ? (
                     <span className="media-doc">PDF</span>
+                  ) : isVideo(item.mime) ? (
+                    <video src={item.url} preload="metadata" muted playsInline />
                   ) : (
                     <img src={item.url} alt={item.alt?.en ?? ''} loading="lazy" />
                   )}

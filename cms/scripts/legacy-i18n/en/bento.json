@@ -27,19 +27,19 @@
   "projects.filtergraph.description": "Faceted search with dependency-aware filtering and URL-as-state architecture.",
   "projects.filtergraph.cta": "View Case Study",
   "tiles.3.title": "AI Liveness",
-  "tiles.3.description": "Multi-modal AI verification pipeline achieving 98.4% confidence through Gemini vision analysis of user-submitted video proofs.",
+  "tiles.3.description": "Multi-modal AI verification pipeline using Gemini vision analysis of user-submitted video proofs.",
 
   "projects.proof.title": "Proof",
-  "projects.proof.description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, dual-economy reward system, and blockchain-integrated premium unlocks.",
+  "projects.proof.description": "AI-powered gamified achievement platform as a Telegram Mini App, featuring liveness detection, a dual-economy reward system, and Telegram Stars payments.",
   "projects.proof.cta": "View Architecture",
   "projects.proof.challenge": "Eliminated fraud in fitness challenges using AI-driven liveness detection and real-time video analysis within Telegram ecosystem.",
-  "projects.proof.complexity": "Managed complex DB schema with 27 migrations and real-time social feed with custom reaction engine.",
+  "projects.proof.complexity": "Managed a complex DB schema with 70+ migrations and real-time social feed with custom reaction engine.",
 
   "proof.verification.label": "AI-Verification Engine",
   "proof.verification.subtitle": "Real-time AI analysis of user-submitted challenge proofs",
   "proof.log.liveness": "[ANALYZING LIVENESS... OK]",
   "proof.log.detecting": "[DETECTING SQUATS: 1.. 2.. 3..]",
-  "proof.log.confidence": "[AI CONFIDENCE: 98.4%]",
+  "proof.log.confidence": "[AI VERDICT: PASS]",
   "proof.log.verified": "[CHALLENGE VERIFIED ✓]",
 
   "proof.gamification.label": "Gamification & Progression",
@@ -55,7 +55,7 @@
   "proof.gamification.badgeEpic": "Epic",
   "proof.gamification.badgeLegendary": "Legendary",
 
-  "proof.economy.label": "Economy & Blockchain",
+  "proof.economy.label": "Economy & Wallet",
   "proof.economy.starsBalance": "Stars Balance",
   "proof.economy.tonBalance": "TON Balance",
   "proof.economy.connectWallet": "Connect Wallet",
@@ -71,7 +71,7 @@
   "proof.architecture.db": "DB Update",
 
   "tiles.4.title": "Cache Hit-Rate",
-  "tiles.4.description": "Virtualized 10K+ row data grid with sub-millisecond cache lookups via TanStack Query stale-while-revalidate strategy.",
+  "tiles.4.description": "Virtualized 10K+ row data grid with cached lookups via TanStack Query stale-while-revalidate strategy.",
 
   "projects.omnigrid.title": "OmniGrid",
   "projects.omnigrid.description": "Enterprise-grade data orchestration with headless table architecture and intelligent cache management.",

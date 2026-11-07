@@ -17,6 +17,11 @@ export function setCurrentSnapshots(next: Record<Locale, Snapshot>): void {
   current = next
 }
 
+/** Site-wide settings, which are the same in every language. */
+export function currentSettings(): Snapshot['settings'] {
+  return current.en.settings
+}
+
 export function currentBlockContent<T>(type: string, language: string): T | undefined {
   const locale: Locale = language.startsWith('ru') ? 'ru' : 'en'
   const block = findBlock(current[locale], type)

@@ -5,6 +5,7 @@ import {
   getBlockDefinition,
   LOCALES,
   mergeLocale,
+  profileSchema,
   SOURCE_LOCALE,
   validateBlockContent,
   type Locale,
@@ -153,6 +154,8 @@ export async function buildPublication(): Promise<PublishResult> {
       withMedia(row.value, { page: '(site settings)', block: row.key, locale: SOURCE_LOCALE }),
     ]),
   )
+
+  problems.push(...profileProblems(settings.profile))
 
   // The palette is two decisions in the database and a full set of CSS
   // variables on the page. Deriving here means the site writes what it is told
@@ -316,6 +319,24 @@ export async function buildPublication(): Promise<PublishResult> {
   }
 
   return { ok: true, payload, checksum }
+}
+
+/**
+ * The site's metadata and the terminal read the profile as it's published, so a
+ * bad one is refused like a broken block. A database with no profile row isn't a
+ * problem: production has none until migration 0032, and the site copes.
+ */
+export function profileProblems(profile: unknown): PublishProblem[] {
+  if (profile === undefined) return []
+  const parsed = profileSchema.safeParse(profile)
+  if (parsed.success) return []
+  return parsed.error.issues.map((issue) => ({
+    page: '(site settings)',
+    block: 'profile',
+    locale: SOURCE_LOCALE,
+    path: issue.path.join('.'),
+    message: issue.message,
+  }))
 }
 
 /** Stamps the assigned version into each locale document. */

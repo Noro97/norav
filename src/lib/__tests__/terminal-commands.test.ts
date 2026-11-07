@@ -1,5 +1,8 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { executeCommand } from '../terminal-commands'
+import { BAKED_SNAPSHOTS } from '@/content'
+import { setCurrentSnapshots } from '@/content/current'
+import { DEFAULT_PROFILE } from '../../../packages/content-schema/src/profile-defaults'
 
 // Initialize i18n before tests
 beforeAll(async () => {
@@ -42,6 +45,59 @@ describe('executeCommand', () => {
     const contents = result.map((l) => l.content).join('\n')
     expect(contents).toContain('Norayr Avetisyan')
     expect(contents).toContain('Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js')
+  })
+
+  it('prints exactly what it did when these facts were interface strings', () => {
+    const lines = executeCommand('cat about.txt').map((l) => l.content)
+    expect(lines.slice(1, 4)).toEqual([
+      '',
+      '  Norayr Avetisyan',
+      '  Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js',
+    ])
+    expect(lines).toContain('  8+ years in JavaScript and TypeScript.')
+    expect(lines.slice(-3)).toEqual([
+      '  Currently open to senior fullstack roles',
+      '  at remote EU/US product companies.',
+      '',
+    ])
+
+    const hire = executeCommand('sudo hire').map((l) => l.content).join('\n')
+    for (const row of [
+      '✉  noroavetisyan@gmail.com',
+      '◆  github.com/Noro97',
+      '●  linkedin.com/in/norayravetisyan',
+      '✈  t.me/antarber',
+    ]) {
+      expect(hire).toContain(row)
+    }
+  })
+
+  it('reads the facts from the published snapshot', () => {
+    const published = {
+      ...BAKED_SNAPSHOTS.en,
+      settings: {
+        ...BAKED_SNAPSHOTS.en.settings,
+        profile: {
+          ...DEFAULT_PROFILE,
+          name: 'Someone Else',
+          email: 'someone@example.com',
+          availability: 'Not looking right now',
+          links: { ...DEFAULT_PROFILE.links, telegram: '' },
+        },
+      },
+    }
+    setCurrentSnapshots({ en: published, ru: published })
+    try {
+      const about = executeCommand('cat about.txt').map((l) => l.content)
+      expect(about).toContain('  Someone Else')
+      expect(about).toContain('  Currently not looking right now.')
+
+      const hire = executeCommand('sudo hire').map((l) => l.content).join('\n')
+      expect(hire).toContain('someone@example.com')
+      expect(hire).not.toContain('t.me')
+    } finally {
+      setCurrentSnapshots(BAKED_SNAPSHOTS)
+    }
   })
 
   it('returns experience for cat experience.txt', () => {

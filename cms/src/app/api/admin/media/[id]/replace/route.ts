@@ -1,131 +1,43 @@
 import { randomUUID } from 'node:crypto'
-import { query, queryOne } from '@/lib/db'
 import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { fail, invalid, ok } from '@/lib/http'
 import { getStorage } from '@/lib/storage'
-import { inspectSvg } from '@/lib/svg'
-import { repointReferences } from '@/lib/content-references'
-import { purgeIfUnpublished } from '@/lib/media-retention'
+import { findLiveFile, inspectFile, swapFile } from '@/lib/media-library'
+import { MIME_EXTENSIONS, uploadProblem } from '@/lib/media-types'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const MAX_BYTES = 12 * 1024 * 1024
-
-const ACCEPTED: Record<string, string> = {
-  'image/jpeg': '.jpg',
-  'image/png': '.png',
-  'image/webp': '.webp',
-  'image/avif': '.avif',
-  'image/gif': '.gif',
-  'image/svg+xml': '.svg',
-  'application/pdf': '.pdf',
-}
-
-/**
- * Swap the bytes behind a library entry, and carry every reference across.
- *
- * The alternative is uploading the new file and choosing it again everywhere
- * the old one appeared — eight places for one bento illustration, and no way
- * to tell whether you got them all. This keeps the entry and repoints the
- * content in the same request, so a replacement is either complete or refused.
- */
+/** Replaces a library file through this function. See `swapFile`, and `media/direct` for large ones. */
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const auth = await requireUser(request)
   if ('response' in auth) return auth.response
 
   const { id } = await context.params
-  const existing = await queryOne<{
-    url: string
-    storage_key: string
-    mime: string
-    width: number | null
-    height: number | null
-    size_bytes: string | null
-    alt: Record<string, string>
-  }>(
-    `select url, storage_key, mime, width, height, size_bytes::text, alt
-       from media where id = $1 and deleted_at is null`,
-    [id],
-  )
+  const existing = await findLiveFile(id)
   if (!existing) return fail(404, { code: 'not_found', message: 'That file is not in the library.' })
 
   const form = await request.formData().catch(() => null)
   const file = form?.get('file')
   if (!(file instanceof File)) return invalid([{ path: 'file', message: 'Attach a file.' }])
 
-  const extension = ACCEPTED[file.type]
-  if (!extension) {
-    return fail(415, {
-      code: 'unsupported_type',
-      message: `${file.type || 'That file'} is not a file the library accepts.`,
-    })
-  }
-  if (file.size > MAX_BYTES) {
-    return fail(413, {
-      code: 'too_large',
-      message: `Files are limited to ${MAX_BYTES / 1024 / 1024} MB.`,
-    })
-  }
+  const problem = uploadProblem(file.type, file.size)
+  if (problem) return fail(problem.status, { code: problem.code, message: problem.message })
 
   const bytes = Buffer.from(await file.arrayBuffer())
+  const { width, height, problem: unsafe } = await inspectFile(file.type, bytes)
+  if (unsafe) return fail(422, { code: 'unsafe_svg', message: unsafe })
 
-  let width: number | null = null
-  let height: number | null = null
-  if (file.type === 'image/svg+xml') {
-    const svg = inspectSvg(bytes)
-    if (svg.problem) return fail(422, { code: 'unsafe_svg', message: svg.problem })
-    width = svg.width
-    height = svg.height
-  }
-  if (file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
-    try {
-      const sharp = (await import('sharp')).default
-      const metadata = await sharp(bytes).metadata()
-      width = metadata.width ?? null
-      height = metadata.height ?? null
-    } catch (error) {
-      console.warn('[media] could not read dimensions', error)
-    }
-  }
-
-  const storage = getStorage()
-  const key = `${randomUUID()}${extension}`
-  const stored = await storage.put(key, bytes, file.type)
-
-  await query(
-    `update media set storage_key = $1, url = $2, mime = $3, width = $4, height = $5, size_bytes = $6
-      where id = $7`,
-    [stored.key, stored.url, file.type, width, height, bytes.byteLength, id],
-  )
-
-  const repointed = await repointReferences(existing.url, stored.url)
-
-  // The old bytes outlive the drafts that named them: the live publication,
-  // and the snapshot baked into the site, still do until the next publish. So
-  // they become a retired row of their own — deleted, not yet purged — and go
-  // now only if nothing published names them; otherwise the publish sweep
-  // takes them. Only after the drafts are repointed, so a failure above leaves
-  // the old file in place and the entry pointing at it, which is a state you
-  // can retry from.
-  const retired = await queryOne<{ id: string }>(
-    `insert into media (storage_key, url, mime, width, height, size_bytes, alt, deleted_at)
-     values ($1, $2, $3, $4, $5, $6, $7, now()) returning id`,
-    [
-      existing.storage_key,
-      existing.url,
-      existing.mime,
-      existing.width,
-      existing.height,
-      existing.size_bytes,
-      JSON.stringify(existing.alt),
-    ],
-  )
-  if (retired) {
-    await purgeIfUnpublished({ id: retired.id, storage_key: existing.storage_key, url: existing.url })
-      .catch((error) => console.warn('[media] could not remove the replaced file', error))
-  }
+  const stored = await getStorage().put(`${randomUUID()}${MIME_EXTENSIONS[file.type]}`, bytes, file.type)
+  const repointed = await swapFile(id, existing, {
+    key: stored.key,
+    url: stored.url,
+    mime: file.type,
+    width,
+    height,
+    bytes: bytes.byteLength,
+  })
 
   await audit({
     actorId: auth.user.id,

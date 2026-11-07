@@ -72,6 +72,14 @@ function shellDefaults() {
  return shell
 }
 
+/**
+ * The owner's name, as the build wrote it into the shell from the profile. For
+ * code in the entry chunk, which can't afford to import the profile for one word.
+ */
+export function siteName(): string {
+  return metaOf('property', 'og:site_name')?.content ?? ''
+}
+
 function write(kind: 'name' | 'property', key: string, value: string) {
  if (!value) return
 

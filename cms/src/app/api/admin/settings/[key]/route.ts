@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DEFAULT_THEME, deriveThemeTokens, themeSchema } from '@norav/content-schema'
+import { DEFAULT_PROFILE, DEFAULT_THEME, deriveThemeTokens, profileSchema, themeSchema } from '@norav/content-schema'
 import { query, queryOne } from '@/lib/db'
 import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
@@ -17,6 +17,7 @@ export const dynamic = 'force-dynamic'
  */
 const SCHEMAS: Record<string, z.ZodType> = {
   theme: themeSchema,
+  profile: profileSchema,
   site: z.object({
     /** Which shape the active-link indicator in the nav takes. */
     navIndicator: z.enum(['dot', 'gooey']).default('dot'),
@@ -25,6 +26,7 @@ const SCHEMAS: Record<string, z.ZodType> = {
 
 const DEFAULTS: Record<string, unknown> = {
   theme: DEFAULT_THEME,
+  profile: DEFAULT_PROFILE,
   site: { navIndicator: 'dot' },
 }
 

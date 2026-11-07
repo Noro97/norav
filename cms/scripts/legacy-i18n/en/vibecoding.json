@@ -1,7 +1,7 @@
 {
   "sectionLabel": "Philosophy",
   "title": "Vibe Coding: High-Velocity Orchestration",
-  "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing Web3 (TON), AI (Gemini), and Backend (Supabase) in record time, while maintaining 92% test coverage.",
+  "body": "I use AI not as a replacement for thinking, but as a tool to fight entropy. In the 'Proof' project, this allowed synchronizing AI (Gemini) and Backend (Supabase) in record time.",
   "microCopy": "Syntax is a commodity. Logic is the value. Architecture is the vibe.",
   "slider.lowVibe": "Low Vibe",
   "slider.highVibe": "High Vibe",

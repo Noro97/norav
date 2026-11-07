@@ -48,7 +48,7 @@ export const recruiterCtaBlock = defineBlock({
   defaults: {
     content: {
       label: 'Looking for',
-      title: 'Senior or staff frontend and fullstack roles',
+      title: 'Senior fullstack roles',
       points: [
         { text: 'Led frontend architecture on products reaching 10M+ monthly users' },
         { text: 'Built Proof App end to end as the only engineer and took it to a closed beta' },

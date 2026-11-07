@@ -41,6 +41,13 @@ export const PlusIcon = () => (
   </svg>
 )
 
+export const ProfileIcon = () => (
+  <svg {...base}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
+  </svg>
+)
+
 export const PaletteIcon = () => (
   <svg {...base}>
     <path d="M12 3a9 9 0 1 0 0 18c1 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.1 0-1 .8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.3-9-7.3z" />

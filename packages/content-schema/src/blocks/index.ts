@@ -28,6 +28,7 @@ import {
   omnigridDetailBlock,
   proofDetailBlock,
 } from './case-study-detail'
+import { caseStudyBlock } from './case-study-story'
 import { vibeCodingBlock } from './vibecoding'
 import { workflowBlock } from './workflow'
 import { galleryBlock } from './gallery'
@@ -81,6 +82,7 @@ export const BLOCK_REGISTRY = {
   omnigrid_detail: omnigridDetailBlock,
   proof: proofBlock,
   proof_detail: proofDetailBlock,
+  case_study: caseStudyBlock,
   workflow: workflowBlock,
   contact_cta: contactCtaBlock,
   recruiter_cta: recruiterCtaBlock,
@@ -225,6 +227,7 @@ export type { WorkflowContent, WorkflowSettings } from './workflow'
 export type { VibeCodingContent, VibeCodingSettings } from './vibecoding'
 export type { CaseStudyContent, CaseStudySettings } from './case-study'
 export type { CaseStudyDetailContent } from './case-study-detail'
+export type { CaseStudyStoryContent } from './case-study-story'
 export type { BentoGridContent, BentoGridSettings } from './bento-grid'
 export type { TerminalFooterContent, TerminalFooterSettings } from './terminal-footer'
 export type { GalleryContent, GallerySettings } from './gallery'

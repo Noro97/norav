@@ -6,7 +6,10 @@
 // command answered "Could not reach AI service" to every visitor. One handler,
 // imported by both, is what stops that from being possible again.
 // =============================================================================
-import { PORTFOLIO_CONTEXT } from '../src/lib/portfolio-context'
+import type { Profile } from '@norav/content-schema'
+import baked from '../src/content/snapshot.en.json'
+import { buildPortfolioContext } from '../src/lib/portfolio-context'
+import { profileOf } from '../src/lib/profile'
 
 const MODEL = 'claude-sonnet-5'
 
@@ -26,6 +29,39 @@ const MAX_MESSAGES = 10
 const WINDOW_MS = 60_000
 const PER_WINDOW = 5
 const hits = new Map<string, number[]>()
+
+/** How long one instance keeps a prompt before asking the CMS again. */
+const PROMPT_TTL_MS = 5 * 60_000
+const CMS_TIMEOUT_MS = 2_000
+let prompt: { text: string; at: number } | undefined
+
+/**
+ * The profile as published now, so a corrected fact reaches the terminal without
+ * a deploy, just as it reaches the page. A CMS that's slow or down costs the
+ * visitor nothing: the answer comes from the snapshot baked at the last build.
+ */
+async function publishedProfile(): Promise<Profile> {
+  const base = process.env.CMS_URL?.replace(/\/$/, '')
+  if (base) {
+    try {
+      const response = await fetch(`${base}/api/public/content?locale=en`, {
+        signal: AbortSignal.timeout(CMS_TIMEOUT_MS),
+      })
+      const published = response.ok ? ((await response.json()) as { settings?: { profile?: Profile } }) : undefined
+      if (published?.settings?.profile) return published.settings.profile
+    } catch {
+      // The baked copy below is the answer.
+    }
+  }
+  return profileOf((baked as { settings: Record<string, unknown> }).settings)
+}
+
+async function systemPrompt(): Promise<string> {
+  if (prompt && Date.now() - prompt.at < PROMPT_TTL_MS) return prompt.text
+  const text = buildPortfolioContext(await publishedProfile())
+  prompt = { text, at: Date.now() }
+  return text
+}
 
 function overLimit(ip: string): boolean {
   const now = Date.now()
@@ -90,7 +126,7 @@ export async function handleChat(request: Request, ip: string): Promise<Response
       body: JSON.stringify({
         model: MODEL,
         max_tokens: MAX_TOKENS,
-        system: PORTFOLIO_CONTEXT,
+        system: await systemPrompt(),
         messages: trimmed,
         stream: true,
       }),

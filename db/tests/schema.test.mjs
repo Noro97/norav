@@ -921,6 +921,24 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0032: the profile facts have one home
+// ---------------------------------------------------------------------------
+{
+  const {
+    rows: [seeded],
+  } = await db.query(`select value from settings where key = 'profile'`)
+  check('the profile is seeded', seeded?.value?.name === 'Norayr Avetisyan', JSON.stringify(seeded?.value?.name))
+  check('the seed holds every role', seeded?.value?.roles?.length === 7, String(seeded?.value?.roles?.length))
+
+  await db.query(`update settings set value = jsonb_set(value, '{availability}', '"Edited by hand"') where key = 'profile'`)
+  await db.exec(readFileSync(join(root, 'migrations', '0032_the_profile_facts_have_one_home.sql'), 'utf8'))
+  const {
+    rows: [after],
+  } = await db.query(`select value from settings where key = 'profile'`)
+  check('running it again keeps a hand edit', after.value.availability === 'Edited by hand')
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))

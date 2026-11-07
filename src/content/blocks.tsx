@@ -69,6 +69,10 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   ecommerce_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'EcommerceDetail'),
   omnigrid_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'OmniGridDetail'),
   proof_detail: named(() => import('@/components/sections/CaseStudyDetail'), 'ProofDetail'),
+
+ // A full case study, with or without a demo above it. Repeatable: the one type
+ // is placed once per study, so it reads its own row.
+ case_study: named(() => import('@/components/sections/CaseStudy'), 'CaseStudy'),
  workflow: named(
     () => import('@/components/sections/WorkflowAutomation/WorkflowAutomation'),
     'WorkflowAutomation',

@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Modal } from './Modal'
+import { isVideo } from '@/lib/media-types'
+import { uploadMedia } from '@/lib/upload-media'
 
 export interface MediaItem {
   id: string
@@ -19,16 +21,22 @@ export interface MediaItem {
  * The library, as an overlay. Opened from an image field, it lists what has
  * been uploaded, takes new files, and hands back the chosen entry.
  *
- * The standalone Media view is the same list without the choosing.
+ * The standalone Media view is the same list without the choosing. A video field
+ * lists the videos, and every other field lists the rest: a clip chosen for an
+ * image field would render as a broken picture.
  */
 export function MediaPicker({
+  accept,
   onSelect,
   onClose,
 }: {
+  accept?: 'video'
   onSelect: (item: MediaItem) => void
   onClose: () => void
 }) {
   const [items, setItems] = useState<MediaItem[]>([])
+  const [storage, setStorage] = useState('')
+  const [progress, setProgress] = useState<number | null>(null)
   const [busy, setBusy] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -42,6 +50,7 @@ export function MediaPicker({
     }
     const body = await response.json()
     setItems(body.data.media)
+    setStorage(body.data.storage)
     setBusy(false)
   }, [])
 
@@ -63,12 +72,10 @@ export function MediaPicker({
     setError(null)
 
     for (const file of Array.from(files)) {
-      const form = new FormData()
-      form.append('file', file)
-      const response = await fetch('/api/admin/media', { method: 'POST', body: form })
-      if (!response.ok) {
-        const body = await response.json().catch(() => null)
-        setError(body?.error?.message ?? `Could not upload ${file.name}.`)
+      const result = await uploadMedia(file, { storage, onProgress: setProgress })
+      setProgress(null)
+      if (!result.ok) {
+        setError(result.message)
         break
       }
     }
@@ -82,6 +89,8 @@ export function MediaPicker({
     await fetch(`/api/admin/media/${item.id}`, { method: 'DELETE' })
     await load()
   }
+
+  const shown = items.filter((item) => isVideo(item.mime) === (accept === 'video'))
 
   return (
     <Modal
@@ -101,7 +110,7 @@ export function MediaPicker({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*,application/pdf"
+        accept={accept === 'video' ? 'video/mp4,video/webm' : 'image/*,application/pdf'}
         multiple
         hidden
         onChange={(event) => {
@@ -113,15 +122,19 @@ export function MediaPicker({
       {error && <div className="status err">{error}</div>}
 
       {busy ? (
-        <p className="subtle">Working…</p>
-      ) : items.length === 0 ? (
+        <p className="subtle">{progress === null ? 'Working…' : `Uploading: ${progress}%`}</p>
+      ) : shown.length === 0 ? (
         <p className="subtle">Nothing uploaded yet.</p>
       ) : (
         <ul className="media-grid">
-          {items.map((item) => (
+          {shown.map((item) => (
             <li key={item.id}>
               <button type="button" className="media-card" onClick={() => onSelect(item)}>
-                <img src={item.url} alt="" loading="lazy" />
+                {isVideo(item.mime) ? (
+                  <video src={item.url} preload="metadata" muted playsInline />
+                ) : (
+                  <img src={item.url} alt="" loading="lazy" />
+                )}
                 <span className="media-meta">
                   {item.width && item.height ? `${item.width}×${item.height}` : item.mime}
                 </span>

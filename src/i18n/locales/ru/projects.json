@@ -109,5 +109,12 @@
   "proof.result.xpGained": "+{{count}} XP",
   "proof.result.premium": "2x Премиум",
   "proof.result.share": "Поделиться в Telegram",
-  "proof.windowLabel": "verification.pipeline"
+  "proof.windowLabel": "verification.pipeline",
+
+  "caseStudy.context": "Контекст",
+  "caseStudy.problem": "Проблема",
+  "caseStudy.decisions": "Решения",
+  "caseStudy.outcome": "Результат",
+  "caseStudy.retro": "Что я сделал бы иначе",
+  "video.play": "Воспроизвести видео: {{title}}"
 }

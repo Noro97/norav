@@ -1,4 +1,6 @@
-import { NORAV_LOGO } from '@norav/content-schema'
+// The file, not the package: a value from the package's index brings zod and every
+// block schema into the chunk that loads first.
+import { NORAV_LOGO } from '@norav/content-schema/brand'
 
 const FILL = {
   // The letters follow the text colour of wherever the logo sits.

@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState } from 'react'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import { useProfile } from '@/content/useProfile'
 import { toneOf, type Tone } from '@/content/accent'
 import { EffectCard } from '@/components/ui/effects/EffectCard'
 import type { AboutContent, AboutSettings } from '@norav/content-schema'
@@ -57,6 +58,7 @@ function needsLeadingSpace(text: string): boolean {
 
 export function AboutHero() {
   const block = useBlock<AboutContent, AboutSettings>('about')
+  const profile = useProfile()
   const sectionRef = useRef<HTMLDivElement>(null)
 
   const [emailCopied, setEmailCopied] = useState<{ x: number; y: number } | null>(null)
@@ -89,7 +91,7 @@ export function AboutHero() {
                 <div className="relative w-full aspect-[3/4] overflow-hidden">
                   <img
                     src={settings.photo}
-                    alt="Norayr Avetisyan"
+                    alt={profile.name}
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
                   />
