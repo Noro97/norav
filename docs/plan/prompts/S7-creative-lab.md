@@ -35,6 +35,7 @@ From this repo:
 - The main site's `vercel.json` has a catch-all rewrite to `index.html`. A `/lab` rewrite must come before it, pointing at the Lab's Vercel deployment.
 - The Lab's Vite `base` must become `/lab/`, including assets and workers.
 - Exhibits use `document.body` in 8 places, and `eyewear` and `health` need `ToastProvider` from the host. These matter only for exhibits you keep.
+- **Skills:** this repo doesn't load the Norav project's skills, so read them from `~/Desktop/projects/webapp/.claude/skills/<name>/SKILL.md`. Use `animation-performance` for the smoothness check in task 2, `performance` for the asset sizes, and `accessibility` for task 5.
 
 ## 5. Rules
 

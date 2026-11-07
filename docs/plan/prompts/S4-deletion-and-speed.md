@@ -31,6 +31,11 @@ You're removing the imported kit and everything else the site no longer uses, th
 - `scripts/port-portfolio-kit-css.mjs` regenerates `src/styles/portfolio-kit.css`.
 - Manual chunks are in `vite.config.ts`. Check `modulepreload` links in the built `index.html`.
 - `vercel.json` rewrites everything to `index.html`, but real files win, so prerendered pages serve directly.
+- **Skills:**
+  - Task 7: `remove-animations`, on the hiring path only and never inside a widget. Task 5 already approves removing dependencies, so its ask-first rule doesn't apply to those.
+  - Tasks 6 and 10: `performance` and `core-web-vitals`. D11's LCP target is stricter than theirs. Analytics is a non-goal, so skip their real-user monitoring advice.
+  - Task 8: `seo`, for metadata and canonicals.
+  - PR B: `vercel-react-best-practices`. Don't add a dependency to satisfy one of its rules.
 
 ## 5. Rules
 

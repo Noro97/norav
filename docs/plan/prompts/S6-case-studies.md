@@ -34,6 +34,7 @@ Each story answers what an interviewer would ask: context, the actual problem, 2
 - **norav.dev capture:** run the site and CMS locally with `npm run dev` and `npm --prefix cms run dev:local`.
 - Take screenshots with the built-in browser, on localhost only. Short clips can be recorded by the owner from a shot list you write.
 - Compress with `ffmpeg` (H.264, muted, no larger than needed) and `cwebp`. Every video gets a poster, and every image gets alt text.
+- **Skills:** for task 10, `core-web-vitals` for video and poster loading, `accessibility` for media and alt text, and `break-ui` on the case-study block, including its empty fields.
 
 ## 5. Rules
 

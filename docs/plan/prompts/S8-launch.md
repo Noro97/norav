@@ -20,6 +20,7 @@ Milestone 1 is met: the site is true, fast and clear, and the repo is safe to re
 ## 4. Reference
 
 - D11 for targets.
+- **Skills:** `web-quality-audit` for the shape of Stage 1, using `STATE.md`'s Lighthouse method, with `seo` for task 6 and `accessibility` for task 7. Use `best-practices` for headers and source maps, and `web-design-guidelines` for a last pass over the UI code. They find problems. They don't widen this session.
 - `gitleaks` isn't installed. Ask before installing it. If the owner declines, write a pattern scan in your scratchpad that covers keys, tokens, database URLs and private keys across `git log --all -p`. Print masked results only.
 
 ## 5. Rules
