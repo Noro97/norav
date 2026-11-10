@@ -2,7 +2,7 @@
 
 - **Status:** Waiting for the owner's one review (D23) and the Proof App footage. PR open without `merge-when-green`
 - **Origin:** `docs/plan/prompts/S6-case-studies.md`, started from `main` at `7a0bdbe`, after #128
-- **Branch:** `claude/reverent-carson-df7387`
+- **Branch:** `claude/s6-case-studies`
 - **Copy:** `.tasks/active/S6-copy.md`, for the one review (D23)
 
 ## What's being done
@@ -31,7 +31,7 @@
 | norav.dev block types | 28 | `BLOCK_REGISTRY` |
 | norav.dev automated checks | 311 site and package tests, 92 CMS tests, 167 schema checks | Node 20, before this session's changes |
 
-All match `facts.md`. Nothing there needed correcting; the new numbers go in when the copy is approved.
+All match `facts.md`. Nothing there needed correcting. The new code-derived numbers for Nova Prism and norav.dev are added to its rows, for the review.
 
 ## Decisions
 
