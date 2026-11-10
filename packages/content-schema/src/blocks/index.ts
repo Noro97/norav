@@ -12,6 +12,8 @@ import { projectsIntroBlock } from './projects-intro'
 import { bentoGridBlock } from './bento-grid'
 import { terminalFooterBlock } from './terminal-footer'
 import { siteFooterBlock } from './site-footer'
+import { workIndexBlock } from './work-index'
+import { stackBlock } from './stack'
 import {
   ecommerceBlock,
   logisticsBlock,
@@ -50,6 +52,8 @@ export const BLOCK_REGISTRY = {
   impact_strip: impactStripBlock,
   capabilities: capabilitiesBlock,
   experience: experienceBlock,
+  stack: stackBlock,
+  work_index: workIndexBlock,
   tech_marquee: techMarqueeBlock,
   bento_grid: bentoGridBlock,
   projects_intro: projectsIntroBlock,
@@ -150,6 +154,8 @@ export {
   experienceBlock,
   techMarqueeBlock,
   contactCtaBlock,
+  workIndexBlock,
+  stackBlock,
 }
 export {
   kitProcessBlock,
@@ -169,6 +175,8 @@ export type { ExperienceBlockContent, ExperienceSettings } from './experience'
 export type { TechMarqueeContent, TechMarqueeSettings } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
 export type { SiteFooterContent, SiteFooterSettings } from './site-footer'
+export type { WorkIndexContent, WorkIndexSettings } from './work-index'
+export type { StackContent, StackSettings } from './stack'
 export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
 export type { CaseStudyContent, CaseStudySettings } from './case-study'
 export type { CaseStudyDetailContent } from './case-study-detail'

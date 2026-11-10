@@ -102,7 +102,10 @@ const SCALE: { step: number; l: number }[] = [
   { step: 100, l: 0.94 },
   { step: 200, l: 0.88 },
   { step: 300, l: 0.79 },
-  { step: 400, l: 0.51 },
+  // The step text in the accent is set in (`--color-text-accent`). Lighter than
+  // the rest of the ramp's spacing, so it clears 4.5:1 on a dark background:
+  // the D5 crimson's 400 reads 5.1:1 on #0a0a1a, where 0.51 gave 4.1.
+  { step: 400, l: 0.6 },
   { step: 500, l: 0.41 },
   { step: 600, l: 0.32 },
   { step: 700, l: 0.22 },

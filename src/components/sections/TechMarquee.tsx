@@ -20,7 +20,7 @@ export function TechMarquee() {
         {names.map((tech, i) => (
           <span
             key={i}
-            className="font-display text-body-large font-semibold text-tertiary-ink/25 hover:text-tertiary-ink/50 transition-colors duration-300 tracking-tight"
+            className="font-display text-body-large font-semibold text-tertiary-ink/55 hover:text-tertiary-ink/50 transition-colors duration-300 tracking-tight"
           >
             {tech}
           </span>

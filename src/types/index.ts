@@ -1,8 +1,3 @@
-export interface SectionConfig {
-  id: string
-  labelKey: string
-}
-
 export interface TerminalLine {
   type: 'input' | 'output'
   content: string

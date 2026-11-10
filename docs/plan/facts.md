@@ -18,7 +18,7 @@ The facts the site reads live in the CMS, in the Profile screen (`settings.profi
 | Availability | Open to senior fullstack roles at remote EU/US product companies |
 | Education | BSc Computer Science, Armenian State University of Economics |
 | Languages | Armenian (native), Russian (fluent), English (professional) |
-| Site description | Building high-performance interfaces at the intersection of engineering precision and visual storytelling. |
+| Site description | Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js. Interfaces at scale, and the systems under them. |
 
 Phone numbers don't go on the site or in this repo.
 
@@ -40,7 +40,7 @@ Phone numbers don't go on the site or in this repo.
 | --- | --- |
 | Fendr | Two web apps in a Turborepo monorepo set up from scratch. Design system of 35 components and 24 patterns. Typed API clients generated from OpenAPI with Orval. 47 test files. No backend or CI/CD claims |
 | Proof App | Built as the only engineer, taken to a closed beta. 40+ Postgres tables with row-level security, 70+ migrations, 16 Edge Functions, 3 pgmq job queues. One Gemini 2.5 Flash pass judges reps, form and liveness. 20-level XP economy. Telegram Stars payments, TON wallet connection |
-| Vizogen | Multi-tenant AI SaaS module, 500+ enterprise users. Designed schemas, row-level security and REST contracts. LCP 4.1s to 1.3s. Integration defects down 80%. Unit-test coverage 22% to 78% in three months |
+| Vizogen | Multi-tenant AI SaaS module, 500+ enterprise users. Designed schemas, row-level security and REST contracts. LCP 4.1s to 1.3s. Integration defects down 80%. Unit-test coverage 22% to 78% in three months. Rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers |
 | MTS Web Services | Design system of 200+ components, used by 15+ teams in a 10M+ MAU ecosystem. Time-to-market down 25%. 3–5 fewer release blockers per sprint across 8 micro-frontend verticals. Visual regression bugs down 60% across 180+ components |
 | Appfox | High-load iGaming portal at 50K+ concurrent sessions with zero state-desync incidents. WebSocket routing in a Node.js BFF. 4 payment and KYC providers behind one typed API layer with idempotency keys. Bundle size down 62%. Median time-to-root-cause 2 hours to 25 minutes |
 | TIRSoft | 8+ SaaS products. API latency down 40% with Apollo GraphQL batching. LCP down 68% (3.5s to 1.1s) on 3 flagship products. Bootstrap two weeks to three days. Mentored 5 developers, 2 promoted to senior |

@@ -41,7 +41,7 @@ export function ProofArchitectureModal({ onClose, origin }: Props) {
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
+            className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/55 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
             aria-label={t('proof.architecture.close')}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -114,7 +114,7 @@ export function ProofArchitectureModal({ onClose, origin }: Props) {
         <div className="mt-6 grid grid-cols-5 gap-2">
           {['1. Upload', '2. Store', '3. Process', '4. Analyze', '5. Update'].map((step, i) => (
             <div key={i} className="text-center">
-              <span className="font-mono text-[11px] text-primary-400/50 tracking-wide">{step}</span>
+              <span className="font-mono text-[11px] text-primary-400 tracking-wide">{step}</span>
             </div>
           ))}
         </div>

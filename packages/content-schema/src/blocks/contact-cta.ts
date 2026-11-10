@@ -7,6 +7,11 @@ const content = z.object({
   title: z.string().min(1).max(160),
   body: z.string().max(400),
   emailLabel: z.string().min(1).max(40),
+  /**
+   * A link to the CV beside the email. Optional with no default: the strip of
+   * fields added in S5 changes nothing a publish writes for a block without them.
+   */
+  cvLabel: z.string().max(40).optional(),
   socials: z
     .array(
       z.object({
@@ -21,6 +26,7 @@ const content = z.object({
 const settings = z.object({
   email: z.string().min(1),
   showAvailability: z.boolean(),
+  cvHref: z.string().max(300).optional(),
 })
 
 export const contactCtaBlock = defineBlock({
@@ -28,7 +34,7 @@ export const contactCtaBlock = defineBlock({
   label: 'Contact',
   tier: 1,
   singleton: true,
-  description: 'Closing call to action with the availability badge and social links.',
+  description: 'The ask: availability, a title, the email, the CV and the social links. Opens /contact, where its title is the H1.',
   content,
   settings,
   defaults: {
@@ -51,6 +57,7 @@ export const contactCtaBlock = defineBlock({
     { field: 'title', control: 'text', label: 'Title' },
     { field: 'body', control: 'textarea', label: 'Body' },
     { field: 'emailLabel', control: 'text', label: 'Button label' },
+    { field: 'cvLabel', control: 'text', label: 'CV link text', help: 'Leave empty for no CV link.' },
     {
       field: 'socials',
       control: 'repeater',
@@ -76,6 +83,7 @@ export const contactCtaBlock = defineBlock({
       ],
     },
     { field: 'email', control: 'text', label: 'Email address', source: 'settings' },
+    { field: 'cvHref', control: 'text', label: 'CV link', source: 'settings' },
     { field: 'showAvailability', control: 'boolean', label: 'Show availability badge', source: 'settings' },
   ],
 })

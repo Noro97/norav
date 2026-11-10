@@ -72,11 +72,11 @@ function AnimatedMetric({ metric, delay }: { metric: DashboardMetric; delay: num
         <motion.span className="font-mono text-heading-medium font-black text-tertiary-ink tabular-nums">
           {display}
         </motion.span>
-        <span className="font-mono text-caption text-tertiary-ink/45 font-medium ml-0.5">{metric.suffix}</span>
+        <span className="font-mono text-caption text-tertiary-ink/55 font-medium ml-0.5">{metric.suffix}</span>
       </div>
 
       {/* Detail line */}
-      <p className="type-label text-tertiary-ink/45 mt-2">
+      <p className="type-label text-tertiary-ink/55 mt-2">
         {metric.detail}
       </p>
 

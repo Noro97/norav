@@ -74,7 +74,7 @@ function StarRating({ rating }: { rating: number }) {
           </svg>
         )
       })}
-      <span className="ml-1.5 font-mono text-caption text-tertiary-ink/40">
+      <span className="ml-1.5 font-mono text-caption text-tertiary-ink/55">
         {rating.toFixed(1)}
       </span>
     </div>
@@ -103,7 +103,7 @@ function StepIndicator({ current }: { current: Step }) {
               }`}
             />
             <span className={`font-mono text-caption tracking-wider uppercase ${
-              i <= stepIndex ? 'text-primary-400/70' : 'text-tertiary-ink/40'
+              i <= stepIndex ? 'text-primary-400' : 'text-tertiary-ink/55'
             }`}>
               {labels[i]}
             </span>
@@ -224,13 +224,13 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-50" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
             </span>
-            <span className="font-mono text-caption text-tertiary-ink/45 uppercase tracking-[0.15em]">
+            <span className="font-mono text-caption text-tertiary-ink/55 uppercase tracking-[0.15em]">
               #{String(product.id).padStart(3, '0')}
             </span>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
+            className="w-8 h-8 rounded-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/55 hover:text-tertiary-ink/60 hover:border-tertiary-ink/15 transition-all duration-200"
             aria-label="Close"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -257,7 +257,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
               >
                 {/* Product gradient area */}
                 <div className={`aspect-[5/2] rounded-xl mb-4 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-tertiary-ink/5 to-transparent'} border border-tertiary-ink/[0.04]`}>
-                  <span className="font-mono text-caption text-tertiary-ink/40 uppercase tracking-wider">
+                  <span className="font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider">
                     {product.category}
                   </span>
                   <span className="font-mono text-body-small text-tertiary-ink/50">
@@ -294,19 +294,19 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                 </div>
 
                 {/* Description */}
-                <p className="mt-3 font-mono text-caption text-tertiary-ink/40 leading-relaxed">
+                <p className="mt-3 font-mono text-caption text-tertiary-ink/55 leading-relaxed">
                   {description}
                 </p>
 
                 {/* Quantity */}
                 <div className="mt-5 flex items-center gap-3">
-                  <span className="font-mono text-caption text-tertiary-ink/40 uppercase tracking-wider">
+                  <span className="font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider">
                     {t('projects:ecommerce.modal.quantity')}
                   </span>
                   <div className="flex items-center gap-0">
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="w-8 h-8 rounded-l-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
+                      className="w-8 h-8 rounded-l-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/55 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
                     >
                       -
                     </button>
@@ -315,7 +315,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                     </div>
                     <button
                       onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
-                      className="w-8 h-8 rounded-r-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
+                      className="w-8 h-8 rounded-r-lg border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.03] flex items-center justify-center text-tertiary-ink/55 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/[0.06] transition-all font-mono text-body-small"
                     >
                       +
                     </button>
@@ -355,7 +355,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-mono text-caption text-tertiary-ink/70">{product.name}</span>
-                      <span className="font-mono text-caption text-tertiary-ink/45 ml-2">x{quantity}</span>
+                      <span className="font-mono text-caption text-tertiary-ink/55 ml-2">x{quantity}</span>
                     </div>
                     <span className="font-mono text-body-small text-primary-400 font-medium">${total}</span>
                   </div>
@@ -364,7 +364,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                 {/* Payment form */}
                 <div className="space-y-3">
                   <div>
-                    <label className="block font-mono text-caption text-tertiary-ink/45 uppercase tracking-wider mb-1.5">
+                    <label className="block font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-1.5">
                       {t('projects:ecommerce.modal.cardNumber')}
                     </label>
                     <input
@@ -373,11 +373,11 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                       onChange={(e) => setForm((f) => ({ ...f, cardNumber: formatCardNumber(e.target.value) }))}
                       placeholder="0000 0000 0000 0000"
                       maxLength={19}
-                      className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                      className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/55 focus:border-primary-500/40 focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-caption text-tertiary-ink/45 uppercase tracking-wider mb-1.5">
+                    <label className="block font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-1.5">
                       {t('projects:ecommerce.modal.cardName')}
                     </label>
                     <input
@@ -385,12 +385,12 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                       value={form.cardName}
                       onChange={(e) => setForm((f) => ({ ...f, cardName: e.target.value }))}
                       placeholder="John Doe"
-                      className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                      className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/55 focus:border-primary-500/40 focus:outline-none transition-colors"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-mono text-caption text-tertiary-ink/45 uppercase tracking-wider mb-1.5">
+                      <label className="block font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-1.5">
                         {t('projects:ecommerce.modal.expiry')}
                       </label>
                       <input
@@ -399,11 +399,11 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                         onChange={(e) => setForm((f) => ({ ...f, expiry: formatExpiry(e.target.value) }))}
                         placeholder="MM/YY"
                         maxLength={5}
-                        className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                        className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/55 focus:border-primary-500/40 focus:outline-none transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-caption text-tertiary-ink/45 uppercase tracking-wider mb-1.5">
+                      <label className="block font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-1.5">
                         {t('projects:ecommerce.modal.cvv')}
                       </label>
                       <input
@@ -412,7 +412,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
                         onChange={(e) => setForm((f) => ({ ...f, cvv: e.target.value.replace(/\D/g, '').slice(0, 3) }))}
                         placeholder="***"
                         maxLength={3}
-                        className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/45 focus:border-primary-500/40 focus:outline-none transition-colors"
+                        className="w-full bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-lg px-3 py-2.5 font-mono text-body-small text-tertiary-ink/80 placeholder:text-tertiary-ink/55 focus:border-primary-500/40 focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -523,7 +523,7 @@ function ConfirmationStep({
       <h3 className="font-mono text-body-large text-tertiary-ink/90 font-medium">
         {t('projects:ecommerce.modal.orderConfirmed')}
       </h3>
-      <p className="font-mono text-caption text-tertiary-ink/45 mt-1 tracking-wider">
+      <p className="font-mono text-caption text-tertiary-ink/55 mt-1 tracking-wider">
         {t('projects:ecommerce.modal.orderId', { id: orderId })}
       </p>
 
@@ -532,7 +532,7 @@ function ConfirmationStep({
         <div className="flex items-center justify-between">
           <div className="text-left">
             <span className="font-mono text-caption text-tertiary-ink/70 block">{product.name}</span>
-            <span className="font-mono text-caption text-tertiary-ink/45">
+            <span className="font-mono text-caption text-tertiary-ink/55">
               {quantity} {t('projects:ecommerce.modal.items', { count: quantity })}
             </span>
           </div>
@@ -540,7 +540,7 @@ function ConfirmationStep({
         </div>
       </div>
 
-      <p className="font-mono text-caption text-tertiary-ink/45 mt-4">
+      <p className="font-mono text-caption text-tertiary-ink/55 mt-4">
         {t('projects:ecommerce.modal.thankYou')}
       </p>
 

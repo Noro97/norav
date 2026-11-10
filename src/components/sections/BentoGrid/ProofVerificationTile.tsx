@@ -135,7 +135,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
 
           {/* Label */}
           <div className="flex items-center gap-3 mb-5">
-            <span className="type-label text-primary-400/70">
+            <span className="type-label text-primary-400">
               {t('proof.verification.label')}
             </span>
             <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
@@ -144,7 +144,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
           {/* Title */}
           <h3 className="font-display text-heading-small font-black text-tertiary-ink mb-2 group-hover:text-primary-50 transition-colors duration-300">
             {copy?.title ?? ''}
-            <span className="text-primary-400/60 text-body-regular font-normal ml-2">
+            <span className="text-primary-400 text-body-regular font-normal ml-2">
               — {t('proof.verification.subtitle')}
             </span>
           </h3>
@@ -155,17 +155,17 @@ export function ProofVerificationTile({ className = '' }: Props) {
           </p>
 
           {/* Challenge & Complexity */}
-          <p className="text-caption text-tertiary-ink/40 leading-relaxed mb-1 max-w-lg italic">
+          <p className="text-caption text-tertiary-ink/55 leading-relaxed mb-1 max-w-lg italic">
             {t('projects.proof.challenge')}
           </p>
-          <p className="text-caption text-tertiary-ink/40 leading-relaxed mb-6 max-w-lg italic">
+          <p className="text-caption text-tertiary-ink/55 leading-relaxed mb-6 max-w-lg italic">
             {t('projects.proof.complexity')}
           </p>
 
           {/* AI Analysis Logs */}
           <div className="mb-6 min-h-[80px] rounded-lg bg-tertiary-shade/40 border border-primary-500/10 p-3 font-mono text-caption leading-relaxed">
             {logLines.map((line, i) => (
-              <div key={i} className="text-primary-400/80">
+              <div key={i} className="text-primary-400">
                 {line.text}
                 {!line.done && (
                   <span className="animate-cursor-blink text-primary-300">|</span>
@@ -173,7 +173,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
               </div>
             ))}
             {logLines.length === 0 && (
-              <span className="text-tertiary-ink/40">{'>'} Hover to start AI analysis...</span>
+              <span className="text-tertiary-ink/55">{'>'} Hover to start AI analysis...</span>
             )}
           </div>
 
@@ -182,7 +182,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
             {PROOF_PROJECT.techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
+                className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/55 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
               >
                 {tech}
               </span>
@@ -193,7 +193,7 @@ export function ProofVerificationTile({ className = '' }: Props) {
           <MagneticButton
             onClick={(e) => setArchModalOrigin(originOf(e))}
             aria-label={copy?.cta ?? ''}
-            className="type-label inline-flex items-center gap-2.5 text-primary-400/80 group/btn hover:text-primary-300 transition-colors duration-300"
+            className="type-label inline-flex items-center gap-2.5 text-primary-400 group/btn hover:text-primary-300 transition-colors duration-300"
           >
             <span className="relative">
               {copy?.cta ?? ''}

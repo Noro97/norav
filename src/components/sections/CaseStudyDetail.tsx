@@ -37,7 +37,7 @@ export function CaseStudyDetail({ type }: Props) {
   return (
     <section
       ref={sectionRef}
-      className="relative px-gutter-x py-24"
+      className="relative px-gutter-x py-20 md:py-24"
     >
       <div className="relative z-10 w-full max-w-content mx-auto">
         {sectionLabel && <span className="label-mono">{sectionLabel}</span>}
@@ -46,7 +46,7 @@ export function CaseStudyDetail({ type }: Props) {
             {title}
           </h2>
         )}
-        {intro && <p className="text-tertiary-ink/40 text-body-regular max-w-2xl leading-relaxed">{intro}</p>}
+        {intro && <p className="text-tertiary-ink/70 text-body-regular max-w-2xl leading-relaxed">{intro}</p>}
 
         {metrics.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
@@ -58,35 +58,27 @@ export function CaseStudyDetail({ type }: Props) {
                 <div className="font-mono text-heading-medium text-primary-400 tabular-nums">
                   {metric.value}
                 </div>
-                <div className="text-tertiary-ink/40 text-caption mt-2 leading-snug">{metric.label}</div>
+                <div className="text-tertiary-ink/55 text-caption mt-2 leading-snug">{metric.label}</div>
               </div>
             ))}
           </div>
         )}
 
         {decisions.length > 0 && (
-          <ol className="mt-12 space-y-px">
+          // Not numbered: these are points about one demo, not steps in an order.
+          <ul className="mt-10 border-t border-tertiary-ink/15">
             {decisions.map((decision, index) => (
               <li
                 key={index}
-                className="detail-item group relative border-t border-tertiary-ink/[0.06] py-7 transition-colors duration-300 hover:border-primary-500/20 last:border-b"
+                className="detail-item grid gap-2 border-b border-tertiary-ink/15 py-6 md:grid-cols-12 md:gap-8"
               >
-                <div className="flex gap-5 md:gap-8">
-                  <span className="label-mono shrink-0 pt-1 text-primary-400/50 tabular-nums">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-tertiary-ink font-semibold text-body-regular md:text-body-large">
-                      {decision.title}
-                    </h3>
-                    <p className="text-tertiary-ink/40 text-body-small md:text-body-regular leading-relaxed mt-2">
-                      {decision.body}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="md:col-span-4 text-tertiary-ink font-semibold text-body-regular">{decision.title}</h3>
+                <p className="md:col-span-8 text-tertiary-ink/70 text-body-regular leading-relaxed max-w-[62ch]">
+                  {decision.body}
+                </p>
               </li>
             ))}
-          </ol>
+          </ul>
         )}
       </div>
     </section>

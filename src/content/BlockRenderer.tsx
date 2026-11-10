@@ -5,7 +5,8 @@ import { SectionLoader } from './SectionLoader'
 import { SITE_SLUG } from './routing'
 
 /**
- * Renders the page in the order the CMS published it.
+ * Renders a page's sections in the order the CMS published it. The chrome page,
+ * `site`, is rendered by the app after every page, outside <main>.
  *
  * Hidden sections never reach the snapshot, so they cost nothing here — not
  * even a chunk request. An unknown type is skipped with a warning instead of
@@ -15,17 +16,10 @@ import { SITE_SLUG } from './routing'
 export function BlockRenderer({ slug }: { slug: string }) {
  const { snapshot } = useContent()
  const page = snapshot.pages.find((candidate) => candidate.slug === slug)
- // Chrome, not content: whatever sits on the page called `site` renders below
- // every page. Without it a footer would belong to one page and six others
- // would end mid-air — the first thing splitting a long scroll into pages
- // takes away, and the least interesting thing to solve by hand seven times.
- const chrome = snapshot.pages.find((candidate) => candidate.slug === SITE_SLUG)
  // A slug the CMS has not published. The caller decides what that looks like;
  // rendering nothing here would be a blank page with a working header, which
  // reads as a bug rather than as an address that does not exist.
  if (!page) return null
-
- const sections = slug === SITE_SLUG ? page.blocks : [...page.blocks, ...(chrome?.blocks ?? [])]
 
  if (page.blocks.length === 0) {
  // Only reachable in preview: a reader gets a 404 instead. The person
@@ -34,7 +28,7 @@ export function BlockRenderer({ slug }: { slug: string }) {
  return (
       <section className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
         <span className="label-mono">/{slug}</span>
-        <p className="text-tertiary-ink/40 text-body-regular max-w-md">
+        <p className="text-tertiary-ink/55 text-body-regular max-w-md">
           This page has no sections yet. Add one in the CMS, or move one here from another page.
         </p>
       </section>
@@ -43,7 +37,7 @@ export function BlockRenderer({ slug }: { slug: string }) {
 
  return (
     <>
-      {sections.map((block) => {
+      {page.blocks.map((block, index) => {
  const Component = BLOCK_COMPONENTS[block.type]
 
  if (!Component) {
@@ -54,13 +48,17 @@ export function BlockRenderer({ slug }: { slug: string }) {
         }
 
  // `data-section` names the section for code on this page that needs to
- // reach it — a bento tile whose case study is further down. It is not an id
- // and never goes in the address: pages are reached by route. The wrapper
- // is `display: contents`, so it adds no box and changes no layout.
+ // reach it. It is not an id and never goes in the address: pages are
+ // reached by route. The wrapper is `display: contents`, so it adds no box
+ // and changes no layout.
+ //
+ // The section that opens a page carries its H1, whatever type it is: a
+ // contact block is the heading of /contact and a section further down
+ // the home page. The chrome page opens nothing.
  return (
           <div key={block.id} className="contents" data-section={block.anchorId ?? undefined}>
             <Suspense fallback={<SectionLoader />}>
-              <Component blockId={block.id} />
+              <Component blockId={block.id} first={index === 0 && slug !== SITE_SLUG} />
             </Suspense>
           </div>
         )

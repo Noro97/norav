@@ -17,10 +17,10 @@ const TIERS = ['common', 'rare', 'epic', 'legendary'] as const
 
 
 const RARITY_STYLES: Record<string, string> = {
-  common: 'border-tertiary-ink/10 text-tertiary-ink/40',
+  common: 'border-tertiary-ink/10 text-tertiary-ink/55',
   rare: 'border-tertiary-ink/15 text-tertiary-ink/50',
-  epic: 'border-primary-500/25 text-primary-400/50',
-  legendary: 'border-primary-500/40 text-primary-400/70 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-primary-500)_15%,_transparent)]',
+  epic: 'border-primary-500/25 text-primary-400',
+  legendary: 'border-primary-500/40 text-primary-400 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-primary-500)_15%,_transparent)]',
 }
 
 
@@ -51,7 +51,7 @@ function AnimatedXP() {
       <motion.span className="font-mono text-heading-small font-black text-tertiary-ink tabular-nums">
         {display}
       </motion.span>
-      <span className="font-mono text-caption text-tertiary-ink/40 font-medium">XP</span>
+      <span className="font-mono text-caption text-tertiary-ink/55 font-medium">XP</span>
     </div>
   )
 }
@@ -97,7 +97,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Left: Dual Points + Level */}
           <div>
-            <p className="type-label text-tertiary-ink/40 mb-3">
+            <p className="type-label text-tertiary-ink/55 mb-3">
               {t('proof.gamification.dualPoints')}
             </p>
 
@@ -105,7 +105,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
             <div className="mb-2.5">
               <div className="flex items-center justify-between mb-1">
                 <span className="font-mono text-caption text-tertiary-ink/50">{t('proof.gamification.physio')}</span>
-                <span className="font-mono text-caption text-tertiary-ink/45">72%</span>
+                <span className="font-mono text-caption text-tertiary-ink/55">72%</span>
               </div>
               <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
@@ -120,8 +120,8 @@ export function ProofGamificationTile({ className = '' }: Props) {
             {/* Neuro bar */}
             <div className="mb-4">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-caption text-primary-400/60">{t('proof.gamification.neuro')}</span>
-                <span className="font-mono text-caption text-tertiary-ink/45">58%</span>
+                <span className="font-mono text-caption text-primary-400">{t('proof.gamification.neuro')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/55">58%</span>
               </div>
               <div className="h-2 rounded-full bg-tertiary-ink/[0.04] overflow-hidden">
                 <motion.div
@@ -150,14 +150,14 @@ export function ProofGamificationTile({ className = '' }: Props) {
 
             {/* XP Counter */}
             <div className="flex items-center gap-2">
-              <span className="type-label text-tertiary-ink/45">{t('proof.gamification.xpLabel')}</span>
+              <span className="type-label text-tertiary-ink/55">{t('proof.gamification.xpLabel')}</span>
               <AnimatedXP />
             </div>
           </div>
 
           {/* Right: Badge grid */}
           <div>
-            <p className="type-label text-tertiary-ink/40 mb-3">
+            <p className="type-label text-tertiary-ink/55 mb-3">
               {t('proof.gamification.badges')}
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -184,7 +184,7 @@ export function ProofGamificationTile({ className = '' }: Props) {
         </div>
 
         {/* Description */}
-        <p className="type-label text-tertiary-ink/45 mt-4">
+        <p className="type-label text-tertiary-ink/55 mt-4">
           {t('proof.gamification.description')}
         </p>
       </div>

@@ -1,33 +1,33 @@
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import type { ImpactStripContent, ImpactStripSettings } from '@norav/content-schema'
 
 /**
- * The numbers, final from the first frame. A screenshot, a shared link and a
- * recruiter skimming the page all see this, and 80% of a true number is a false one.
+ * The numbers, final from the first frame, each with what it counts and where
+ * it comes from. A screenshot, a shared link and a recruiter skimming the page
+ * all see this, and a number without its source is a counter, not evidence.
  */
-export function ImpactStrip() {
-  const block = useBlock<ImpactStripContent, ImpactStripSettings>('impact_strip')
+export function ImpactStrip({ blockId }: BlockComponentProps) {
+  const block = useBlock<ImpactStripContent, ImpactStripSettings>('impact_strip', blockId)
   if (!block) return null
   const { content } = block
 
   return (
-    <section className="relative px-gutter-x py-16" aria-label={content.label}>
-      <div className="relative z-10 w-full max-w-content mx-auto">
-        <div className="rounded-2xl border border-tertiary-ink/[0.06] bg-gradient-to-br from-tertiary-ink/[0.03] to-transparent backdrop-blur-xl px-6 py-10 md:py-12">
-          <p className="text-center label-mono mb-8">{content.label}</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {content.stats.map((stat, index) => (
-              <div key={index} className="flex flex-col items-center text-center gap-2">
-                <span className="font-display text-heading-large font-black text-tertiary-ink tabular-nums">
-                  {stat.prefix}
-                  {stat.value}
-                  {stat.suffix}
-                </span>
-                <span className="type-label text-tertiary-ink/40">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+    <section className="relative px-gutter-x pb-20 md:pb-28" aria-label={content.label || undefined}>
+      <div className="w-full max-w-content mx-auto">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-tertiary-ink/15">
+          {content.stats.map((stat, index) => (
+            <li key={index} className="flex flex-col gap-2 border-b border-tertiary-ink/15 py-6 sm:pr-8 lg:border-b-0 lg:py-8">
+              <p className="font-display text-heading-large font-black text-tertiary-ink tabular-nums leading-none">
+                {stat.prefix}
+                {stat.value}
+                {stat.suffix}
+              </p>
+              <p className="text-body-small text-tertiary-ink/80 leading-snug max-w-[28ch]">{stat.label}</p>
+              {stat.source && <p className="text-caption text-tertiary-ink/55">{stat.source}</p>}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )

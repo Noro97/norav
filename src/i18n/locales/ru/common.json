@@ -1,12 +1,6 @@
 {
-  "nav.home": "Главная",
-  "nav.about": "Обо мне",
-  "nav.experience": "Опыт",
-  "nav.skills": "Навыки",
-  "nav.overview": "Обзор",
-  "nav.projects": "Проекты",
-  "nav.workflows": "Автоматизация",
-  "nav.contact": "Контакт",
+  "a11y.skip": "Перейти к содержанию",
+  "nav.label": "Основное меню",
   "buttons.clearFilters": "Сбросить фильтры",
   "buttons.resetAll": "Сбросить всё",
   "status.live": "live",
@@ -16,11 +10,12 @@
   "labels.delivery": "Доставка",
   "labels.changes": "изменений",
   "labels.commands": "команд",
-  "footer.builtWith": "Создано с React + GSAP + TypeScript",
   "notFound.title": "Такой страницы нет",
   "notFound.body": "Адрес неверный, либо страницу сняли с публикации.",
   "notFound.home": "Вернуться на сайт",
   "writing.back": "Все заметки",
   "writing.minutes": "{{count}} мин чтения",
-  "writing.englishOnly": "Эта заметка на английском; русской версии пока нет."
+  "writing.englishOnly": "Эта заметка на английском; русской версии пока нет.",
+  "contact.copy": "Скопировать адрес",
+  "contact.copied": "Скопировано"
 }

@@ -57,12 +57,12 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
             </div>
             <h3 className="text-display-sm font-black text-tertiary-ink tracking-tight">
               {shipment.id}
-              <span className="text-tertiary-ink/45 text-body-small font-normal ml-2">({shipment.code})</span>
+              <span className="text-tertiary-ink/55 text-body-small font-normal ml-2">({shipment.code})</span>
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-tertiary-ink/[0.06] transition-colors text-tertiary-ink/40 hover:text-tertiary-ink/70"
+            className="p-1.5 rounded-lg hover:bg-tertiary-ink/[0.06] transition-colors text-tertiary-ink/55 hover:text-tertiary-ink/70"
             aria-label="Close"
           >
             <X size={16} />
@@ -91,7 +91,7 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
 
         {/* Tracking timeline */}
         <div className="mb-2">
-          <div className="font-mono text-caption text-tertiary-ink/45 uppercase tracking-wider mb-4">
+          <div className="font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-4">
             Tracking Timeline
           </div>
           <div className="flex items-center gap-1">
@@ -116,7 +116,7 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
                       })()}
                     </div>
                     <span className={`text-caption font-mono mt-1.5 text-center leading-tight ${
-                      isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/35'
+                      isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/55'
                     }`}>
                       {step.label}
                     </span>
@@ -142,7 +142,7 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
 function DetailField({ label, value, valueClass = 'text-tertiary-ink/70' }: { label: string; value: string; valueClass?: string }) {
   return (
     <div className="rounded-xl bg-tertiary-ink/[0.02] border border-tertiary-ink/[0.06] p-3">
-      <div className="text-caption font-mono text-tertiary-ink/40 uppercase tracking-wider mb-1">{label}</div>
+      <div className="text-caption font-mono text-tertiary-ink/55 uppercase tracking-wider mb-1">{label}</div>
       <div className={`text-body-small font-mono ${valueClass}`}>{value}</div>
     </div>
   )

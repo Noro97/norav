@@ -19,6 +19,28 @@
     background: var(--color-background);
     color: var(--color-foreground);
   }
+  /* One focus style, for the keyboard only, in the text accent so it clears 3:1. */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-400);
+    outline-offset: 3px;
+  }
+}
+
+/* First in the tab order on every page, and invisible until it has focus. */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-tertiary-ink);
+  color: var(--color-background);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus-visible {
+  transform: none;
 }
 
 ::-webkit-scrollbar {
@@ -120,7 +142,8 @@ html { scroll-behavior: smooth; }
    `type-label` is generated with the tokens; this is the one site-specific
    combination — the label in the brand colour, the section eyebrow. */
 
-/* The label in the brand colour — the section eyebrow. */
+/* The section eyebrow. Ink, not the accent: the D5 crimson reads 2.9:1 as text
+   on the D5 background, and an accent on every eyebrow is no longer an accent. */
 .label-mono {
   font-family: var(--font-mono);
   font-size: var(--text-label);
@@ -128,7 +151,7 @@ html { scroll-behavior: smooth; }
   letter-spacing: var(--text-label--letter-spacing);
   text-transform: uppercase;
   font-weight: var(--font-weight-medium);
-  color: var(--color-primary-500);
+  color: color-mix(in srgb, var(--color-tertiary-ink) 62%, transparent);
 }
 
 /* ===== PRIMARY GLOW ===== */
@@ -178,12 +201,6 @@ html { scroll-behavior: smooth; }
 }
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
-}
-
-/* The "copied" mark floating off the about page's contact line. */
-@keyframes copiedPop {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-30px) scale(0.7); }
 }
 
 /* ===== CASE STUDY CARD — shared surface treatment for all project widgets ===== */
@@ -371,7 +388,7 @@ html { position: relative; }
 }
 .post-body strong { color: var(--color-tertiary-ink); font-weight: 700; }
 .post-body a {
-  color: var(--color-primary-500);
+  color: var(--color-primary-400);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

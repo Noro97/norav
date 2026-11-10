@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-table'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
@@ -36,7 +37,9 @@ const CACHE_COLORS: Record<string, string> = {
 // render-time effect below then sets state again until the data arrives.
 const NO_SHIPMENTS: ShipmentRecord[] = []
 
-function OmniGridContent() {
+function OmniGridContent({ first }: BlockComponentProps) {
+  // The demo's name is the page's H1 when the demo opens the page.
+  const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('omnigrid')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
@@ -107,10 +110,10 @@ function OmniGridContent() {
         {/* Header */}
         <div className="mb-12">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-4 mb-5">
+          <Title className="font-display text-heading-large font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
-          </h2>
-          <p className="text-tertiary-ink/45 text-body-regular md:text-body-large max-w-xl leading-relaxed">
+          </Title>
+          <p className="text-tertiary-ink/55 text-body-regular md:text-body-large max-w-xl leading-relaxed">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
@@ -129,7 +132,7 @@ function OmniGridContent() {
           <div className="omnigrid-sidebar flex flex-col gap-4">
             {/* Cache Status */}
             <div className="case-study-card p-5">
-              <h4 className="type-label text-tertiary-ink/40 mb-4">
+              <h4 className="type-label text-tertiary-ink/55 mb-4">
                 {t('projects:omnigrid.cache.status')}
               </h4>
               <div className="flex items-center gap-3 mb-4">
@@ -142,7 +145,7 @@ function OmniGridContent() {
                   </svg>
                 )}
               </div>
-              <div className="space-y-2 text-caption font-mono text-tertiary-ink/45">
+              <div className="space-y-2 text-caption font-mono text-tertiary-ink/55">
                 <div className="flex justify-between">
                   <span>{t('projects:omnigrid.cache.lastFetch')}</span>
                   <span className="text-tertiary-ink/50">
@@ -154,7 +157,7 @@ function OmniGridContent() {
 
             {/* Cache-Hit visualization */}
             <div className="case-study-card p-5">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 Cache-Hit Flow
               </h4>
               <svg viewBox="0 0 240 80" className="w-full">
@@ -192,7 +195,7 @@ function OmniGridContent() {
 
             {/* Engineering Log */}
             <div className="case-study-card p-5">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 {t('projects:omnigrid.engineering.title')}
               </h4>
 
@@ -200,7 +203,7 @@ function OmniGridContent() {
                 <h5 className="text-caption font-semibold text-secondary-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.headlessVsComponent')}
                 </h5>
-                <p className="text-caption text-tertiary-ink/45 leading-relaxed">
+                <p className="text-caption text-tertiary-ink/55 leading-relaxed">
                   {t('projects:omnigrid.engineering.headlessDesc')}
                 </p>
               </div>
@@ -211,7 +214,7 @@ function OmniGridContent() {
                 <h5 className="text-caption font-semibold text-secondary-400/80 mb-1.5">
                   {t('projects:omnigrid.engineering.serverVsClient')}
                 </h5>
-                <p className="text-caption text-tertiary-ink/45 leading-relaxed">
+                <p className="text-caption text-tertiary-ink/55 leading-relaxed">
                   {t('projects:omnigrid.engineering.serverDesc')}
                 </p>
               </div>
@@ -224,7 +227,7 @@ function OmniGridContent() {
             {/* Filter bar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
               <div className="relative flex-1 max-w-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary-ink/40">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary-ink/55">
                   <circle cx="11" cy="11" r="8" />
                   <path d="M21 21l-4.35-4.35" />
                 </svg>
@@ -233,18 +236,18 @@ function OmniGridContent() {
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
                   placeholder={t('projects:omnigrid.filterPlaceholder')}
-                  className="w-full pl-9 pr-4 py-2.5 text-caption font-mono text-tertiary-ink/70 bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-xl placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors backdrop-blur-sm"
+                  className="w-full pl-9 pr-4 py-2.5 text-caption font-mono text-tertiary-ink/70 bg-tertiary-ink/[0.03] border border-tertiary-ink/[0.08] rounded-xl placeholder:text-tertiary-ink/55 focus:outline-none focus:border-secondary-500/30 transition-colors backdrop-blur-sm"
                 />
               </div>
 
               {/* Stats bar */}
-              <div className="flex items-center gap-3 text-caption font-mono text-tertiary-ink/45">
+              <div className="flex items-center gap-3 text-caption font-mono text-tertiary-ink/55">
                 <span>{rows.length.toLocaleString()} rows</span>
-                <span className="text-tertiary-ink/10">|</span>
+                <span aria-hidden="true" className="text-tertiary-ink/55">|</span>
                 <span>{sorting.length} sorted</span>
-                <span className="text-tertiary-ink/10">|</span>
+                <span aria-hidden="true" className="text-tertiary-ink/55">|</span>
                 <span>{renderTime < 1 ? '<1' : renderTime}ms render</span>
-                <span className="text-tertiary-ink/10">|</span>
+                <span aria-hidden="true" className="text-tertiary-ink/55">|</span>
                 <span className={`case-study-pill py-0.5 text-caption ${CACHE_COLORS[cacheStatus]}`}>
                   {cacheStatus}
                 </span>
@@ -260,7 +263,7 @@ function OmniGridContent() {
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
                     style={{ width: header.getSize(), flexShrink: 0 }}
-                    className="type-label px-3 py-3 text-left font-normal text-tertiary-ink/40 cursor-pointer hover:text-secondary-400/80 transition-colors select-none truncate"
+                    className="type-label px-3 py-3 text-left font-normal text-tertiary-ink/55 cursor-pointer hover:text-secondary-400/80 transition-colors select-none truncate"
                   >
                     <span className="flex items-center gap-1">
                       {flexRender(header.column.columnDef.header, header.getContext())}
@@ -323,10 +326,10 @@ function OmniGridContent() {
   )
 }
 
-export function OmniGridWidget() {
+export function OmniGridWidget({ first }: BlockComponentProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <OmniGridContent />
+      <OmniGridContent first={first} />
     </QueryClientProvider>
   )
 }

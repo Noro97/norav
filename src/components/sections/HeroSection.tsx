@@ -1,73 +1,126 @@
-import { Fragment, useRef } from 'react'
+import { Fragment } from 'react'
+import { Link } from 'react-router'
 import { useBlock } from '@/content/ContentProvider'
-import { toneOf, type Tone } from '@/content/accent'
+import { toneOf } from '@/content/accent'
 import type { HeroContent, HeroSettings } from '@norav/content-schema'
-
-/** How a tagline segment is painted. */
-const TONE_CLASS: Record<Tone, string> = {
-  main: '',
-  highlight: 'text-primary-400',
-}
 
 /** Segments are space-joined, except one that opens with punctuation. */
 function needsLeadingSpace(text: string): boolean {
   return !/^[.,;:!?)\]]/.test(text)
 }
 
+/** The hero published before S5: a name for the H1 and a tagline under it. */
+interface PreviousHero {
+  subtitle?: string
+  name?: { first: { highlight: string; rest: string }; last: { highlight: string; rest: string } }
+  tagline?: HeroContent['headline']
+}
+
 /**
- * The first thing on the site, and the LCP element — so it is static. The
- * per-character reveal, the scramble on the subtitle, the parallax and the
- * scroll-progress feed to the 3D mark are all gone with the mark: a name that
- * takes nine seconds to finish typing itself is a name a recruiter has already
- * scrolled past.
+ * The hero as the current shape, from whichever shape was published.
+ *
+ * The code ships a few minutes before the copy it was written for, and in that
+ * window the published hero is the old one. It reads as the old hero did, set
+ * in the new layout, rather than as an empty heading. The follow-up to S5
+ * removes this once the new copy is live.
+ */
+function current(content: HeroContent & PreviousHero): HeroContent {
+  if (content.headline) return content
+  const { first, last } = content.name ?? { first: { highlight: '', rest: '' }, last: { highlight: '', rest: '' } }
+  return {
+    eyebrow: content.subtitle ?? '',
+    headline: [{ text: `${first.highlight}${first.rest} ${last.highlight}${last.rest}`.trim(), accent: 'main' }],
+    sub: (content.tagline ?? []).map((run) => run.text).join(' ').replace(/ ([.,;:!?])/g, '$1'),
+    primaryLabel: '',
+    primaryHref: '',
+    secondaryLabel: '',
+    secondaryHref: '',
+    availability: '',
+  }
+}
+
+/** A route stays in the app; anything else is an ordinary link. */
+function Action({ href, className, children }: { href: string; className: string; children: React.ReactNode }) {
+  return href.startsWith('/') ? (
+    <Link to={href} className={className}>
+      {children}
+    </Link>
+  ) : (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  )
+}
+
+/**
+ * The first screen, and the LCP element, so nothing in it moves or waits.
+ *
+ * A screener should get who, at what level, what proof and how to reach me
+ * without scrolling: the name and role, the thesis as the one H1, a line of
+ * proof with its sources, two ways forward, and whether I'm available.
  */
 export function HeroSection() {
-  const hero = useBlock<HeroContent, HeroSettings>('hero')
-  const containerRef = useRef<HTMLElement>(null)
-
-  // Every hook has run by here, so the block being absent — hidden in the CMS —
-  // can short-circuit the render.
+  const hero = useBlock<HeroContent & PreviousHero, HeroSettings>('hero')
   if (!hero) return null
-  const { content, settings } = hero
-  const { first, last } = content.name
+  const content = current(hero.content)
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[80vh] flex flex-col items-center justify-center px-gutter-x pb-32 md:pb-0 text-center"
-    >
-      <div className="relative z-10 w-full max-w-content mx-auto pt-[20vh]">
-        <p className="type-label md:text-body-small text-primary-500 mb-6">{content.subtitle}</p>
+    <section className="relative px-gutter-x pt-36 pb-20 md:pt-44 md:pb-28">
+      <div className="w-full max-w-content mx-auto">
+        <p className="text-body-regular text-tertiary-ink/70 max-w-3xl">{content.eyebrow}</p>
 
-        <h1
-          className="font-display text-heading-display font-black text-tertiary-ink mb-8 pr-[0.05em]"
-          style={{ fontFamily: 'var(--font-family-display)' }}
-        >
-          <span className="text-primary-500">{first.highlight}</span>
-          {first.rest}
-          {/* One word per line on a phone; the break disappears once both fit. */}
-          <br className="min-[425px]:hidden" />
-          <span className="hidden min-[425px]:inline">{' '}</span>
-          <span className="text-primary-500">{last.highlight}</span>
-          {last.rest}
+        <h1 className="font-display text-heading-display font-black text-tertiary-ink mt-6 max-w-[16ch] text-balance leading-[0.98] tracking-[-0.02em]">
+          {content.headline.map((run, index) =>
+            toneOf(run.accent) === 'highlight' ? (
+              // Set apart on its own line, in the quieter tone, rather than in
+              // the accent: the thesis is one sentence, and the colour is spent
+              // on the button below.
+              <Fragment key={index}>
+                {/* The space keeps the words apart for a screen reader; the line break is visual. */}
+                {index > 0 ? ' ' : ''}
+                <span className="block text-tertiary-ink/55">{run.text}</span>
+              </Fragment>
+            ) : (
+              <Fragment key={index}>
+                {index > 0 && needsLeadingSpace(run.text) ? ' ' : ''}
+                {run.text}
+              </Fragment>
+            ),
+          )}
         </h1>
 
-        <p className="text-body-large text-tertiary-ink/50 max-w-2xl mx-auto leading-relaxed font-normal">
-          {content.tagline.map((segment, index) => (
-            <Fragment key={index}>
-              {index > 0 && needsLeadingSpace(segment.text) ? ' ' : ''}
-              <span className={TONE_CLASS[toneOf(segment.accent)]}>{segment.text}</span>
-            </Fragment>
-          ))}
-        </p>
-      </div>
+        {content.sub && (
+          <p className="mt-8 text-body-large text-tertiary-ink/70 max-w-[60ch] leading-relaxed">{content.sub}</p>
+        )}
 
-      {settings.showScrollHint && (
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-          <span className="type-label text-tertiary-ink/20">{content.scrollHint}</span>
-          <div className="w-px h-8 bg-gradient-to-b from-primary-500/50 to-transparent" />
-        </div>
-      )}
+        {(content.primaryLabel || content.secondaryLabel) && (
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            {content.primaryLabel && (
+              <Action
+                href={content.primaryHref}
+                className="press inline-flex items-center rounded-full bg-primary-500 px-6 py-3 text-body-small font-semibold text-primary-fg transition-colors duration-150 hover:bg-primary-600"
+              >
+                {content.primaryLabel}
+              </Action>
+            )}
+            {content.secondaryLabel && content.secondaryHref && (
+              <Action
+                href={content.secondaryHref}
+                className="press inline-flex items-center rounded-full border border-tertiary-ink/20 px-6 py-3 text-body-small font-semibold text-tertiary-ink transition-colors duration-150 hover:border-tertiary-ink/50"
+              >
+                {content.secondaryLabel}
+              </Action>
+            )}
+          </div>
+        )}
+
+        {content.availability && (
+          <p className="mt-8 flex items-start gap-2.5 text-body-small text-tertiary-ink/70">
+            <span aria-hidden="true" className="mt-[0.45em] h-2 w-2 shrink-0 rounded-full bg-status-success" />
+            {content.availability}
+          </p>
+        )}
+      </div>
     </section>
   )
 }

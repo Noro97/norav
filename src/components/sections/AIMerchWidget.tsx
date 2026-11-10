@@ -3,6 +3,7 @@ import { Coffee, Image as ImageIcon, Shirt, Sticker, type LucideIcon } from 'luc
 import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
@@ -85,11 +86,13 @@ function syntaxHighlight(json: string): string {
     .replace(/(&quot;.*?&quot;)\s*:/g, '<span class="text-primary-400">$1</span>:')
     .replace(/:\s*(&quot;.*?&quot;)/g, ': <span class="text-secondary-400">$1</span>')
     .replace(/:\s*(true)/g, ': <span class="text-primary-300">$1</span>')
-    .replace(/:\s*(false)/g, ': <span class="text-tertiary-ink/45">$1</span>')
+    .replace(/:\s*(false)/g, ': <span class="text-tertiary-ink/55">$1</span>')
     .replace(/:\s*(\d+\.?\d*)/g, ': <span class="text-secondary-300">$1</span>')
 }
 
-export function AIMerchWidget() {
+export function AIMerchWidget({ first }: BlockComponentProps) {
+  // The demo's name is the page's H1 when the demo opens the page.
+  const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('merch')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
@@ -193,15 +196,15 @@ export function AIMerchWidget() {
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
+          <Title className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
-          </h2>
+          </Title>
           <p className="text-tertiary-ink/50 text-body-large max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/55">
                 {tag.name}
               </span>
             ))}
@@ -215,13 +218,13 @@ export function AIMerchWidget() {
               <div className="w-3 h-3 rounded-full bg-primary-500/60" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
-              <span className="ml-3 font-mono text-caption text-tertiary-ink/45">constructor.ui</span>
-              <span className="ml-auto font-mono text-caption text-tertiary-ink/40">{changeCount} {t('common:labels.changes')}</span>
+              <span className="ml-3 font-mono text-caption text-tertiary-ink/55">constructor.ui</span>
+              <span className="ml-auto font-mono text-caption text-tertiary-ink/55">{changeCount} {t('common:labels.changes')}</span>
             </div>
 
             {/* Product Type */}
             <div>
-              <label className="type-label block text-tertiary-ink/40 mb-2">
+              <label className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.productType')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -241,7 +244,7 @@ export function AIMerchWidget() {
 
             {/* Color */}
             <div>
-              <label className="type-label block text-tertiary-ink/40 mb-2">
+              <label className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.color')}
               </label>
               <div className="flex gap-2">
@@ -259,14 +262,14 @@ export function AIMerchWidget() {
                   />
                 ))}
               </div>
-              <span className="font-mono text-caption text-tertiary-ink/40 mt-1 block">
+              <span className="font-mono text-caption text-tertiary-ink/55 mt-1 block">
                 {t(`projects:${COLOR_KEYS[COLOR_VALUES.indexOf(config.color)]}`)}
               </span>
             </div>
 
             {/* Size */}
             <div>
-              <label className="type-label block text-tertiary-ink/40 mb-2">
+              <label className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.size')}
               </label>
               <div className="flex gap-1.5">
@@ -286,7 +289,7 @@ export function AIMerchWidget() {
 
             {/* Custom Text */}
             <div>
-              <label className="type-label block text-tertiary-ink/40 mb-2">
+              <label className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.customText')}
               </label>
               <input
@@ -297,26 +300,26 @@ export function AIMerchWidget() {
                 className="w-full bg-tertiary-ink/5 border border-tertiary-ink/10 rounded px-3 py-2 text-body-small text-tertiary-ink/80 font-mono focus:outline-none focus:border-primary-500/50 transition-colors"
                 placeholder={t('projects:merch.placeholder.enterText')}
               />
-              <span className="font-mono text-caption text-tertiary-ink/35 mt-1 block">{config.text.length}/30</span>
+              <span className="font-mono text-caption text-tertiary-ink/55 mt-1 block">{config.text.length}/30</span>
             </div>
 
             {/* Quantity + Premium */}
             <div className="flex items-end gap-6">
               <div>
-                <label className="type-label block text-tertiary-ink/40 mb-2">
+                <label className="type-label block text-tertiary-ink/55 mb-2">
                   {t('projects:merch.labels.quantity')}
                 </label>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => updateConfig('quantity', Math.max(1, config.quantity - 1))}
-                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
+                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/55 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
                   >
                     −
                   </button>
                   <span className="font-mono text-tertiary-ink/80 w-10 text-center text-body-large">{config.quantity}</span>
                   <button
                     onClick={() => updateConfig('quantity', Math.min(99, config.quantity + 1))}
-                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/40 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
+                    className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/55 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
                   >
                     +
                   </button>
@@ -324,7 +327,7 @@ export function AIMerchWidget() {
               </div>
 
               <div>
-                <label className="type-label block text-tertiary-ink/40 mb-2">
+                <label className="type-label block text-tertiary-ink/55 mb-2">
                   {t('projects:merch.labels.premium')}
                 </label>
                 <button
@@ -361,11 +364,11 @@ export function AIMerchWidget() {
                 />
               </div>
               <div>
-                <span className="font-mono text-caption text-tertiary-ink/45 block">{t('common:labels.sku')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/55 block">{t('common:labels.sku')}</span>
                 <span className="font-mono text-caption text-tertiary-ink/60">{generateSKU(config)}</span>
               </div>
               <div className="ml-auto">
-                <span className="font-mono text-caption text-tertiary-ink/45 block">{t('common:labels.delivery')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/55 block">{t('common:labels.delivery')}</span>
                 <span className="font-mono text-caption text-tertiary-ink/60">{config.premium ? t('projects:merch.delivery.days3') : t('projects:merch.delivery.days7')}</span>
               </div>
             </div>
@@ -375,7 +378,7 @@ export function AIMerchWidget() {
           <div className="merch-right bg-tertiary-bg p-6 md:p-8 border-l border-tertiary-ink/5 relative">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-secondary-500/40" />
-              <span className="font-mono text-caption text-tertiary-ink/45">output.json</span>
+              <span className="font-mono text-caption text-tertiary-ink/55">output.json</span>
               <span
                 className={`type-label ml-auto ${
                   isTyping ? 'text-primary-400' : 'text-status-success/50'
