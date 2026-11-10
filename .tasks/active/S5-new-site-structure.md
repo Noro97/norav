@@ -1,6 +1,6 @@
 # S5: New site structure
 
-- **Status:** Built and checked locally on the S5 content, waiting for the owner's one review (D23). Nothing published
+- **Status:** Reviewed by the owner on 2026-11-10 and approved for publishing, with one change: the Vizogen line about Cursor and custom MCP servers came back
 - **Origin:** `docs/plan/prompts/S5-new-site-structure.md`, started from `main` at `3fd4394`
 - **Branch:** `claude/s5-new-site-structure`
 - **Copy:** `.tasks/active/S5-copy.md`
@@ -32,6 +32,8 @@
 **The photo stays.** `~/Desktop/noro/photo_2026-09-17_13-30-40.jpg` is full length, on a cinematic street with a car, in a branded tee. At 325px wide the face is a few pixels. The current portrait is re-encoded at 680×902, 46 KB without metadata, and loads at once with `fetchpriority="high"`. Raised in the review.
 
 **The logo.** `public/norav-logo.svg` already held the untracked file's paths, cropped and without its metadata, and `brand.ts` draws from it. It's now the favicon, in D5 colours on a dark plate so it reads on a light tab. The old `logo-new.svg` mark is gone.
+
+**The review.** The owner answered every open question on 2026-11-10: keep the current photo, the new site description, Proof App alone until S6, delete the Russian rows, keep three unlisted claims out, keep every new claim. The Vizogen line about Cursor and custom MCP servers went into facts.md, the timeline, the Profile screen and the FAQ.
 
 **`ask` stays off.** `ASK_ENABLED` is false in `terminal-commands.ts`, so no copy mentions it, including the FAQ.
 

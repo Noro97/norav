@@ -1147,6 +1147,13 @@ await expectError(
   await db.exec(file)
   const after = await snapshot()
   check('a second run writes the same rows, and no new ones', before.join() === after.join())
+
+  const {
+    rows: [profile],
+  } = await db.query(`select value from settings where key = 'profile'`)
+  const vizogen = (profile?.value?.roles ?? []).find((role) => role.company === 'Vizogen')
+  const mcp = (vizogen?.highlights ?? []).filter((item) => /custom MCP servers/.test(item.text))
+  check('the Profile screen gains the Vizogen line facts.md gained, once', !vizogen || mcp.length === 1, JSON.stringify(vizogen?.highlights))
 }
 
 // ---------------------------------------------------------------------------

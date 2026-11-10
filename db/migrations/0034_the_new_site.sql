@@ -104,6 +104,31 @@ update settings
    set value = jsonb_set(value, '{description}', to_jsonb('Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js. Interfaces at scale, and the systems under them.'::text))
  where key = 'profile';
 
+-- facts.md gained one Vizogen line in S5. The Profile screen follows it, once.
+update settings
+   set value = jsonb_set(
+         value,
+         '{roles}',
+         (select jsonb_agg(
+                   case
+                     when role ->> 'company' = 'Vizogen'
+                      and not (role -> 'highlights' @> $json$[
+  {
+    "text": "Rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers"
+  }
+]$json$::jsonb)
+                     then jsonb_set(role, '{highlights}', (role -> 'highlights') || $json$[
+  {
+    "text": "Rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers"
+  }
+]$json$::jsonb)
+                     else role
+                   end
+                   order by position)
+            from jsonb_array_elements(value -> 'roles') with ordinality as roles(role, position)))
+ where key = 'profile'
+   and jsonb_typeof(value -> 'roles') = 'array';
+
 -- 2. The demos' new addresses -------------------------------------------------
 update pages set slug = 'demos/nexusroute'
  where slug = 'work/logistics' and not exists (select 1 from pages taken where taken.slug = 'demos/nexusroute');
@@ -438,7 +463,7 @@ perform pg_temp.put_block('about', 'kit_faq', 'questions', 4000, $json${
     },
     {
       "q": "How do you use AI?",
-      "a": "In products: at Proof App one Gemini 2.5 Flash pass judges reps, form and liveness. In my own work I use Claude Code and Cursor, and I review what they write before it ships."
+      "a": "In products: at Proof App one Gemini 2.5 Flash pass judges reps, form and liveness. At Vizogen I rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers. In my own work I use Claude Code and Cursor, and I review what they write before it ships."
     },
     {
       "q": "Are the demos client work?",
@@ -976,6 +1001,9 @@ select id, 'en', $json${
     },
     {
       "text": "Unit-test coverage from 22% to 78% in three months"
+    },
+    {
+      "text": "Rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers"
     }
   ]
 }$json$::jsonb, 'ready' from entries

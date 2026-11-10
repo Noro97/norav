@@ -2,6 +2,8 @@
 
 Every word the new site shows, for the one review (D23). English only (D13).
 
+**Reviewed by the owner on 2026-11-10:** approved as written, with one change: the Vizogen line about Cursor and custom MCP servers comes back (facts.md, timeline, Profile screen, FAQ). Every line marked as a new claim was confirmed.
+
 **How to read it.** Numbers carry their source in brackets: `[facts: <row>]` is a row of `docs/plan/facts.md`, `[code: <file>]` is something I read in this repo. Nothing in "Do not use" appears. Lines marked **(new claim)** state something facts.md doesn't hold word for word, so they're the ones to read hardest.
 
 The brief's overrides are applied: the D2 headline in the eyebrow, title and metadata, senior roles only, no contract door, no learning section, no relocation, three case studies plus Live demos, and no compare table (cut: the D2 headline needs no definition).
@@ -185,7 +187,7 @@ Each page: the demo's header (eyebrow **Live demo**, H1, description, stack), th
 | --- | --- | --- | --- |
 | Fendr (via TIRSoft LLC) · Frontend Engineer · Sep 2026 — Present · Yerevan | Two web apps in a Turborepo monorepo, set up from scratch. | A design system of 35 components and 24 patterns · Typed API clients generated from OpenAPI with Orval · 47 test files | React, TypeScript, Turborepo, Orval |
 | Proof App · Founder & Fullstack Engineer · Nov 2025 — Jun 2026 · Remote | A Telegram fitness app I built as the only engineer and took to a closed beta. | 40+ Postgres tables with row-level security, 70+ migrations, 16 Edge Functions and 3 pgmq job queues · One Gemini 2.5 Flash pass judges reps, form and liveness · A 20-level XP economy, Telegram Stars payments and TON wallet connection | React, Supabase, PostgreSQL, Gemini, Telegram Mini Apps |
-| Vizogen · Lead Frontend Engineer (Fullstack Delivery) · Sep 2025 — Feb 2026 · Contract, remote | A multi-tenant AI SaaS module for 500+ enterprise users. | Designed the schemas, row-level security and REST contracts · LCP from 4.1s to 1.3s · Integration defects down 80% · Unit-test coverage from 22% to 78% in three months | React, TypeScript, PostgreSQL, REST |
+| Vizogen · Lead Frontend Engineer (Fullstack Delivery) · Sep 2025 — Feb 2026 · Contract, remote | A multi-tenant AI SaaS module for 500+ enterprise users. | Designed the schemas, row-level security and REST contracts · LCP from 4.1s to 1.3s · Integration defects down 80% · Unit-test coverage from 22% to 78% in three months · Rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers | React, TypeScript, PostgreSQL, REST |
 | MTS Web Services · Core Frontend Engineer / UI Architect · Feb 2024 — Jun 2025 · Remote | A design system and micro-frontend platform in a 10M+ MAU ecosystem. | 200+ components, used by 15+ teams · Time-to-market down 25% · 3–5 fewer release blockers per sprint across 8 micro-frontend verticals · Visual regression bugs down 60% across 180+ components | React, TypeScript, Module Federation, Storybook |
 | Appfox · Senior Frontend Engineer · Sep 2023 — Jan 2024 · Contract, remote | A high-load iGaming portal at 50K+ concurrent sessions, with zero state-desync incidents. | WebSocket routing in a Node.js BFF · 4 payment and KYC providers behind one typed API layer with idempotency keys · Bundle size down 62% · Median time-to-root-cause from 2 hours to 25 minutes | Next.js, TypeScript, Node.js, WebSockets |
 | TIRSoft LLC · Lead Frontend Developer · May 2020 — Sep 2023 · Yerevan | Frontend lead across 8+ SaaS products. | API latency down 40% with Apollo GraphQL batching · LCP down 68%, from 3.5s to 1.1s, on 3 flagship products · Project bootstrap from two weeks to three days · Mentored 5 developers, 2 promoted to senior | Next.js, React, GraphQL, Node.js |
@@ -193,7 +195,7 @@ Each page: the demo's header (eyebrow **Live demo**, H1, description, stack), th
 
 [facts: Experience and Approved numbers, row by row. The stacks are the chips the live timeline already shows, minus "Fintech", "iGaming", "Generative AI" and "Design Systems", which aren't tools, plus PostgreSQL and Storybook from facts.md and the profile's skills.]
 
-Dropped from the live timeline, because facts.md doesn't hold them: Vizogen's "team-wide AI-augmented workflows using Cursor and custom MCP servers", Appfox's "dynamic imports, Sentry, and PostHog", TIRSoft's "shared React / Redux form abstraction" and "API contracts with backend engineers". Say if any should come back, and facts.md gets the line first.
+Dropped from the live timeline, because facts.md doesn't hold them: Appfox's "dynamic imports, Sentry, and PostHog", TIRSoft's "shared React / Redux form abstraction" and "API contracts with backend engineers". The owner kept them out on 2026-11-10. The Vizogen line about Cursor and MCP servers came back, confirmed by the owner, into facts.md first and then the timeline, the Profile screen and the FAQ.
 
 ### Stack
 
@@ -211,8 +213,8 @@ Dropped from the live timeline, because facts.md doesn't hold them: Vizogen's "t
    [facts: Location]
 3. **How much backend do you do?** Enough to own it. At Proof App I designed the Postgres backend: 40+ tables with row-level security, 70+ migrations, 16 Edge Functions and 3 pgmq job queues. At Vizogen I designed schemas, row-level security and REST contracts. This site's CMS is Next.js on raw PostgreSQL.
    [facts: Proof App; Vizogen; norav.dev]
-4. **How do you use AI?** In products: at Proof App one Gemini 2.5 Flash pass judges reps, form and liveness. In my own work I use Claude Code and Cursor, and I review what they write before it ships. **(new claim: the last sentence)**
-   [facts: Proof App; the profile's skills list Claude Code and Cursor]
+4. **How do you use AI?** In products: at Proof App one Gemini 2.5 Flash pass judges reps, form and liveness. At Vizogen I rolled out team-wide AI-assisted workflows with Cursor and custom MCP servers. In my own work I use Claude Code and Cursor, and I review what they write before it ships.
+   [facts: Proof App; Vizogen; the last sentence confirmed by the owner on 2026-11-10]
 5. **Are the demos client work?** No. NexusRoute, OmniGrid, FilterGraph and MerchForge are demos I built to show specific techniques. They run on sample data, and any number they show is measured in your browser.
    [facts: Live demos]
 
