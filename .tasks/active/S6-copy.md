@@ -148,7 +148,15 @@ I'd split the engine from the API before adding anything else. Today the price f
 
 ### Figures
 
-Screenshots I take from a local run with seeded sample data, captioned as such: the landing page with live prices, the trading screen with the chart and order form, open positions with P/L, and the host panel's live positions. Clips are optional, from the shot list below.
+Captured from `pnpm dev` on a fresh local database with the seeded sample account ("Alex Morgan" is seed data) and simulated prices. Nothing from any deployed host. Shown after "The problem".
+
+| File | Alt text | Caption |
+| --- | --- | --- |
+| `nova-prism/landing-v1.webp` | Nova Prism's landing page: the headline "Five markets. One account." beside a panel of five prices, over a scrolling ticker. | The landing site. A local run, with simulated prices. |
+| `nova-prism/trading-v1.webp` | The client portal's trading screen: a BTC/USD candle chart, the account's margin figures across the top, and an order form at 10x leverage showing the margin it needs. | The trading screen, on a seeded sample account. |
+| `nova-prism/positions-v1.mp4`, poster `positions-poster-v1.webp` | The portfolio over ten seconds: equity, floating P/L, margin level and the P/L of two open positions change as each price tick arrives. | Ten seconds of ticks. Equity, P/L and margin level move with every one. |
+
+The clip is 10 seconds, muted, and plays while on screen unless the visitor asks for less motion. **Left out on purpose:** the host panel. Its client page has "Adjust virtual balance" and per-trade edit buttons, which read badly without context and say something about how the product is run.
 
 ---
 
@@ -218,7 +226,11 @@ Was it worth it? As a content tool, no: a hosted CMS would have cost far less ti
 
 ### Figures
 
-Screenshots of the CMS running locally on its embedded database, never the production admin: the page editor with this study's block open, publish refusing a broken block with the field named, and the media library. Clips are optional, from the shot list below.
+The CMS running locally on its embedded database, never `cms.norav.dev`. Nothing was saved or published.
+
+| File | Alt text | Caption |
+| --- | --- | --- |
+| `norav/validation-v1.webp` | The CMS editor open on this case study. Above the form, "Validation failed" names one field, translations.en.decisions.3.body, as too short. | The CMS, running locally, refusing to save this page: a decision with no reasoning, and the field it's in. |
 
 ---
 
@@ -248,7 +260,7 @@ Run `pnpm dev` in `~/Desktop/projects/nova` on a fresh database (I can start it 
 | # | Show | Length | Proves |
 | --- | --- | --- | --- |
 | 1 | Trading screen: pick an instrument, set leverage and a stop-loss, open a position | 10s | The order form and the contract |
-| 2 | Open positions with P/L moving on each tick | 5s | One price stream, one copy of the math |
+| 2 | Open positions with P/L moving on each tick | 5s | Done: I recorded it locally, `positions-v1.mp4` |
 | 3 | Host panel's live positions updating beside the portal, two windows side by side | 10s | Realtime to the host panel |
 
 ### norav.dev

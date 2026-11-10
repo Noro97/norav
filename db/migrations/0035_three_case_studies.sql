@@ -212,7 +212,16 @@ perform pg_temp.put_block('work/norav', 'case_study', 1000, $json${
   ],
   "context": "norav.dev is my portfolio, and the CMS behind it is part of the portfolio. The site is Vite and React 19, prerendered at build time. The CMS is Next.js on raw PostgreSQL, with no ORM. The two share one package of block schemas. I wanted the site to show how I work, not just list it, and a CMS I can open in an interview does that. I built both, and I run both, alone.",
   "problem": "A portfolio has to be fast and must never break. A CMS adds a database, an admin and a deploy, and each of them can fail. The site has to paint without waiting for the CMS. And a publish must not be able to ship a page that renders broken.",
-  "figures": [],
+  "figures": [
+    {
+      "image": "/assets/case-studies/norav/validation-v1.webp",
+      "video": "",
+      "alt": "The CMS editor open on this case study. Above the form, \"Validation failed\" names one field, translations.en.decisions.3.body, as too short.",
+      "caption": "The CMS, running locally, refusing to save this page: a decision with no reasoning, and the field it's in.",
+      "portrait": false,
+      "autoplay": false
+    }
+  ],
   "decisions": [
     {
       "title": "Bake the content into the build, then revalidate",
