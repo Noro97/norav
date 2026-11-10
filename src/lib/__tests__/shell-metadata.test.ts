@@ -24,8 +24,9 @@ describe('renderShell', () => {
     expect(content(doc, 'meta[property="og:site_name"]')).toBe('Norayr Avetisyan')
     expect(content(doc, 'meta[property="og:title"]')).toBe('Norayr Avetisyan — Senior Fullstack Engineer')
     expect(content(doc, 'meta[name="twitter:title"]')).toBe('Norayr Avetisyan — Senior Fullstack Engineer')
+    // The site description in facts.md since S5 (version 28).
     const description =
-      'Building high-performance interfaces at the intersection of engineering precision and visual storytelling.'
+      'Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js. Interfaces at scale, and the systems under them.'
     expect(content(doc, 'meta[name="description"]')).toBe(description)
     expect(content(doc, 'meta[property="og:description"]')).toBe(description)
     expect(content(doc, 'meta[name="twitter:description"]')).toBe(description)
