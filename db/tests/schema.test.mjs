@@ -8,7 +8,7 @@
 //   cd db && npm install && npm test
 // =============================================================================
 import { PGlite } from '@electric-sql/pglite'
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -1154,6 +1154,87 @@ await expectError(
   const vizogen = (profile?.value?.roles ?? []).find((role) => role.company === 'Vizogen')
   const mcp = (vizogen?.highlights ?? []).filter((item) => /custom MCP servers/.test(item.text))
   check('the Profile screen gains the Vizogen line facts.md gained, once', !vizogen || mcp.length === 1, JSON.stringify(vizogen?.highlights))
+}
+
+// ---------------------------------------------------------------------------
+// 0035: three case studies
+// ---------------------------------------------------------------------------
+{
+  // Like 0034, it leaves a database with no site alone, so it's replayed here
+  // on what the fixtures and 0034's replay left, then once more.
+  const file = readFileSync(join(root, 'migrations', '0035_three_case_studies.sql'), 'utf8')
+  await db.exec(file)
+
+  const live = async (slug) =>
+    (
+      await db.query(
+        `select b.type, t.content
+           from blocks b
+           join pages p on p.id = b.page_id
+           left join block_translations t on t.block_id = b.id and t.locale = 'en'
+          where p.slug = $1 and b.deleted_at is null and b.is_visible
+          order by b.position`,
+        [slug],
+      )
+    ).rows
+
+  const { rows: pages } = await db.query(
+    `select slug, status, seo from pages where slug in ('work/proof', 'work/nova-prism', 'work/norav') order by slug`,
+  )
+  check(
+    'the three case studies are published pages',
+    pages.length === 3 && pages.every((page) => page.status === 'published'),
+    JSON.stringify(pages.map((page) => [page.slug, page.status])),
+  )
+  check(
+    'each has its own title and description',
+    pages.every((page) => page.seo?.en?.title && page.seo?.en?.description),
+  )
+
+  const proof = await live('work/proof')
+  check('Proof App is its widget, then its story', proof.map((row) => row.type).join() === 'proof,case_study', proof.map((row) => row.type).join())
+  check("the story under the widget has no heading, so the widget's stays the page's one H1", proof[1]?.content?.title === '')
+
+  const nova = await live('work/nova-prism')
+  const norav = await live('work/norav')
+  check('Nova Prism is one case study', nova.map((row) => row.type).join() === 'case_study', nova.map((row) => row.type).join())
+  check('norav.dev is one case study', norav.map((row) => row.type).join() === 'case_study', norav.map((row) => row.type).join())
+  check(
+    'each new page opens with the title its card shows',
+    nova[0]?.content?.title === 'Nova Prism' && norav[0]?.content?.title === 'norav.dev',
+  )
+
+  const stories = [proof[1], nova[0], norav[0]].map((row) => row?.content ?? {})
+  const figures = stories.flatMap((story) => story.figures ?? [])
+  const files = figures.flatMap((figure) => [figure.image, figure.video].filter(Boolean))
+  check(
+    'every figure is a file in the site\'s public folder',
+    files.every((path) => path.startsWith('/assets/case-studies/') && existsSync(join(root, '..', 'public', path))),
+    files.filter((path) => !existsSync(join(root, '..', 'public', path))).join(),
+  )
+  check('every figure has alt text', figures.every((figure) => figure.alt.trim().length > 0))
+  check('every clip has a poster', figures.filter((figure) => figure.video).every((figure) => figure.image))
+  check('every story names three decisions', stories.every((story) => story.decisions?.length === 3))
+
+  const text = JSON.stringify(stories) + JSON.stringify(pages.map((page) => page.seo))
+  const banned = [/98\.4/, /92%/, /\b27 migrations\b/, /TON payments/i, /Web3/, /\bStaff\b/]
+  check('nothing from "Do not use" in facts.md', banned.every((pattern) => !pattern.test(text)), banned.filter((pattern) => pattern.test(text)).join())
+  const proofText = JSON.stringify(stories[0]) + JSON.stringify(pages.find((page) => page.slug === 'work/proof')?.seo)
+  check('Proof App is never "in production" or "shipped"', !/\bin production\b|\bshipped\b/i.test(proofText))
+  check('Proof App says it has no tests', /no automated tests/.test(stories[0].context ?? ''))
+
+  const snapshot = async () =>
+    (
+      await db.query(
+        `select b.id, b.position, b.is_visible, t.content
+           from blocks b left join block_translations t on t.block_id = b.id
+          where b.deleted_at is null order by b.id, t.locale`,
+      )
+    ).rows.map((row) => JSON.stringify(row))
+  const before = await snapshot()
+  await db.exec(file)
+  const after = await snapshot()
+  check('a second run writes the same rows, and no new ones', before.join() === after.join())
 }
 
 // ---------------------------------------------------------------------------
