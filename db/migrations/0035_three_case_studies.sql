@@ -240,7 +240,7 @@ perform pg_temp.put_block('work/norav', 'case_study', 1000, $json${
   "metrics": [
     { "label": "SQL migrations, append-only", "value": "35" },
     { "label": "API routes in the CMS", "value": "28" },
-    { "label": "automated tests: site, CMS and schema", "value": "570" },
+    { "label": "automated tests: site, CMS and schema", "value": "594" },
     { "label": "LCP on mobile, home page", "value": "1.3s" }
   ],
   "retro": "Was it worth it? As a content tool, no: a hosted CMS would have cost far less time for a site that changes once a month. As evidence of how I work, yes: I can open any layer of it in an interview, from a migration to the first paint. I'd wire the site rebuild into the release script on day one, and publish early. The September rebuild merged 21 PRs, and none of its copy went live for six weeks.",

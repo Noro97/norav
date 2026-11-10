@@ -41,6 +41,11 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
     else element.pause()
   }, [ambient, inView, pressed, reached])
 
+  // The button that was pressed is gone; without this, focus drops to the page.
+  useEffect(() => {
+    if (pressed) video.current?.focus()
+  }, [pressed])
+
   return (
     <div
       ref={frame}
@@ -55,6 +60,7 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
           src={src}
           poster={poster}
           aria-label={alt}
+          tabIndex={0}
           preload="none"
           controls
           playsInline

@@ -212,10 +212,10 @@ On the mobile preset, the home page scores 100 in all four Lighthouse categories
 | --- | --- |
 | 35 | SQL migrations, append-only |
 | 28 | API routes in the CMS |
-| 570 | automated tests: site, CMS and schema |
+| 594 | automated tests: site, CMS and schema |
 | 1.3s | LCP on mobile, home page |
 
-[code: recounted; 570 = 311 site + 92 CMS + 167 schema checks today, recounted again before publishing] **(new claim)** all four.
+[code: recounted; 594 = 319 site + 92 CMS + 183 schema checks with this session's tests, recounted again before publishing] **(new claim)** all four.
 
 ### What I'd do differently
 

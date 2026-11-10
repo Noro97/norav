@@ -44,8 +44,8 @@ Phone numbers don't go on the site or in this repo.
 | MTS Web Services | Design system of 200+ components, used by 15+ teams in a 10M+ MAU ecosystem. Time-to-market down 25%. 3–5 fewer release blockers per sprint across 8 micro-frontend verticals. Visual regression bugs down 60% across 180+ components |
 | Appfox | High-load iGaming portal at 50K+ concurrent sessions with zero state-desync incidents. WebSocket routing in a Node.js BFF. 4 payment and KYC providers behind one typed API layer with idempotency keys. Bundle size down 62%. Median time-to-root-cause 2 hours to 25 minutes |
 | TIRSoft | 8+ SaaS products. API latency down 40% with Apollo GraphQL batching. LCP down 68% (3.5s to 1.1s) on 3 flagship products. Bootstrap two weeks to three days. Mentored 5 developers, 2 promoted to senior |
-| Nova Prism | Trading platform of 4 apps in a monorepo. Fastify and Socket.IO API, trading engine, price feeds, OpenAPI-validated contracts, Drizzle on SQLite, React and Astro front ends, Docker, 58 test files |
-| norav.dev | Custom CMS on Next.js and raw PostgreSQL. Recount migrations and API routes from the code at publish time |
+| Nova Prism | Trading platform of 4 apps in a monorepo. Fastify and Socket.IO API, trading engine, price feeds, OpenAPI-validated contracts, Drizzle on SQLite, React and Astro front ends, Docker, 58 test files. 70 REST operations in the contract, each registered and called in a test, and 25 typed Socket.IO events (recounted 2026-11-10) |
+| norav.dev | Custom CMS on Next.js and raw PostgreSQL. Recount migrations and API routes from the code at publish time. On 2026-11-10: 35 migrations, 28 CMS API routes, 28 block types, 594 automated tests (319 site, 92 CMS, 183 schema) |
 | Nor Events | In development. NestJS, Neon Postgres with pgvector, Drizzle, Better Auth, Inngest |
 
 Re-verify code-derived numbers before publishing them, because they change.
