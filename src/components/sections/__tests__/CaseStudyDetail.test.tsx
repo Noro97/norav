@@ -29,7 +29,7 @@ describe('CaseStudyDetail', () => {
     expect(container).toBeEmptyDOMElement()
   })
 
-  it('shows the decisions in the order they were written, numbered', () => {
+  it('shows the decisions in the order they were written, without numbers', () => {
     withContent({
       title: 'Keeping 500 markers at 60 FPS',
       decisions: [
@@ -42,9 +42,10 @@ describe('CaseStudyDetail', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Keeping 500 markers')
     const items = screen.getAllByRole('listitem')
     expect(items).toHaveLength(2)
-    expect(items[0]).toHaveTextContent('01')
     expect(items[0]).toHaveTextContent('Advanced Markers over the default')
-    expect(items[1]).toHaveTextContent('02')
+    expect(items[1]).toHaveTextContent('A rAF buffer in front of the socket')
+    // They're points about one demo, not steps in a sequence.
+    expect(items[0]).not.toHaveTextContent('01')
   })
 
   it('shows numbers with their labels', () => {

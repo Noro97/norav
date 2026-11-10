@@ -7,7 +7,7 @@ import { BAKED_SNAPSHOTS } from '@/content'
 import { ContentProvider } from '@/content/ContentProvider'
 import { resolveSeo, SITE, type ResolvedSeo } from '@/content/PageHead'
 import { postSeo, postsOf, WRITING_SLUG } from '@/content/posts'
-import { DEFAULT_LOCALE, hrefFor } from '@/content/routing'
+import { DEFAULT_LOCALE, hrefFor, SITE_SLUG } from '@/content/routing'
 import { profileOf } from '@/lib/profile'
 
 /**
@@ -28,9 +28,9 @@ export const NOT_FOUND_PATH = '/__not-found__'
 export function routes(): PrerenderRoute[] {
   const addressOf = (slug: string) => hrefFor(slug, DEFAULT_LOCALE)
   const pages = snapshot.pages
-    // An empty page renders as not found. `site` isn't in the sitemap, but it answers
-    // like any page, and the menu's Contact links to it until S5.
-    .filter((page) => page.blocks.length > 0)
+    // An empty page renders as not found. `site` is the chrome every page ends with,
+    // not a page: nothing links to it, and vercel.json sends its address home.
+    .filter((page) => page.blocks.length > 0 && page.slug !== SITE_SLUG)
     .map((page) => ({
       path: addressOf(page.slug),
       canonical: `${SITE}${addressOf(page.slug)}`,

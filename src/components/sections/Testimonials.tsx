@@ -23,7 +23,7 @@ export function Testimonials({ blockId }: { blockId?: string }) {
           {content.title}
         </h2>
         {content.description && (
-          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
+          <p className="text-tertiary-ink/55 text-body-regular max-w-xl mb-12">{content.description}</p>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
@@ -41,7 +41,7 @@ export function Testimonials({ blockId }: { blockId?: string }) {
               <figcaption className="mt-auto">
                 <span className="block text-tertiary-ink font-semibold text-body-small">{quote.author}</span>
                 {quote.role && (
-                  <span className="block font-mono text-caption text-tertiary-ink/40 mt-0.5">{quote.role}</span>
+                  <span className="block font-mono text-caption text-tertiary-ink/55 mt-0.5">{quote.role}</span>
                 )}
               </figcaption>
             </div>

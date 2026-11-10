@@ -1,92 +1,107 @@
 import { Link } from 'react-router'
-import { ArrowUpRight, Github, Globe, Linkedin, Mail, Send, type LucideIcon } from 'lucide-react'
 import { useBlock, useContent } from '@/content/ContentProvider'
 import { useNavigation } from '@/content/navigation'
 import { Logo } from '@/components/brand/Logo'
 import { HOME_SLUG, hrefFor } from '@/content/routing'
+import { TERMINAL_ID, useAppStore } from '@/store/useAppStore'
+import type { BlockComponentProps } from '@/content/blocks'
 import type { SiteFooterContent, SiteFooterSettings } from '@norav/content-schema'
 
-const ICONS: Record<string, LucideIcon> = {
-  github: Github,
-  linkedin: Linkedin,
-  telegram: Send,
-  website: Globe,
-}
+const LINK = 'break-words text-body-small text-tertiary-ink/70 hover:text-tertiary-ink transition-colors duration-150'
 
-const LINK = 'type-label text-tertiary-ink/45 hover:text-tertiary-ink transition-colors'
-
-export function SiteFooter() {
-  const block = useBlock<SiteFooterContent, SiteFooterSettings>('site_footer')
-  const { locale } = useContent()
-  // The same list the menu draws, so the two cannot disagree: every item a
-  // route, exactly as the menu resolves them.
+/**
+ * The bottom of every page: where else to go, how to reach me, how the site is
+ * built, and the button that opens the terminal. The page links are the menu's
+ * own list, so the two can't disagree.
+ */
+export function SiteFooter({ blockId }: BlockComponentProps) {
+  const block = useBlock<SiteFooterContent, SiteFooterSettings>('site_footer', blockId)
+  const { locale, snapshot } = useContent()
   const links = useNavigation()
+  const terminalOpen = useAppStore((state) => state.terminalOpen)
+  const setTerminalOpen = useAppStore((state) => state.setTerminalOpen)
   if (!block) return null
   const { content, settings } = block
+  // The button only when there is a terminal to open.
+  const hasTerminal = Boolean(
+    content.terminalOpenLabel &&
+      snapshot.pages.some((page) => page.blocks.some((candidate) => candidate.type === 'terminal_footer')),
+  )
 
   return (
-    <footer className="relative px-gutter-x pt-16 pb-10 border-t border-tertiary-ink/[0.06]">
-      <div className="relative z-10 w-full max-w-content mx-auto">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_1.2fr_1fr]">
-          <div>
+    <footer className="relative px-gutter-x pt-16 pb-12 border-t border-tertiary-ink/10">
+      <div className="w-full max-w-content mx-auto">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5">
             <Link
               to={hrefFor(HOME_SLUG, locale)}
               aria-label="norav.dev"
               className="inline-flex items-center gap-2 text-tertiary-ink hover:opacity-80 transition-opacity"
             >
               <Logo className="h-7 w-auto" />
-              <span className="font-mono text-body-small font-semibold tracking-widest uppercase text-primary-500">
-                dev
-              </span>
             </Link>
-            {content.tagline && (
-              <p className="mt-4 text-body-small text-tertiary-ink/45 max-w-sm">{content.tagline}</p>
-            )}
+            {content.tagline && <p className="mt-4 text-body-small text-tertiary-ink/70 max-w-sm">{content.tagline}</p>}
+            {content.colophon && <p className="mt-4 text-caption text-tertiary-ink/55 max-w-sm leading-relaxed">{content.colophon}</p>}
           </div>
 
-          <nav aria-label={content.linksLabel}>
-            {content.linksLabel && <span className="label-mono block mb-4">{content.linksLabel}</span>}
-            <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5">
-              {links.map((item) =>
-                item.external ? (
-                  <li key={item.id}>
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className={LINK}>{item.label}</a>
-                  </li>
-                ) : (
-                  <li key={item.id}>
-                    <Link to={item.href} className={LINK}>{item.label}</Link>
-                  </li>
-                ),
-              )}
+          <nav aria-label={content.linksLabel || undefined} className="md:col-span-3">
+            {content.linksLabel && <p className="label-mono mb-4">{content.linksLabel}</p>}
+            <ul className="space-y-2.5">
+              {links.map((item) => (
+                <li key={item.id}>
+                  {item.external ? (
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className={LINK}>
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link to={item.href} className={LINK}>
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
           </nav>
 
-          <div>
-            {content.reachLabel && <span className="label-mono block mb-4">{content.reachLabel}</span>}
-            <a href={`mailto:${settings.email}`} className="group inline-flex items-center gap-1.5 font-mono text-body-small text-tertiary-ink/70 hover:text-tertiary-ink transition-colors">
-              <Mail className="w-4 h-4" strokeWidth={1.75} aria-hidden />
-              {content.emailLabel}
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-            </a>
-            <div className="flex items-center gap-3 mt-5">
-              {content.socials.map((social) => {
-                const Icon = ICONS[social.icon] ?? Globe
-                return (
-                  <a
-                    key={social.icon}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="w-10 h-10 rounded-full border border-tertiary-ink/[0.08] bg-tertiary-ink/[0.02] flex items-center justify-center text-tertiary-ink/45 hover:text-primary-400 hover:border-primary-500/30 transition-all duration-300"
-                  >
-                    <Icon className="w-4 h-4" strokeWidth={1.75} />
+          <div className="md:col-span-4">
+            {content.reachLabel && <p className="label-mono mb-4">{content.reachLabel}</p>}
+            <ul className="space-y-2.5">
+              <li>
+                <a href={`mailto:${settings.email}`} className={LINK}>
+                  {content.emailLabel}
+                </a>
+              </li>
+              {content.cvLabel && settings.cvHref && (
+                <li>
+                  <a href={settings.cvHref} className={LINK}>
+                    {content.cvLabel}
                   </a>
-                )
-              })}
-            </div>
+                </li>
+              )}
+              {content.socials.map((social) => (
+                <li key={social.href}>
+                  <a href={social.href} target="_blank" rel="noopener noreferrer" className={LINK}>
+                    {social.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+
+        {hasTerminal && (
+          <div className="mt-12">
+            <button
+              type="button"
+              aria-expanded={terminalOpen}
+              aria-controls={TERMINAL_ID}
+              onClick={() => setTerminalOpen(!terminalOpen)}
+              className="font-mono text-body-small text-tertiary-ink/70 hover:text-tertiary-ink transition-colors duration-150"
+            >
+              {terminalOpen ? content.terminalCloseLabel || content.terminalOpenLabel : content.terminalOpenLabel}
+            </button>
+          </div>
+        )}
       </div>
     </footer>
   )

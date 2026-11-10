@@ -91,6 +91,8 @@ const COMMANDS: Record<string, CommandHandler> = {
   cat: (args) => {
     const file = args[0]
 
+    // Both read the profile, the facts the site's pages read, so the terminal
+    // can't keep an older list than About shows.
     if (file === 'stack.txt') {
       return [
         '',
@@ -99,39 +101,25 @@ const COMMANDS: Record<string, CommandHandler> = {
           const w = title.length + 4
           return '╭' + '─'.repeat(w) + '╮\n│  ' + title + '  │\n╰' + '─'.repeat(w) + '╯'
         })(),
-        '',
-        t('cat.stack.languages'),
-        t('cat.stack.frameworks'),
-        t('cat.stack.animation'),
-        t('cat.stack.3d'),
-        t('cat.stack.state'),
-        t('cat.stack.styling'),
-        t('cat.stack.build'),
-        t('cat.stack.maps'),
-        t('cat.stack.testing'),
-        t('cat.stack.cicd'),
-        t('cat.stack.databases'),
-        t('cat.stack.ai'),
+        ...profile().skills.flatMap(({ group, items }) => ['', `  ${group}`, ...wrapWords(items, 40).map((line) => `    ${line}`)]),
         '',
       ]
     }
 
     if (file === 'about.txt') {
-      const { name, headline, experience, availability } = profile()
+      const { name, headline, thesis, location, experience, availability } = profile()
       const open = `Currently ${availability.charAt(0).toLowerCase()}${availability.slice(1)}.`
       return [
         '',
         `  ${name}`,
         `  ${headline}`,
         '',
-        t('cat.about.bio1'),
-        t('cat.about.bio2'),
-        t('cat.about.bio3'),
+        ...wrapWords(thesis, 40).map((line) => `  ${line}`),
         '',
         `  ${experience.summary}.`,
-        t('cat.about.bio5'),
-        t('cat.about.bio6'),
-        t('cat.about.bio7'),
+        ...wrapWords(`${location.city}, ${location.country} (${location.timezone}). ${location.workMode}.`, 40).map(
+          (line) => `  ${line}`,
+        ),
         '',
         ...wrapWords(open, 40).map((line) => `  ${line}`),
         '',

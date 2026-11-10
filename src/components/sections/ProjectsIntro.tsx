@@ -9,7 +9,7 @@ import type { ProjectsIntroContent, ProjectsIntroSettings } from '@norav/content
 
 const TONE_CLASS: Record<Tone, string> = {
   main: '',
-  highlight: 'italic text-primary-500',
+  highlight: 'italic text-primary-400',
 }
 
 function needsLeadingSpace(text: string): boolean {
@@ -44,7 +44,7 @@ export function ProjectsIntro() {
               </Fragment>
             ))}
           </h2>
-          <p className="text-tertiary-ink/40 text-body-regular max-w-xl mx-auto">{content.body}</p>
+          <p className="text-tertiary-ink/55 text-body-regular max-w-xl mx-auto">{content.body}</p>
 
           {content.viewAllLabel && (
             <div className="mt-6">
@@ -85,12 +85,12 @@ export function ProjectsIntro() {
                 <div className="flex items-start justify-between gap-4">
                   <span className="label-mono">{study.number}</span>
                   <ArrowUpRight
-                    className="w-4 h-4 text-tertiary-ink/25 transition-colors group-hover:text-secondary-400"
+                    className="w-4 h-4 text-tertiary-ink/55 transition-colors group-hover:text-secondary-400"
                     strokeWidth={1.75}
                   />
                 </div>
                 <h3 className="mt-3 font-display text-heading-small font-black text-tertiary-ink">{study.title}</h3>
-                <p className="mt-2 text-tertiary-ink/40 text-body-small leading-relaxed line-clamp-3">
+                <p className="mt-2 text-tertiary-ink/55 text-body-small leading-relaxed line-clamp-3">
                   {study.description}
                 </p>
               </Link>

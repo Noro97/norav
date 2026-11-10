@@ -24,4 +24,18 @@ describe('ImpactStrip', () => {
     expect(screen.getByText('10M+')).toBeInTheDocument()
     expect(screen.getByText('8')).toBeInTheDocument()
   })
+
+  it('names where each number comes from, when it says', () => {
+    useBlock.mockReturnValue({
+      content: {
+        label: 'Evidence',
+        stats: [{ ...stats[0], source: 'MTS Web Services' }, stats[1]],
+      },
+      settings: {},
+      anchorId: null,
+    })
+    render(<ImpactStrip />)
+    expect(screen.getByText('MTS Web Services')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+  })
 })

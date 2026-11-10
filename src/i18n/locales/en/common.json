@@ -1,12 +1,6 @@
 {
-  "nav.home": "Home",
-  "nav.about": "About",
-  "nav.experience": "Experience",
-  "nav.skills": "Skills",
-  "nav.overview": "Overview",
-  "nav.projects": "Projects",
-  "nav.workflows": "Automation",
-  "nav.contact": "Contact",
+  "a11y.skip": "Skip to content",
+  "nav.label": "Main",
   "buttons.clearFilters": "Clear filters",
   "buttons.resetAll": "Reset all",
   "status.live": "live",
@@ -16,11 +10,12 @@
   "labels.delivery": "Delivery",
   "labels.changes": "changes",
   "labels.commands": "commands",
-  "footer.builtWith": "Built with React + GSAP + TypeScript",
   "notFound.title": "This page does not exist",
   "notFound.body": "The address is wrong, or the page was unpublished.",
   "notFound.home": "Back to the site",
   "writing.back": "All writing",
   "writing.minutes": "{{count}} min read",
-  "writing.englishOnly": "This post is in English; a Russian version is not written yet."
+  "writing.englishOnly": "This post is in English; a Russian version is not written yet.",
+  "contact.copy": "Copy address",
+  "contact.copied": "Copied"
 }

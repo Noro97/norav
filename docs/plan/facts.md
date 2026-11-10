@@ -18,7 +18,7 @@ The facts the site reads live in the CMS, in the Profile screen (`settings.profi
 | Availability | Open to senior fullstack roles at remote EU/US product companies |
 | Education | BSc Computer Science, Armenian State University of Economics |
 | Languages | Armenian (native), Russian (fluent), English (professional) |
-| Site description | Building high-performance interfaces at the intersection of engineering precision and visual storytelling. |
+| Site description | Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js. Interfaces at scale, and the systems under them. |
 
 Phone numbers don't go on the site or in this repo.
 

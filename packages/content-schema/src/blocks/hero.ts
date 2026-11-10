@@ -2,80 +2,72 @@ import { z } from 'zod'
 import { defineBlock } from '../define-block'
 import { ACCENT_OPTIONS, segments } from './shared'
 
+/**
+ * The first screen: who, at what level, what proof, and how to reach me.
+ *
+ * The headline is the thesis, not the name. The name and the role sit in the
+ * eyebrow above it, because a recruiter reads the role first and a hiring
+ * manager reads the claim first, and both fit in one line and one heading.
+ */
 const content = z.object({
-  subtitle: z.string().min(1).max(120),
-  name: z.object({
-    first: z.object({ highlight: z.string(), rest: z.string() }),
-    last: z.object({ highlight: z.string(), rest: z.string() }),
-  }),
-  tagline: segments(8),
-  scrollHint: z.string().max(60),
+  eyebrow: z.string().min(1).max(160),
+  /** The H1. A highlighted run is set on its own line, in the quieter tone. */
+  headline: segments(4),
+  sub: z.string().max(400),
+  primaryLabel: z.string().min(1).max(40),
+  primaryHref: z.string().min(1).max(300),
+  secondaryLabel: z.string().max(40),
+  secondaryHref: z.string().max(300),
+  availability: z.string().max(160),
 })
 
-const settings = z.object({
-  showScrollHint: z.boolean(),
-})
+const settings = z.object({})
 
 export const heroBlock = defineBlock({
   type: 'hero',
   label: 'Hero',
   tier: 1,
   singleton: true,
-  description: 'Full-height opening screen: name, role and tagline.',
+  description: 'The opening screen: name and role, the thesis, a line of proof, two buttons and availability.',
   content,
   settings,
   defaults: {
     content: {
-      subtitle: 'Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js',
-      name: {
-        first: { highlight: 'Nor', rest: 'ayr' },
-        last: { highlight: 'Av', rest: 'etisyan' },
-      },
-      tagline: [
-        { text: 'Building high-performance interfaces at the intersection of', accent: 'main' },
-        { text: 'engineering precision', accent: 'highlight' },
-        { text: 'and', accent: 'main' },
-        { text: 'visual storytelling', accent: 'main' },
-        { text: '.', accent: 'main' },
+      eyebrow: 'Norayr Avetisyan · Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js',
+      headline: [
+        { text: 'Interfaces at scale,', accent: 'main' },
+        { text: 'and the systems under them.', accent: 'highlight' },
       ],
-      scrollHint: 'Scroll to explore',
+      sub: '',
+      primaryLabel: 'See the work',
+      primaryHref: '/work',
+      secondaryLabel: 'Email me',
+      secondaryHref: 'mailto:noroavetisyan@gmail.com',
+      availability: '',
     },
-    settings: { showScrollHint: true },
+    settings: {},
   },
   form: [
-    { field: 'subtitle', control: 'text', label: 'Role line', help: 'Small mono line above the name.' },
+    { field: 'eyebrow', control: 'text', label: 'Name and role', help: 'The line above the headline.' },
     {
-      field: 'name',
-      control: 'group',
-      label: 'Name',
-      help: 'The highlighted part is painted crimson, the rest white.',
-      fields: [
-        { field: 'first.highlight', control: 'text', label: 'First name — accent' },
-        { field: 'first.rest', control: 'text', label: 'First name — rest' },
-        { field: 'last.highlight', control: 'text', label: 'Last name — accent' },
-        { field: 'last.rest', control: 'text', label: 'Last name — rest' },
-      ],
-    },
-    {
-      field: 'tagline',
+      field: 'headline',
       control: 'repeater',
-      label: 'Tagline',
+      label: 'Headline',
       itemLabel: 'text',
       min: 1,
-      max: 8,
-      help: 'Segments are joined with spaces; punctuation-only segments attach to the previous word.',
+      max: 4,
+      help: 'The page\'s one H1. A highlighted part starts a new line, in the quieter tone.',
       fields: [
         { field: 'text', control: 'text', label: 'Text' },
-        {
-          field: 'accent',
-          control: 'select',
-          label: 'Emphasis',
-          options: ACCENT_OPTIONS,
-        },
+        { field: 'accent', control: 'select', label: 'Emphasis', options: ACCENT_OPTIONS },
       ],
     },
-    { field: 'scrollHint', control: 'text', label: 'Scroll hint' },
-    { field: 'showScrollHint', control: 'boolean', label: 'Show scroll hint', source: 'settings' },
+    { field: 'sub', control: 'textarea', label: 'Line of proof', help: 'Two or three short sentences. Every number names its source.' },
+    { field: 'primaryLabel', control: 'text', label: 'Main button' },
+    { field: 'primaryHref', control: 'text', label: 'Main button link', localized: false },
+    { field: 'secondaryLabel', control: 'text', label: 'Second button' },
+    { field: 'secondaryHref', control: 'text', label: 'Second button link', localized: false },
+    { field: 'availability', control: 'text', label: 'Availability line' },
   ],
 })
 

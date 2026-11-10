@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
 import { useScrollTracking } from '@/hooks/useScrollTracking'
 import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate'
@@ -13,9 +14,13 @@ import { useContent } from '@/content/ContentProvider'
 import { postAt } from '@/content/posts'
 import { PostPage } from '@/components/posts/PostPage'
 
+/** Where the skip link lands: the page's own content, past the menu. */
+export const MAIN_ID = 'main'
+
 function App() {
   const { slug } = readPath(useLocation().pathname)
   const { snapshot, isPreview } = useContent()
+  const { t } = useTranslation('common')
   // A page with nothing on it is not a page. Hiding its last section in the CMS
   // leaves the row in the database and the slug in the snapshot, and rendering
   // that gives a reader a header above an empty screen — which reads as broken
@@ -33,32 +38,40 @@ function App() {
   useScrollToTopOnNavigate()
 
   const mainRef = useRef<HTMLElement>(null)
+  const chromeRef = useRef<HTMLDivElement>(null)
   useRouterLinks(mainRef)
+  useRouterLinks(chromeRef)
 
   return (
     <>
+      <a href={`#${MAIN_ID}`} className="skip-link">
+        {t('a11y.skip')}
+      </a>
       <Navigation />
       <ScrollProgress />
 
       {/* Sections, their order and their visibility all come from the CMS —
           and so does the set of pages. A slug the CMS has not published is a
           404, not an empty page under a working header. */}
-      <main ref={mainRef} className="relative z-10">
+      <main ref={mainRef} id={MAIN_ID} tabIndex={-1} className="relative z-10 outline-none">
         {exists ? (
           <>
             <PageHead slug={slug} />
             <BlockRenderer slug={slug} />
           </>
         ) : post ? (
-          <>
-            <PostPage key={post.slug} post={post} />
-            {/* The footer every page ends with. */}
-            <BlockRenderer slug={SITE_SLUG} />
-          </>
+          <PostPage key={post.slug} post={post} />
         ) : (
           <NotFound />
         )}
       </main>
+
+      {/* The page called `site` is the chrome every page ends with: the footer,
+          and the terminal behind it. Outside <main>, so the footer is the page's
+          footer rather than part of its content. */}
+      <div ref={chromeRef} className="relative z-10">
+        {(exists || post) && slug !== SITE_SLUG && <BlockRenderer slug={SITE_SLUG} />}
+      </div>
     </>
   )
 }

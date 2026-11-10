@@ -111,7 +111,7 @@ export function CaseStudy({ blockId }: { blockId?: string }) {
             <ol className="mt-3">
               {decisions.map((decision, index) => (
                 <li key={index} className="flex gap-5 border-t border-tertiary-ink/[0.08] py-7 last:border-b md:gap-8">
-                  <span className="label-mono shrink-0 pt-1 tabular-nums text-primary-400/70">
+                  <span className="label-mono shrink-0 pt-1 tabular-nums text-primary-400">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">

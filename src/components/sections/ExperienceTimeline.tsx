@@ -1,147 +1,89 @@
-import { useRef } from 'react'
-import { useReveal } from '@/hooks/useReveal'
+import { Link } from 'react-router'
 import { useBlock, useCollection } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import type { ExperienceBlockContent, ExperienceContent, ExperienceData, ExperienceSettings } from '@norav/content-schema'
 
 /** A published row: the non-localized columns composed with the translated ones. */
 type ExperienceRow = ExperienceData & ExperienceContent
 
-function InteractiveImageCard({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div
-      className="rounded-xl overflow-hidden border border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02] backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_40px_-8px_color-mix(in_srgb,_var(--color-primary-500)_20%,_transparent)]"
-    >
-      <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover" />
-      {/* Edge highlight */}
-      <div className="pointer-events-none absolute inset-0 rounded-xl border border-tertiary-ink/[0.08]" />
-    </div>
+/** A route stays in the app; anything else is an ordinary link. */
+function MoreLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const className =
+    'inline-block mt-8 text-body-small font-semibold text-primary-400 underline-offset-4 hover:underline'
+  return href.startsWith('/') ? (
+    <Link to={href} className={className}>
+      {children}
+    </Link>
+  ) : (
+    <a href={href} className={className}>
+      {children}
+    </a>
   )
 }
 
-export function ExperienceTimeline() {
-  const block = useBlock<ExperienceBlockContent, ExperienceSettings>('experience')
+/**
+ * The roles, newest first, as a ruled list: the dates in their own column so
+ * the eye can run down them, and the work beside them.
+ *
+ * Compact is the home page's version: one line per role and a link to the
+ * rest. The full one, on About, adds every approved number and the stack.
+ */
+export function ExperienceTimeline({ blockId }: BlockComponentProps) {
+  const block = useBlock<ExperienceBlockContent, ExperienceSettings>('experience', blockId)
   const roles = useCollection<ExperienceRow>('experience')
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useReveal(sectionRef, '.exp-card')
-
-  if (!block) return null
+  if (!block || roles.length === 0) return null
   const { content, settings } = block
+  const compact = settings.compact === true
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative px-gutter-x py-24"
-    >
-      <div className="relative z-10 w-full max-w-content mx-auto">
-        <span className="label-mono">{content.sectionLabel}</span>
-        <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
-          {content.title}
-        </h2>
-        <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-16">
-          {content.description}
-        </p>
-
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-tertiary-ink/5">
-            <div className="timeline-line-fill absolute inset-0 bg-gradient-to-b from-primary-500/60 via-primary-500/20 to-transparent" />
-          </div>
-
-          {/* Cards */}
-          <div className="space-y-12 md:space-y-16">
-            {roles.map((role, i) => {
-              const exp = role.data
-              const isLeft = i % 2 === 0
-              const company = exp.company
-
-              return (
-                <div
-                  key={role.id}
-                  className={`exp-card relative flex flex-col md:flex-row ${
-                    isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
-                  } items-start gap-8 md:gap-0`}
-                >
-                  {/* Dot on timeline */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary-500 border-2 border-tertiary-bg z-10 mt-6 shadow-[0_0_8px_color-mix(in_srgb,_var(--color-primary-500)_50%,_transparent)]" />
-
-                  {/* Content */}
-                  <div
-                    className={`ml-12 md:ml-0 md:w-1/2 ${
-                      isLeft ? 'md:pr-12 md:text-right' : 'md:pl-12'
-                    }`}
-                  >
-                    <div className="glass-card p-6">
-                      {/* Header */}
-                      <div className={`flex items-start gap-3 mb-4 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
-                        {/* Company logo placeholder */}
-                        <div className="w-10 h-10 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center shrink-0">
-                          <span className="font-mono text-caption text-primary-400 font-semibold">
-                            {company.slice(0, 2).toUpperCase()}
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="text-tertiary-ink font-semibold text-body-regular">{exp.role}</h3>
-                          <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                            <span className="font-mono text-caption text-primary-400">{company}</span>
-                            <span className="text-tertiary-ink/35">·</span>
-                            <span className="font-mono text-caption text-tertiary-ink/45">{exp.type}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Period badge */}
-                      <div className={`mb-3 ${isLeft ? 'md:text-right' : ''}`}>
-                        <span className="inline-block px-2 py-0.5 bg-tertiary-ink/5 rounded font-mono text-caption text-tertiary-ink/40 tracking-wider">
-                          {exp.period}
-                        </span>
-                      </div>
-
-                      {/* Description */}
-                      <p className={`text-tertiary-ink/40 text-body-small leading-relaxed mb-4 ${isLeft ? 'md:text-right' : ''}`}>
-                        {exp.description}
-                      </p>
-
-                      {/* Achievements */}
-                      <ul className="space-y-1.5 mb-4">
-                        {exp.achievements.map((achievement, j) => (
-                          <li key={j} className={`flex gap-2 text-caption text-tertiary-ink/50 ${isLeft ? 'md:flex-row-reverse md:text-right' : ''}`}>
-                            <span className="text-primary-500 shrink-0 mt-0.5">▸</span>
-                            <span>{achievement.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Tech stack */}
-                      <div className={`flex flex-wrap gap-1.5 ${isLeft ? 'md:justify-end' : ''}`}>
-                        {exp.stack.map((tech) => (
-                          <span
-                            key={tech.name}
-                            className="px-2 py-0.5 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/3 border border-tertiary-ink/5 rounded"
-                          >
-                            {tech.name}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Interactive illustration */}
-                  {settings.showImages && exp.image && (
-                    <div
-                      className={`exp-illustration hidden md:flex md:w-1/2 items-center ${
-                        isLeft ? 'md:pl-12' : 'md:pr-12'
-                      }`}
-                    >
-                      <InteractiveImageCard src={exp.image} alt={`${company} illustration`} />
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+    <section className="relative px-gutter-x py-20 md:py-28">
+      <div className="w-full max-w-content mx-auto">
+        <div className="max-w-3xl">
+          {content.sectionLabel && <p className="label-mono">{content.sectionLabel}</p>}
+          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">{content.title}</h2>
+          {content.description && (
+            <p className="mt-4 text-body-regular text-tertiary-ink/70 max-w-[60ch]">{content.description}</p>
+          )}
         </div>
+
+        <ol className="mt-10 border-t border-tertiary-ink/15">
+          {roles.map(({ id, data: role }) => (
+            <li key={id} className="grid gap-2 border-b border-tertiary-ink/15 py-6 md:grid-cols-12 md:gap-8 md:py-7">
+              <div className="md:col-span-3">
+                <p className="font-mono text-body-small text-tertiary-ink/70 tabular-nums">{role.period}</p>
+                {!compact && role.type && <p className="mt-1 text-caption text-tertiary-ink/55">{role.type}</p>}
+              </div>
+              <div className="md:col-span-9">
+                <h3 className="text-body-large font-semibold text-tertiary-ink">
+                  {role.company}
+                  <span className="font-normal text-tertiary-ink/70"> · {role.role}</span>
+                </h3>
+                {role.description && (
+                  <p className="mt-2 text-body-regular text-tertiary-ink/70 max-w-[62ch] leading-relaxed">
+                    {role.description}
+                  </p>
+                )}
+                {!compact && role.achievements.length > 0 && (
+                  <ul className="mt-4 space-y-2 max-w-[62ch]">
+                    {role.achievements.map((achievement, index) => (
+                      <li key={index} className="flex gap-3 text-body-small text-tertiary-ink/80 leading-relaxed">
+                        <span aria-hidden="true" className="mt-[0.6em] h-px w-3 shrink-0 bg-tertiary-ink/40" />
+                        {achievement.text}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {!compact && role.stack.length > 0 && (
+                  <p className="mt-4 text-caption text-tertiary-ink/55">{role.stack.map((tech) => tech.name).join(' · ')}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {compact && content.linkLabel && settings.linkHref && (
+          <MoreLink href={settings.linkHref}>{content.linkLabel}</MoreLink>
+        )}
       </div>
     </section>
   )

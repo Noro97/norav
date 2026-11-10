@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { AnimatePresence } from 'framer-motion'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
@@ -132,7 +133,9 @@ function FilterGraph({ filters }: { filters: FilterState }) {
   )
 }
 
-export function EcommerceWidget() {
+export function EcommerceWidget({ first }: BlockComponentProps) {
+  // The demo's name is the page's H1 when the demo opens the page.
+  const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('ecommerce')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
@@ -209,15 +212,15 @@ export function EcommerceWidget() {
       <div className="relative z-10 w-full max-w-content mx-auto">
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
+          <Title className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
-          </h2>
+          </Title>
           <p className="text-body-large text-tertiary-ink/50 max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/55">
                 {tag.name}
               </span>
             ))}
@@ -229,7 +232,7 @@ export function EcommerceWidget() {
           <div className="ecom-sidebar flex flex-col gap-5">
             {/* Dependency Graph */}
             <div className="case-study-card p-4">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 {t('projects:ecommerce.filterDependencyGraph')}
               </h4>
               <FilterGraph filters={filters} />
@@ -237,7 +240,7 @@ export function EcommerceWidget() {
 
             {/* Category filter */}
             <div className="case-study-card p-4">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 {t('projects:ecommerce.categories')}
               </h4>
               <div className="space-y-1.5">
@@ -266,7 +269,7 @@ export function EcommerceWidget() {
                       <span className={`text-body-small font-mono ${isActive ? 'text-tertiary-ink/80' : 'text-tertiary-ink/50'}`}>
                         {cat}
                       </span>
-                      <span className="ml-auto text-caption font-mono text-tertiary-ink/40">{count}</span>
+                      <span className="ml-auto text-caption font-mono text-tertiary-ink/55">{count}</span>
                     </button>
                   )
                 })}
@@ -275,7 +278,7 @@ export function EcommerceWidget() {
                 <div className="mt-3 pt-3 border-t border-tertiary-ink/5">
                   <div className="flex flex-wrap gap-1">
                     {availableSubcategories.map((sub) => (
-                      <span key={sub} className="case-study-pill py-0.5 text-caption font-mono text-primary-400/60 bg-primary-500/5">
+                      <span key={sub} className="case-study-pill py-0.5 text-caption font-mono text-primary-400 bg-primary-500/5">
                         {sub}
                       </span>
                     ))}
@@ -286,7 +289,7 @@ export function EcommerceWidget() {
 
             {/* Price range */}
             <div className="case-study-card p-4">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 {t('projects:ecommerce.priceRange')}
               </h4>
               <div className="space-y-3">
@@ -304,7 +307,7 @@ export function EcommerceWidget() {
                   }
                   className="w-full accent-primary-500"
                 />
-                <div className="flex justify-between font-mono text-caption text-tertiary-ink/40">
+                <div className="flex justify-between font-mono text-caption text-tertiary-ink/55">
                   <span>${filters.priceRange[0]}</span>
                   <span>${filters.priceRange[1]}</span>
                 </div>
@@ -313,7 +316,7 @@ export function EcommerceWidget() {
 
             {/* Sort */}
             <div className="case-study-card p-4">
-              <h4 className="type-label text-tertiary-ink/40 mb-3">
+              <h4 className="type-label text-tertiary-ink/55 mb-3">
                 {t('projects:ecommerce.sortBy')}
               </h4>
               <div className="space-y-1">
@@ -324,7 +327,7 @@ export function EcommerceWidget() {
                     className={`w-full text-left px-2 py-1.5 rounded text-caption font-mono transition-all ${
                       filters.sortBy === opt.value
                         ? 'text-secondary-400 bg-secondary-500/10'
-                        : 'text-tertiary-ink/40 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/3'
+                        : 'text-tertiary-ink/55 hover:text-tertiary-ink/60 hover:bg-tertiary-ink/3'
                     }`}
                   >
                     {t(`projects:${opt.labelKey}`)}
@@ -335,10 +338,10 @@ export function EcommerceWidget() {
 
             {/* URL params display */}
             <div className="case-study-card p-4 flex-1">
-              <h4 className="type-label text-tertiary-ink/40 mb-2">
+              <h4 className="type-label text-tertiary-ink/55 mb-2">
                 {t('projects:ecommerce.urlState')}
               </h4>
-              <code className="text-caption font-mono text-primary-400/80 break-all block leading-relaxed">
+              <code className="text-caption font-mono text-primary-400 break-all block leading-relaxed">
                 {window.location.pathname}{filtersToParams(filters) || ''}
               </code>
             </div>
@@ -348,13 +351,13 @@ export function EcommerceWidget() {
           <div className="ecom-grid">
             {/* Header row */}
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-caption text-tertiary-ink/40">
+              <span className="font-mono text-caption text-tertiary-ink/55">
                 {t('projects:ecommerce.productsCount', { filtered: filteredProducts.length, total: MOCK_PRODUCTS.length })}
               </span>
               {filters.categories.length > 0 && (
                 <button
                   onClick={() => { setPage(0); setFilters((prev) => ({ ...prev, categories: [] })) }}
-                  className="font-mono text-caption text-primary-400/60 hover:text-primary-400 transition-colors"
+                  className="font-mono text-caption text-primary-400 hover:text-primary-400 transition-colors"
                 >
                   {t('common:buttons.clearFilters')}
                 </button>
@@ -382,10 +385,10 @@ export function EcommerceWidget() {
                     <div
                       className={`aspect-square rounded-lg mb-3 flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${CATEGORY_COLORS[product.category] ?? 'from-tertiary-ink/5 to-transparent'} border border-tertiary-ink/[0.04]`}
                     >
-                      <span className="type-label text-tertiary-ink/40">
+                      <span className="type-label text-tertiary-ink/55">
                         {product.category}
                       </span>
-                      <span className="font-mono text-caption text-tertiary-ink/45 group-hover:text-tertiary-ink/70 transition-colors">
+                      <span className="font-mono text-caption text-tertiary-ink/55 group-hover:text-tertiary-ink/70 transition-colors">
                         {product.subcategory}
                       </span>
                     </div>
@@ -396,7 +399,7 @@ export function EcommerceWidget() {
                       <span className="font-mono text-body-small font-medium text-secondary-300">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className="font-mono text-caption text-tertiary-ink/40 uppercase">
+                      <span className="font-mono text-caption text-tertiary-ink/55 uppercase">
                         #{String(product.id).padStart(3, '0')}
                       </span>
                     </div>
@@ -406,10 +409,10 @@ export function EcommerceWidget() {
 
               {filteredProducts.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <span className="font-mono text-body-small text-tertiary-ink/40">{t('projects:ecommerce.noProducts')}</span>
+                  <span className="font-mono text-body-small text-tertiary-ink/55">{t('projects:ecommerce.noProducts')}</span>
                   <button
                     onClick={() => setFilters({ categories: [], priceRange: [0, 1000], sortBy: 'price-asc' })}
-                    className="font-mono text-caption text-primary-400/60 hover:text-primary-400 mt-2 transition-colors"
+                    className="font-mono text-caption text-primary-400 hover:text-primary-400 mt-2 transition-colors"
                   >
                     {t('common:buttons.resetAll')}
                   </button>
@@ -423,7 +426,7 @@ export function EcommerceWidget() {
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/55 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &lt;
                 </button>
@@ -434,7 +437,7 @@ export function EcommerceWidget() {
                     className={`w-8 h-8 rounded border flex items-center justify-center font-mono text-caption transition-all ${
                       page === i
                         ? 'border-secondary-500/40 bg-secondary-500/10 text-secondary-400'
-                        : 'border-tertiary-ink/10 text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20'
+                        : 'border-tertiary-ink/10 text-tertiary-ink/55 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20'
                     }`}
                   >
                     {i + 1}
@@ -443,7 +446,7 @@ export function EcommerceWidget() {
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={page === totalPages - 1}
-                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/40 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
+                  className="w-8 h-8 rounded border border-tertiary-ink/10 flex items-center justify-center font-mono text-caption text-tertiary-ink/55 hover:text-tertiary-ink/70 hover:border-tertiary-ink/20 transition-all disabled:opacity-20 disabled:pointer-events-none"
                 >
                   &gt;
                 </button>

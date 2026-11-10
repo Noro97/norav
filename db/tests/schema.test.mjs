@@ -1046,6 +1046,110 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0034: the new site
+// ---------------------------------------------------------------------------
+{
+  // The migration set ran before the fixtures made a site, and 0034 leaves a
+  // database with no site alone. So it is replayed here, on what the fixtures
+  // and the earlier replays left, and then once more to show a second run is
+  // the same as the first.
+  const file = readFileSync(join(root, 'migrations', '0034_the_new_site.sql'), 'utf8')
+  await db.exec(file)
+
+  const live = async (slug) =>
+    (
+      await db.query(
+        `select b.type, b.anchor_id, b.is_visible, t.content
+           from blocks b
+           join pages p on p.id = b.page_id
+           left join block_translations t on t.block_id = b.id and t.locale = 'en'
+          where p.slug = $1 and b.deleted_at is null and b.is_visible
+          order by b.position`,
+        [slug],
+      )
+    ).rows
+
+  const home = await live('home')
+  check(
+    'home is hero, numbers, case studies, demos, experience, contact',
+    home.map((row) => row.type).join() === 'hero,impact_strip,work_index,work_index,experience,contact_cta',
+    home.map((row) => row.type).join(),
+  )
+  check(
+    'the hero leads with the thesis',
+    home[0]?.content?.headline?.[0]?.text === 'Interfaces at scale,',
+    JSON.stringify(home[0]?.content?.headline),
+  )
+  check('every number on the home page names its source', (home[1]?.content?.stats ?? []).every((stat) => stat.source))
+
+  const about = await live('about')
+  check(
+    'about is the bio, the timeline, the stack and the questions',
+    about.map((row) => row.type).join() === 'about,experience,stack,kit_faq',
+    about.map((row) => row.type).join(),
+  )
+
+  const { rows: pages } = await db.query(`select slug, status from pages order by slug`)
+  const status = Object.fromEntries(pages.map((row) => [row.slug, row.status]))
+  check('the demos have their new addresses', ['nexusroute', 'omnigrid', 'filtergraph', 'merchforge'].every((name) => status[`demos/${name}`] === 'published'))
+  check(
+    'nothing is published at the old addresses',
+    !['work/logistics', 'work/ecommerce', 'work/merch', 'work/omnigrid'].some((slug) => status[slug] === 'published'),
+  )
+  check('experience and skills are archived', status.experience === 'archived' && status.skills === 'archived')
+  check('/contact is published', status.contact === 'published')
+
+  const {
+    rows: [replaced],
+  } = await db.query(
+    `select count(*)::int as n from blocks where deleted_at is null and type in ('tech_marquee', 'projects_intro', 'bento_grid')`,
+  )
+  check('nothing still places tech_marquee, projects_intro or bento_grid', replaced.n === 0, String(replaced.n))
+
+  const { rows: menu } = await db.query(
+    `select t.data ->> 'label' as label, e.data ->> 'page' as page
+       from entries e join entry_translations t on t.entry_id = e.id and t.locale = 'en'
+      where e.collection = 'navigation' and e.deleted_at is null and e.is_visible
+      order by e.position`,
+  )
+  check(
+    'the menu is Work, About and Contact, each a page',
+    menu.map((row) => `${row.label}:${row.page}`).join() === 'Work:work,About:about,Contact:contact',
+    menu.map((row) => `${row.label}:${row.page}`).join(),
+  )
+
+  const {
+    rows: [theme],
+  } = await db.query(`select value from settings where key = 'theme'`)
+  check('the palette is D5', theme?.value?.accent === '#B51A2B' && theme?.value?.background === '#0a0a1a')
+
+  // Only on the pages 0034 writes; a fixture can publish others.
+  const written = ['home', 'work', 'about', 'contact', 'site', 'work/proof', 'demos/nexusroute', 'demos/omnigrid', 'demos/filtergraph', 'demos/merchforge']
+  const { rows: russian } = await db.query(
+    `select p.slug, b.type
+       from block_translations t
+       join blocks b on b.id = t.block_id
+       join pages p on p.id = b.page_id
+      where t.locale = 'ru' and b.deleted_at is null and b.is_visible and p.slug = any($1::text[])`,
+    [written],
+  )
+  check('no old Russian copy overlays the new English', russian.length === 0, JSON.stringify(russian))
+
+  const snapshot = async () =>
+    (
+      await db.query(
+        `select b.id, b.position, b.is_visible, b.settings, t.content
+           from blocks b left join block_translations t on t.block_id = b.id
+          where b.deleted_at is null order by b.id, t.locale`,
+      )
+    ).rows.map((row) => JSON.stringify(row))
+  const before = await snapshot()
+  await db.exec(file)
+  const after = await snapshot()
+  check('a second run writes the same rows, and no new ones', before.join() === after.join())
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))

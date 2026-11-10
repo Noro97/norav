@@ -13,26 +13,6 @@ export function withoutNumber(label: string): string {
   return label.replace(/\s*\d+\s*$/, '')
 }
 
-/**
- * The eyebrow with its number, counted over the case studies actually on the
- * page.
- *
- * The number used to be typed into the label, which made it a fact about the
- * copy rather than about the page: hiding the first case study left the second
- * one still calling itself 02, with no 01 anywhere above it. Hidden sections
- * never reach the snapshot, so position here is visible position.
- *
- * Any number already in the label is dropped first, so a snapshot published
- * before this — every one so far — does not render "Case Study 01 01".
- */
-export function numberedLabel(blocks: { type: string }[], type: string, label: string): string {
-  const studies = blocks.filter((block) => CASE_STUDY_TYPES.has(block.type))
-  const position = studies.findIndex((block) => block.type === type)
-  if (position < 0) return label
-
-  return `${withoutNumber(label)} ${String(position + 1).padStart(2, '0')}`.trim()
-}
-
 export interface CaseStudyLink {
   /** The page it lives on — its address, once prefixed with a language. */
   slug: string
@@ -79,13 +59,11 @@ export function useCaseStudyLinks(): CaseStudyLink[] {
   }, [snapshot])
 }
 
-export function useCaseStudyLabel(type: string, label: string): string {
-  const { snapshot } = useContent()
-
-  return useMemo(() => {
-    // Across every page, in page order: once each case study has a page of its
-    // own, counting within a page would number all five of them 01.
-    const blocks = snapshot.pages.flatMap((page) => page.blocks)
-    return numberedLabel(blocks, type, label)
-  }, [snapshot, type, label])
+/**
+ * A demo's or case study's eyebrow, as written. It used to carry a number
+ * counted across the site, "Case study 05"; with case studies and demos on
+ * separate lists, a running count across both numbered neither.
+ */
+export function useCaseStudyLabel(_type: string, label: string): string {
+  return withoutNumber(label)
 }

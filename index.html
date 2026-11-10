@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-new.svg" />
+    <link rel="icon" type="image/svg+xml" href="/norav-logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a1a" />
     <meta name="color-scheme" content="dark" />
@@ -19,14 +19,19 @@
     <meta property="og:site_name" content="%PROFILE_NAME%" />
     <meta property="og:title" content="%PROFILE_TITLE%" />
     <meta property="og:description" content="%PROFILE_DESCRIPTION%" />
-    <meta property="og:image" content="https://norav.dev/assets/img/logo-new.svg" />
+    <!-- A raster, because link unfurlers drop SVG. scripts/generate-share-card.mjs draws it. -->
+    <meta property="og:image" content="https://norav.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Norayr Avetisyan, Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="%PROFILE_TITLE%" />
     <meta name="twitter:description" content="%PROFILE_DESCRIPTION%" />
-    <meta name="twitter:image" content="https://norav.dev/assets/img/logo-new.svg" />
+    <meta name="twitter:image" content="https://norav.dev/og.png" />
+    <meta name="twitter:image:alt" content="Norayr Avetisyan, Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">%PROFILE_JSON_LD%</script>

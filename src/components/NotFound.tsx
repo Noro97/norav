@@ -20,7 +20,7 @@ export function NotFound() {
       <h1 className="font-display text-heading-large font-black text-tertiary-ink">
         {t('notFound.title')}
       </h1>
-      <p className="text-tertiary-ink/40 text-body-regular max-w-md">{t('notFound.body')}</p>
+      <p className="text-tertiary-ink/55 text-body-regular max-w-md">{t('notFound.body')}</p>
       <Link
         to={hrefFor(HOME_SLUG, locale)}
         className="mt-2 px-4 py-2 text-caption font-mono rounded border border-secondary-500 bg-secondary-500/10 text-secondary-400 transition-colors hover:bg-secondary-500/20"

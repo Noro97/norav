@@ -26,7 +26,7 @@ export function Capabilities() {
         <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3 mb-4">
           {content.title}
         </h2>
-        <p className="text-tertiary-ink/40 text-body-regular max-w-xl mb-12">{content.description}</p>
+        <p className="text-tertiary-ink/55 text-body-regular max-w-xl mb-12">{content.description}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {content.cards.map((card, index) => {
@@ -42,7 +42,7 @@ export function Capabilities() {
                   <Icon className="w-5 h-5 text-primary-400" strokeWidth={1.75} />
                 </div>
                 <h3 className="text-tertiary-ink font-semibold text-body-regular mb-2">{card.title}</h3>
-                <p className="text-tertiary-ink/40 text-body-small leading-relaxed">{card.body}</p>
+                <p className="text-tertiary-ink/55 text-body-small leading-relaxed">{card.body}</p>
               </div>
             </div>
             )

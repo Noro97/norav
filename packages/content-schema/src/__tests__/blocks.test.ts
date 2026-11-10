@@ -43,56 +43,65 @@ describe('hero block', () => {
   it('reports the failing path so the admin can highlight the field', () => {
     const result = validateBlockContent('hero', {
       ...heroBlock.defaults.content,
-      subtitle: '',
+      eyebrow: '',
     })
     expect(result.ok).toBe(false)
-    if (!result.ok) expect(result.issues[0]?.path).toBe('subtitle')
+    if (!result.ok) expect(result.issues[0]?.path).toBe('eyebrow')
   })
 
-  it('refuses an empty tagline', () => {
+  it('refuses an empty headline: it is the page\'s H1', () => {
     expect(
-      validateBlockContent('hero', { ...heroBlock.defaults.content, tagline: [] }),
+      validateBlockContent('hero', { ...heroBlock.defaults.content, headline: [] }),
     ).toMatchObject({ ok: false })
   })
 
   it('stays valid after a partial translation is overlaid', () => {
     const translated = mergeLocale<HeroContent>(heroBlock.defaults.content, {
-      subtitle: 'Senior fullstack-инженер',
-      name: { first: { highlight: 'Нор', rest: 'айр' } },
-      tagline: [{ text: 'Создаю высокопроизводительные интерфейсы на стыке' }],
+      eyebrow: 'Норайр Аветисян · Senior Fullstack Engineer',
+      headline: [{ text: 'Интерфейсы в масштабе,' }],
     })
     expect(validateBlockContent('hero', translated)).toMatchObject({ ok: true })
-    expect(translated.name.last.highlight).toBe('Av')
-    expect(translated.tagline).toHaveLength(5)
-    expect(translated.tagline[1]?.text).toBe('engineering precision')
+    expect(translated.headline).toHaveLength(2)
+    expect(translated.headline[1]?.text).toBe('and the systems under them.')
+    expect(translated.primaryHref).toBe('/work')
+  })
+
+  it('drops the fields of the hero it replaced', () => {
+    const result = validateBlockContent('hero', {
+      ...heroBlock.defaults.content,
+      tagline: [{ text: 'old', accent: 'main' }],
+      scrollHint: 'Scroll to explore',
+    })
+    expect(result.ok).toBe(true)
+    if (result.ok) expect(result.data).not.toHaveProperty('tagline')
   })
 })
 
 describe('accented text carries two tones', () => {
-  const withTagline = (accents: string[]) => ({
+  const withHeadline = (accents: string[]) => ({
     ...heroBlock.defaults.content,
-    tagline: accents.map((accent, index) => ({ text: `run ${index}`, accent })),
+    headline: accents.map((accent, index) => ({ text: `run ${index}`, accent })),
   })
 
   it('accepts the two tones it offers', () => {
-    expect(validateBlockContent('hero', withTagline(['main', 'highlight']))).toMatchObject({ ok: true })
+    expect(validateBlockContent('hero', withHeadline(['main', 'highlight']))).toMatchObject({ ok: true })
   })
 
   it('normalises the retired values rather than rejecting them', () => {
     // Drafts and every publication ever made hold these strings. Narrowing an
     // enum must not turn old content into a validation error.
-    const result = validateBlockContent('hero', withTagline(['none', 'crimson', 'bright']))
+    const result = validateBlockContent('hero', withHeadline(['none', 'crimson', 'bright']))
     expect(result).toMatchObject({ ok: true })
     const content = (result as { ok: true; data: HeroContent }).data
-    expect(content.tagline.map((run) => run.accent)).toEqual(['main', 'highlight', 'main'])
+    expect(content.headline.map((run) => run.accent)).toEqual(['main', 'highlight', 'main'])
   })
 
   it('still rejects an accent that never existed', () => {
-    expect(validateBlockContent('hero', withTagline(['chartreuse']))).toMatchObject({ ok: false })
+    expect(validateBlockContent('hero', withHeadline(['chartreuse']))).toMatchObject({ ok: false })
   })
 
   it('offers exactly the two tones in the editor', () => {
-    const field = heroBlock.form.find((f) => f.field === 'tagline')
+    const field = heroBlock.form.find((f) => f.field === 'headline')
     const accent = field?.fields?.find((f) => f.field === 'accent')
     expect(accent?.options?.map((o) => o.value)).toEqual(['main', 'highlight'])
   })

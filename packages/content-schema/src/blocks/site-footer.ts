@@ -19,6 +19,12 @@ const content = z.object({
   linksLabel: z.string().max(40),
   reachLabel: z.string().max(40),
   emailLabel: z.string().min(1).max(40),
+  // Added in S5, optional with no default: a footer without them publishes as before.
+  cvLabel: z.string().max(40).optional(),
+  colophon: z.string().max(240).optional(),
+  /** The button that opens the terminal, and its label once open. Empty means no terminal. */
+  terminalOpenLabel: z.string().max(40).optional(),
+  terminalCloseLabel: z.string().max(40).optional(),
   socials: z
     .array(
       z.object({
@@ -32,6 +38,7 @@ const content = z.object({
 
 const settings = z.object({
   email: z.string().min(1),
+  cvHref: z.string().max(300).optional(),
 })
 
 export const siteFooterBlock = defineBlock({
@@ -61,6 +68,10 @@ export const siteFooterBlock = defineBlock({
     { field: 'linksLabel', control: 'text', label: 'Heading over the page links' },
     { field: 'reachLabel', control: 'text', label: 'Heading over the contact links' },
     { field: 'emailLabel', control: 'text', label: 'Email link text' },
+    { field: 'cvLabel', control: 'text', label: 'CV link text' },
+    { field: 'colophon', control: 'textarea', label: 'How the site is built' },
+    { field: 'terminalOpenLabel', control: 'text', label: 'Terminal button', help: 'Leave empty to leave the terminal out.' },
+    { field: 'terminalCloseLabel', control: 'text', label: 'Terminal button, when open' },
     {
       field: 'socials',
       control: 'repeater',
@@ -85,6 +96,7 @@ export const siteFooterBlock = defineBlock({
       ],
     },
     { field: 'email', control: 'text', label: 'Email address', source: 'settings' },
+    { field: 'cvHref', control: 'text', label: 'CV link', source: 'settings' },
   ],
 })
 

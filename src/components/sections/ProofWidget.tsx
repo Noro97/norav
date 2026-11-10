@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
@@ -45,7 +46,9 @@ type PipelineStatus = 'idle' | 'running' | 'done'
 const STEP_DURATION = 800
 const REP_INTERVAL = 250
 
-export function ProofWidget() {
+export function ProofWidget({ first }: BlockComponentProps) {
+  // The demo's name is the page's H1 when the demo opens the page.
+  const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('proof')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
@@ -236,15 +239,15 @@ export function ProofWidget() {
         {/* Header */}
         <div className="mb-10">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-heading-large font-black text-tertiary-ink mt-3">
+          <Title className="font-display text-heading-large font-black text-tertiary-ink mt-3">
             {content.title}
-          </h2>
+          </Title>
           <p className="text-body-large text-tertiary-ink/50 max-w-2xl mt-4">
             {content.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-4">
             {content.techStack.map((tag) => (
-              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/45">
+              <span key={tag.name} className="case-study-pill text-caption font-mono text-tertiary-ink/55">
                 {tag.name}
               </span>
             ))}
@@ -259,12 +262,12 @@ export function ProofWidget() {
               <div className="w-3 h-3 rounded-full bg-primary-500/60" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/15" />
               <div className="w-3 h-3 rounded-full bg-tertiary-ink/10" />
-              <span className="ml-3 font-mono text-caption text-tertiary-ink/45">{t('projects:proof.windowLabel')}</span>
+              <span className="ml-3 font-mono text-caption text-tertiary-ink/55">{t('projects:proof.windowLabel')}</span>
             </div>
 
             {/* Activity selector */}
             <div>
-              <label className="type-label block text-tertiary-ink/40 mb-2">
+              <label className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:proof.labels.activity')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -287,7 +290,7 @@ export function ProofWidget() {
             <div className="case-study-card flex items-center gap-3 px-4 py-3">
               <span className="w-2 h-2 rounded-full bg-status-warning animate-pulse shrink-0" />
               <div>
-                <span className="font-mono text-caption text-tertiary-ink/40 block">{t('projects:proof.liveness.title')}</span>
+                <span className="font-mono text-caption text-tertiary-ink/55 block">{t('projects:proof.liveness.title')}</span>
                 <span className="font-mono text-body-small text-status-warning/80">
                   {t(`projects:proof.liveness.${livenessChallenge}`)}
                 </span>
@@ -327,7 +330,7 @@ export function ProofWidget() {
                 <div className="text-caption text-tertiary-ink/50 font-mono mt-1">{t('projects:proof.metrics.streak')}</div>
               </div>
             </div>
-            <p className="text-caption text-tertiary-ink/40 font-mono">{t('projects:proof.simulated')}</p>
+            <p className="text-caption text-tertiary-ink/55 font-mono">{t('projects:proof.simulated')}</p>
 
             {/* Pipeline log */}
             <div className="font-mono text-caption space-y-1 max-h-28 overflow-y-auto">
@@ -348,7 +351,7 @@ export function ProofWidget() {
           <div className="proof-right bg-tertiary-bg p-6 md:p-8 border-t lg:border-t-0 lg:border-l border-tertiary-ink/5">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-3 h-3 rounded-full bg-secondary-500/40" />
-              <span className="font-mono text-caption text-tertiary-ink/45">{t('projects:proof.pipeline.title')}</span>
+              <span className="font-mono text-caption text-tertiary-ink/55">{t('projects:proof.pipeline.title')}</span>
             </div>
 
             {/* Nodes */}
@@ -373,7 +376,7 @@ export function ProofWidget() {
                           ? 'bg-primary-500/20 text-primary-400'
                           : status === 'done'
                           ? 'bg-status-success/10 text-status-success'
-                          : 'bg-tertiary-ink/5 text-tertiary-ink/30'
+                          : 'bg-tertiary-ink/5 text-tertiary-ink/55'
                       }`}>
                         {status === 'done' ? (
                           <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
@@ -387,7 +390,7 @@ export function ProofWidget() {
                       {/* Label */}
                       <span className={`font-mono text-body-small transition-colors duration-500 ${
                         status === 'active' ? 'text-primary-400' :
-                        status === 'done' ? 'text-status-success/70' : 'text-tertiary-ink/40'
+                        status === 'done' ? 'text-status-success/70' : 'text-tertiary-ink/55'
                       }`}>
                         {t(`projects:${node.nodeKey}`)}
                       </span>

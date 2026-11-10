@@ -1,9 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { useTranslation } from 'react-i18next'
-import { SECTIONS } from '@/lib/constants'
 import { useAnchorPages, useCollection, useContent } from './ContentProvider'
-import { HOME_SLUG, hrefFor, readPath } from './routing'
+import { HOME_SLUG, hrefFor, readPath, SITE_SLUG } from './routing'
 
 interface NavigationRow {
   /** Localised, so it comes from the entry's content rather than its data. */
@@ -70,26 +68,12 @@ export function useNavigation(): NavItem[] {
   const rows = useCollection<NavigationRow>('navigation')
   const { snapshot, locale } = useContent()
   const anchorPages = useAnchorPages()
-  const { t } = useTranslation('common')
 
   return useMemo(() => {
-    // Between the deploy that reads the menu and the publish that fills it, the
-    // collection is empty — and a site with no menu is worse than a site whose
-    // menu is a week old. The list the code used to hold stands in until then.
-    // It can go once a publication carries navigation.
-    const source: (NavigationRow & { id: string })[] =
-      rows.length > 0
-        ? rows.map((row) => ({ ...row.data, id: row.id }))
-        : SECTIONS.map((section, index) => ({
-            id: `fallback-${index}`,
-            page: anchorPages.get(section.id) ?? HOME_SLUG,
-            external: '',
-            label: t(section.labelKey),
-          }))
-
     const items: NavItem[] = []
 
-    for (const { id, label, page, anchor, external } of source) {
+    for (const { id, data } of rows) {
+      const { label, page, anchor, external } = data
       if (external) {
         items.push({ id, label, href: external, page: null, external: true })
         continue
@@ -97,12 +81,15 @@ export function useNavigation(): NavItem[] {
 
       const target = resolveTarget(snapshot.pages, page, anchor ?? '', anchorPages)
       if (!snapshot.pages.some((candidate) => candidate.slug === target)) continue
+      // The chrome page is on every page and is never a destination. The menu
+      // used to send Contact there, to a terminal; /contact is a page now.
+      if (target === SITE_SLUG) continue
 
       items.push({ id, label, href: hrefFor(target, locale), page: target, external: false })
     }
 
     return items
-  }, [rows, snapshot, locale, anchorPages, t])
+  }, [rows, snapshot, locale, anchorPages])
 }
 
 /**

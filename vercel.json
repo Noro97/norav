@@ -12,6 +12,41 @@
       "permanent": true
     },
     {
+      "source": "/experience",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/work/logistics",
+      "destination": "/demos/nexusroute",
+      "permanent": true
+    },
+    {
+      "source": "/work/ecommerce",
+      "destination": "/demos/filtergraph",
+      "permanent": true
+    },
+    {
+      "source": "/work/merch",
+      "destination": "/demos/merchforge",
+      "permanent": true
+    },
+    {
+      "source": "/work/omnigrid",
+      "destination": "/demos/omnigrid",
+      "permanent": true
+    },
+    {
+      "source": "/site",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/ru",
       "destination": "/",
       "permanent": false

@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
+import type { BlockComponentProps } from '@/content/blocks'
 import { useCaseStudyLabel } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
@@ -58,7 +59,9 @@ function generateConnections(count: number): GeoJSON.FeatureCollection {
   return { type: 'FeatureCollection', features }
 }
 
-export function LogisticsWidget() {
+export function LogisticsWidget({ first }: BlockComponentProps) {
+  // The demo's name is the page's H1 when the demo opens the page.
+  const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('logistics')
   // Before the early return: the number is a hook, and a hook cannot sit
   // behind a conditional.
@@ -119,9 +122,9 @@ export function LogisticsWidget() {
         {/* Left — Content */}
         <div className="logistics-content space-y-6">
           <span className="label-mono">{sectionLabel}</span>
-          <h2 className="font-display text-heading-large font-black text-tertiary-ink">
+          <Title className="font-display text-heading-large font-black text-tertiary-ink">
             {content.title}
-          </h2>
+          </Title>
           <p className="text-tertiary-ink/70 text-body-large leading-relaxed max-w-lg">
             {content.description}
           </p>
@@ -163,7 +166,7 @@ export function LogisticsWidget() {
 
           {/* Live log */}
           {mapLoaded && (
-            <div className="font-mono text-caption text-tertiary-ink/40 space-y-1 max-h-20 overflow-hidden">
+            <div className="font-mono text-caption text-tertiary-ink/55 space-y-1 max-h-20 overflow-hidden">
               <div>{t('logistics.log.sourceUpdate', { markers: markerCount, connections: routeCount })}</div>
             </div>
           )}
@@ -185,7 +188,7 @@ export function LogisticsWidget() {
             />
           </Suspense>
           {/* Overlay label */}
-          <div className="case-study-pill absolute top-3 left-3 font-mono text-caption text-tertiary-ink/40 bg-tertiary-shade/50">
+          <div className="case-study-pill absolute top-3 left-3 font-mono text-caption text-tertiary-ink/55 bg-tertiary-shade/50">
             {t('logistics.liveLabel', { count: HUBS.length })}
           </div>
         </div>

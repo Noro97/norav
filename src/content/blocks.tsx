@@ -3,10 +3,10 @@ import { HeroSection } from '@/components/sections/HeroSection'
 import { useWritingPosts } from '@/components/sections/kit/useWritingPosts'
 import { defineKitSection } from '@/components/sections/kit/defineKitSection'
 import { WidgetPlaceholder } from '@/components/sections/WidgetPlaceholder'
+import { TerminalSlot } from '@/components/sections/TerminalSlot'
 import { SectionLoader } from './SectionLoader'
 import type {
   KitProcessContent,
-  KitFaqContent,
   KitCtaBannerContent,
   KitCompareTableContent,
   KitToolStackContent,
@@ -29,6 +29,11 @@ export interface BlockComponentProps {
    * block of its type; the ones that appear once can ignore it.
    */
   blockId?: string
+  /**
+   * Whether this section opens the page. The one that does holds the page's H1,
+   * so a section that can come first renders its title as h1 then, and h2 after.
+   */
+  first?: boolean
 }
 
 type BlockComponent = ComponentType<BlockComponentProps> | LazyExoticComponent<ComponentType<BlockComponentProps>>
@@ -62,7 +67,7 @@ const neverChanges = () => () => {}
  * page and the first render in the browser both show the placeholder, and the
  * section mounts straight after.
  */
-const inBrowserOnly = (Section: BlockComponent, placeholder: ReactNode): BlockComponent =>
+const inBrowserOnly = (Section: BlockComponent, placeholder: (props: BlockComponentProps) => ReactNode): BlockComponent =>
   function InBrowserOnly(props: BlockComponentProps) {
     const inBrowser = useSyncExternalStore(
       neverChanges,
@@ -70,13 +75,16 @@ const inBrowserOnly = (Section: BlockComponent, placeholder: ReactNode): BlockCo
       () => false,
     )
     return inBrowser ? (
-      <Suspense fallback={placeholder}>
+      <Suspense fallback={placeholder(props)}>
         <Section {...props} />
       </Suspense>
     ) : (
-      placeholder
+      placeholder(props)
     )
   }
+
+/** A demo's own words until it mounts, with the page's H1 if the demo opens the page. */
+const widgetPlaceholder = (type: string) => (props: BlockComponentProps) => <WidgetPlaceholder type={type} first={props.first} />
 
 export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
  // The hero is the LCP element: it stays in the entry chunk.
@@ -84,16 +92,18 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
 
  about: named(() => import('@/components/sections/AboutHero'), 'AboutHero'),
   impact_strip: named(() => import('@/components/sections/ImpactStrip'), 'ImpactStrip'),
+  work_index: named(() => import('@/components/sections/WorkIndex'), 'WorkIndex'),
+  stack: named(() => import('@/components/sections/Stack'), 'Stack'),
  capabilities: named(() => import('@/components/sections/Capabilities'), 'Capabilities'),
  experience: named(() => import('@/components/sections/ExperienceTimeline'), 'ExperienceTimeline'),
   tech_marquee: named(() => import('@/components/sections/TechMarquee'), 'TechMarquee'),
-  bento_grid: inBrowserOnly(animated(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'), <SectionLoader tall />),
+  bento_grid: inBrowserOnly(animated(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'), () => <SectionLoader tall />),
   projects_intro: named(() => import('@/components/sections/ProjectsIntro'), 'ProjectsIntro'),
- logistics: inBrowserOnly(named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'), <WidgetPlaceholder type="logistics" />),
- merch: inBrowserOnly(named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'), <WidgetPlaceholder type="merch" />),
- ecommerce: inBrowserOnly(animated(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'), <WidgetPlaceholder type="ecommerce" />),
- omnigrid: inBrowserOnly(animated(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'), <WidgetPlaceholder type="omnigrid" />),
- proof: inBrowserOnly(named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'), <WidgetPlaceholder type="proof" />),
+ logistics: inBrowserOnly(named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'), widgetPlaceholder('logistics')),
+ merch: inBrowserOnly(named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'), widgetPlaceholder('merch')),
+ ecommerce: inBrowserOnly(animated(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'), widgetPlaceholder('ecommerce')),
+ omnigrid: inBrowserOnly(animated(() => import('@/components/sections/OmniGrid/OmniGridWidget'), 'OmniGridWidget'), widgetPlaceholder('omnigrid')),
+ proof: inBrowserOnly(named(() => import('@/components/sections/ProofWidget'), 'ProofWidget'), widgetPlaceholder('proof')),
 
  // The reasoning under each demo. One component, five types — a type names
  // exactly one block, so each study needs its own.
@@ -107,7 +117,8 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
  // is placed once per study, so it reads its own row.
  case_study: named(() => import('@/components/sections/CaseStudy'), 'CaseStudy'),
   contact_cta: named(() => import('@/components/sections/ContactCTA'), 'ContactCTA'),
-  terminal_footer: inBrowserOnly(named(() => import('@/components/sections/TerminalFooter'), 'TerminalFooter'), <SectionLoader />),
+  // Closed until the footer opens it, and fetched only then.
+  terminal_footer: TerminalSlot,
   site_footer: named(() => import('@/components/sections/SiteFooter'), 'SiteFooter'),
 
  // Usable on any page, as many times as it needs them.
@@ -116,7 +127,8 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
  // The six kit sections that stayed, reading their copy from the CMS. `defineKitSection` supplies the wrapper, the stylesheet and the accent
  // every one of them needs, so a section is one line here.
   kit_process: defineKitSection<KitProcessContent>('kit_process', () => import('@/components/portfolio-kit/sections/extra-sections/process'), 'Process'),
-  kit_faq: defineKitSection<KitFaqContent>('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ'),
+  // The kit's fields, drawn by the site: every answer open, no accordion.
+  kit_faq: named(() => import('@/components/sections/Faq'), 'Faq'),
   kit_cta_banner: defineKitSection<KitCtaBannerContent>('kit_cta_banner', () => import('@/components/portfolio-kit/sections/extra-sections/cta-banner'), 'CTABanner'),
   kit_compare_table: defineKitSection<KitCompareTableContent>('kit_compare_table', () => import('@/components/portfolio-kit/sections/more-sections/compare-table'), 'CompareTable'),
   kit_tool_stack: defineKitSection<KitToolStackContent>('kit_tool_stack', () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'), 'ToolStack'),

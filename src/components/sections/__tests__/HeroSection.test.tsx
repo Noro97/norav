@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { HeroSection } from '../HeroSection'
 
@@ -8,17 +9,27 @@ vi.mock('@/content/ContentProvider', () => ({ useBlock }))
 const hero = {
   anchorId: 'hero',
   content: {
-    name: { first: { highlight: 'Nor', rest: 'ayr' }, last: { highlight: 'Av', rest: 'etisyan' } },
-    subtitle: 'Fullstack Engineer',
-    tagline: [
-      { text: 'Building interfaces at the intersection of', accent: 'main' },
-      { text: 'engineering precision', accent: 'highlight' },
-      { text: '.', accent: 'main' },
+    eyebrow: 'Norayr Avetisyan · Senior Fullstack Engineer',
+    headline: [
+      { text: 'Interfaces at scale,', accent: 'main' },
+      { text: 'and the systems under them.', accent: 'highlight' },
     ],
-    scrollHint: 'Scroll to explore',
+    sub: 'At MTS Web Services I built a design system of 200+ components.',
+    primaryLabel: 'See the work',
+    primaryHref: '/work',
+    secondaryLabel: 'Email me',
+    secondaryHref: 'mailto:someone@example.com',
+    availability: 'Open to senior fullstack roles',
   },
-  settings: { showScrollHint: true, subtitleReveal: 'scramble', enableParticleBurst: true },
+  settings: {},
 }
+
+const renderHero = () =>
+  render(
+    <MemoryRouter>
+      <HeroSection />
+    </MemoryRouter>,
+  )
 
 describe('HeroSection', () => {
   beforeEach(() => {
@@ -26,28 +37,42 @@ describe('HeroSection', () => {
     useBlock.mockReturnValue(hero)
   })
 
-  it('renders the name as one readable heading, not a run of animated characters', () => {
-    render(<HeroSection />)
-    const heading = screen.getByRole('heading', { level: 1 })
-    expect(heading).toHaveTextContent('Norayr Avetisyan')
-    expect(heading.querySelectorAll('span').length).toBeLessThanOrEqual(4)
-    expect(heading.querySelector('[class*="opacity-0"]')).toBeNull()
-  })
-
-  it('shows the subtitle as plain text — no scramble', () => {
-    render(<HeroSection />)
-    expect(screen.getByText('Fullstack Engineer')).toBeInTheDocument()
-  })
-
-  it('answers the pointer', () => {
-    const { container } = render(<HeroSection />)
-    expect(container.querySelector('section')?.className).not.toContain('pointer-events-none')
-  })
-
-  it('joins tagline segments with a space except before punctuation', () => {
-    render(<HeroSection />)
-    expect(screen.getByText(/intersection of/).closest('p')).toHaveTextContent(
-      'Building interfaces at the intersection of engineering precision.',
+  it('makes the thesis the H1, with the name and role above it', () => {
+    renderHero()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Interfaces at scale, and the systems under them.',
     )
+    expect(screen.getByText('Norayr Avetisyan · Senior Fullstack Engineer')).toBeInTheDocument()
+  })
+
+  it('starts nothing invisible', () => {
+    const { container } = renderHero()
+    expect(container.querySelector('[class*="opacity-0"]')).toBeNull()
+  })
+
+  it('sends the main button to a route and the second to an address', () => {
+    renderHero()
+    expect(screen.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '/work')
+    expect(screen.getByRole('link', { name: 'Email me' })).toHaveAttribute('href', 'mailto:someone@example.com')
+  })
+
+  it('reads the hero published before S5 as a name over its tagline', () => {
+    useBlock.mockReturnValue({
+      anchorId: 'hero',
+      content: {
+        name: { first: { highlight: 'Nor', rest: 'ayr' }, last: { highlight: 'Av', rest: 'etisyan' } },
+        subtitle: 'Senior Fullstack Engineer',
+        tagline: [
+          { text: 'Building interfaces', accent: 'main' },
+          { text: '.', accent: 'main' },
+        ],
+        scrollHint: 'Scroll to explore',
+      },
+      settings: { showScrollHint: true },
+    })
+    renderHero()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Norayr Avetisyan')
+    expect(screen.getByText('Building interfaces.')).toBeInTheDocument()
+    expect(screen.queryByRole('link')).toBeNull()
   })
 })

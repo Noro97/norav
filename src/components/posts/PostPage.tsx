@@ -30,7 +30,7 @@ export function PostPage({ post }: { post: Post }) {
           seo={postSeo(post, name, SITE)}
         />
 
-        <Link to={hrefFor(WRITING_SLUG, locale)} className="label-mono text-tertiary-ink/60 hover:text-primary-500">
+        <Link to={hrefFor(WRITING_SLUG, locale)} className="label-mono text-tertiary-ink/60 hover:text-primary-400">
           ← {t('writing.back')}
         </Link>
 

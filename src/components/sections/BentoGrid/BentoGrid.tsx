@@ -114,7 +114,7 @@ export function BentoGrid() {
           <h2 className="font-display text-heading-xlarge font-black text-tertiary-ink mt-4 mb-5">
             {content.title}
           </h2>
-          <p className="text-tertiary-ink/45 text-body-regular md:text-body-large max-w-xl leading-relaxed">
+          <p className="text-tertiary-ink/55 text-body-regular md:text-body-large max-w-xl leading-relaxed">
             {content.description}
           </p>
           <div className="h-px w-24 bg-gradient-to-r from-primary-500/50 to-transparent mt-8" />

@@ -42,7 +42,7 @@ export function BentoMicroTile({ index, icon, illustration }: BentoMicroTileProp
 
       <motion.div style={{ y }}>
       {/* Icon with glow ring */}
-      <div className="relative w-8 h-8 rounded-lg bg-primary-500/[0.08] border border-primary-500/15 flex items-center justify-center text-primary-400/70 mb-4 group-hover:border-primary-500/30 group-hover:text-primary-400 transition-all duration-300">
+      <div className="relative w-8 h-8 rounded-lg bg-primary-500/[0.08] border border-primary-500/15 flex items-center justify-center text-primary-400 mb-4 group-hover:border-primary-500/30 group-hover:text-primary-400 transition-all duration-300">
         {(() => {
           const IconComp = ICONS[icon] ?? Zap
           return <IconComp size={16} />

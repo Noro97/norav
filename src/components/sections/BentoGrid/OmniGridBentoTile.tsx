@@ -166,7 +166,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Filter..."
-            className="w-full max-w-[200px] px-2.5 py-1 text-caption font-mono text-tertiary-ink/70 bg-tertiary-shade/40 border border-tertiary-ink/[0.08] rounded-md placeholder:text-tertiary-ink/35 focus:outline-none focus:border-secondary-500/30 transition-colors"
+            className="w-full max-w-[200px] px-2.5 py-1 text-caption font-mono text-tertiary-ink/70 bg-tertiary-shade/40 border border-tertiary-ink/[0.08] rounded-md placeholder:text-tertiary-ink/55 focus:outline-none focus:border-secondary-500/30 transition-colors"
           />
         </div>
 
@@ -179,7 +179,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="px-2 py-1.5 text-left text-tertiary-ink/40 font-normal tracking-wider uppercase cursor-pointer hover:text-secondary-400/80 transition-colors select-none"
+                    className="px-2 py-1.5 text-left text-tertiary-ink/55 font-normal tracking-wider uppercase cursor-pointer hover:text-secondary-400/80 transition-colors select-none"
                   >
                     <span className="flex items-center gap-1">
                       {flexRender(header.column.columnDef.header, header.getContext())}
@@ -219,7 +219,7 @@ export function OmniGridBentoTile({ className = '' }: Props) {
           {OMNIGRID_PROJECT.techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/45 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
+              className="px-2.5 py-1 text-caption font-mono text-tertiary-ink/55 bg-tertiary-ink/[0.04] border border-tertiary-ink/[0.08] rounded-md tracking-wide"
             >
               {tech}
             </span>

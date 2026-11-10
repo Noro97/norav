@@ -119,7 +119,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
 
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="type-label text-primary-500">
+          <span className="type-label text-primary-400">
             Live Demo {caseNum}
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-tertiary-ink/[0.06] to-transparent" />
@@ -151,7 +151,7 @@ export function BentoProjectTile({ project, className = '', index }: BentoProjec
         <MagneticButton
           onClick={openCaseStudy}
           aria-label={`${copy?.cta ?? ''} — ${copy?.title ?? ''}`}
-          className="type-label inline-flex items-center gap-2.5 text-primary-400/80 group/btn hover:text-primary-300 transition-colors duration-300"
+          className="type-label inline-flex items-center gap-2.5 text-primary-400 group/btn hover:text-primary-300 transition-colors duration-300"
         >
           <span className="relative">
             {copy?.cta ?? ''}
