@@ -9,36 +9,6 @@ function needsLeadingSpace(text: string): boolean {
   return !/^[.,;:!?)\]]/.test(text)
 }
 
-/** The hero published before S5: a name for the H1 and a tagline under it. */
-interface PreviousHero {
-  subtitle?: string
-  name?: { first: { highlight: string; rest: string }; last: { highlight: string; rest: string } }
-  tagline?: HeroContent['headline']
-}
-
-/**
- * The hero as the current shape, from whichever shape was published.
- *
- * The code ships a few minutes before the copy it was written for, and in that
- * window the published hero is the old one. It reads as the old hero did, set
- * in the new layout, rather than as an empty heading. The follow-up to S5
- * removes this once the new copy is live.
- */
-function current(content: HeroContent & PreviousHero): HeroContent {
-  if (content.headline) return content
-  const { first, last } = content.name ?? { first: { highlight: '', rest: '' }, last: { highlight: '', rest: '' } }
-  return {
-    eyebrow: content.subtitle ?? '',
-    headline: [{ text: `${first.highlight}${first.rest} ${last.highlight}${last.rest}`.trim(), accent: 'main' }],
-    sub: (content.tagline ?? []).map((run) => run.text).join(' ').replace(/ ([.,;:!?])/g, '$1'),
-    primaryLabel: '',
-    primaryHref: '',
-    secondaryLabel: '',
-    secondaryHref: '',
-    availability: '',
-  }
-}
-
 /** A route stays in the app; anything else is an ordinary link. */
 function Action({ href, className, children }: { href: string; className: string; children: React.ReactNode }) {
   return href.startsWith('/') ? (
@@ -60,9 +30,9 @@ function Action({ href, className, children }: { href: string; className: string
  * proof with its sources, two ways forward, and whether I'm available.
  */
 export function HeroSection() {
-  const hero = useBlock<HeroContent & PreviousHero, HeroSettings>('hero')
+  const hero = useBlock<HeroContent, HeroSettings>('hero')
   if (!hero) return null
-  const content = current(hero.content)
+  const { content } = hero
 
   return (
     <section className="relative px-gutter-x pt-36 pb-20 md:pt-44 md:pb-28">

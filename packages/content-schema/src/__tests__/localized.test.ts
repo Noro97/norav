@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { impactStripBlock, techMarqueeBlock } from '../blocks'
+import { impactStripBlock } from '../blocks'
 import { pickLocalized, type FormField } from '../define-block'
 import { mergeLocale } from '../locales'
 import { validateBlockContent } from '../blocks'
@@ -27,7 +27,16 @@ describe('pickLocalized', () => {
   })
 
   it('drops a repeater row entirely when nothing in it is translatable', () => {
-    const picked = pickLocalized(techMarqueeBlock.form, {
+    const form: FormField[] = [
+      { field: 'label', control: 'text', label: 'Label' },
+      {
+        field: 'items',
+        control: 'repeater',
+        label: 'Items',
+        fields: [{ field: 'name', control: 'text', label: 'Name', localized: false }],
+      },
+    ]
+    const picked = pickLocalized(form, {
       label: 'Tools & Technologies',
       items: [{ name: 'React' }, { name: 'Vite' }],
     }) as Record<string, unknown>

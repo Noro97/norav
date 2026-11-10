@@ -4,7 +4,7 @@ The working model of this project. Read first every session, update every sessio
 
 ## Stack
 
-- **Site:** Vite 6, React 19, Tailwind 4, on Vercel. Every route is prerendered at build time. framer-motion in two widgets and `bento_grid`, GSAP in `bento_grid`, Leaflet in NexusRoute, none of them on the first page.
+- **Site:** Vite 6, React 19, Tailwind 4, on Vercel. Every route is prerendered at build time. framer-motion in two widgets and Leaflet in NexusRoute, none of them on the first page. GSAP is gone with `bento_grid`.
 - **CMS:** Next.js 15 App Router, `pg`, TinyMCE, on Vercel at `cms.norav.dev`. Neon Postgres, Vercel Blob.
 - **Shared:** `packages/content-schema` (Zod block registry), `packages/design-tokens`.
 - **Pipeline:** CMS publish, immutable snapshot, baked by `prebuild`, prerendered by `scripts/prerender.mjs`, refreshed by checksum at idle.
@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S4 is done and production is current.** S5 is next. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
+Milestone 1. **S5 is done and production is current: the new site is live.** S6 is next. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -27,21 +27,37 @@ Milestone 1. **S4 is done and production is current.** S5 is next. Sessions now 
 | S2 Baseline and cleanup | Done. Nothing ran on production except the owner's read-only dump |
 | S3 Facts and content model | Done, version 27 live |
 | S4 Deletion and speed | Done. D11 met on the live site, version 27 unchanged |
-| S5 New site structure | Not started |
+| S5 New site structure | Done, version 28 live. D11 holds on the live site |
 | S6 Case studies | Not started |
 | S7 Creative-Lab | Not started |
 | S8 Launch | Not started |
 
-## Production, as of 2026-11-07
+## Production, as of 2026-11-10
 
-- `cms.norav.dev/api/health`: 33 migrations applied of 33 in the repo, `publishedVersion` 27, published 2026-11-07. Checksum `ea9a635bbe9a`. 0033 changed no published value, so the release came back `unchanged: true`.
-- Version 27 differs from 26 only by `settings.profile` and 10 values per language that nothing reads: 7 menu anchors and 3 ambient-layer settings. The live search for "Do not use" claims and `[Placeholder` finds nothing.
-- The September copy is in the database but not in the drafts that publish. Rows of the 17 removed block types are soft-deleted. The other sections and pages are hidden or unpublished, and S5 brings the new copy with the owner's review.
-- English only: `/ru` redirects to English until S12. The CMS keeps Russian rows, and `?locale=ru` still returns the old Russian copy.
+- `cms.norav.dev/api/health`: 34 migrations applied of 34 in the repo, `publishedVersion` 28, published 2026-11-10 17:29 UTC. Checksum `7b1319a858c2`. The site bakes version 28 since #127.
+- Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. The D5 palette. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
+- `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
+- Case studies: `/` and `/work` list Proof App only. Their `work_index` blocks already name `work/nova-prism` and `work/norav`, which appear on both as soon as S6 publishes those pages.
+- English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Baseline, 2026-11-10, after S5
+
+Measure later work against these. Content version 28, live site, Lighthouse 13.6.0, mobile preset, median of 3 runs:
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | FCP | TBT | CLS | Speed Index | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 | 1.3s | 1.3s | 0 ms | 0.004 | 1.3s | 265 KB |
+| `/about` | 99 | 100 | 100 | 100 | 1.6s | 1.4s | 0 ms | 0.000 | 1.7s | 312 KB |
+| `/work` | 100 | 100 | 100 | 100 | 1.1s | 1.1s | 0 ms | 0.000 | 1.2s | 260 KB |
+| `/work/proof` | 99 | 100 | 100 | 100 | 2.2s | 1.0s | 0 ms | 0.000 | 1.5s | 286 KB |
+
+D11 holds: LCP under 1.5s on `/`, 95+ in every category, a skip link and one H1 on every page, no sideways scroll at 375px, nothing running under reduced motion. `/`'s LCP read 0.92s after S4 with the name as the H1; the thesis, set larger, is the LCP element now. Accessibility is 100 everywhere, so a contrast slip no longer lands on the CI threshold.
+
+**Entry bundle after S5's cleanup, Node 20:** JS 347.3 KB raw, 112.6 KB gzip; CSS 96.7 KB raw, 14.3 KB gzip. The limits in `scripts/check-bundle-size.mjs` are unchanged.
 
 ## Baseline, 2026-11-07, after S4
 
-Measure later work against these. Content version 27.
+Content version 27.
 
 **Lighthouse 13.6.0, mobile preset, median of 3 runs, live site:**
 
@@ -101,7 +117,7 @@ What the runs point at:
 
 - **Passed:** reduced motion (no running animations at 375px, against 1–7 without it), no sideways scroll at 375px, no site errors in the console, source maps closed, admin APIs return 401 without a session.
 - **Done in S4:** self-hosted fonts, no count-up on the numbers strip, real 404s, long cache on hashed files.
-- **Now in S5:** H1 on every page, skip link, contrast, the Email link on `/about`, photo delivery, the sitemap check.
+- **Done in S5:** H1 on every page, skip link, contrast, the Email link on `/about`, photo delivery, the sitemap check.
 - **Still open:** no security headers beyond HSTS on the site or the CMS, for S8. The terminal's rate limit is per instance, so the spending cap is the real limit.
 - **Not checked:** field data, screen readers, real phones, keyboard use inside widgets and modals, and `ask`, because it spends the API key. S8 should confirm that `claude-sonnet-5` in `server/chat.ts:14` still answers.
 
@@ -118,21 +134,21 @@ Nothing.
 ## Tech debt register
 
 - `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Later releases of those packages clear them, so check again at S8. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
-- `cat experience.txt` prints every highlight in the profile, 76 lines in a box that doesn't wrap, so at 375px its longest lines scroll sideways inside the box. So do `cat about.txt` and `sudo hire`. S5 can decide what the terminal should say.
 - `npm run user:add` shows the password as it's typed. The runbook says to run it in the Mac's Terminal app. Hiding the input would be a small fix.
 - `.env.example`'s comment on `CMS_URL` doesn't mention that `/api/chat` reads it at runtime too. Sessions don't open `.env*` files, so the owner or a rule change has to fix it.
-- `cat stack.txt` in `src/i18n/locales` keeps an older skills list than the profile's. It isn't an approved-numbers problem, so S3 left it to avoid a visible change. S5 should choose one.
-- Block copy still states facts in its own words: the hero, the career timeline, `terminal_footer.hire`. S5 rewrites and reviews it from `facts.md`. Nothing keeps it in step with the profile.
+- Block copy states facts in its own words, reviewed against `facts.md` in S5: the hero, the numbers, the timeline's experience rows, the FAQ. Nothing keeps it in step with the profile automatically; the About stack and the terminal's `cat stack.txt` and `cat about.txt` read the profile.
+- The CMS's Experience collection and the profile's roles both hold the career. The timeline reads the collection, worded for a page; the terminal reads the profile, worded for `ask`. Change both, `facts.md` first.
 - The seed data no longer holds banned claims, but `seed.mts`, `import-content.mts` and `legacy-i18n` still hold other old copy. No published page uses them, and S8's scan should catch the rest.
 - No local setup has a blob store, so a change to direct upload can only be tested for real on production. The token, the checks and the recording have tests.
-- Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. 0033 soft-deletes the rows of the removed types, and the six kit sections keep theirs until S5 rewrites them.
+- Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. 0034 rewrites what the live pages show, and leaves a database with no hero untouched.
+- Four kit sections have no placed row and no use: `kit_process`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`, and `kit_writing` waits for a post. Their stylesheet is still in a lazy chunk.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
 - CI guards a merge only through the `merge-when-green` job (D20). A session can still merge by hand, and nothing stops a merge past a red check until branch protection, which needs GitHub Pro or a public repo. It becomes possible at S8, and turning it on then is gate G6. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
-- `tech_marquee`, `projects_intro` and `bento_grid` stay until S5 replaces them, by the owner's decision. `bento_grid` still has framer-motion, GSAP and `MagneticButton`, lazy and only on `/work`. S5's prompt removes them.
 - Fonts are the Latin subsets only. Russian needs the Cyrillic ones in S12. `src/i18n/locales/ru` is unreachable until then too.
-- The `/site` page is prerendered because the menu's Contact links to it. S5's navigation removes that link.
 - A page published since the last build returns 404 with the right content until the rebuild finishes, and its `noindex` from `404.html` stays until the next full load. A publish triggers that rebuild, so the window is short.
-- `og:image` is the SVG logo, which link unfurlers drop, so a shared link shows no image. The owner moved one static PNG up to S5, because Milestone 1 is meant to be shared. S11 adds per-page images.
+- Every page shares one `og:image`, `/og.png`, drawn by `scripts/generate-share-card.mjs`. S11 adds per-page images on the same method.
+- A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.
+- `/about`'s photo is the site's own file, `public/assets/img/norayr-avetisyan.webp`, not a library item. Replacing it is a commit, not a CMS upload. The owner was offered a new photo and kept this one.
 
 ## Decisions
 

@@ -28,12 +28,6 @@
 
   /* FAQ: the question was 26px in the display face with a 60px number
      column and 28px of padding — one question per screen. */
-  .pf-kit .faq { padding: 64px 0 56px; }
-  .pf-kit .faq-list { margin: 0 var(--kit-gutter); }
-  .pf-kit .faq-q { grid-template-columns: 28px 1fr 20px; gap: 12px; padding: 18px 0; }
-  .pf-kit .faq-q:hover { padding-left: 0; }
-  .pf-kit .faq-a > p { padding: 0 20px 0 40px; }
-  .pf-kit .faq-open .faq-a > p { padding-bottom: 18px; }
 
   /* Services: a 320px minimum height stacked one card under another leaves
      a screen of nothing between the blurb and the tags. */

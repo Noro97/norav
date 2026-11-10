@@ -23,7 +23,7 @@ How production content changes. **Sessions run this themselves (D21).** The owne
    ```bash
    npm --prefix ~/Desktop/projects/webapp/cms run release:production -- --dry-run
    ```
-   It should show the same changes and the same checksum as the rehearsal. If not, stop and report it.
+   It should show the same changes and the same checksum as the rehearsal. A migration that inserts rows gives them new ids in each database, so the checksum differs: then compare the two dry runs with every UUID masked (`sed -E 's/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/<uuid>/g'`) and release the production checksum only if nothing else differs. Otherwise, stop and report it.
 7. **Release that checksum:**
    ```bash
    npm --prefix ~/Desktop/projects/webapp/cms run release:production -- --expect <checksum> --note "S4: what changed"
@@ -55,7 +55,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-07, production had all 33 migrations in the repo applied, with content version 27.
+On 2026-11-10, production had all 34 migrations in the repo applied, with content version 28.
 
 ## Before any production change
 

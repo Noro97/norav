@@ -12,7 +12,7 @@ vi.mock('@/content/ContentProvider', () => ({
     anchorId: null,
   }),
 }))
-vi.mock('@/content/case-studies', () => ({ useCaseStudyLabel: () => '' }))
+vi.mock('@/content/case-studies', () => ({ withoutNumber: () => '' }))
 
 describe('OmniGridWidget', () => {
   afterEach(() => vi.restoreAllMocks())

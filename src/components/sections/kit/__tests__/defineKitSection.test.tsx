@@ -1,62 +1,66 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineKitSection } from '../defineKitSection'
-import { kitFaqBlock } from '@norav/content-schema'
+import { kitToolStackBlock } from '@norav/content-schema'
 
 const useBlock = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock }))
 vi.mock('@/content/theme', () => ({ useAccentColor: () => '#00ff00' }))
 
-const Faq = defineKitSection('kit_faq', () => import('@/components/portfolio-kit/sections/extra-sections/faq'), 'FAQ')
+const ToolStack = defineKitSection(
+  'kit_tool_stack',
+  () => import('@/components/portfolio-kit/sections/more-sections/tool-stack'),
+  'ToolStack',
+)
 
 describe('a promoted kit section', () => {
   beforeEach(() => useBlock.mockReset())
 
   it('renders nothing when the block is not on the page', () => {
     useBlock.mockReturnValue(undefined)
-    const { container } = render(<Faq />)
+    const { container } = render(<ToolStack />)
     expect(container).toBeEmptyDOMElement()
   })
 
   it('draws the copy the CMS holds, not the copy it was imported with', async () => {
     useBlock.mockReturnValue({
-      content: { ...kitFaqBlock.defaults.content, items: [{ q: 'Do you take retainers?', a: 'Yes.' }] },
+      content: { ...kitToolStackBlock.defaults.content, tools: [{ name: 'Vitest', note: 'Tests', glyph: 'V' }] },
       settings: { accent: '' },
       anchorId: null,
     })
-    render(<Faq />)
+    render(<ToolStack />)
 
-    expect(await screen.findByText('Do you take retainers?')).toBeInTheDocument()
-    expect(screen.queryByText(/early-stage startups/)).not.toBeInTheDocument()
+    expect(await screen.findByText('Vitest')).toBeInTheDocument()
+    expect(screen.queryByText('Origami')).not.toBeInTheDocument()
   })
 
   it('falls back to the section’s own defaults for a field left blank', async () => {
     useBlock.mockReturnValue({
-      content: { ...kitFaqBlock.defaults.content, headLabel: '' },
+      content: { ...kitToolStackBlock.defaults.content, headLabel: '' },
       settings: { accent: '' },
       anchorId: null,
     })
-    render(<Faq />)
+    render(<ToolStack />)
 
-    expect(await screen.findByText('Common questions')).toBeInTheDocument()
+    expect(await screen.findByText('Tool stack')).toBeInTheDocument()
   })
 
   it('takes the published accent unless the block overrides it', async () => {
     useBlock.mockReturnValue({
-      content: { ...kitFaqBlock.defaults.content, titleAccent: 'answered' },
+      content: { ...kitToolStackBlock.defaults.content, titleAccent: 'answered' },
       settings: { accent: '' },
       anchorId: null,
     })
-    const { container } = render(<Faq />)
+    const { container } = render(<ToolStack />)
     await screen.findByText('answered')
 
     expect(container.querySelector('.section-title em')).toHaveStyle({ color: '#00ff00' })
   })
 
   it('scopes the imported stylesheet to a wrapper of its own', async () => {
-    useBlock.mockReturnValue({ content: kitFaqBlock.defaults.content, settings: { accent: '' }, anchorId: 'faq' })
-    const { container } = render(<Faq />)
-    await screen.findByText('Common questions')
+    useBlock.mockReturnValue({ content: kitToolStackBlock.defaults.content, settings: { accent: '' }, anchorId: 'faq' })
+    const { container } = render(<ToolStack />)
+    await screen.findByText('Tool stack')
 
     const wrapper = container.querySelector('.pf-kit')
     expect(wrapper).not.toBeNull()
@@ -68,10 +72,10 @@ describe('a promoted kit section', () => {
   })
 
   it('asks for its own row, so a page can carry several', async () => {
-    useBlock.mockReturnValue({ content: kitFaqBlock.defaults.content, settings: { accent: '' }, anchorId: null })
-    render(<Faq blockId="block-9" />)
-    await screen.findByText('Common questions')
+    useBlock.mockReturnValue({ content: kitToolStackBlock.defaults.content, settings: { accent: '' }, anchorId: null })
+    render(<ToolStack blockId="block-9" />)
+    await screen.findByText('Tool stack')
 
-    expect(useBlock).toHaveBeenCalledWith('kit_faq', 'block-9')
+    expect(useBlock).toHaveBeenCalledWith('kit_tool_stack', 'block-9')
   })
 })

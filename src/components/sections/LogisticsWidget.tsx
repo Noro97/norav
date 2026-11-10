@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import type { BlockComponentProps } from '@/content/blocks'
-import { useCaseStudyLabel } from '@/content/case-studies'
+import { withoutNumber } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 
@@ -63,9 +63,7 @@ export function LogisticsWidget({ first }: BlockComponentProps) {
   // The demo's name is the page's H1 when the demo opens the page.
   const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('logistics')
-  // Before the early return: the number is a hook, and a hook cannot sit
-  // behind a conditional.
-  const sectionLabel = useCaseStudyLabel('logistics', block?.content.sectionLabel ?? '')
+  const sectionLabel = withoutNumber(block?.content.sectionLabel ?? '')
   const { t } = useTranslation('projects')
   const sectionRef = useRef<HTMLDivElement>(null)
   const [markerCount, setMarkerCount] = useState(0)

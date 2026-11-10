@@ -4,7 +4,6 @@ import { useWritingPosts } from '@/components/sections/kit/useWritingPosts'
 import { defineKitSection } from '@/components/sections/kit/defineKitSection'
 import { WidgetPlaceholder } from '@/components/sections/WidgetPlaceholder'
 import { TerminalSlot } from '@/components/sections/TerminalSlot'
-import { SectionLoader } from './SectionLoader'
 import type {
   KitProcessContent,
   KitCtaBannerContent,
@@ -96,9 +95,6 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   stack: named(() => import('@/components/sections/Stack'), 'Stack'),
  capabilities: named(() => import('@/components/sections/Capabilities'), 'Capabilities'),
  experience: named(() => import('@/components/sections/ExperienceTimeline'), 'ExperienceTimeline'),
-  tech_marquee: named(() => import('@/components/sections/TechMarquee'), 'TechMarquee'),
-  bento_grid: inBrowserOnly(animated(() => import('@/components/sections/BentoGrid/BentoGrid'), 'BentoGrid'), () => <SectionLoader tall />),
-  projects_intro: named(() => import('@/components/sections/ProjectsIntro'), 'ProjectsIntro'),
  logistics: inBrowserOnly(named(() => import('@/components/sections/LogisticsWidget'), 'LogisticsWidget'), widgetPlaceholder('logistics')),
  merch: inBrowserOnly(named(() => import('@/components/sections/AIMerchWidget'), 'AIMerchWidget'), widgetPlaceholder('merch')),
  ecommerce: inBrowserOnly(animated(() => import('@/components/sections/EcommerceWidget'), 'EcommerceWidget'), widgetPlaceholder('ecommerce')),
