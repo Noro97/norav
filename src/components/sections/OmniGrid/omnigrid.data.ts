@@ -103,19 +103,6 @@ export const OMNIGRID_COLUMNS = [
   col.accessor('priority', { header: 'Priority', size: 90 }),
 ]
 
-// Mini-table columns for bento tile (subset)
-export const MINI_COLUMNS = [
-  col.accessor('id', { header: 'ID', size: 90 }),
-  col.accessor('origin', { header: 'Origin', size: 100 }),
-  col.accessor('destination', { header: 'Dest', size: 100 }),
-  col.accessor('status', { header: 'Status', size: 80 }),
-  col.accessor('cost', {
-    header: 'Cost',
-    size: 80,
-    cell: (info) => `$${Math.round(info.getValue()).toLocaleString()}`,
-  }),
-]
-
 // Status colours carry meaning, so they stay put when the theme changes —
 // "Delayed" has to read as delayed on a green-accented site. In Transit used
 // the same cyan as the widget's accent, which is why it used to move with it.

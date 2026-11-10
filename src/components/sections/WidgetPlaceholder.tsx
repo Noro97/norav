@@ -1,5 +1,5 @@
 import { useBlock } from '@/content/ContentProvider'
-import { useCaseStudyLabel } from '@/content/case-studies'
+import { withoutNumber } from '@/content/case-studies'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 
 /**
@@ -9,7 +9,7 @@ import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
  */
 export function WidgetPlaceholder({ type, first }: { type: string; first?: boolean }) {
   const block = useBlock<CaseStudyContent, CaseStudySettings>(type)
-  const sectionLabel = useCaseStudyLabel(type, block?.content.sectionLabel ?? '')
+  const sectionLabel = withoutNumber(block?.content.sectionLabel ?? '')
   if (!block) return null
   const { content } = block
 

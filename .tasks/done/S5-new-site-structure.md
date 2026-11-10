@@ -1,9 +1,9 @@
 # S5: New site structure
 
-- **Status:** Reviewed by the owner on 2026-11-10 and approved for publishing, with one change: the Vizogen line about Cursor and custom MCP servers came back
+- **Status:** Done, 2026-11-10. Version 28 is live, D11 holds on the live site
 - **Origin:** `docs/plan/prompts/S5-new-site-structure.md`, started from `main` at `3fd4394`
-- **Branch:** `claude/s5-new-site-structure`
-- **Copy:** `.tasks/active/S5-copy.md`
+- **Branches:** `claude/s5-new-site-structure` (#126), `claude/s5-snapshot` (#127), `claude/s5-cleanup` (this record and the code deletion)
+- **Copy:** `.tasks/done/S5-copy.md`, as the owner approved it
 
 ## What's being done
 
@@ -54,3 +54,28 @@
 - On the S5 snapshot built from the rehearsal: Lighthouse 13.6 mobile, one run each: `/` 100/100/100/100, LCP 0.9s. `/about` 96/100/100/100, LCP 2.7s. `/work` and `/contact` 100 across. `/demos/nexusroute` 90/100/96/100.
 - On version 27 with the new code: `/` 100/100/100/100.
 - `size:check`: JS 116.3 of 119 KB gzip on version 27, 113.8 on the S5 snapshot. `prerender:check` clean on both.
+
+## What was done
+
+- **#126** built the site and migration 0034. The owner reviewed the copy and screenshots once (D23), answered every open question in one grilling round, and asked for one change, the Vizogen line. Merged at `752bdc8`.
+- **The release.** Fresh backup, rehearsal on it with `db/scripts/migrate.mjs`, dry run, then 0034 on production and `release:production`. Version 28, published 2026-11-10 17:29 UTC, checksum `7b1319a858c2`.
+- **#127** baked version 28 into the site, so the first paint is the new site, and regenerated `sitemap.xml`.
+- **This PR** deletes the code of `tech_marquee`, `projects_intro` and `bento_grid`, with `gsap`, `@gsap/react`, `MagneticButton`, `useMagneticEffect`, `useOpenSection`, the bento i18n namespace, the kit FAQ that the site's `Faq` replaced, and the old hero shape the code read until the release. Their rows were soft-deleted in 0034 and version 28 holds none.
+
+## The checksum that didn't match
+
+The runbook expects the production dry run to repeat the rehearsal's checksum. It didn't: `36057824212a` rehearsed, `7b1319a858c2` on production. With every UUID masked the two dry runs were identical line for line, 734 changes each. The difference was the ids of the seven blocks 0034 inserts, which Postgres generates per database. I released the production checksum. See `RETRO.md`.
+
+## How it was verified
+
+- Before the merge: `tsc`, lint, site and package tests, db checks, CMS typecheck, tests and build on Node 20, `size:check`, `prerender:check`, and all six CI checks on #126's last commit.
+- The site built on the rehearsed snapshot: 10 routes at 1440 and 375, screenshots for the review, keyboard, reduced motion, Lighthouse locally.
+- The site built on version 27 with the new code, for the window between the merge and the release.
+- **On production, after #127 deployed:** every old URL redirects (308, `/site` 307), every page answers 200 and `/nope` 404, one H1 on each page at 375 and 1440, the skip link first, no sideways scroll, no console errors, nothing running under reduced motion. `sitemap.xml` lists the 9 pages, none redirected. `og:image` is `/og.png`, a 200 `image/png`, with width, height and alt. The live content in both locales has nothing from "Do not use"; the one match for "in production" is the profile's "It has not been in production".
+- Lighthouse on production: see `STATE.md`.
+
+## Not verified
+
+- A pasted link's card in Telegram or LinkedIn: the tags and the PNG are right, but no unfurler was asked.
+- Screen readers and real phones. Keyboard use inside the demos.
+- The terminal's `ask`, which stays switched off.

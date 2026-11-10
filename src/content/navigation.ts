@@ -1,7 +1,6 @@
-import { useCallback, useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useMemo } from 'react'
 import { useAnchorPages, useCollection, useContent } from './ContentProvider'
-import { HOME_SLUG, hrefFor, readPath, SITE_SLUG } from './routing'
+import { HOME_SLUG, hrefFor, SITE_SLUG } from './routing'
 
 interface NavigationRow {
   /** Localised, so it comes from the entry's content rather than its data. */
@@ -108,33 +107,4 @@ export function activeNavItem(items: NavItem[], here: string): NavItem | undefin
     if (under && (!best || page.length > (best.page?.length ?? 0))) best = item
   }
   return best
-}
-
-/**
- * Opens a section by its anchor: the page that holds it, by route.
- *
- * For code that names a section rather than a page — a bento tile knows it
- * opens "merch", not which address the merch case study lives at. The CMS
- * decides that, and moving the section to another page moves the link.
- *
- * When the section is on this very page there is nowhere to route to, so it
- * scrolls there instead — found by the renderer's `data-section`, and without
- * touching the address.
- */
-export function useOpenSection(anchor: string): () => void {
-  const anchorPages = useAnchorPages()
-  const { locale } = useContent()
-  const navigate = useNavigate()
-  const here = readPath(useLocation().pathname).slug
-  const page = anchorPages.get(anchor) ?? HOME_SLUG
-
-  return useCallback(() => {
-    if (page === here) {
-      document
-        .querySelector(`[data-section="${CSS.escape(anchor)}"]`)
-        ?.firstElementChild?.scrollIntoView({ behavior: 'smooth' })
-      return
-    }
-    navigate(hrefFor(page, locale))
-  }, [anchor, page, here, locale, navigate])
 }

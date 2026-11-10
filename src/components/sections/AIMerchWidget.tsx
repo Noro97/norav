@@ -5,7 +5,7 @@ import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
 import type { BlockComponentProps } from '@/content/blocks'
 import { CHOSEN, UNCHOSEN } from '@/components/ui/selection'
-import { useCaseStudyLabel } from '@/content/case-studies'
+import { withoutNumber } from '@/content/case-studies'
 import { GalleryVariant } from '@/components/ui/effects/GalleryVariant'
 import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 import type { MerchConfig } from '@/types'
@@ -94,9 +94,7 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
   // The demo's name is the page's H1 when the demo opens the page.
   const Title = first ? 'h1' : 'h2'
   const block = useBlock<CaseStudyContent, CaseStudySettings>('merch')
-  // Before the early return: the number is a hook, and a hook cannot sit
-  // behind a conditional.
-  const sectionLabel = useCaseStudyLabel('merch', block?.content.sectionLabel ?? '')
+  const sectionLabel = withoutNumber(block?.content.sectionLabel ?? '')
   const { t } = useTranslation(['projects', 'common'])
   const sectionRef = useRef<HTMLDivElement>(null)
   const jsonRef = useRef<HTMLPreElement>(null)

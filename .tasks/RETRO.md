@@ -4,6 +4,26 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-10: A migration that inserts rows can't repeat its rehearsal's checksum
+
+The runbook said the production dry run must show the rehearsal's checksum. For 0034 it didn't, because the seven blocks it inserts get their ids from `gen_random_uuid()` in each database, and ids are in the publication. Masking UUIDs in both dry runs showed them identical line for line, and that's the check to make: a content difference would show through the mask, an id never does. S4's migration only deleted, which is why the rule held until now.
+
+### 2026-11-10: A worktree with no node_modules runs the main checkout's
+
+The worktree's `node_modules` was empty, so Node resolved packages from the main checkout, which was installed months ago and lacked `@fontsource/inter`. `tsc` and the tests passed against those old copies for an hour before a missing font file showed it. Run `npm ci` in a new worktree before trusting a check.
+
+### 2026-11-10: A palette is also a contrast change
+
+The D5 crimson reads 2.9:1 as text on the D5 background, and the derived 400 step 4.1:1, so every eyebrow and link painted in the accent would have failed contrast the moment the palette published, on a site sitting at exactly 95. The old lime passed only because it's bright. Accent text now uses a 400 step that clears 5:1, eyebrows are ink, and filled buttons take `primary-fg`, which the theme derives for whatever accent is published. Measure both palettes when a change ships before the publish that switches them.
+
+### 2026-11-10: A content migration has to leave an empty database alone
+
+`db/tests` applies every migration to an empty database and creates its fixtures afterwards. 0034 wrote blocks onto pages the early migrations had left, the fixtures then collided with them, and a dozen older checks broke. Guarding the whole body on "this database has a site" (a live hero) fixed it, and the test replays 0034 on the fixtures instead, twice.
+
+### 2026-11-10: One grilling round closed the review
+
+The owner asked to go through the open questions as a grilling: every question numbered with a recommendation, all independent ones in one round, the ones that depended on an answer in the next. Fifteen decisions took two rounds and two replies. Asking for a "yes" to each recommendation kept the replies short.
+
 ### 2026-11-07: Prerendered isn't the same as in the first paint
 
 React 19.2 writes a Suspense boundary over about 12.8 KB as its fallback, with the content after it and an inline script that swaps them. So `/about`, `/work` and three other routes had all their text in the file and still painted a spinner, and `/work` read CLS 0.54. Every local check passed, because each one read the page after hydration, and `prerender:check` only looked for `<main`. Measuring the live site found it. Read the raw HTML: `<!--$?-->` means a section arrives by script. `progressiveChunkSize` turns this off, and `prerender:check` now fails on it.

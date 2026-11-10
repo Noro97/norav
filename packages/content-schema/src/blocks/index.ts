@@ -6,10 +6,7 @@ import { aboutBlock } from './about'
 import { impactStripBlock } from './impact-strip'
 import { capabilitiesBlock } from './capabilities'
 import { experienceBlock } from './experience'
-import { techMarqueeBlock } from './tech-marquee'
 import { contactCtaBlock } from './contact-cta'
-import { projectsIntroBlock } from './projects-intro'
-import { bentoGridBlock } from './bento-grid'
 import { terminalFooterBlock } from './terminal-footer'
 import { siteFooterBlock } from './site-footer'
 import { workIndexBlock } from './work-index'
@@ -54,9 +51,6 @@ export const BLOCK_REGISTRY = {
   experience: experienceBlock,
   stack: stackBlock,
   work_index: workIndexBlock,
-  tech_marquee: techMarqueeBlock,
-  bento_grid: bentoGridBlock,
-  projects_intro: projectsIntroBlock,
   logistics: logisticsBlock,
   logistics_detail: logisticsDetailBlock,
   merch: merchBlock,
@@ -134,7 +128,6 @@ export function validateBlockSettings(type: string, value: unknown): ValidationR
 }
 
 export {
-  bentoGridBlock,
   ecommerceBlock,
   ecommerceDetailBlock,
   logisticsDetailBlock,
@@ -145,14 +138,12 @@ export {
   merchBlock,
   omniGridBlock,
   proofBlock,
-  projectsIntroBlock,
   terminalFooterBlock,
   heroBlock,
   aboutBlock,
   impactStripBlock,
   capabilitiesBlock,
   experienceBlock,
-  techMarqueeBlock,
   contactCtaBlock,
   workIndexBlock,
   stackBlock,
@@ -172,16 +163,13 @@ export type { AboutContent, AboutSettings } from './about'
 export type { ImpactStripContent, ImpactStripSettings } from './impact-strip'
 export type { CapabilitiesContent, CapabilitiesSettings } from './capabilities'
 export type { ExperienceBlockContent, ExperienceSettings } from './experience'
-export type { TechMarqueeContent, TechMarqueeSettings } from './tech-marquee'
 export type { ContactCtaContent, ContactCtaSettings } from './contact-cta'
 export type { SiteFooterContent, SiteFooterSettings } from './site-footer'
 export type { WorkIndexContent, WorkIndexSettings } from './work-index'
 export type { StackContent, StackSettings } from './stack'
-export type { ProjectsIntroContent, ProjectsIntroSettings } from './projects-intro'
 export type { CaseStudyContent, CaseStudySettings } from './case-study'
 export type { CaseStudyDetailContent } from './case-study-detail'
 export type { CaseStudyStoryContent } from './case-study-story'
-export type { BentoGridContent, BentoGridSettings } from './bento-grid'
 export type { TerminalFooterContent, TerminalFooterSettings } from './terminal-footer'
 export type { TestimonialsContent, TestimonialsSettings } from './testimonials'
 export { KIT_GROUP } from './kit/shared'

@@ -55,24 +55,4 @@ describe('HeroSection', () => {
     expect(screen.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '/work')
     expect(screen.getByRole('link', { name: 'Email me' })).toHaveAttribute('href', 'mailto:someone@example.com')
   })
-
-  it('reads the hero published before S5 as a name over its tagline', () => {
-    useBlock.mockReturnValue({
-      anchorId: 'hero',
-      content: {
-        name: { first: { highlight: 'Nor', rest: 'ayr' }, last: { highlight: 'Av', rest: 'etisyan' } },
-        subtitle: 'Senior Fullstack Engineer',
-        tagline: [
-          { text: 'Building interfaces', accent: 'main' },
-          { text: '.', accent: 'main' },
-        ],
-        scrollHint: 'Scroll to explore',
-      },
-      settings: { showScrollHint: true },
-    })
-    renderHero()
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Norayr Avetisyan')
-    expect(screen.getByText('Building interfaces.')).toBeInTheDocument()
-    expect(screen.queryByRole('link')).toBeNull()
-  })
 })

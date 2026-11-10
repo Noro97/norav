@@ -1,8 +1,8 @@
 # Portfolio kit
 
-Six sections kept from the `Noro97/portfolio` project: process, FAQ, compare table, tool stack, CTA banner and writing. S4 deleted the rest. None of the six is on a published page yet. S5 places them.
+Five sections kept from the `Noro97/portfolio` project: process, compare table, tool stack, CTA banner and writing. S4 deleted the rest. The FAQ's fields stayed, and since S5 the site draws them itself, in `src/components/sections/Faq.tsx`. None of the five is on a published page.
 
-Each has its own block type (`kit_process`, `kit_faq`, ...), a schema in `@norav/content-schema/blocks/kit` and an editable form. Creating one pre-fills the form with the copy the section arrived with, so an editor rewrites it rather than starting empty. The component reads `content` and falls back to its own `DEFAULTS` for anything left blank.
+Each has its own block type (`kit_process`, `kit_tool_stack`, ...), a schema in `@norav/content-schema/blocks/kit` and an editable form. Creating one pre-fills the form with the copy the section arrived with, so an editor rewrites it rather than starting empty. The component reads `content` and falls back to its own `DEFAULTS` for anything left blank.
 
 ## The stylesheet
 
