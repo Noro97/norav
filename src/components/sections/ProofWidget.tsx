@@ -11,22 +11,30 @@ import type { CaseStudyContent, CaseStudySettings } from '@norav/content-schema'
 interface Activity {
   key: string
   icon: string
-  basePoints: number
-  baseXP: number
-  reps: number
+  /** Proof App's `BASE_POINTS`: per rep, or per second of a plank. */
+  pointsPerUnit: number
+  unit: 'reps' | 'seconds'
+  /** The sample set this run pretends to count. */
+  count: number
 }
 
+// The five activities Proof App verifies, at its own rates. The worker awards
+// rate × count physio points, so that's what a run shows.
 const ACTIVITIES: Activity[] = [
-  { key: 'squats', icon: 'SQ', basePoints: 35, baseXP: 120, reps: 12 },
-  { key: 'pushups', icon: 'PU', basePoints: 30, baseXP: 100, reps: 10 },
-  { key: 'jumpingJacks', icon: 'JJ', basePoints: 25, baseXP: 90, reps: 15 },
-  { key: 'plank', icon: 'PL', basePoints: 40, baseXP: 150, reps: 60 },
-  { key: 'burpees', icon: 'BR', basePoints: 45, baseXP: 160, reps: 8 },
-  { key: 'reading', icon: 'RD', basePoints: 20, baseXP: 80, reps: 20 },
+  { key: 'squats', icon: 'SQ', pointsPerUnit: 5, unit: 'reps', count: 12 },
+  { key: 'pushups', icon: 'PU', pointsPerUnit: 7, unit: 'reps', count: 10 },
+  { key: 'jumpingJacks', icon: 'JJ', pointsPerUnit: 3, unit: 'reps', count: 15 },
+  { key: 'plank', icon: 'PL', pointsPerUnit: 10, unit: 'seconds', count: 60 },
+  { key: 'burpees', icon: 'BR', pointsPerUnit: 10, unit: 'reps', count: 8 },
 ]
 
+const pointsFor = (activity: Activity) => activity.pointsPerUnit * activity.count
+
+/** A passing proof on a first day starts the streak at one. */
+const SAMPLE_STREAK = 1
+
 const LIVENESS_CHALLENGES = [
-  'waveHand', 'thumbsUp', 'turnHead', 'smile', 'peace',
+  'touchNose', 'waveHand', 'thumbsUp', 'pointCamera', 'peace',
 ] as const
 
 const PIPELINE_NODES = [
@@ -129,6 +137,7 @@ export function ProofWidget({ first }: BlockComponentProps) {
     setShowResult(false)
 
     const activity = ACTIVITIES[selectedActivity]!
+    const earned = pointsFor(activity)
     const schedule = (fn: () => void, ms: number) => {
       const id = setTimeout(() => { if (!cancelledRef.current) fn() }, ms)
       timersRef.current.push(id)
@@ -165,7 +174,7 @@ export function ProofWidget({ first }: BlockComponentProps) {
         if (cancelledRef.current) { clearInterval(interval); return }
         count++
         setRepCount(count)
-        if (count >= activity.reps) {
+        if (count >= activity.count) {
           clearInterval(interval)
         }
       }, REP_INTERVAL)
@@ -173,12 +182,16 @@ export function ProofWidget({ first }: BlockComponentProps) {
     }, STEP_DURATION * 3)
 
     // Step 5: DB update + points
-    const repDuration = activity.reps * REP_INTERVAL
+    const repDuration = activity.count * REP_INTERVAL
     schedule(() => {
       setNode(4, 'done')
       setNode(5, 'active')
-      addLog(t('projects:proof.pipeline.countReps', { count: activity.reps }))
-      addLog(t('projects:proof.pipeline.verified', { points: activity.basePoints }))
+      addLog(
+        activity.unit === 'seconds'
+          ? t('projects:proof.pipeline.countSeconds', { count: activity.count })
+          : t('projects:proof.pipeline.countReps', { count: activity.count }),
+      )
+      addLog(t('projects:proof.pipeline.verified', { points: earned }))
     }, STEP_DURATION * 3 + repDuration)
 
     // Step 6: Complete — animate metrics
@@ -187,14 +200,13 @@ export function ProofWidget({ first }: BlockComponentProps) {
 
       // Animate metrics over 600ms
       const steps = 20
-      const streakTarget = 7 + Math.floor(Math.random() * 20)
       let step = 0
       const interval = setInterval(() => {
         if (cancelledRef.current) { clearInterval(interval); return }
         step++
         const progress = step / steps
-        setPoints(Math.round(activity.basePoints * progress))
-        setStreak(Math.round(streakTarget * progress))
+        setPoints(Math.round(earned * progress))
+        setStreak(Math.round(SAMPLE_STREAK * progress))
         if (step >= steps) clearInterval(interval)
       }, 30)
       intervalsRef.current.push(interval)
@@ -339,7 +351,11 @@ export function ProofWidget({ first }: BlockComponentProps) {
               ))}
               {pipelineStatus === 'running' && repCount > 0 && (
                 <div className="text-status-warning/60">
-                  [{t('projects:proof.pipeline.repsLive', { count: repCount })}]
+                  [
+                  {activity.unit === 'seconds'
+                    ? t('projects:proof.pipeline.secondsLive', { count: repCount })
+                    : t('projects:proof.pipeline.repsLive', { count: repCount })}
+                  ]
                 </div>
               )}
             </div>
@@ -448,29 +464,17 @@ export function ProofWidget({ first }: BlockComponentProps) {
                     {t(`projects:proof.activities.${activity.key}`)}
                   </span>
                   <span className="font-mono text-caption text-tertiary-ink/60">
-                    {t('projects:proof.result.reps', { count: activity.reps })}
+                    {activity.unit === 'seconds'
+                      ? t('projects:proof.result.seconds', { count: activity.count })
+                      : t('projects:proof.result.reps', { count: activity.count })}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-caption text-secondary-300 font-semibold">
-                    {t('projects:proof.result.physioPoints', { count: activity.basePoints })}
-                  </span>
-                  <span className="case-study-pill font-mono text-caption text-secondary-300/80 border-secondary-500/30 py-0.5">
-                    {t('projects:proof.result.premium')}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-caption text-secondary-400">
-                    {t('projects:proof.result.xpGained', { count: activity.baseXP })}
+                    {t('projects:proof.result.physioPoints', { count: pointsFor(activity) })}
                   </span>
                 </div>
               </div>
-
-              {/* Telegram's own blue: a brand mark, the one hex a component may carry. */}
-              {/* eslint-disable-next-line no-restricted-syntax -- brand colour, not the palette */}
-              <button className="mt-3 w-full px-4 py-2 bg-[#26a5e4]/10 border border-[#26a5e4]/20 text-[#26a5e4] font-mono text-caption rounded-lg hover:bg-[#26a5e4]/20 transition-colors">
-                {t('projects:proof.result.share')}
-              </button>
             </div>
           </div>
         </div>
