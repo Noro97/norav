@@ -68,6 +68,31 @@ describe('VideoPlayer', () => {
     expect(video.loop).toBe(false)
   })
 
+  it('hands focus to the player that replaced the button, so a keyboard user keeps their place', () => {
+    const { container } = render(<VideoPlayer {...props} />)
+
+    const button = screen.getByRole('button', { name: /A set of reps/ })
+    button.focus()
+    fireEvent.click(button)
+
+    expect(document.activeElement).toBe(videoOf(container))
+  })
+
+  it('keeps focus when an autoplay clip replaces the button a keyboard user is on', () => {
+    const { container } = render(<VideoPlayer {...props} autoplay />)
+
+    screen.getByRole('button', { name: /A set of reps/ }).focus()
+    intersect(true)
+
+    expect(document.activeElement).toBe(videoOf(container))
+  })
+
+  it('leaves focus alone when an autoplay clip starts while the visitor is elsewhere', () => {
+    render(<VideoPlayer {...props} autoplay />)
+    intersect(true)
+    expect(document.activeElement).toBe(document.body)
+  })
+
   it('leaves an autoplay clip alone while it is off screen', () => {
     const { container } = render(<VideoPlayer {...props} autoplay />)
     expect(videoOf(container)).toBeNull()

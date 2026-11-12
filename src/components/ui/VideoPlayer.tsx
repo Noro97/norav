@@ -27,6 +27,9 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
   const video = useRef<HTMLVideoElement>(null)
   const [pressed, setPressed] = useState(false)
   const [reached, setReached] = useState(false)
+  // A keyboard user can tab to an autoplay clip's button, and the scroll to it
+  // starts the clip, which replaces the button they're on.
+  const [buttonFocused, setButtonFocused] = useState(false)
 
   const ambient = autoplay && !reducedMotion && !pressed
 
@@ -40,6 +43,11 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
     if (ambient && inView) void element.play().catch(() => {})
     else element.pause()
   }, [ambient, inView, pressed, reached])
+
+  // The button is gone; without this, focus drops to the page.
+  useEffect(() => {
+    if (pressed || (reached && buttonFocused)) video.current?.focus()
+  }, [pressed, reached, buttonFocused])
 
   return (
     <div
@@ -55,6 +63,7 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
           src={src}
           poster={poster}
           aria-label={alt}
+          tabIndex={0}
           preload="none"
           controls
           playsInline
@@ -68,6 +77,8 @@ export function VideoPlayer({ src, poster, alt, portrait = false, autoplay = fal
           className="group absolute inset-0 h-full w-full cursor-pointer"
           aria-label={t('video.play', { title: alt })}
           onClick={() => setPressed(true)}
+          onFocus={() => setButtonFocused(true)}
+          onBlur={() => setButtonFocused(false)}
         >
           <img src={poster} alt="" loading="lazy" decoding="async" className="h-full w-full object-contain" />
           <span

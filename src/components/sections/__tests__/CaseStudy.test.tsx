@@ -55,7 +55,7 @@ describe('CaseStudy', () => {
       retro: 'The retro.',
       links: [{ label: 'Source', href: 'https://example.com/source' }],
     })
-    const { container } = render(<CaseStudy blockId="a" />)
+    const { container } = render(<CaseStudy blockId="a" first />)
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Nova Prism')
     const order = ['The context.', 'The problem.', 'Contract first', 'The outcome.', '58', 'The retro.', 'Source'].map(
@@ -74,6 +74,37 @@ describe('CaseStudy', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Context')
     expect(container.querySelector('header')).toBeNull()
     expect(container.querySelector('dl, ol, ul, figure')).toBeNull()
+  })
+
+  it('titles itself h2 when it does not open the page, so the page keeps one H1', () => {
+    withContent({ title: 'Nova Prism' })
+    render(<CaseStudy blockId="a" />)
+    expect(screen.queryByRole('heading', { level: 1 })).toBeNull()
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Nova Prism')
+  })
+
+  it('names each number before its value, as a description list needs', () => {
+    withContent({ metrics: [{ label: 'Test files', value: '58' }] })
+    const { container } = render(<CaseStudy blockId="a" />)
+    const row = container.querySelector('dl > div')!
+    expect([...row.children].map((child) => child.tagName)).toEqual(['DT', 'DD'])
+  })
+
+  it('takes two chips or two links with the same text without a key collision', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    withContent({
+      title: 'Twice',
+      techStack: [{ name: 'React' }, { name: 'React' }],
+      links: [
+        { label: 'Source', href: 'https://example.com' },
+        { label: 'Source', href: 'https://example.com' },
+      ],
+    })
+    render(<CaseStudy blockId="a" />)
+    expect(screen.getAllByText('React')).toHaveLength(2)
+    expect(screen.getAllByRole('link', { name: 'Source' })).toHaveLength(2)
+    expect(error.mock.calls.filter(([message]) => /same key/.test(String(message)))).toEqual([])
+    error.mockRestore()
   })
 
   it('leaves the heading to a demo above it', () => {
