@@ -167,7 +167,7 @@ Nothing.
 - A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.
 - `npm --prefix cms run import` stops on `tech_marquee`, which #128 removed from the registry, so a fresh embedded database gets the seed but not the rest of the content. `cms/scripts/import-content.mts` still lists the removed types.
 - The norav.dev case study says "594 automated tests". Some site tests run once per published page, so the count moves with content: it was 596 on the day it published. Write "590+" or drop it at the next copy change.
-- Case-study figures have no intrinsic size. They lazy-load well before the viewport and Lighthouse reads CLS 0, but a fast scroll on a slow connection could shift. Width and height in the `case_study` schema would fix it.
+- Case-study figures reserve a 16:9 frame (9:16 for portrait) until the file arrives, then take its own ratio, so a 16:10 still moves what's below it by about 70px, off screen. Width and height in the `case_study` schema would remove even that.
 - `/about`'s photo is the site's own file, `public/assets/img/norayr-avetisyan.webp`, not a library item. Replacing it is a commit, not a CMS upload. The owner was offered a new photo and kept this one.
 
 ## Decisions
