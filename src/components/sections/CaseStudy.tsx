@@ -37,8 +37,11 @@ function CaseStudyFigure({ figure }: { figure: Figure }) {
           alt={figure.alt}
           loading="lazy"
           decoding="async"
+          // Holds a frame's worth of space until the file arrives, then takes the
+          // file's own ratio. Without it a lazy still is zero high, and everything
+          // below it, an autoplay clip included, sits closer to the screen than it is.
           className={`w-full rounded-2xl border border-tertiary-ink/[0.08] ${
-            figure.portrait ? 'mx-auto max-h-[80vh] object-contain' : ''
+            figure.portrait ? 'mx-auto max-h-[80vh] object-contain [aspect-ratio:auto_9/16]' : '[aspect-ratio:auto_16/9]'
           }`}
         />
       )}

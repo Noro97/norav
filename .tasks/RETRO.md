@@ -18,7 +18,7 @@ The private Postgres for the rehearsal lived in the session's scratchpad, and it
 
 ### 2026-11-12: Check media loading in a real Chrome, not the browser pane
 
-The pane reported a `<video>` and an mp4 request on a fresh load, before any scroll. Headless Chrome showed neither, which is what the code says. The pane's viewport and visibility aren't a normal tab's. Playwright from Nova's `node_modules`, with the system Chrome, gives full-resolution captures, a true 375px viewport, reduced motion and request logs.
+The pane reported a `<video>` and an mp4 request on a fresh load, before any scroll. Headless Chrome on localhost showed neither, and I put it down to the pane. Production showed it again: there the stills above the clip arrive late, sit at zero height while they load, and pull the autoplay clip within its 200px margin. Localhost serves images too fast to show it. Delay the images with `page.route` when you check loading order, and believe a symptom that two environments agree on. The pane's viewport and visibility aren't a normal tab's. Playwright from Nova's `node_modules`, with the system Chrome, gives full-resolution captures, a true 375px viewport, reduced motion and request logs.
 
 ### 2026-11-12: Full-page screenshots draw the fixed header and the skip link mid-page
 

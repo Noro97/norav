@@ -123,6 +123,18 @@ describe('CaseStudy', () => {
     expect(screen.queryByRole('button')).toBeNull()
   })
 
+  it('keeps room for a still before it loads, so what follows stays where it will be', () => {
+    withContent({
+      figures: [
+        { image: '/wide.png', video: '', alt: 'Wide', caption: '', portrait: false, autoplay: false },
+        { image: '/tall.png', video: '', alt: 'Tall', caption: '', portrait: true, autoplay: false },
+      ],
+    })
+    render(<CaseStudy blockId="a" />)
+    expect(screen.getByRole('img', { name: 'Wide' }).className).toContain('[aspect-ratio:auto_16/9]')
+    expect(screen.getByRole('img', { name: 'Tall' }).className).toContain('[aspect-ratio:auto_9/16]')
+  })
+
   it('turns a figure with a video into a player, with the image as its poster', () => {
     withContent({ figures: [{ image: '/poster.png', video: '/clip.mp4', alt: 'A set of reps', caption: '', portrait: true, autoplay: false }] })
     const { container } = render(<CaseStudy blockId="a" />)
