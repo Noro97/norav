@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S5 is done and production is current: the new site is live.** S6 is next. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
+Milestone 1. **S6 is done and production is current: the three case studies are live.** S7 is next, or S8 if the usage limit is short (D24). Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -28,17 +28,33 @@ Milestone 1. **S5 is done and production is current: the new site is live.** S6 
 | S3 Facts and content model | Done, version 27 live |
 | S4 Deletion and speed | Done. D11 met on the live site, version 27 unchanged |
 | S5 New site structure | Done, version 28 live. D11 holds on the live site |
-| S6 Case studies | Not started |
+| S6 Case studies | Done, version 29 live. Proof App has no footage |
 | S7 Creative-Lab | Not started |
 | S8 Launch | Not started |
 
-## Production, as of 2026-11-10
+## Production, as of 2026-11-12
 
-- `cms.norav.dev/api/health`: 34 migrations applied of 34 in the repo, `publishedVersion` 28, published 2026-11-10 17:29 UTC. Checksum `7b1319a858c2`. The site bakes version 28 since #127.
+- `cms.norav.dev/api/health`: 35 migrations applied of 35 in the repo, `publishedVersion` 29, published 2026-11-12 12:50 UTC. Checksum `4db01156478c`. The site bakes version 29 from S6's snapshot PR.
+- Version 29 is S6's: `/work/proof` has its story under the widget, `/work/nova-prism` and `/work/norav` are new, and `/` and `/work` list all three. Copy in `.tasks/done/S6-copy.md`, approved by the owner. Media are files under `public/assets/case-studies/`, not library items.
 - Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. The D5 palette. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
 - `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
-- Case studies: `/` and `/work` list Proof App only. Their `work_index` blocks already name `work/nova-prism` and `work/norav`, which appear on both as soon as S6 publishes those pages.
 - English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Baseline, 2026-11-12, after S6
+
+Lighthouse 13.6.0, mobile preset, one run each, on a local build of the release's snapshot. Live numbers come after the snapshot PR deploys.
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | CLS | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 | 0.9s | 0.004 | 264 KB |
+| `/work` | 100 | 100 | 100 | 100 | 0.9s | 0 | 259 KB |
+| `/work/proof` | 95 | 100 | 100 | 100 | 2.9s | 0 | 291 KB |
+| `/work/nova-prism` | 100 | 100 | 100 | 100 | 0.9s | 0 | 434 KB |
+| `/work/norav` | 100 | 100 | 100 | 100 | 0.9s | 0 | 306 KB |
+
+`/work/proof` reads 96 and 2.7s locally on version 28 too, against 2.2s live. Its LCP is the widget, which renders after the entry chunk, and the snapshot in that chunk grew with the case studies.
+
+**Entry bundle with version 29 baked in, Node 20:** JS 359.5 KB raw, 117.0 KB gzip, of a 119 KB limit; CSS 96.3 KB raw, 14.3 KB gzip. The next sizeable publish will need the limit raised, or the snapshot moved out of the entry chunk.
 
 ## Baseline, 2026-11-10, after S5
 
@@ -130,6 +146,7 @@ Nothing.
 - Set a monthly spending cap on the terminal's Anthropic API key before launch.
 - The old CV: its row in the media library is deleted, and nothing in the drafts or settings names it. The file still answers by direct link, because versions 18–25 name it and files are kept while the last 10 publications do. It goes on its own with the sweep at version 35. It has no phone number. Say if it should go sooner.
 - Collect two real testimonials. They don't block anything.
+- Proof App's footage, if you still want it: record from `docs/plan/proof-shot-list.md` into `~/Desktop/noro/portfolio/proof-footage/`. Adding it is a small content change, and the study reads complete without it.
 
 ## Tech debt register
 
@@ -148,6 +165,9 @@ Nothing.
 - A page published since the last build returns 404 with the right content until the rebuild finishes, and its `noindex` from `404.html` stays until the next full load. A publish triggers that rebuild, so the window is short.
 - Every page shares one `og:image`, `/og.png`, drawn by `scripts/generate-share-card.mjs`. S11 adds per-page images on the same method.
 - A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.
+- `npm --prefix cms run import` stops on `tech_marquee`, which #128 removed from the registry, so a fresh embedded database gets the seed but not the rest of the content. `cms/scripts/import-content.mts` still lists the removed types.
+- The norav.dev case study says "594 automated tests". Some site tests run once per published page, so the count moves with content: it was 596 on the day it published. Write "590+" or drop it at the next copy change.
+- Case-study figures have no intrinsic size. They lazy-load well before the viewport and Lighthouse reads CLS 0, but a fast scroll on a slow connection could shift. Width and height in the `case_study` schema would fix it.
 - `/about`'s photo is the site's own file, `public/assets/img/norayr-avetisyan.webp`, not a library item. Replacing it is a commit, not a CMS upload. The owner was offered a new photo and kept this one.
 
 ## Decisions

@@ -4,6 +4,26 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-12: Don't publish a number that the content itself changes
+
+The norav.dev study says "594 automated tests". The count was right on the code that merged, and two higher the moment version 29 was baked in, because some tests run once per published page. A count that a publish can move is out of date as soon as it publishes. Prefer a floor ("590+") or a number nothing on the site feeds.
+
+### 2026-11-12: A block that has never been published hasn't been tested
+
+`case_study` passed its unit tests in S3 and had never met real copy. `break-ui` with worst-case data in a scratch snapshot found nine problems in an hour: a clipped H1 at 320px, colliding keys, the eyebrow under the fixed menu, a 280px gap under the widget, portrait clips one per row, 150-character lines, `dd` before `dt`, and focus lost when a play button is replaced. Run it before the first publish of any block.
+
+### 2026-11-12: The scratchpad doesn't survive a two-day review
+
+The private Postgres for the rehearsal lived in the session's scratchpad, and it was gone when the owner answered. Recreating it took one command, because the backup was on the Desktop and the steps were in the runbook. Keep anything the release needs outside the scratchpad, and expect to rehearse again on a fresh backup after a pause anyway.
+
+### 2026-11-12: Check media loading in a real Chrome, not the browser pane
+
+The pane reported a `<video>` and an mp4 request on a fresh load, before any scroll. Headless Chrome showed neither, which is what the code says. The pane's viewport and visibility aren't a normal tab's. Playwright from Nova's `node_modules`, with the system Chrome, gives full-resolution captures, a true 375px viewport, reduced motion and request logs.
+
+### 2026-11-12: Full-page screenshots draw the fixed header and the skip link mid-page
+
+Playwright stitches a full-page capture at the scroll position, so the fixed menu and the off-screen skip link can appear halfway down. Check `document.activeElement` and the link's position before calling it a bug. Also, `vite preview` dies when `dist` is rebuilt under it: restart it before the next measurement.
+
 ### 2026-11-10: A migration that inserts rows can't repeat its rehearsal's checksum
 
 The runbook said the production dry run must show the rehearsal's checksum. For 0034 it didn't, because the seven blocks it inserts get their ids from `gen_random_uuid()` in each database, and ids are in the publication. Masking UUIDs in both dry runs showed them identical line for line, and that's the check to make: a content difference would show through the mask, an id never does. S4's migration only deleted, which is why the rule held until now.
