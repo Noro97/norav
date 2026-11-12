@@ -1,5 +1,7 @@
 # S6 copy
 
+**Reviewed by the owner on 2026-11-12:** approved as written, with the recommendation on each open question. Published as version 29. Proof App's footage wasn't recorded, so its study has no figures.
+
 Every word the three case studies show, for the one review (D23). English only (D13).
 
 **How to read it.** Numbers carry their source in brackets: `[facts: <row>]` is a row of `docs/plan/facts.md`, `[code: <place>]` is something I read in the repo named. **(inferred)** marks what I guessed about motive or history, which only the owner knows. **(new claim)** marks a statement facts.md doesn't hold word for word. Those are the lines to read hardest.

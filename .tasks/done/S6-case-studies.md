@@ -1,8 +1,8 @@
 # S6: Case studies
 
-- **Status:** Waiting for the owner's one review (D23) and the Proof App footage. PR open without `merge-when-green`
+- **Status:** Done, 2026-11-12. Version 29 is live. Proof App's footage was never recorded, so its study runs without it
 - **Origin:** `docs/plan/prompts/S6-case-studies.md`, started from `main` at `7a0bdbe`, after #128
-- **Branch:** `claude/s6-case-studies`
+- **Branches:** `claude/s6-case-studies` (#129), `claude/s6-snapshot` (this record and the snapshot)
 - **Copy:** `.tasks/active/S6-copy.md`, for the one review (D23)
 
 ## What's being done
@@ -64,7 +64,7 @@ Held up: an empty study renders nothing, a title-only one only its header, newli
 - The site built on version 28 with the new code, for the window between merge and release.
 - After the release, the three pages live.
 
-## Checked so far
+## Checked before the review
 
 - **Rehearsal** on a backup of production taken 2026-11-10 22:22, in a private Postgres on port 55471 (database `rehearsal`): 0035 applies, another run changes no row, and `release:production --dry-run` passes validation. It shows only the expected changes: two new pages, the Proof story, three SEO entries, and `/work/proof`'s Russian SEO gone, as 0034 did for every page it rewrote. The diff is by index, so the new pages read as `pages[9]` changing.
 - **The site built on that snapshot:** 11 routes prerendered, `prerender:check` clean, `size:check` JS 117.5 of 119 KB gzip (112.6 on version 28). `/`, `/work` and the three studies at 1440 and 375: one H1, skip link first, no sideways scroll, no console errors or warnings.
@@ -73,3 +73,24 @@ Held up: an empty study renders nothing, a title-only one only its header, newli
 - **Keyboard:** skip link, logo, menu, the clip's button, footer, each with a focus ring.
 - **The site built on version 28 with this code:** 9 routes, `prerender:check` clean, JS 112.6 KB gzip. This is what deploys between the merge and the release.
 - `tsc`, lint, 319 site and package tests in 50 files, 183 schema checks, on Node 20. The CMS isn't changed.
+
+## What was done
+
+- **#129** wrote migration 0035, the media, the widget fixes and the `case_study` fixes. The owner approved the copy as written on 2026-11-12, which also accepted the recommendation on each of the ten questions. Merged at `7ea5e1b` with every check green on its last commit.
+- **The release.** Fresh backup at 16:48 Yerevan, a new private Postgres (the scratchpad had been cleared), rehearsal: 0035 applies, `release:production --dry-run` validates with 56 changes. 0035 on production, then a production dry run identical to the rehearsal's line for line with UUIDs masked. The release waited for the merge's deploy, so the files were live first (about 20 seconds). Version 29, published 2026-11-12 12:50 UTC, checksum `4db01156478c`, `rebuild: not_configured`.
+- **This PR** bakes version 29 and regenerates `sitemap.xml` (11 pages).
+
+## The test count is already out of date
+
+The norav.dev study says "594 automated tests". That was the count on the code that merged, with version 28 baked in. On version 29 the site's suite counts 321, not 319, because some tests run once per published page. So the published number drifts with content, not only with code. Next time the copy changes, write "590+" or drop the count.
+
+## How it was verified
+
+- Before the merge: everything under "Checked before the review", and all six CI checks on #129's last commit.
+- On version 29 baked in: 11 routes prerendered, `prerender:check` clean, `size:check` JS 117.0 of 119 KB gzip, CSS 14.3 of 17, 321 site and package tests on Node 20.
+- The live check after this PR deploys is in the session's final report.
+
+## Not verified
+
+- Screen readers and real phones. Lighthouse on the live site for the two new pages until this PR deploys.
+- Proof App's footage, which doesn't exist.
