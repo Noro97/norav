@@ -87,7 +87,8 @@ describe('vercel.json', () => {
   it('has no catch-all, so an unknown address is a real 404', () => {
     // The only rewrites hand /lab to the Creative-Lab deployment (D7); nothing else is rewritten.
     const rewrites = config.rewrites ?? []
-    expect(rewrites.map((rewrite) => rewrite.source)).toEqual(['/lab', '/lab/:path*'])
+    // `/lab/(.*)` rather than `/lab/:path*`: the named form does not match `/lab/` itself, which 404ed on the live site.
+    expect(rewrites.map((rewrite) => rewrite.source)).toEqual(['/lab', '/lab/(.*)'])
     for (const rewrite of rewrites) expect(rewrite.destination).toMatch(/^https:\/\/creative-lab-rho\.vercel\.app\/lab\//)
   })
 

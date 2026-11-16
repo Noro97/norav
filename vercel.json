@@ -63,8 +63,8 @@
       "destination": "https://creative-lab-rho.vercel.app/lab/"
     },
     {
-      "source": "/lab/:path*",
-      "destination": "https://creative-lab-rho.vercel.app/lab/:path*"
+      "source": "/lab/(.*)",
+      "destination": "https://creative-lab-rho.vercel.app/lab/$1"
     }
   ],
   "headers": [
