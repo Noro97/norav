@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S6 is done and production is current: the three case studies are live.** S7 is next, or S8 if the usage limit is short (D24). Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
+Milestone 1. **S7 is done: `norav.dev/lab` serves ten Creative-Lab exhibits, and the main site is unchanged.** S8 is next (D24). Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -29,8 +29,16 @@ Milestone 1. **S6 is done and production is current: the three case studies are 
 | S4 Deletion and speed | Done. D11 met on the live site, version 27 unchanged |
 | S5 New site structure | Done, version 28 live. D11 holds on the live site |
 | S6 Case studies | Done, version 29 live. Proof App has no footage |
-| S7 Creative-Lab | Not started |
+| S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` is still private, waiting for the owner's yes (G5, D18) |
 | S8 Launch | Not started |
+
+## Lab, as of 2026-11-16
+
+- **Live at `norav.dev/lab/`**, served by a rewrite in `vercel.json` (`/lab`, and `/lab/(.*)`, which is the form that also matches `/lab/`) to `https://creative-lab-rho.vercel.app/lab/`. The site loads none of the Lab's code: the entry files are `index-B8iELwjk.js` and `index-8nclQgAU.css`, before and after.
+- **Repo and project:** `Noro97/creative-lab` (private), main at the merge of #2. Vercel project `creative-lab` in `noro97s-projects`: root `.`, Node 26.x, install `pnpm install --frozen-lockfile`, build `pnpm build:lab`, output `apps/portfolio/dist`, all from the repo's own `vercel.json`, Git connected, so a push to `main` deploys. Its unique deployment URLs sit behind Vercel Authentication; the production domain is public.
+- **Public ten (D8):** thermal, camera, avatar, globe, tactile-glitch, web3, axiom, legal, 2048, bomber. Landing & Brand Sites and Components & Case Studies have none. The list is `packages/catalog/src/public-exhibits.json`; the other twenty stay in dev, Storybook and the plain build, and a plain `pnpm build` still builds them. The reasons are in the Lab's README and in `.tasks/done/S7-creative-lab.md`.
+- **Measured** on the live site at 1440 px and 375 px (DPR 3, CPU throttled 6x, GPU not throttled, an Apple M5): see the done file. This is a floor for a mid-range phone, not proof of one.
+- The Lab's CI runs lint, types, tests, both builds and `check:lab`, which reads the finished public build for `.glb` files and the hidden exhibits' titles. There is no `merge-when-green` there: read the checks and merge by hand with `--match-head-commit`.
 
 ## Production, as of 2026-11-12
 
@@ -143,12 +151,17 @@ Nothing.
 
 ## Owner's open items
 
+- **Say yes or no to making `creative-lab` public (G5, D18).** The secrets scan of all 111 commits found nothing: no keys, tokens, private keys, credentials in URLs or phone numbers, only three placeholder e-mails in demo exhibits (`YOUR@EMAIL.COM`, `you@company.com`, `privatesalon@collector.ch`). What blocks a clean yes is assets that sit in the repo and its history, not deployed: neon-masks' 14 scans (24.5 MB, no source or licence recorded anywhere), accordion's four images carrying Google C2PA credentials (generated), and unrecorded images in health, eyewear, coffee, olympus, prizma and tactile-material. Options: confirm where each came from, drop those exhibits and rewrite the history, or keep the repo private. Commit author metadata shows the owner's gmail address.
+- Veto any of the ten Lab exhibits, now that they are live (D8). web3 is the one to look at on a real phone: about 47 fps at 375 px under the throttle, against 59–60 for the others.
 - Set a monthly spending cap on the terminal's Anthropic API key before launch.
 - The old CV: its row in the media library is deleted, and nothing in the drafts or settings names it. The file still answers by direct link, because versions 18–25 name it and files are kept while the last 10 publications do. It goes on its own with the sweep at version 35. It has no phone number. Say if it should go sooner.
 - Collect two real testimonials. They don't block anything.
 - Proof App's footage, if you still want it: record from `docs/plan/proof-shot-list.md` into `~/Desktop/noro/portfolio/proof-footage/`. Adding it is a small content change, and the study reads complete without it.
 
 ## Tech debt register
+
+- **Lab, for S9:** the footer has no link to `/lab/` (the footer links are CMS content, so it is a migration plus a copy review, and it has to be a plain `<a href="/lab/">`, because a router `Link` would hit this SPA's NotFound). The Lab's stylesheet is about 535 KB because `packages/catalog/src/styles.css` imports every exhibit's scene, public or not. Ten exhibits are Russian-first and stay out (aero, aether, black-hole, chronos, cyber-city, echoes, forma, nexus, and most of neon-os); translating them would widen the set. Auto-fix could not be turned on for Norav PRs from a session started in the `creative-lab` folder, so S7 watched them by hand.
+- **Lab, small:** the shell's status bar prints "WEBGL 2.0" whatever the browser has; `lab-tabs` rows in other exhibits may still overflow at 375 px (only the public ten were checked); the Lab's CI runs Node 26, this site's CI runs 20.
 
 - `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Later releases of those packages clear them, so check again at S8. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
 - `npm run user:add` shows the password as it's typed. The runbook says to run it in the Mac's Terminal app. Hiding the input would be a small fix.

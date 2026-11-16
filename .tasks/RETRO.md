@@ -4,6 +4,30 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-16: Dropping a catalog entry doesn't drop what its package imports
+
+S7's public build held only ten exhibits in the list and still shipped all 14 `.glb` scans. Rollup loads every module that code imports, dead branch or not, and Vite emits a module's asset files when it loads it, so tree-shaking the entry came too late. A Vite `resolveId` hook that gives the hidden packages an empty module fixed it, and `check:lab` now reads the finished build for `.glb` files and for the hidden exhibits' titles, in CI. Check an allow-list on the output, not on the list.
+
+### 2026-11-16: A rewrite pattern can match every page but its index
+
+`/lab/:path*` forwarded `/lab/favicon.svg` and `/lab` and sent `/lab/` itself to the site's 404, which is the address the Lab names as canonical. Local tests read `vercel.json` and passed. The preview sits behind Vercel sign-in, so the first real check was on production. Use `/lab/(.*)`, and curl the index address with a trailing slash as well as the files, right after a rewrite merges.
+
+### 2026-11-16: A harness that shares one Chrome loses every run after its first crash
+
+The first audit of 30 exhibits died on `camera` ("detached Frame") and failed all 50 runs after it with "Connection closed". It now launches a fresh Chrome per run and skips results it already has, so a re-run resumes. Also: a fast machine can't certify a phone. The numbers are an Apple M5 with the CPU throttled 6x and the GPU not throttled, so 60 fps there is a floor, and web3's 47 fps at 375 px is the thing to look at on a real device.
+
+### 2026-11-16: Find what widens a page by hiding elements until scrollWidth drops
+
+Camera was 424 px wide at 375 px. Listing elements whose right edge passed 375 found rows that were already clipped by an `overflow` ancestor and missed the real ones; hiding each element in turn and reading `documentElement.scrollWidth` named the three rows in a minute.
+
+### 2026-11-16: Image metadata answers the licence question faster than the commit log
+
+Four of the accordion's five pictures carry Google C2PA content credentials, which means generated, and the commit history said nothing. `strings` on every raster file and a read of each GLB's JSON header took a minute. Read both before asking the owner where assets came from.
+
+### 2026-11-16: `vercel deploy` from a worktree can fail to upload
+
+The CLI parsed `pnpm-lock.yaml` with a warning, then aborted the upload of 178 MB with `EPIPE`. The Git integration (`vercel git connect`) built the same commit in 31 seconds. Unique deployment URLs sit behind Vercel Authentication; a project's own production domain doesn't, and that's the one a rewrite has to point at.
+
 ### 2026-11-12: Don't publish a number that the content itself changes
 
 The norav.dev study says "594 automated tests". The count was right on the code that merged, and two higher the moment version 29 was baked in, because some tests run once per published page. A count that a publish can move is out of date as soon as it publishes. Prefer a floor ("590+") or a number nothing on the site feeds.
