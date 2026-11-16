@@ -57,6 +57,16 @@
       "permanent": false
     }
   ],
+  "rewrites": [
+    {
+      "source": "/lab",
+      "destination": "https://creative-lab-rho.vercel.app/lab/"
+    },
+    {
+      "source": "/lab/:path*",
+      "destination": "https://creative-lab-rho.vercel.app/lab/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/([^/]+)-([A-Za-z0-9_-]{8})\\.(js|css|woff2|woff)",
