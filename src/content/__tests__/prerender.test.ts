@@ -80,12 +80,15 @@ describe('fileFor', () => {
 
 describe('vercel.json', () => {
   const config = JSON.parse(readFileSync(resolve(__dirname, '../../../vercel.json'), 'utf8')) as {
-    rewrites?: unknown[]
+    rewrites?: { source: string; destination: string }[]
     headers: { source: string; headers: { key: string; value: string }[] }[]
   }
 
   it('has no catch-all, so an unknown address is a real 404', () => {
-    expect(config.rewrites ?? []).toEqual([])
+    // The only rewrites hand /lab to the Creative-Lab deployment (D7); nothing else is rewritten.
+    const rewrites = config.rewrites ?? []
+    expect(rewrites.map((rewrite) => rewrite.source)).toEqual(['/lab', '/lab/:path*'])
+    for (const rewrite of rewrites) expect(rewrite.destination).toMatch(/^https:\/\/creative-lab-rho\.vercel\.app\/lab\//)
   })
 
   const rule = config.headers.find((header) => header.source.startsWith('/assets/'))!
