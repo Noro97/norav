@@ -1238,6 +1238,71 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0036: the Lab on the home page
+// ---------------------------------------------------------------------------
+{
+  // Replayed on what the fixtures and the replays above left, then once more.
+  const file = readFileSync(join(root, 'migrations', '0036_the_lab_on_the_home_page.sql'), 'utf8')
+  await db.exec(file)
+
+  const { rows: home } = await db.query(
+    `select b.type, b.anchor_id, b.settings, t.content
+       from blocks b
+       join pages p on p.id = b.page_id
+       left join block_translations t on t.block_id = b.id and t.locale = 'en'
+      where p.slug = 'home' and b.deleted_at is null and b.is_visible
+      order by b.position`,
+  )
+  const types = home.map((row) => row.type)
+  check(
+    'the teaser sits after the experience list and before the contact block',
+    types.indexOf('lab_teaser') === types.indexOf('experience') + 1 &&
+      types.indexOf('lab_teaser') === types.indexOf('contact_cta') - 1,
+    types.join(),
+  )
+  check('home has one teaser', types.filter((type) => type === 'lab_teaser').length === 1)
+  const teaser = home.find((row) => row.type === 'lab_teaser')
+  check('the teaser shows three exhibits and leads to /lab/', teaser?.settings?.count === 3 && teaser?.settings?.linkHref === '/lab/', JSON.stringify(teaser?.settings))
+  check('the teaser has its heading and its link text', Boolean(teaser?.content?.title && teaser?.content?.linkLabel))
+
+  const { rows: lab } = await db.query(
+    `select e.slug, e.data, t.data as copy
+       from entries e left join entry_translations t on t.entry_id = e.id and t.locale = 'en'
+      where e.collection = 'lab' and e.deleted_at is null and e.is_visible
+      order by e.position`,
+  )
+  check('the catalog holds nine exhibits, thermal, globe and axiom first', lab.length === 9 && lab.slice(0, 3).map((row) => row.slug).join() === 'thermal,globe,axiom', lab.map((row) => row.slug).join())
+  check('every exhibit leads to its own place in the Lab', lab.every((row) => row.data.href === `/lab/#${row.slug}`))
+  const media = lab.flatMap((row) => [row.data.poster, row.data.clip].filter(Boolean))
+  check(
+    "every poster and clip is a file in the site's public folder",
+    media.every((path) => path.startsWith('/assets/lab/') && existsSync(join(root, '..', 'public', path))),
+    media.filter((path) => !existsSync(join(root, '..', 'public', path))).join(),
+  )
+  check('every exhibit has a poster, and the three on the home page a clip', lab.every((row) => row.data.poster) && lab.slice(0, 3).every((row) => row.data.clip))
+  check('every exhibit has a title and its one line', lab.every((row) => row.copy?.title && row.copy?.line && row.copy.line.length <= 160))
+
+  const snapshot = async () =>
+    (
+      await db.query(
+        `select x.* from (
+           select b.id::text, b.position, b.anchor_id, b.settings, t.content as copy
+             from blocks b left join block_translations t on t.block_id = b.id
+            where b.deleted_at is null
+           union all
+           select e.id::text, e.position, e.slug, e.data, t.data
+             from entries e left join entry_translations t on t.entry_id = e.id
+            where e.deleted_at is null
+         ) x order by 1, 5::text`,
+      )
+    ).rows.map((row) => JSON.stringify(row))
+  const before = await snapshot()
+  await db.exec(file)
+  const after = await snapshot()
+  check('a second run writes the same rows, and no new ones', before.join() === after.join())
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))
