@@ -92,6 +92,6 @@ The defaults in `packages/design-tokens` (`tokens.css`, `tokens.json`, `index.ts
 
 ## Noticed, not in scope
 
-- **The chosen-state classes never compile.** `CHOSEN` in `src/components/ui/selection.ts` (`border-cyan-500 bg-cyan-500/10 text-cyan-400`) produces no CSS, so the chosen option in the Proof and Merch widgets shows only a light border, in either palette. A separate session is fixing it.
+- **The chosen-state classes never compiled.** `CHOSEN` in `src/components/ui/selection.ts` named `cyan-*`, which the stylesheet resets, so the chosen option in the Proof and Merch widgets showed only a light border, in either palette. #142 fixed it from a session S9 started.
 - The CMS can't preview a path into the site's public folder: posters and case-study figures show as broken images in the admin.
 - Two backups from S6 are still on the Desktop (`norav-content-2026-11-10.dump`, `norav-content-2026-11-12.dump`).
