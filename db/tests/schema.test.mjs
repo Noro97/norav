@@ -1303,6 +1303,66 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0037: two facts that drifted
+// ---------------------------------------------------------------------------
+{
+  // It ran before the fixtures and the replays above made the rows it changes, so it is
+  // replayed here, then once more.
+  const file = readFileSync(join(root, 'migrations', '0037_two_facts_that_drifted.sql'), 'utf8')
+  const metrics = async () =>
+    (
+      await db.query(
+        `select t.content -> 'metrics' as metrics
+           from block_translations t join blocks b on b.id = t.block_id join pages p on p.id = b.page_id
+          where p.slug = 'work/norav' and b.type = 'case_study' and b.deleted_at is null and t.locale = 'en'`,
+      )
+    ).rows[0]?.metrics ?? []
+  const topics = async () =>
+    ((await db.query(`select value -> 'knowsAbout' as topics from settings where key = 'profile'`)).rows[0]?.topics ?? []).map(
+      (topic) => topic.name,
+    )
+
+  // The profile 0032 writes was already there in the first pass, so Vue.js is gone by now; put it
+  // back where 0032 had it to see this run take it out.
+  const current = await topics()
+  if (!current.includes('Vue.js')) {
+    const restored = [...current.slice(0, 3), 'Vue.js', ...current.slice(3)].map((name) => ({ name }))
+    await db.query(`update settings set value = jsonb_set(value, '{knowsAbout}', $1::jsonb) where key = 'profile'`, [
+      JSON.stringify(restored),
+    ])
+  }
+  const metricsBefore = await metrics()
+  const topicsBefore = await topics()
+  await db.exec(file)
+  const metricsAfter = await metrics()
+  const topicsAfter = await topics()
+
+  check(
+    'the test count on /work/norav is a floor, 590+',
+    metricsAfter.some((m) => m.label === 'automated tests: site, CMS and schema' && m.value === '590+') &&
+      !metricsAfter.some((m) => m.value === '594'),
+    JSON.stringify(metricsAfter),
+  )
+  check(
+    'the other numbers are untouched, in their order',
+    JSON.stringify(metricsAfter.map((m) => m.label)) === JSON.stringify(metricsBefore.map((m) => m.label)) &&
+      metricsAfter.filter((m) => m.label !== 'automated tests: site, CMS and schema').every((m, i) =>
+        JSON.stringify(m) === JSON.stringify(metricsBefore.filter((b) => b.label !== 'automated tests: site, CMS and schema')[i])),
+  )
+  check(
+    'Vue.js is out of knowsAbout, and the rest keep their order',
+    topicsBefore.includes('Vue.js') && JSON.stringify(topicsAfter) === JSON.stringify(topicsBefore.filter((name) => name !== 'Vue.js')),
+    JSON.stringify(topicsAfter),
+  )
+
+  await db.exec(file)
+  check(
+    'a second run changes nothing',
+    JSON.stringify(await metrics()) === JSON.stringify(metricsAfter) && JSON.stringify(await topics()) === JSON.stringify(topicsAfter),
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))
