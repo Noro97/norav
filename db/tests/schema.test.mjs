@@ -1121,7 +1121,7 @@ await expectError(
   const {
     rows: [theme],
   } = await db.query(`select value from settings where key = 'theme'`)
-  check('the palette is D5', theme?.value?.accent === '#B51A2B' && theme?.value?.background === '#0a0a1a')
+  check('the palette is D5 as it stood then, crimson on near-black', theme?.value?.accent === '#B51A2B' && theme?.value?.background === '#0a0a1a')
 
   // Only on the pages 0034 writes; a fixture can publish others.
   const written = ['home', 'work', 'about', 'contact', 'site', 'work/proof', 'demos/nexusroute', 'demos/omnigrid', 'demos/filtergraph', 'demos/merchforge']
@@ -1380,6 +1380,35 @@ await expectError(
     'a second run changes nothing',
     JSON.stringify(await caseStudy()) === JSON.stringify(after) && JSON.stringify(await topics()) === JSON.stringify(topicsAfter),
   )
+}
+
+// ---------------------------------------------------------------------------
+// 0038: a new palette
+// ---------------------------------------------------------------------------
+{
+  // The first pass ran it on a database with no site yet, where it does nothing. 0034's replay
+  // above has written D5's old palette since, so this run has something to replace.
+  const file = readFileSync(join(root, 'migrations', '0038_a_new_palette.sql'), 'utf8')
+  const settings = async () =>
+    Object.fromEntries((await db.query(`select key, value from settings order by key`)).rows.map((row) => [row.key, row.value]))
+
+  const before = await settings()
+  await db.exec(file)
+  const after = await settings()
+
+  check('there was an older palette to replace', before.theme?.accent === '#B51A2B', JSON.stringify(before.theme))
+  check(
+    'the palette is the owner\'s: green on deep navy, with a rust second accent',
+    JSON.stringify(after.theme) === JSON.stringify({ accent: '#338316', secondary: '#C32C14', background: '#010123' }),
+    JSON.stringify(after.theme),
+  )
+  check(
+    'every other setting is untouched',
+    JSON.stringify({ ...after, theme: null }) === JSON.stringify({ ...before, theme: null }),
+  )
+
+  await db.exec(file)
+  check('a second run changes nothing', JSON.stringify(await settings()) === JSON.stringify(after))
 }
 
 // ---------------------------------------------------------------------------
