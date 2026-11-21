@@ -54,7 +54,7 @@ D11 holds. The norav.dev study says the home page's LCP is 1.3 s, S5's figure; i
 
 ## For the owner
 
-The owner answered all of them on 2026-11-21, with every recommendation accepted. The answers are under "Decided 2026-11-21" in `STATE.md`, and `ask` waits on credit:
+The owner answered all of them on 2026-11-21, with every recommendation accepted. The answers are under "Decided 2026-11-21" in `STATE.md`. `ask` was paused after that:
 
 1. **Going public (G5).** Yes, done.
 2. **Two content fixes (G3), one small release:** "594 automated tests" to "590+", and "Vue.js" out of the profile's `knowsAbout`.
@@ -68,7 +68,7 @@ The owner answered all of them on 2026-11-21, with every recommendation accepted
 
 - A Content-Security-Policy: it needs hashes for React's inline scripts and the JSON-LD, the CMS origin, and the map's tile host. `Permissions-Policy` waits on knowing what the Lab's exhibits use.
 - `npm audit` in `cms/`: the same two causes as before (PostCSS inside Next 15, zod inside `@vercel/cli-config`). The fixes are majors now: Next 16 and `@vercel/blob` 2.4.
-- When `ask` comes back: `claude-sonnet-5-5` costs the same as `claude-sonnet-5`, but it thinks by default, so turn thinking off to keep the 512-token cap for the answer.
+- `ask` is paused, by the owner's decision on 2026-11-21, and isn't to be raised again. If the owner ever brings it back: `claude-sonnet-5-5` costs the same as `claude-sonnet-5`, but it thinks by default, so turn thinking off to keep the 512-token cap for the answer.
 - OmniGrid's and MerchForge's text inputs show focus only as a faint border change.
 - A `/favicon.ico` for crawlers that ask for it.
 - `web-design-guidelines` wasn't run over the UI code; Lighthouse, the keyboard walk and the 375 px pass covered what it would check first.
