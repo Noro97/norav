@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S8 has checked the live site and the repo, and waits for the owner's yes on going public (G5).** Results in `.tasks/active/S8-launch.md`. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21.** The live site is true, fast and clear, and `Noro97/norav` is public. Milestone 2 starts with S9 (`docs/plan/prompts/S9-lab-teaser.md`) when the owner says so. Results of the last checks are in `.tasks/done/S8-launch.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -30,7 +30,7 @@ Milestone 1. **S8 has checked the live site and the repo, and waits for the owne
 | S5 New site structure | Done, version 28 live. D11 holds on the live site |
 | S6 Case studies | Done, version 29 live. Proof App has no footage |
 | S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` is still private, waiting for the owner's yes (G5, D18) |
-| S8 Launch | In progress. Checks done 2026-11-21, nothing blocks going public. Waiting for the owner's answers |
+| S8 Launch | Done. The repo is public since 2026-11-21, after a full-history scan of a mirror clone. Security headers on the site and the CMS |
 
 ## Lab, as of 2026-11-16
 
@@ -167,6 +167,14 @@ Nothing.
 
 ## Owner's open items
 
+From S8, asked on 2026-11-21 with a recommendation each, not answered yet:
+
+- **Two content fixes (G3), one small release through the runbook:** "594 automated tests" on `/work/norav` to "590+" (597 today), and "Vue.js" out of the profile's `knowsAbout`, which feeds the JSON-LD and isn't in `facts.md`, the About stack or the CV. Recommended: do both, unless Vue.js is true, in which case add it to `facts.md` first.
+- **The CV's norav.dev line** says "31 migrations, 26 API routes"; it's 35 and 28. Recommended: update the CV's source and re-export `public/Norayr_Avetisyan_CV.pdf`.
+- **Branch protection on `main` (G6)**, free now the repo is public: require CI's checks. Recommended: yes.
+- **A third person's e-mail** in the author line of one commit ("Gurgen"), and two commits by "GenSpark Developer", now public. Recommended: leave them; rewriting history breaks every SHA and PR link.
+- **Four worktrees of finished sessions (G4)**, all clean, their branches merged: `festive-shannon-03cb22`, `intelligent-bhaskara-a0722d`, `reverent-carson-df7387`, `skills-in-session-prompts`. Recommended: delete.
+
 - **Say yes or no to making `creative-lab` public (G5, D18).** The secrets scan of all 111 commits found nothing: no keys, tokens, private keys, credentials in URLs or phone numbers, only three placeholder e-mails in demo exhibits (`YOUR@EMAIL.COM`, `you@company.com`, `privatesalon@collector.ch`). What blocks a clean yes is assets that sit in the repo and its history, not deployed: neon-masks' 14 scans (24.5 MB, no source or licence recorded anywhere), accordion's four images carrying Google C2PA credentials (generated), and unrecorded images in health, eyewear, coffee, olympus, prizma and tactile-material. Options: confirm where each came from, drop those exhibits and rewrite the history, or keep the repo private. Commit author metadata shows the owner's gmail address.
 - Veto any of the ten Lab exhibits, now that they are live (D8). web3 is the one to look at on a real phone: about 47 fps at 375 px under the throttle, against 59–60 for the others.
 - `ask`: the Anthropic account behind it has run out of credit, so `/api/chat` answers 502 to every question (Vercel log, 2026-11-21). Add credit and set a monthly spending cap, then flip `ASK_ENABLED` in `src/lib/terminal-commands.ts`. Until then the command stays hidden.
@@ -189,7 +197,7 @@ Nothing.
 - Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. 0034 rewrites what the live pages show, and leaves a database with no hero untouched.
 - Four kit sections have no placed row and no use: `kit_process`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`, and `kit_writing` waits for a post. Their stylesheet is still in a lazy chunk.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
-- CI guards a merge only through the `merge-when-green` job (D20). A session can still merge by hand, and nothing stops a merge past a red check until branch protection, which needs GitHub Pro or a public repo. It becomes possible at S8, and turning it on then is gate G6. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
+- CI guards a merge only through the `merge-when-green` job (D20). A session can still merge by hand, and nothing stops a merge past a red check until branch protection, which needs GitHub Pro or a public repo. It's possible since the repo went public on 2026-11-21; turning it on is gate G6, asked in S8. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
 - Fonts are the Latin subsets only. Russian needs the Cyrillic ones in S12. `src/i18n/locales/ru` is unreachable until then too.
 - A page published since the last build returns 404 with the right content until the rebuild finishes, and its `noindex` from `404.html` stays until the next full load. A publish triggers that rebuild, so the window is short.
 - Every page shares one `og:image`, `/og.png`, drawn by `scripts/generate-share-card.mjs`. S11 adds per-page images on the same method.
