@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
   // The repo root, so file tracing keeps ../db/migrations and ../packages.
   outputFileTracingRoot: path.join(process.cwd(), '..'),
   poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        ],
+      },
+    ]
+  },
   // Same reason as the tsconfig `zod` path: webpack resolves from the linked
   // package's real location, which sits outside this app's node_modules.
   webpack: (config) => {

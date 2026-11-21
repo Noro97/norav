@@ -107,4 +107,15 @@ describe('vercel.json', () => {
     expect(hashed.test('/assets/img/portrait-abcdefgh.js')).toBe(false)
     expect(hashed.test('/assets/illustrations/nexusroute.svg')).toBe(false)
   })
+
+  it('sends the baseline security headers on every address', () => {
+    const everywhere = config.headers.find((header) => header.source === '/(.*)')!
+    expect(everywhere.headers).toEqual(
+      expect.arrayContaining([
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      ]),
+    )
+  })
 })

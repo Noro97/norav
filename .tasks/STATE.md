@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-Milestone 1. **S7 is done: `norav.dev/lab` serves ten Creative-Lab exhibits, and the main site is unchanged.** S8 is next (D24). Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
+Milestone 1. **S8 has checked the live site and the repo, and waits for the owner's yes on going public (G5).** Results in `.tasks/active/S8-launch.md`. Sessions now start each other, in the order S4, S5, S6, S7, S8, and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -30,7 +30,7 @@ Milestone 1. **S7 is done: `norav.dev/lab` serves ten Creative-Lab exhibits, and
 | S5 New site structure | Done, version 28 live. D11 holds on the live site |
 | S6 Case studies | Done, version 29 live. Proof App has no footage |
 | S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` is still private, waiting for the owner's yes (G5, D18) |
-| S8 Launch | Not started |
+| S8 Launch | In progress. Checks done 2026-11-21, nothing blocks going public. Waiting for the owner's answers |
 
 ## Lab, as of 2026-11-16
 
@@ -47,6 +47,21 @@ Milestone 1. **S7 is done: `norav.dev/lab` serves ten Creative-Lab exhibits, and
 - Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. The D5 palette. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
 - `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
 - English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Baseline, 2026-11-21, S8
+
+Live site, content version 29, Lighthouse 13.6.0, mobile preset, median of 3 runs:
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | CLS | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 | 0.92s | 0.000 | 267 KB |
+| `/about` | 100 | 100 | 100 | 100 | 1.09s | 0.000 | 313 KB |
+| `/work` | 100 | 100 | 100 | 100 | 0.92s | 0.000 | 262 KB |
+| `/work/proof` | 99 | 100 | 100 | 100 | 2.14s | 0.000 | 293 KB |
+| `/work/nova-prism` | 100 | 100 | 100 | 100 | 0.94s | 0.000 | 437 KB |
+| `/work/norav` | 100 | 100 | 100 | 100 | 0.92s | 0.000 | 309 KB |
+
+Entry bundle unchanged from S6: JS 359.5 KB raw, 117.0 KB gzip, of 119 KB.
 
 ## Baseline, 2026-11-12, after S6
 
@@ -142,8 +157,9 @@ What the runs point at:
 - **Passed:** reduced motion (no running animations at 375px, against 1–7 without it), no sideways scroll at 375px, no site errors in the console, source maps closed, admin APIs return 401 without a session.
 - **Done in S4:** self-hosted fonts, no count-up on the numbers strip, real 404s, long cache on hashed files.
 - **Done in S5:** H1 on every page, skip link, contrast, the Email link on `/about`, photo delivery, the sitemap check.
-- **Still open:** no security headers beyond HSTS on the site or the CMS, for S8. The terminal's rate limit is per instance, so the spending cap is the real limit.
-- **Not checked:** field data, screen readers, real phones, keyboard use inside widgets and modals, and `ask`, because it spends the API key. S8 should confirm that `claude-sonnet-5` in `server/chat.ts:14` still answers.
+- **Done in S8:** `nosniff`, `Referrer-Policy` and `X-Frame-Options` on the site and the CMS. No CSP yet.
+- **Still open:** the terminal's rate limit is per instance, so the spending cap is the real limit.
+- **Not checked:** field data, screen readers, real phones, and keyboard use inside widgets and modals. `ask` couldn't answer in S8, for lack of credit; its prompt matches `facts.md`, and `claude-sonnet-5` is still a valid id.
 
 ## Blocked
 
@@ -153,7 +169,7 @@ Nothing.
 
 - **Say yes or no to making `creative-lab` public (G5, D18).** The secrets scan of all 111 commits found nothing: no keys, tokens, private keys, credentials in URLs or phone numbers, only three placeholder e-mails in demo exhibits (`YOUR@EMAIL.COM`, `you@company.com`, `privatesalon@collector.ch`). What blocks a clean yes is assets that sit in the repo and its history, not deployed: neon-masks' 14 scans (24.5 MB, no source or licence recorded anywhere), accordion's four images carrying Google C2PA credentials (generated), and unrecorded images in health, eyewear, coffee, olympus, prizma and tactile-material. Options: confirm where each came from, drop those exhibits and rewrite the history, or keep the repo private. Commit author metadata shows the owner's gmail address.
 - Veto any of the ten Lab exhibits, now that they are live (D8). web3 is the one to look at on a real phone: about 47 fps at 375 px under the throttle, against 59–60 for the others.
-- Set a monthly spending cap on the terminal's Anthropic API key before launch.
+- `ask`: the Anthropic account behind it has run out of credit, so `/api/chat` answers 502 to every question (Vercel log, 2026-11-21). Add credit and set a monthly spending cap, then flip `ASK_ENABLED` in `src/lib/terminal-commands.ts`. Until then the command stays hidden.
 - The old CV: its row in the media library is deleted, and nothing in the drafts or settings names it. The file still answers by direct link, because versions 18–25 name it and files are kept while the last 10 publications do. It goes on its own with the sweep at version 35. It has no phone number. Say if it should go sooner.
 - Collect two real testimonials. They don't block anything.
 - Proof App's footage, if you still want it: record from `docs/plan/proof-shot-list.md` into `~/Desktop/noro/portfolio/proof-footage/`. Adding it is a small content change, and the study reads complete without it.
@@ -163,7 +179,7 @@ Nothing.
 - **Lab, for S9:** the footer has no link to `/lab/` (the footer links are CMS content, so it is a migration plus a copy review, and it has to be a plain `<a href="/lab/">`, because a router `Link` would hit this SPA's NotFound). The Lab's stylesheet is about 535 KB because `packages/catalog/src/styles.css` imports every exhibit's scene, public or not. Ten exhibits are Russian-first and stay out (aero, aether, black-hole, chronos, cyber-city, echoes, forma, nexus, and most of neon-os); translating them would widen the set. Auto-fix could not be turned on for Norav PRs from a session started in the `creative-lab` folder, so S7 watched them by hand.
 - **Lab, small:** the shell's status bar prints "WEBGL 2.0" whatever the browser has; `lab-tabs` rows in other exhibits may still overflow at 375 px (only the public ten were checked); the Lab's CI runs Node 26, this site's CI runs 20.
 
-- `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Later releases of those packages clear them, so check again at S8. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
+- `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Checked in S8: unchanged, and the fixes are now majors, Next 16 and `@vercel/blob` 2.4. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
 - `npm run user:add` shows the password as it's typed. The runbook says to run it in the Mac's Terminal app. Hiding the input would be a small fix.
 - `.env.example`'s comment on `CMS_URL` doesn't mention that `/api/chat` reads it at runtime too. Sessions don't open `.env*` files, so the owner or a rule change has to fix it.
 - Block copy states facts in its own words, reviewed against `facts.md` in S5: the hero, the numbers, the timeline's experience rows, the FAQ. Nothing keeps it in step with the profile automatically; the About stack and the terminal's `cat stack.txt` and `cat about.txt` read the profile.
