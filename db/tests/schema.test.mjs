@@ -1303,24 +1303,29 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
-// 0037: two facts that drifted
+// 0037: facts that drifted
 // ---------------------------------------------------------------------------
 {
   // It ran before the fixtures and the replays above made the rows it changes, so it is
   // replayed here, then once more.
-  const file = readFileSync(join(root, 'migrations', '0037_two_facts_that_drifted.sql'), 'utf8')
-  const metrics = async () =>
+  const file = readFileSync(join(root, 'migrations', '0037_facts_that_drifted.sql'), 'utf8')
+  const caseStudy = async () =>
     (
       await db.query(
-        `select t.content -> 'metrics' as metrics
+        `select t.content
            from block_translations t join blocks b on b.id = t.block_id join pages p on p.id = b.page_id
           where p.slug = 'work/norav' and b.type = 'case_study' and b.deleted_at is null and t.locale = 'en'`,
       )
-    ).rows[0]?.metrics ?? []
+    ).rows[0]?.content ?? {}
   const topics = async () =>
     ((await db.query(`select value -> 'knowsAbout' as topics from settings where key = 'profile'`)).rows[0]?.topics ?? []).map(
       (topic) => topic.name,
     )
+  const floors = { 'automated tests: site, CMS and schema': ['594', '590+'], 'SQL migrations, append-only': ['35', '35+'] }
+  const sentences = [
+    ['Each of the 28 block types is a Zod schema in a shared package.', 'Each block type is a Zod schema in a shared package.'],
+    ['There are 35 numbered SQL migrations, never edited once shipped.', 'There are 35+ numbered SQL migrations, never edited once shipped.'],
+  ]
 
   // The profile 0032 writes was already there in the first pass, so Vue.js is gone by now; put it
   // back where 0032 had it to see this run take it out.
@@ -1331,23 +1336,38 @@ await expectError(
       JSON.stringify(restored),
     ])
   }
-  const metricsBefore = await metrics()
+  const before = await caseStudy()
   const topicsBefore = await topics()
   await db.exec(file)
-  const metricsAfter = await metrics()
+  const after = await caseStudy()
   const topicsAfter = await topics()
 
   check(
-    'the test count on /work/norav is a floor, 590+',
-    metricsAfter.some((m) => m.label === 'automated tests: site, CMS and schema' && m.value === '590+') &&
-      !metricsAfter.some((m) => m.value === '594'),
-    JSON.stringify(metricsAfter),
+    'the copy 0035 wrote is there to change',
+    Object.entries(floors).every(([label, [old]]) => before.metrics?.some((m) => m.label === label && m.value === old)) &&
+      sentences.every(([old]) => before.decisions?.some((d) => d.body.includes(old))),
   )
   check(
-    'the other numbers are untouched, in their order',
-    JSON.stringify(metricsAfter.map((m) => m.label)) === JSON.stringify(metricsBefore.map((m) => m.label)) &&
-      metricsAfter.filter((m) => m.label !== 'automated tests: site, CMS and schema').every((m, i) =>
-        JSON.stringify(m) === JSON.stringify(metricsBefore.filter((b) => b.label !== 'automated tests: site, CMS and schema')[i])),
+    'the test and migration counts on /work/norav are floors, 590+ and 35+',
+    Object.entries(floors).every(([label, [, floor]]) => after.metrics.some((m) => m.label === label && m.value === floor)),
+    JSON.stringify(after.metrics),
+  )
+  check(
+    'every other metric is untouched, in its order',
+    JSON.stringify(after.metrics.map((m) => m.label)) === JSON.stringify(before.metrics.map((m) => m.label)) &&
+      after.metrics.every((m, i) => (m.label in floors ? true : JSON.stringify(m) === JSON.stringify(before.metrics[i]))),
+  )
+  check(
+    'the two decisions lose the block-type count and floor the migrations, and nothing else changes',
+    JSON.stringify(after.decisions) ===
+      JSON.stringify(
+        before.decisions.map((d) => ({ ...d, body: sentences.reduce((body, [old, next]) => body.replace(old, next), d.body) })),
+      ) && sentences.every(([old]) => !after.decisions.some((d) => d.body.includes(old))),
+    JSON.stringify(after.decisions.map((d) => d.body.slice(0, 70))),
+  )
+  check(
+    'the rest of the case study is untouched',
+    JSON.stringify({ ...after, metrics: null, decisions: null }) === JSON.stringify({ ...before, metrics: null, decisions: null }),
   )
   check(
     'Vue.js is out of knowsAbout, and the rest keep their order',
@@ -1358,7 +1378,7 @@ await expectError(
   await db.exec(file)
   check(
     'a second run changes nothing',
-    JSON.stringify(await metrics()) === JSON.stringify(metricsAfter) && JSON.stringify(await topics()) === JSON.stringify(topicsAfter),
+    JSON.stringify(await caseStudy()) === JSON.stringify(after) && JSON.stringify(await topics()) === JSON.stringify(topicsAfter),
   )
 }
 
