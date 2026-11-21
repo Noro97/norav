@@ -14,23 +14,23 @@ import { z } from 'zod'
 
 const hex = z
   .string()
-  .regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour, like #B51A2B')
+  .regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour, like #338316')
 
 export const themeSchema = z.object({
   accent: hex,
   // Defaulted rather than required: a palette saved before the second accent
   // existed should gain one, not fail validation and lose the accent its owner
   // already chose.
-  secondary: hex.default('#22d3ee'),
+  secondary: hex.default('#C32C14'),
   background: hex,
 })
 
 export type Theme = z.infer<typeof themeSchema>
 
 export const DEFAULT_THEME: Theme = {
-  accent: '#B51A2B',
-  secondary: '#22d3ee',
-  background: '#0a0a1a',
+  accent: '#338316',
+  secondary: '#C32C14',
+  background: '#010123',
 }
 
 // ---------------------------------------------------------------------------
@@ -104,7 +104,7 @@ const SCALE: { step: number; l: number }[] = [
   { step: 300, l: 0.79 },
   // The step text in the accent is set in (`--color-text-accent`). Lighter than
   // the rest of the ramp's spacing, so it clears 4.5:1 on a dark background:
-  // the D5 crimson's 400 reads 5.1:1 on #0a0a1a, where 0.51 gave 4.1.
+  // the first D5 crimson's 400 read 5.1:1 on #0a0a1a, where 0.51 gave 4.1.
   { step: 400, l: 0.6 },
   { step: 500, l: 0.41 },
   { step: 600, l: 0.32 },

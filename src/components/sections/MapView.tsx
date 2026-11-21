@@ -65,7 +65,7 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
    * publishes. SVG filters take resolved colours, not CSS variables — the same
    * constraint the 3D mark works under — hence the hooks.
    */
-  const ground = useThemeColor('--color-background', '#0a0a1a')
+  const ground = useThemeColor('--color-background', '#010123')
   const card = useThemeColor('--color-card', '#0d0d1f')
   const line = useThemeColor('--color-muted', '#1a1a2e')
   const text = useThemeColor('--color-muted-foreground', '#888888')
@@ -77,7 +77,7 @@ export default function MapView({ markers, connections, onLoad }: MapViewProps) 
   // band — water near 0.23, land near 0.3, roads near 0.38, borders above
   // 0.5 — so each band gets its own role and everything else is padding.
   // Roads lean toward the text colour: in the muted role alone they vanish.
-  const g = channels(ground, '#0a0a1a')
+  const g = channels(ground, '#010123')
   const c = channels(card, '#0d0d1f')
   const l = channels(line, '#1a1a2e')
   const tx = channels(text, '#888888')

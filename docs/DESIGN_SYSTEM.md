@@ -20,9 +20,9 @@ derives the palette the tokens alias — see
 
 | Role | Token | Default | What it is for |
 | --- | --- | --- | --- |
-| **Primary** | `primary-{50…900}`, `primary-fg` | `#B51A2B` at 500 (the CMS accent) | The brand, and the one colour of emphasis on a view: the active nav item, the primary button, the highlighted word in a heading, the glow behind a card, the section eyebrow. Once per view. |
-| **Secondary** | `secondary-{50…900}` | `#22d3ee` at 500 (the CMS second accent) | The supporting accent: the case studies and the interactive widgets, a second thing that wants attention beside a primary one. Also the *categorical* colour — a tag, a chart series, a node type, a syntax token — where the old code reached for a random Tailwind hue. |
-| **Tertiary** | `tertiary-bg` · `tertiary-card` · `tertiary-raised` · `tertiary-fg` · `tertiary-muted` · `tertiary-line` · `tertiary-line-soft` · `tertiary-ink` · `tertiary-shade` | derived from the CMS background (`#0a0a1a`) | The neutral role: every surface, every hairline, every tone of text that is not an accent, every disabled state. Named by what it is for, not by a step, because the same name is white on a dark theme and black on a light one. |
+| **Primary** | `primary-{50…900}`, `primary-fg` | `#338316` at 500 (the CMS accent) | The brand, and the one colour of emphasis on a view: the active nav item, the primary button, the highlighted word in a heading, the glow behind a card, the section eyebrow. Once per view. |
+| **Secondary** | `secondary-{50…900}` | `#C32C14` at 500 (the CMS second accent) | The supporting accent: the case studies and the interactive widgets, a second thing that wants attention beside a primary one. Also the *categorical* colour — a tag, a chart series, a node type, a syntax token — where the old code reached for a random Tailwind hue. |
+| **Tertiary** | `tertiary-bg` · `tertiary-card` · `tertiary-raised` · `tertiary-fg` · `tertiary-muted` · `tertiary-line` · `tertiary-line-soft` · `tertiary-ink` · `tertiary-shade` | derived from the CMS background (`#010123`) | The neutral role: every surface, every hairline, every tone of text that is not an accent, every disabled state. Named by what it is for, not by a step, because the same name is white on a dark theme and black on a light one. |
 
 Each accent role is a ten-step scale, 500 being the colour the owner typed in
 the CMS and the rest a ramp derived from it. Steps to reach for:
@@ -38,9 +38,9 @@ The tertiary names, from back to front:
 
 | Token | Default (dark) | Use |
 | --- | --- | --- |
-| `tertiary-bg` | `#0a0a1a` | the page |
-| `tertiary-card` | `#0d0d1f` | a card on it |
-| `tertiary-raised` | `#1a1a2e` | a panel above that |
+| `tertiary-bg` | `#010123` | the page |
+| `tertiary-card` | `#020226` | a card on it |
+| `tertiary-raised` | `#0c0c36` | a panel above that |
 | `tertiary-line` | 8 % ink | hairline borders |
 | `tertiary-line-soft` | 6 % ink | input borders, dividers inside a card |
 | `tertiary-fg` | `#e0e0e0` | body text |
