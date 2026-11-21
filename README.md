@@ -1,14 +1,20 @@
 # norav.dev
 
-A personal portfolio site, and the small CMS that runs it. One repository, three
-deployable pieces, no CMS framework and no ORM anywhere in it.
+The portfolio of Norayr Avetisyan, a senior fullstack engineer, live at
+[norav.dev](https://norav.dev), and the small CMS that runs it. One repository,
+three deployable pieces, no CMS framework and no ORM anywhere in it.
+[The norav.dev case study](https://norav.dev/work/norav) explains why it's built
+this way and what that costs.
 
-The site is a Vite + React 19 single page: an interactive terminal in the
-footer, and every section — its copy,
+The site is a Vite + React 19 single page, prerendered to HTML at build time: an
+interactive terminal in the footer, and every section — its copy,
 its order, whether it appears at all — coming from a database rather than from
 JSX. Content is baked into the bundle at build time, so the first paint costs no
 network request, and refreshed in the background afterwards, so fixing a typo
 does not need a deploy.
+
+The code is public to read. It is not open source: no licence is granted, and all
+rights are reserved.
 
 ## The repository
 
@@ -16,8 +22,15 @@ does not need a deploy.
 | --- | --- | --- |
 | `src/`, `api/`, `server/` | The site: React 19, Vite 6, Tailwind 4 | this file |
 | `packages/content-schema/` | Block registry and snapshot contract shared by both sides | — |
+| `packages/design-tokens/` | Colour and type tokens, the source of truth for both sides | — |
 | `cms/` | Admin UI and content API — Next.js App Router, `pg`, zod | [cms/README.md](./cms/README.md), [cms/DEPLOY.md](./cms/DEPLOY.md) |
 | `db/` | PostgreSQL schema — numbered SQL migrations, PGlite-tested | [db/README.md](./db/README.md) |
+| `docs/plan/` | The current plan, the approved facts and the publish runbook | [docs/plan/README.md](./docs/plan/README.md) |
+| `.tasks/` | Working state: what each work session did, what's left, and lessons learned | [.tasks/STATE.md](./.tasks/STATE.md) |
+
+The site's claims come from [`docs/plan/facts.md`](./docs/plan/facts.md). Older
+copy that was later corrected still sits in the shipped migrations, which are
+never edited, and in `docs/archive/`. Neither is what the site says now.
 
 Only `packages/*` is an npm workspace of the root project. `cms/` and `db/`
 carry their own lockfiles and are installed separately — they deploy separately
@@ -224,17 +237,19 @@ for a year as `immutable`. The ones in `/assets/img/` have no hash and aren't.
 `useReveal` (`src/hooks/useReveal.ts`), in CSS, applied once to whatever starts off
 screen. Numbers are final from the first frame, and hovers are colour changes.
 `prefers-reduced-motion: reduce` turns the entrance off without touching the
-widgets' own motion. Framer Motion stays inside `ecommerce`, `omnigrid` and
-`bento_grid`, which get it and its reduced-motion switch through `animated` in
-`src/content/blocks.tsx`. GSAP stays inside `bento_grid`, and Leaflet inside
-NexusRoute. A test keeps all three out of what the first page loads.
+widgets' own motion. Framer Motion stays inside `ecommerce` and `omnigrid`, which
+get it and its reduced-motion switch through `animated` in
+`src/content/blocks.tsx`, and Leaflet inside NexusRoute. A test keeps both out of
+what the first page loads.
 
 **Fonts.** Inter, Inter Tight and JetBrains Mono are self-hosted from `@fontsource`,
 Latin subset only, in the weights the site uses. Russian needs the Cyrillic subsets
 added when it comes back in S12.
 
 **The terminal.** `help`, `ls`, `cat`, `whoami`, `date`, `echo`, `neofetch`,
-`pwd`, `cd`, `sudo` and `clear` are local. `ask` streams from Claude through
+`pwd`, `cd`, `sudo` and `clear` are local. `ask` is switched off on the live site
+for now, by `ASK_ENABLED` in `src/lib/terminal-commands.ts`; the handler behind it
+is deployed. When on, `ask` streams from Claude through
 `/api/chat`, with the system prompt built by `src/lib/portfolio-context.ts` from the
 profile the CMS publishes now, kept for five minutes per instance, and from the baked
 snapshot if the CMS doesn't answer in two seconds. That

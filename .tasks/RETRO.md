@@ -4,6 +4,18 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-21: A repo going public publishes every pull request's head too
+
+GitHub keeps `refs/pull/<n>/head` for every PR, closed ones included, and they become readable with the repo. The local clone had 439 commits; a `git clone --mirror` had 444, five of them reachable only from those refs. Scan a mirror clone before a visibility change, not the working clone. Commit author lines go public with it: here, one third person's e-mail.
+
+### 2026-11-21: The reason a proxied call fails is in the platform log, for free
+
+`/api/chat` answered a flat 502 "upstream" to four questions. `vercel logs --environment production --query upstream --expand`, from the main checkout (it's linked), showed Anthropic's own message: the credit balance was too low. Read the log before guessing at keys or model ids, and before spending more calls on it.
+
+### 2026-11-21: A scanner's hit is a lead, and so is a checker's
+
+gitleaks' four "generic-api-key" hits were the words "API layer" in an i18n file, and my keyboard check flagged seven cards with no focus style that draw their ring on a sibling through `group-has-[:focus-visible]`. Both looked like findings until the matched line and the component were read. Read the source of each hit before it goes in a report.
+
 ### 2026-11-16: Dropping a catalog entry doesn't drop what its package imports
 
 S7's public build held only ten exhibits in the list and still shipped all 14 `.glb` scans. Rollup loads every module that code imports, dead branch or not, and Vite emits a module's asset files when it loads it, so tree-shaking the entry came too late. A Vite `resolveId` hook that gives the hidden packages an empty module fixed it, and `check:lab` now reads the finished build for `.glb` files and for the hidden exhibits' titles, in CI. Check an allow-list on the output, not on the list.
