@@ -174,9 +174,9 @@ export function deriveThemeTokens(theme: Theme): ThemeTokens {
     tokens[`--color-crimson-${step}`] = hslToHex({ h: accent.h, s: scaleSaturation(accent.s, al), l: al })
   }
 
-  // The second accent gets the same ten steps under Tailwind's own `cyan-*`
-  // names, so every existing `text-cyan-400` in the codebase follows the theme
-  // without the component being touched.
+  // The second accent gets the same ten steps under the `cyan-*` names, which
+  // published snapshots carry and so cannot change. Components reach them
+  // through the `secondary-*` role; `text-cyan-400` compiles to nothing.
   const secondary = hexToHsl(theme.secondary)
   for (const { step, l } of SCALE) {
     const sl = anchor(l, secondary.l)

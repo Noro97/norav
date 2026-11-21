@@ -6,12 +6,16 @@
  * and painting it the same colour left whole widgets in one hue with nothing
  * separating "this section" from "this size".
  *
- * These are the secondary colour's `cyan-*` scale, which the palette derives at
- * publish time alongside the accent — so both follow the theme.
+ * The chosen option is the secondary role, which aliases the `--color-cyan-*`
+ * scale the theme writes at publish time, so it follows the theme. Name the
+ * role, never `cyan-*` or `white`: the stylesheet resets Tailwind's palette, and
+ * those compile to nothing. The unchosen text sits at ink/55 because ink/40
+ * misses 4.5:1 on the card.
  *
  * Written as whole class names rather than assembled from parts: Tailwind scans
  * source text, and a name built at runtime is a name it never sees.
  */
-export const CHOSEN = 'border-cyan-500 bg-cyan-500/10 text-cyan-400'
+export const CHOSEN = 'border-secondary-500 bg-secondary-500/10 text-secondary-400'
 
-export const UNCHOSEN = 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+export const UNCHOSEN =
+  'border-tertiary-ink/10 text-tertiary-ink/55 hover:border-tertiary-ink/20 hover:text-tertiary-ink/70'

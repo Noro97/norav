@@ -289,7 +289,7 @@ export function ProofWidget({ first }: BlockComponentProps) {
                       selectedActivity === i ? CHOSEN : UNCHOSEN
                     }`}
                   >
-                    <span className="mr-1.5 opacity-60">{act.icon}</span>
+                    <span className="mr-1.5">{act.icon}</span>
                     {t(`projects:proof.activities.${act.key}`)}
                   </button>
                 ))}
