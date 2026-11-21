@@ -39,7 +39,7 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D14 | Your name is the main identity, and the logo is a small mark and favicon. A real photo goes in About, never an AI portrait |
 | D15 | Content is drafted from code and `facts.md`, written in plain first person. The owner corrects every piece, and nothing publishes without review |
 | D16 | The site's CV is at `/cv`, with an email address and no phone number |
-| D17 | The terminal stays as a footer easter egg. Its prompt reads from the facts source, and its API key has a monthly spending cap |
+| D17 | The terminal stays as a footer easter egg. Its prompt reads from the facts source. `ask` is paused (owner, 2026-11-21): hidden behind `ASK_ENABLED`, its account isn't topped up, and sessions don't raise it |
 | D18 | This repo goes public at the end of Milestone 1, after a fresh secrets scan. `creative-lab` stays private for now (owner, 2026-11-21): its scan found no secrets, but its history holds images with no recorded source. Proof App and Nova Prism stay private |
 | D19 | Testimonials and writing stay hidden until they're real. Neither blocks Milestone 1 |
 | D20 | The owner doesn't review or merge PRs. A PR labelled `merge-when-green` merges itself once every check passes on its latest commit |

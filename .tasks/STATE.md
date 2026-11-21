@@ -158,7 +158,7 @@ What the runs point at:
 - **Done in S4:** self-hosted fonts, no count-up on the numbers strip, real 404s, long cache on hashed files.
 - **Done in S5:** H1 on every page, skip link, contrast, the Email link on `/about`, photo delivery, the sitemap check.
 - **Done in S8:** `nosniff`, `Referrer-Policy` and `X-Frame-Options` on the site and the CMS. No CSP yet.
-- **Still open:** the terminal's rate limit is per instance, so the spending cap is the real limit.
+- **Paused:** `ask`, so its rate limit no longer matters. The limit is per instance, so if `ask` ever comes back, a spending cap would be the real limit.
 - **Not checked:** field data, screen readers, real phones, and keyboard use inside widgets and modals. `ask` couldn't answer in S8, for lack of credit; its prompt matches `facts.md`, and `claude-sonnet-5` is still a valid id.
 
 ## Blocked
@@ -167,7 +167,6 @@ Nothing.
 
 ## Owner's open items
 
-- `ask`: the Anthropic account behind it has run out of credit, so `/api/chat` answers 502 to every question (Vercel log, 2026-11-21). The owner adds credit and sets a monthly spending cap of $5 (decided 2026-11-21). Then a session flips `ASK_ENABLED` in `src/lib/terminal-commands.ts`, moves `server/chat.ts` to `claude-sonnet-5-5` at the same price, turns its thinking off, and tests it live. Sonnet 5.5 thinks by default, and the thinking would eat the 512-token cap. Until then the command stays hidden.
 - Collect two real testimonials. They don't block anything.
 
 ## Decided 2026-11-21
@@ -183,6 +182,7 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 - **Lab exhibits:** all ten stay (D8), web3 included at about 47 fps at 375 px under the throttle.
 - **The old CV:** goes on its own with the sweep at version 35.
 - **Proof App's footage:** dropped. The study stays as it is, and `docs/plan/proof-shot-list.md` is kept in case it's wanted later.
+- **`ask`:** paused. The Anthropic account won't be topped up. The command stays hidden behind `ASK_ENABLED` in `src/lib/terminal-commands.ts`, and its code stays. Don't raise it with the owner again; it comes back only if the owner brings it up.
 
 ## Tech debt register
 
