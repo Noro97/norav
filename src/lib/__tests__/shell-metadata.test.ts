@@ -44,7 +44,7 @@ describe('renderShell', () => {
       url: 'https://norav.dev',
       email: 'noroavetisyan@gmail.com',
       sameAs: ['https://github.com/Noro97', 'https://www.linkedin.com/in/norayravetisyan/', 'https://t.me/antarber'],
-      knowsAbout: ['React', 'Next.js', 'TypeScript', 'Vue.js', 'Design Systems', 'Micro-frontends', 'Storybook', 'Telegram Mini Apps'],
+      knowsAbout: ['React', 'Next.js', 'TypeScript', 'Design Systems', 'Micro-frontends', 'Storybook', 'Telegram Mini Apps'],
       knowsLanguage: ['Armenian', 'Russian', 'English'],
       alumniOf: { '@type': 'CollegeOrUniversity', name: 'Armenian State University of Economics' },
       address: { '@type': 'PostalAddress', addressLocality: 'Yerevan', addressCountry: 'AM' },

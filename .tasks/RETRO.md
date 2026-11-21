@@ -4,6 +4,30 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-22: A release publishes every saved draft, not just the migration's rows
+
+The dry run for 0036 and 0037 showed 118 changes where I expected 58. The other 60 were a theme saved in the CMS two minutes after the last publish, never published, with a secondary at 1.37:1 on its background. A release would have shipped it with the Lab. Count the dry run's lines by area and account for every one, and take the backup the rehearsal uses on the day of the release, since a draft can appear between two backups.
+
+### 2026-11-22: Measure an owner's palette before asking about it
+
+"Do you want this theme?" had no good answer until the draft was built and measured: Lighthouse 96, both hero buttons at 4.01:1. With screenshots side by side and a variant one lightness step away that scored 100, the owner chose in one word. Build both on the release's own content, run Lighthouse on each, and offer the nearest palette that passes.
+
+### 2026-11-22: A replayed migration test has to recreate what the first pass removed
+
+0037's test replays it after 0035's replay. 0035 put "594" back, but nothing re-adds Vue.js to the profile, so the test failed on a value already gone. Seed what the migration removes before replaying it, and check that the "before" state really holds it.
+
+### 2026-11-22: A backup named by UTC date can overwrite today's
+
+The runbook names the dump by `toISOString()` date. After local midnight in Yerevan it is still yesterday in UTC, so the new backup replaced the one taken earlier that day. Harmless here, since both were S9's own and the newer one is the rollback point, but check `ls` before trusting which file is which.
+
+### 2026-11-21: Tailwind utilities can't be split across stylesheets
+
+Giving each Lab exhibit its own utilities sheet looked fine on the exhibit and broke the shell: a later sheet's duplicate `.flex` beat the earlier `md:hidden`, and a hamburger appeared in a top bar. The comparison only looked at the exhibit's subtree, so it missed it. Keep utilities in one sorted sheet and split only scoped CSS, and compare whole pages (`document.body`), not the part you changed.
+
+### 2026-11-21: Turbo's cache replay writes over `dist` without cleaning it
+
+After a plain `pnpm build`, a cached `build:lab` replayed its outputs on top of the full build's `dist/lab`, so the "public" build still held hidden exhibits. Pass `--force` when the previous build in that folder was a different one.
+
 ### 2026-11-21: A repo going public publishes every pull request's head too
 
 GitHub keeps `refs/pull/<n>/head` for every PR, closed ones included, and they become readable with the repo. The local clone had 439 commits; a `git clone --mirror` had 444, five of them reachable only from those refs. Scan a mirror clone before a visibility change, not the working clone. Commit author lines go public with it: here, one third person's e-mail.
