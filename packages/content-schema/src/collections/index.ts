@@ -3,11 +3,13 @@ import type { CollectionDefinition, SerializedCollectionDefinition } from '../de
 import { serializeCollectionDefinition } from '../define-collection'
 import { experienceCollection } from './experience'
 import { navigationCollection } from './navigation'
+import { labCollection } from './lab'
 import { validateWith, type ValidationResult } from '../blocks'
 
 export const COLLECTION_REGISTRY = {
   navigation: navigationCollection,
   experience: experienceCollection,
+  lab: labCollection,
 } satisfies Record<string, CollectionDefinition<z.ZodType, z.ZodType>>
 
 export type CollectionKey = keyof typeof COLLECTION_REGISTRY
@@ -39,5 +41,6 @@ export function validateEntryContent(key: string, value: unknown): ValidationRes
   return definition ? validateWith(definition.content, value) : unknownCollection(key)
 }
 
-export { experienceCollection, navigationCollection }
+export { experienceCollection, navigationCollection, labCollection }
 export type { ExperienceData, ExperienceContent } from './experience'
+export type { LabData, LabContent } from './lab'

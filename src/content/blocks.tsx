@@ -116,6 +116,8 @@ export const BLOCK_COMPONENTS: Record<string, BlockComponent> = {
   // Closed until the footer opens it, and fetched only then.
   terminal_footer: TerminalSlot,
   site_footer: named(() => import('@/components/sections/SiteFooter'), 'SiteFooter'),
+  // Posters and links only: the Lab's code loads in the Lab (docs/plan D7, D11).
+  lab_teaser: named(() => import('@/components/sections/LabTeaser'), 'LabTeaser'),
 
  // Usable on any page, as many times as it needs them.
  testimonials: named(() => import('@/components/sections/Testimonials'), 'Testimonials'),

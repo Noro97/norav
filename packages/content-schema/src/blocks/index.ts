@@ -27,6 +27,7 @@ import {
 } from './case-study-detail'
 import { caseStudyBlock } from './case-study-story'
 import { testimonialsBlock } from './testimonials'
+import { labTeaserBlock } from './lab-teaser'
 import {
   kitProcessBlock,
   kitFaqBlock,
@@ -65,6 +66,7 @@ export const BLOCK_REGISTRY = {
   contact_cta: contactCtaBlock,
   terminal_footer: terminalFooterBlock,
   site_footer: siteFooterBlock,
+  lab_teaser: labTeaserBlock,
 
   // Not a singleton: usable on any page, more than once.
   testimonials: testimonialsBlock,
@@ -147,6 +149,7 @@ export {
   contactCtaBlock,
   workIndexBlock,
   stackBlock,
+  labTeaserBlock,
 }
 export {
   kitProcessBlock,
@@ -172,6 +175,7 @@ export type { CaseStudyDetailContent } from './case-study-detail'
 export type { CaseStudyStoryContent } from './case-study-story'
 export type { TerminalFooterContent, TerminalFooterSettings } from './terminal-footer'
 export type { TestimonialsContent, TestimonialsSettings } from './testimonials'
+export type { LabTeaserContent, LabTeaserSettings } from './lab-teaser'
 export { KIT_GROUP } from './kit/shared'
 export type {
   KitProcessContent,
