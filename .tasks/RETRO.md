@@ -4,6 +4,10 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-22: A class the stylesheet doesn't know is silent, and the lint only reads `className`
+
+The widgets' chosen state named `cyan-*` and `white` from a constant, so it compiled to nothing, the lint never saw it, and the live site shipped it. Check a new colour class in the built CSS, or compile it in a test as `selection.test.ts` does. Fixing it can also lower contrast: the dead `text-white/40` had been rendering at full body colour, and at its intended alpha it misses 4.5:1. Lighthouse didn't flag any of it, because axe can't read contrast over a gradient card.
+
 ### 2026-11-21: A repo going public publishes every pull request's head too
 
 GitHub keeps `refs/pull/<n>/head` for every PR, closed ones included, and they become readable with the repo. The local clone had 439 commits; a `git clone --mirror` had 444, five of them reachable only from those refs. Scan a mirror clone before a visibility change, not the working clone. Commit author lines go public with it: here, one third person's e-mail.
