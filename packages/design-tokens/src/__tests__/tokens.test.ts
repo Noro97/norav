@@ -55,8 +55,8 @@ describe('design tokens', () => {
 
   it('a default resolves every alias down to a value', () => {
     expect(defaults['--color-text-primary']).toBe('#e0e0e0')
-    expect(defaults['--color-primary-500']).toBe('#B51A2B')
-    expect(defaults['--color-interactive-subtle']).toBe('color-mix(in srgb, #B51A2B 10%, transparent)')
+    expect(defaults['--color-primary-500']).toBe('#338316')
+    expect(defaults['--color-interactive-subtle']).toBe('color-mix(in srgb, #338316 10%, transparent)')
   })
 
   it('the roles alias the physical names the CMS writes, never the other way', () => {

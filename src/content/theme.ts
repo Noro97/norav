@@ -99,7 +99,7 @@ export function useAccentColor(): string {
 }
 
 /** The shipped accent, for the moment before a published theme lands. */
-const ACCENT_FALLBACK = '#B51A2B'
+const ACCENT_FALLBACK = '#338316'
 
 const REMEMBERED = 'norav:theme'
 
