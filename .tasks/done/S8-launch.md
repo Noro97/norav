@@ -1,8 +1,8 @@
 # S8: Launch
 
-- **Status:** Stage 3 reported, 2026-11-21. Waiting for the owner's answers and the yes on going public (G5)
+- **Status:** Done, 2026-11-21. `Noro97/norav` is public. Milestone 1 is done
 - **Origin:** `docs/plan/prompts/S8-launch.md`, started from `origin/main` at `bd7088a` (#134)
-- **Branch:** `claude/s8-launch`
+- **Branches and PRs:** `claude/s8-launch` (#135, the checks, headers and README), `claude/s8-state` (this record)
 - **Measured on:** production at migration 35, content version 29 (checksum `4db01156478c`), entry `index-B8iELwjk.js`
 
 ## Results, item by item
@@ -45,11 +45,18 @@ D11 holds. The norav.dev study says the home page's LCP is 1.3 s, S5's figure; i
 - **`README.md`**, as in item 12.
 - **Branches**, as in item 13.
 
+## Going public
+
+- The owner said yes on 2026-11-21, "after the PR". #135 merged at `b79f1e8` once `Merge when green` reported every check passed on `787315f`, pinned with `--match-head-commit`.
+- `gh repo edit Noro97/norav --visibility public --accept-visibility-change-consequences`: `PRIVATE` before, `PUBLIC` after.
+- Checked without signing in, with `curl`: the repo page answers 200 and renders the README (its tables and the "all rights are reserved" line); the API reports `private: false`, no licence; the raw README, `docs/plan/facts.md` and #135 answer 200; `/blob/main/.env` is a 404.
+- Headers on production after the deploy (about a minute): `nosniff`, `Referrer-Policy` and `X-Frame-Options: SAMEORIGIN` on `/`, `/work/proof`, a hashed asset and `/lab/` (the site's rules reach the Lab through the rewrite), and on `cms.norav.dev`. Four Lab pages (`/lab/`, `#globe`, `#thermal`, `#2048`) load in headless Chrome with no console error and no failed request; the Lab uses no iframes. The entry file is still `index-B8iELwjk.js`.
+
 ## For the owner
 
-Before going public, nothing blocks. To decide:
+The owner answered the first question. The rest stay open, in `STATE.md`:
 
-1. **Going public (G5).** History, every branch and every PR head scanned clean.
+1. **Going public (G5).** Yes, done.
 2. **Two content fixes (G3), one small release:** "594 automated tests" to "590+", and "Vue.js" out of the profile's `knowsAbout`.
 3. **The CV's norav.dev line** says "31 migrations, 26 API routes"; it's 35 and 28 now.
 4. **`ask`:** credit on the Anthropic account and a monthly spending cap, or launch with it off.
