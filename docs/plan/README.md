@@ -40,7 +40,7 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D15 | Content is drafted from code and `facts.md`, written in plain first person. The owner corrects every piece, and nothing publishes without review |
 | D16 | The site's CV is at `/cv`, with an email address and no phone number |
 | D17 | The terminal stays as a footer easter egg. Its prompt reads from the facts source, and its API key has a monthly spending cap |
-| D18 | This repo goes public at the end of Milestone 1, after a fresh secrets scan. `creative-lab` goes public when `/lab` goes live, after its own scan. Proof App and Nova Prism stay private |
+| D18 | This repo goes public at the end of Milestone 1, after a fresh secrets scan. `creative-lab` stays private for now (owner, 2026-11-21): its scan found no secrets, but its history holds images with no recorded source. Proof App and Nova Prism stay private |
 | D19 | Testimonials and writing stay hidden until they're real. Neither blocks Milestone 1 |
 | D20 | The owner doesn't review or merge PRs. A PR labelled `merge-when-green` merges itself once every check passes on its latest commit |
 | D21 | Sessions run production themselves through the runbook: backup, rehearsal on a copy, migration, release, check. The owner keeps accounts, passwords and environment variables |
@@ -126,12 +126,13 @@ Every prompt inherits these.
 - Open the PR with `gh pr create --label merge-when-green`, then turn Auto-fix on with `set_monitor`. The `Merge when green` job in `ci.yml` waits for every check, Vercel included, comments on the PR, and merges it two minutes later, pinned to that commit.
 - End your turn after that. Don't watch CI. The comment and any failure both reach you through Auto-fix. If the comment says every check passed, you can merge straight away with the command below and carry on.
 - Merging deploys. If the change only works after a production step, leave the label off. At that point in the order, read the checks and merge yourself: `gh pr merge --merge --match-head-commit <full sha>`.
+- `main` is protected, admins included, so a merge past a red check is refused. Required: `ci`, `CMS and schema`, `Vercel – norav` and `Vercel – norav-cms`. No review is required, and a branch doesn't have to be up to date with `main`. Force-pushing or deleting `main` is refused too.
 
 **When to ask (D22).** Only about copy and voice, personal facts, money and accounts, visibility, or irreversible deletion outside the plan.
 
 - Everything else is yours to decide. Record it in the PR, and in the plan if it changes one.
 - Anything visible on the live site stays until its replacement is live.
-- Ask once, in one list, with a recommendation for each. Keep working on whatever doesn't depend on the answers.
+- Ask through the `grilling` skill (owner, 2026-11-21). Each round holds every question you can ask now, numbered, with a recommendation under each, worded so "yes" accepts it. A question that depends on an open answer waits for the next round. Keep working on whatever doesn't depend on the answers.
 - Don't offer a "done" button for a command. Run it yourself.
 
 **Approval gates. Stop and wait for the owner's "yes" before:**
