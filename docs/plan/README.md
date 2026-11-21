@@ -27,7 +27,7 @@ Most of the brief's code cleanup shipped: the ambient layer, three.js and fragme
 | D2 | Headline: "Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js". H1 stays the thesis: "Interfaces at scale, and the systems under them." |
 | D3 | Three full case studies: Proof App, Nova Prism, norav.dev with its CMS. Employer work gets short entries with approved metrics only, no screenshots or internals |
 | D4 | NexusRoute, OmniGrid, FilterGraph and MerchForge sit in a section labelled "Live demos", with numbers measured in the demo only. These widgets are the site's one signature moment |
-| D5 | Visual direction: engineered restraint, type-led and mostly still. Crimson `#B51A2B` on near-black `#0a0a1a`, cyan `#22d3ee` only for live states inside widgets. Token names don't change |
+| D5 | Visual direction: engineered restraint, type-led and mostly still. Green `#338316` on deep navy `#010123`, rust `#C32C14` only for live states inside widgets (owner, 2026-11-22; it was crimson `#B51A2B` on `#0a0a1a` with cyan `#22d3ee`). Token names don't change, so `crimson-*` holds the green and `cyan-*` the rust |
 | D6 | The brief's "Learning now" section and status ledger are removed. n8n, Make, Zapier and LangChain aren't claimed. The automation page stays gone |
 | D7 | Creative-Lab keeps its own repo and deployment and is served at `norav.dev/lab`. The hiring path loads none of its code. "Lab" means Creative-Lab only |
 | D8 | 8–10 Lab exhibits go public, in English, chosen by audit for mobile, performance and asset licences. The session chooses, and the owner can veto any of them once they're live |
