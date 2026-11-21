@@ -45,7 +45,7 @@ Built on the release's content and measured with the real `deriveThemeTokens`:
 
 B keeps the draft's hues and background. The green is one lightness step darker, and the rust is lighter. The owner picked it from side-by-side screenshots ("Да, B"). 0038 writes it the way 0034 wrote the last palette, and the closing snapshot bakes it, so the first paint and the mobile `theme-color` are the new palette too.
 
-The defaults in `packages/design-tokens` (`tokens.css`, `tokens.json`, `index.ts`), `DEFAULT_THEME` and the two fallbacks in `src` still hold the crimson palette. The prerender inlines the published palette on every route, so they don't paint. They follow in their own PR once the chosen-state fix, which may touch `tokens.css`, has landed.
+The defaults followed in S9's last PR, `claude/s9-palette-defaults-d53729`. `tokens.json` now holds exactly what publish derives from B. `DEFAULT_THEME`, the fallbacks in `src`, `index.html`'s `theme-color`, the favicon and the share card moved to B with it.
 
 ## Release
 
