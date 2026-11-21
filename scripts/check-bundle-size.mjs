@@ -21,11 +21,16 @@ import { gzipSync } from 'node:zlib'
  * a whole KB. Gzip output differs slightly between Node versions, so a local run on
  * another Node can read a little differently from CI.
  *
+ * JS raw went from 362 to 363 KB on 2026-11-22: version 31 adds the Lab catalog to the
+ * snapshot in the entry chunk (362.4 KB raw, 118.1 KB gzip). Gzip has under 1 KB left,
+ * so the next sizeable publish should move the snapshot out of the entry chunk rather
+ * than raise this again.
+ *
  * One stylesheet holds every class in `src`, lazy or not, so a lazy section still
  * counts here.
  */
 export const LIMITS = {
-  js: { raw: 362_000, gzip: 119_000 },
+  js: { raw: 363_000, gzip: 119_000 },
   css: { raw: 127_000, gzip: 17_000 },
 }
 

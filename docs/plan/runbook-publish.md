@@ -55,7 +55,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-12, production had all 35 migrations in the repo applied, with content version 29.
+On 2026-11-22, production had all 38 migrations in the repo applied, with content version 31.
 
 ## Before any production change
 
