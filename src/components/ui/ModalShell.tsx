@@ -48,7 +48,7 @@ export function ModalShell({
   onClose,
   origin,
   panelClassName,
-  backdropClassName = 'bg-black/80 backdrop-blur-md',
+  backdropClassName = 'bg-tertiary-shade/80 backdrop-blur-md',
   containerClassName = 'z-50',
   children,
 }: Props) {
