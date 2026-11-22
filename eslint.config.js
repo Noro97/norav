@@ -11,37 +11,46 @@ import reactHooks from 'eslint-plugin-react-hooks'
  * the two things the stylesheet cannot catch: a hex literal in a `style`
  * object, and an arbitrary value (`text-[11px]`, `bg-[#ff5f57]`) that would
  * have compiled fine. What is allowed is in docs/DESIGN_SYSTEM.md.
+ *
+ * The class rules read every string and template under `src/`, not only a
+ * `className` attribute. A class in a data map or a default prop paints just
+ * the same, and the spinners, OmniGrid's tones and the widgets' chosen state
+ * all shipped dead while the rules looked only at the attribute.
+ * `src/__tests__/colour-classes.test.ts` compiles whatever these lists miss.
  */
-const COLOUR_PREFIX = '(?:bg|text|border|from|via|to|ring|shadow|fill|stroke|outline|decoration|accent|caret|divide|placeholder)'
+const COLOUR_PREFIX =
+  '(?:bg|text|border(?:-[trblxyse])?|from|via|to|ring(?:-offset)?|inset-ring|shadow|inset-shadow|drop-shadow|text-shadow|fill|stroke|outline|decoration|accent|caret|divide|placeholder)'
 const OFF_SYSTEM_COLOUR =
-  '(?:white|black|crimson|cyan|gold|emerald|green|blue|sky|amber|yellow|red|rose|violet|purple|indigo|orange|pink|teal|lime|zinc|gray|slate|neutral|stone|fuchsia|background|card|foreground|muted|accent|input)(?:-\\d+)?(?![\\w-])'
+  '(?:(?:white|black|crimson|cyan|gold|emerald|green|blue|sky|amber|yellow|red|rose|violet|purple|indigo|orange|pink|teal|lime|zinc|gray|slate|neutral|stone|fuchsia|background|card|foreground|muted|accent|input)(?:-\\d+)?' +
+  // A role or a status with no name after it: `text-warning`, `bg-primary`.
+  '|primary|secondary|tertiary|status|success|warning|danger|info|ink)(?![\\w-])'
 const OFF_SYSTEM_TYPE = '(?:text-(?:xs|sm|base|lg|xl|[2-9]xl)|font-(?:serif|thin|extralight|light|bold|extrabold)|text-\\[|font-\\[)(?![\\w-])'
 
 const designSystemRules = {
   'no-restricted-syntax': [
     'error',
     {
-      selector: `JSXAttribute[name.name="className"] Literal[value=/(^|\\s|:)${COLOUR_PREFIX}-${OFF_SYSTEM_COLOUR}/]`,
+      selector: `Literal[value=/(^|\\s|:|!)${COLOUR_PREFIX}-${OFF_SYSTEM_COLOUR}/]`,
       message:
         'Off-system colour. Use the three roles — primary-*, secondary-*, tertiary-{bg,card,raised,fg,muted,line,line-soft,ink,shade} — or status-* for state (docs/DESIGN_SYSTEM.md).',
     },
     {
-      selector: `JSXAttribute[name.name="className"] TemplateElement[value.raw=/(^|\\s|:)${COLOUR_PREFIX}-${OFF_SYSTEM_COLOUR}/]`,
+      selector: `TemplateElement[value.raw=/(^|\\s|:|!)${COLOUR_PREFIX}-${OFF_SYSTEM_COLOUR}/]`,
       message:
         'Off-system colour. Use the three roles — primary-*, secondary-*, tertiary-{bg,card,raised,fg,muted,line,line-soft,ink,shade} — or status-* for state (docs/DESIGN_SYSTEM.md).',
     },
     {
-      selector: `JSXAttribute[name.name="className"] Literal[value=/(^|\\s|:)${OFF_SYSTEM_TYPE}/]`,
+      selector: `Literal[value=/(^|\\s|:|!)${OFF_SYSTEM_TYPE}/]`,
       message:
         'Off-system type. Sizes are text-heading-{display,xlarge,large,medium,small}, text-body-{large,regular,small}, text-caption, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
     },
     {
-      selector: `JSXAttribute[name.name="className"] TemplateElement[value.raw=/(^|\\s|:)${OFF_SYSTEM_TYPE}/]`,
+      selector: `TemplateElement[value.raw=/(^|\\s|:|!)${OFF_SYSTEM_TYPE}/]`,
       message:
         'Off-system type. Sizes are text-heading-{display,xlarge,large,medium,small}, text-body-{large,regular,small}, text-caption, text-label; weights normal, medium, semibold, black (docs/DESIGN_SYSTEM.md).',
     },
     {
-      selector: `JSXAttribute[name.name="className"] Literal[value=/(^|\\s|:)${COLOUR_PREFIX}-\\[#/]`,
+      selector: `Literal[value=/(^|\\s|:|!)${COLOUR_PREFIX}-\\[#/], TemplateElement[value.raw=/(^|\\s|:|!)${COLOUR_PREFIX}-\\[#/]`,
       message: 'A hex colour in a class. Name the role instead (docs/DESIGN_SYSTEM.md).',
     },
     {

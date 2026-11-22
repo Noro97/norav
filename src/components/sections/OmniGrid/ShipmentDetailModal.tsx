@@ -43,7 +43,7 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
       origin={origin}
       containerClassName="z-[100]"
       backdropClassName="bg-tertiary-shade/70 backdrop-blur-sm"
-      panelClassName="case-study-tertiary-card w-full max-w-lg bg-tertiary-bg/95 shadow-2xl overflow-hidden"
+      panelClassName="w-full max-w-lg rounded-2xl border border-tertiary-line bg-tertiary-bg/95 shadow-2xl overflow-hidden"
     >
       {/* Top accent */}
       <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/40 to-transparent" />
@@ -52,10 +52,10 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <div className="label-mono-gold mb-2">
+            <div className="type-label text-secondary-300 mb-2">
               Shipment Details
             </div>
-            <h3 className="text-display-sm font-black text-tertiary-ink tracking-tight">
+            <h3 className="font-display text-heading-small font-black text-tertiary-ink">
               {shipment.id}
               <span className="text-tertiary-ink/55 text-body-small font-normal ml-2">({shipment.code})</span>
             </h3>
@@ -76,7 +76,7 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
           <DetailField label="Carrier" value={shipment.carrier} />
           <DetailField label="ETD" value={shipment.etd} />
           <DetailField label="Weight" value={`${shipment.weight.toLocaleString()} kg`} />
-          <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} valueClass="text-gold-400 font-semibold" />
+          <DetailField label="Cost" value={`$${shipment.cost.toLocaleString()}`} valueClass="text-secondary-300 font-semibold" />
           <DetailField
             label="Status"
             value={shipment.status}

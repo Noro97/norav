@@ -107,15 +107,18 @@ export const OMNIGRID_COLUMNS = [
 // "Delayed" has to read as delayed on a green-accented site. In Transit used
 // the same cyan as the widget's accent, which is why it used to move with it.
 export const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  'Pending': 'text-warning',
-  'In Transit': 'text-info',
-  'Delivered': 'text-success',
-  'Delayed': 'text-danger',
+  'Pending': 'text-status-warning',
+  'In Transit': 'text-status-info',
+  'Delivered': 'text-status-success',
+  'Delayed': 'text-status-danger',
 }
 
+// Priority climbs from the row's own tone to the two status colours a reader
+// can't miss. Low is the ink/50 every other cell uses, because ink/40 misses
+// 4.5:1 on the card. Medium is body text.
 export const PRIORITY_COLORS: Record<ShipmentPriority, string> = {
-  'Low': 'text-white/40',
-  'Medium': 'text-amber-400',
-  'High': 'text-orange-400',
-  'Critical': 'text-red-400',
+  'Low': 'text-tertiary-ink/50',
+  'Medium': 'text-tertiary-fg',
+  'High': 'text-status-warning',
+  'Critical': 'text-status-danger',
 }
