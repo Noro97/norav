@@ -4,9 +4,14 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-22: Ask the compiler which classes are dead, not the list
+
+The tech-debt entry named four dead colour classes. Scanning `src/` with Tailwind's own scanner and compiling every candidate found twelve: OmniGrid's status tones were dead too, and the shipment modal had four names a September rebase (645f99f) put back from before the colour migration. A list is what someone noticed. The compiler's answer is the full set, and `colour-classes.test.ts` now asks it on every run. A committed snapshot can lag the CMS too: build with `CMS_URL` set before measuring a palette in the browser.
+
 ### 2026-11-22: A class the stylesheet doesn't know is silent, and the lint only reads `className`
 
 The widgets' chosen state named `cyan-*` and `white` from a constant, so it compiled to nothing, the lint never saw it, and the live site shipped it. Check a new colour class in the built CSS, or compile it in a test as `selection.test.ts` does. Fixing it can also lower contrast: the dead `text-white/40` had been rendering at full body colour, and at its intended alpha it misses 4.5:1. Lighthouse didn't flag any of it, because axe can't read contrast over a gradient card.
+
 ### 2026-11-22: A release publishes every saved draft, not just the migration's rows
 
 The dry run for 0036 and 0037 showed 118 changes where I expected 58. The other 60 were a theme saved in the CMS two minutes after the last publish, never published, with a secondary at 1.37:1 on its background. A release would have shipped it with the Lab. Count the dry run's lines by area and account for every one, and take the backup the rehearsal uses on the day of the release, since a draft can appear between two backups.
