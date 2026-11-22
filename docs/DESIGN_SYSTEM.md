@@ -301,9 +301,13 @@ fontFamily="var(--font-mono)"
    `useThemeColor` from `@/content/theme` for canvas.
 
 `npm run lint` enforces 1, 2, 5, 6 and 7: an off-system class, size, weight,
-hex or font name is an error with the rule to follow in the message. The
-stylesheet enforces the rest by omission — a class that is not in the system
-compiles to nothing.
+hex or font name is an error with the rule to follow in the message. It reads
+every string and template under `src/`, not only a `className`, so a class in
+a data map or a default prop is held to the same rules. The stylesheet
+enforces the rest by omission: a class that is not in the system compiles to
+nothing. `src/__tests__/colour-classes.test.ts` turns that into a failure. It
+compiles every colour class Tailwind finds in `src/` and fails on any that
+produces no rule, a mistyped role or a step that doesn't exist included.
 
 ## What this pass changed
 
