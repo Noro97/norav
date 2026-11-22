@@ -5,7 +5,7 @@
   "description": "norav CMS \u2014 admin UI and content API for the norav.dev portfolio",
   "scripts": {
     "dev": "next dev -p 3300",
-    "dev:local": "DATABASE_URL= BLOB_READ_WRITE_TOKEN= next dev -p 3300",
+    "dev:local": "DATABASE_URL= BLOB_READ_WRITE_TOKEN= SITE_DEPLOY_HOOK_URL= next dev -p 3300",
     "postinstall": "node scripts/copy-tinymce.mjs",
     "prebuild": "node scripts/copy-tinymce.mjs",
     "build": "next build",

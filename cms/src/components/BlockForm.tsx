@@ -249,7 +249,7 @@ function Field({ field, prefix, ...form }: FieldProps) {
  * the images that predate the media library live in the site's public folder
  * and are referenced by path.
  */
-function MediaField({
+export function MediaField({
   id,
   label,
   help,

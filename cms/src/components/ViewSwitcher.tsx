@@ -4,6 +4,7 @@ import type { SerializedCollectionDefinition } from '@norav/content-schema'
 import { ROOT_SLUG, SITE_SLUG } from '@/lib/pages'
 import { usePages } from './PagesContext'
 import {
+  HistoryIcon,
   HomeIcon,
   MediaIcon,
   MenuIcon,
@@ -20,8 +21,8 @@ export interface PageSummary {
   id: string
   slug: string
   status: string
-  /** Per locale: { en: { title, description }, ru: {...} }. */
-  seo: Record<string, { title?: string; description?: string }>
+  /** Per locale: { en: { title, description, ogImage, ogImageAlt }, ru: {...} }. */
+  seo: Record<string, { title?: string; description?: string; ogImage?: string; ogImageAlt?: string }>
   blocks: number
   /** Menu entries that link here — each one stops a delete until it goes too. */
   menuItems: number
@@ -37,6 +38,8 @@ export type WorkspaceView =
   | { kind: 'profile' }
   /** The writing: every post, and the one open in the editor if any. */
   | { kind: 'posts'; id?: string }
+  /** Every published version, and a way back to one. */
+  | { kind: 'history' }
 
 /**
  * Moves between the page and the collections. Collections hold the rows that a
@@ -160,6 +163,18 @@ export function ViewSwitcher({
             <MediaIcon />
           </span>
           <span className="view-name">Media</span>
+        </button>
+        <button
+          type="button"
+          className="view-item"
+          aria-current={view.kind === 'history'}
+          disabled={disabled}
+          onClick={() => onChange({ kind: 'history' })}
+        >
+          <span className="view-icon">
+            <HistoryIcon />
+          </span>
+          <span className="view-name">History</span>
         </button>
         {collections.map((collection) => (
           <button

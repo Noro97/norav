@@ -13,6 +13,7 @@ import { ThemeEditor } from '@/components/ThemeEditor'
 import { MediaLibrary } from '@/components/MediaLibrary'
 import { ProfileEditor } from '@/components/ProfileEditor'
 import { PostsEditor } from '@/components/PostsEditor'
+import { PublicationHistory } from '@/components/PublicationHistory'
 import type { PageSummary, WorkspaceView } from '@/components/ViewSwitcher'
 import { ROOT_SLUG } from '@/lib/pages'
 import { PagesProvider } from '@/components/PagesContext'
@@ -164,6 +165,19 @@ export default function AdminPage() {
   if (view.kind === 'posts') {
     return withPages(
       <PostsEditor
+        collections={loaded.collections}
+        userEmail={loaded.user.email}
+        environment={loaded.user.environment}
+        view={view}
+        onViewChange={changeView}
+        onSignOut={signOut}
+      />,
+    )
+  }
+
+  if (view.kind === 'history') {
+    return withPages(
+      <PublicationHistory
         collections={loaded.collections}
         userEmail={loaded.user.email}
         environment={loaded.user.environment}

@@ -29,6 +29,49 @@ const route = {
   body: '<main>Hello</main>',
 }
 
+const CARD_SHELL = `<head>
+    <title>Norayr — Engineer</title>
+    <meta property="og:image" content="https://norav.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The site's card." />
+    <meta name="twitter:image" content="https://norav.dev/og.png" />
+    <meta name="twitter:image:alt" content="The site's card." />
+  </head><div id="root"></div>`
+
+describe('fillShell, with a page’s own share image', () => {
+  const own = fillShell(CARD_SHELL, {
+    path: '/work/proof',
+    title: 'Proof App',
+    image: 'https://norav.dev/og/proof.png',
+    imageAlt: 'Proof App, a Telegram fitness app',
+    body: '',
+  })
+
+  it('points both cards at it, with its own alt text', () => {
+    expect(own).toContain('<meta property="og:image" content="https://norav.dev/og/proof.png"')
+    expect(own).toContain('<meta name="twitter:image" content="https://norav.dev/og/proof.png"')
+    expect(own).toContain('<meta property="og:image:alt" content="Proof App, a Telegram fitness app"')
+    expect(own).toContain('<meta name="twitter:image:alt" content="Proof App, a Telegram fitness app"')
+  })
+
+  it('drops the size, which described the site’s card and not this file', () => {
+    expect(own).not.toContain('og:image:width')
+    expect(own).not.toContain('og:image:height')
+  })
+
+  it('says what the card is with the page title when no alt was written', () => {
+    const titled = fillShell(CARD_SHELL, { path: '/x', title: 'Proof App', image: 'https://norav.dev/og/x.png', body: '' })
+    expect(titled).toContain('<meta property="og:image:alt" content="Proof App"')
+  })
+
+  it('keeps the shell’s card, alt and size for a page without its own image', () => {
+    const plain = fillShell(CARD_SHELL, { path: '/x', title: 'Proof App', body: '' })
+    expect(plain).toContain('<meta property="og:image:width" content="1200" />')
+    expect(plain).toContain(`<meta property="og:image:alt" content="The site's card." />`)
+  })
+})
+
 describe('fillShell', () => {
   const html = fillShell(SHELL, route)
 

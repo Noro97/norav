@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import type { Locale } from '@norav/content-schema'
 import { Modal } from './Modal'
+import { MediaField } from './BlockForm'
 import { usePages } from './PagesContext'
 import { ROOT_SLUG, SLUG } from '@/lib/pages'
 
-type Seo = Record<string, { title?: string; description?: string }>
+type Listing = { title?: string; description?: string; ogImage?: string; ogImageAlt?: string }
+type Seo = Record<string, Listing>
 
 /**
  * Everything about a page that is not its sections: its address, whether it is
@@ -47,7 +49,7 @@ export function PageSettings({
   const isRoot = slug === ROOT_SLUG
   const slugValid = SLUG.test(draftSlug)
 
-  function setField(locale: string, field: 'title' | 'description', value: string) {
+  function setField(locale: string, field: keyof Listing, value: string) {
     setDraftSeo((prev) => ({ ...prev, [locale]: { ...prev[locale], [field]: value } }))
   }
 
@@ -67,7 +69,8 @@ export function PageSettings({
     setBusy(false)
 
     if (!response.ok) {
-      setError(body?.error?.message ?? 'That did not work.')
+      const fields: { path: string; message: string }[] = body?.error?.fields ?? []
+      setError(fields.length > 0 ? fields.map((field) => field.message).join(' ') : (body?.error?.message ?? 'That did not work.'))
       return
     }
     await reload()
@@ -178,6 +181,24 @@ export function PageSettings({
             onChange={(event) => setField(locale, 'description', event.target.value)}
             disabled={busy}
           />
+          <MediaField
+            id={`share-image-${locale}`}
+            label="Share image"
+            help="What a link preview shows. A PNG or JPEG, 1200 × 630. Empty uses the site’s card."
+            value={draftSeo[locale]?.ogImage ?? ''}
+            disabled={busy}
+            onChange={(value) => setField(locale, 'ogImage', value)}
+          />
+          {draftSeo[locale]?.ogImage && (
+            <input
+              aria-label={`Share image description · ${locale.toUpperCase()}`}
+              placeholder="What the image shows — the title above if left empty"
+              maxLength={200}
+              value={draftSeo[locale]?.ogImageAlt ?? ''}
+              onChange={(event) => setField(locale, 'ogImageAlt', event.target.value)}
+              disabled={busy}
+            />
+          )}
         </fieldset>
       ))}
 

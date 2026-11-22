@@ -10,6 +10,7 @@ interface Seo {
   title?: string
   description?: string
   ogImage?: string
+  ogImageAlt?: string
 }
 
 export interface ResolvedSeo {
@@ -17,6 +18,8 @@ export interface ResolvedSeo {
   description?: string
   /** Absolute when present: a crawler has no document to resolve a path against. */
   image?: string
+  /** What the page's own image shows. Without one, the page's title says what the card is. */
+  imageAlt?: string
 }
 
 const ABSOLUTE = /^https?:\/\//
@@ -43,11 +46,13 @@ export function resolveSeo(page: SnapshotPage | undefined, locale: Locale): Reso
  const written = byLocale[locale] ?? byLocale[DEFAULT_LOCALE] ?? {}
  const first = page?.blocks[0]?.content as { title?: string; description?: string } | undefined
  const image = written.ogImage
+ const title = written.title ?? first?.title
 
  return {
- title: written.title ?? first?.title,
+ title,
  description: written.description ?? first?.description,
  image: !image ? undefined : ABSOLUTE.test(image) ? image : `${SITE}${image}`,
+ imageAlt: image ? written.ogImageAlt || title : undefined,
   }
 }
 
@@ -62,16 +67,18 @@ const metaOf = (kind: 'name' | 'property', key: string) =>
  * kept in step by hand. A prerendered page has its own values in those tags and
  * keeps the shell's in `data-shell`.
  */
-let shell: { title: string; description: string; image: string } | null = null
+let shell: { title: string; description: string; image: string; imageAlt: string } | null = null
 
 function shellDefaults() {
  const defaultOf = (tag: HTMLElement | null, value: string) => tag?.dataset.shell ?? value
  const description = metaOf('name', 'description')
  const image = metaOf('property', 'og:image')
+ const imageAlt = metaOf('property', 'og:image:alt')
  shell ??= {
  title: defaultOf(document.querySelector('title'), document.title),
  description: defaultOf(description, description?.content ?? ''),
  image: defaultOf(image, image?.content ?? ''),
+ imageAlt: defaultOf(imageAlt, imageAlt?.content ?? ''),
   }
  return shell
 }
@@ -115,6 +122,8 @@ export function applySeo(seo: ResolvedSeo) {
  const title = seo.title ?? fallback.title
  const description = seo.description ?? fallback.description
  const image = seo.image ?? fallback.image
+ // The shell's alt describes the shell's card, so a page with its own image never borrows it.
+ const imageAlt = seo.image ? (seo.imageAlt ?? title) : fallback.imageAlt
 
  // A page that resolves no title of its own must land back on the site's,
  // never keep the title of the page the reader came from.
@@ -124,9 +133,11 @@ export function applySeo(seo: ResolvedSeo) {
   write('property', 'og:title', title)
   write('property', 'og:description', description)
   write('property', 'og:image', image)
+  write('property', 'og:image:alt', imageAlt)
   write('name', 'twitter:title', title)
   write('name', 'twitter:description', description)
   write('name', 'twitter:image', image)
+  write('name', 'twitter:image:alt', imageAlt)
 }
 
 /** Only for tests: forgets the shell copy read on the first write. */
@@ -146,7 +157,7 @@ export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
  // Destructured rather than kept as an object: resolveSeo builds a new one
  // every render, so the object is never a usable dependency and its three
  // values are what actually change. A post is not a page and brings its own.
- const { title, description, image } = seo ?? resolveSeo(page, locale)
+ const { title, description, image, imageAlt } = seo ?? resolveSeo(page, locale)
 
  // Not hoistable: <html lang> is an attribute on an element React does not
  // render. A screen reader picks its voice from it, so leaving it at "en" on a
@@ -156,8 +167,8 @@ export function PageHead({ slug, seo }: { slug: string; seo?: ResolvedSeo }) {
   }, [locale])
 
   useEffect(() => {
-    applySeo({ title, description, image })
-  }, [title, description, image])
+    applySeo({ title, description, image, imageAlt })
+  }, [title, description, image, imageAlt])
 
  const here = `${SITE}${hrefFor(slug, locale)}`
 

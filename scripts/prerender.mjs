@@ -18,18 +18,27 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 const escapeAttribute = (value) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
+const metaPattern = (tag) => new RegExp(`(<meta\\s+${tag}\\s+content=")([^"]*)("\\s*/?>)`)
+
 /** A tag's value for this page, keeping the shell's in `data-shell` when they differ. */
 function setContent(html, tag, value) {
   if (!value) return html
-  const pattern = new RegExp(`(<meta\\s+${tag}\\s+content=")([^"]*)("\\s*/?>)`)
-  return html.replace(pattern, (whole, open, shell, close) => {
+  return html.replace(metaPattern(tag), (whole, open, shell, close) => {
     const next = escapeAttribute(value)
     return next === shell ? whole : `${open}${next}" data-shell="${shell}${close}`
   })
 }
 
+function contentOf(html, tag) {
+  return metaPattern(tag).exec(html)?.[2]
+}
+
+function removeTag(html, tag) {
+  return html.replace(new RegExp(`[ \\t]*<meta\\s+${tag}\\s+content="[^"]*"\\s*/?>\\n?`), '')
+}
+
 /** The shell with a route's head and content written in. */
-export function fillShell(shell, { path, title, description, image, canonical, body, theme = {}, noindex = false }) {
+export function fillShell(shell, { path, title, description, image, imageAlt, canonical, body, theme = {}, noindex = false }) {
   let html = shell
   const style = Object.entries(theme)
     .map(([name, value]) => `${name}:${value}`)
@@ -50,8 +59,18 @@ export function fillShell(shell, { path, title, description, image, canonical, b
   html = setContent(html, 'name="description"', description)
   html = setContent(html, 'property="og:description"', description)
   html = setContent(html, 'name="twitter:description"', description)
-  html = setContent(html, 'property="og:image"', image)
-  html = setContent(html, 'name="twitter:image"', image)
+  if (image && image !== contentOf(html, 'property="og:image"')) {
+    html = setContent(html, 'property="og:image"', image)
+    html = setContent(html, 'name="twitter:image"', image)
+    // The shell's alt and size describe the shell's card. A page's own image gets
+    // its own alt, and no size, so an unfurler reads the file's rather than a wrong one.
+    const alt = imageAlt || title
+    for (const tag of ['property="og:image:alt"', 'name="twitter:image:alt"']) {
+      html = alt ? setContent(html, tag, alt) : removeTag(html, tag)
+    }
+    html = removeTag(html, 'property="og:image:width"')
+    html = removeTag(html, 'property="og:image:height"')
+  }
 
   const head = []
   if (canonical) {

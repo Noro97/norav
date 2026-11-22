@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22.** Next is S10 (`docs/plan/prompts/S10-cms-depth.md`). The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, and S10 is in progress:** its PR waits for migration 0039 on production. See `.tasks/active/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -32,6 +32,7 @@ See "Session rules" in `docs/plan/README.md`.
 | S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` stays private, the owner's call on 2026-11-21 (D18) |
 | S8 Launch | Done. The repo is public since 2026-11-21, after a full-history scan of a mirror clone. Security headers on the site and the CMS |
 | S9 Lab teaser | Done, version 31 live. Lab catalog and teaser, facts that drifted, the new palette. `creative-lab`'s page stylesheet went from 536 KB to 183 KB |
+| S10 CMS depth | In progress. Publication history and restore, block revisions, a share image per page. Waits for 0039 on production |
 
 ## Lab, as of 2026-11-16
 
