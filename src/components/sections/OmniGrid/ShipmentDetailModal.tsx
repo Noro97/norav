@@ -94,15 +94,23 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
           <div className="font-mono text-caption text-tertiary-ink/55 uppercase tracking-wider mb-4">
             Tracking Timeline
           </div>
-          <div className="flex items-center gap-1">
+          {/* Six equal columns, so a long label can spill into its neighbours' spare
+              width. Each column draws half of the line on either side of its circle. */}
+          <ol className="grid grid-cols-6">
             {TRACKING_STEPS.map((step, i) => {
               const isActive = i < progress
               const isCurrent = i === progress - 1
+              const Icon = TRACKING_ICONS[step.icon]
               return (
-                <div key={step.label} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center">
+                <li
+                  key={step.label}
+                  aria-current={isCurrent ? 'step' : undefined}
+                  className="flex min-w-0 flex-col items-center"
+                >
+                  <div className="flex w-full items-center">
+                    <TrackLine done={i < progress} hidden={i === 0} className="mr-1" />
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-body-small border transition-all ${
+                      className={`w-7 h-7 md:w-8 md:h-8 shrink-0 rounded-full flex items-center justify-center border transition-all ${
                         isCurrent
                           ? 'border-secondary-500/50 bg-secondary-500/20 shadow-[0_0_12px_color-mix(in_srgb,_var(--color-secondary-500)_30%,_transparent)]'
                           : isActive
@@ -110,32 +118,33 @@ export function ShipmentDetailModal({ shipment, onClose, origin }: Props) {
                             : 'border-tertiary-ink/[0.06] bg-tertiary-ink/[0.02]'
                       }`}
                     >
-                      {(() => {
-                        const Icon = TRACKING_ICONS[step.icon]
-                        return Icon ? <Icon size={16} className={isActive ? '' : 'opacity-30'} /> : null
-                      })()}
+                      {Icon ? <Icon size={16} className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isActive ? '' : 'opacity-30'}`} /> : null}
                     </div>
-                    <span className={`text-caption font-mono mt-1.5 text-center leading-tight ${
-                      isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/55'
-                    }`}>
-                      {step.label}
-                    </span>
+                    <TrackLine done={i < progress - 1} hidden={i === TRACKING_STEPS.length - 1} className="ml-1" />
                   </div>
-                  {i < TRACKING_STEPS.length - 1 && (
-                    <div className={`h-px flex-1 mx-1 ${
-                      i < progress - 1 ? 'bg-status-success/30' : 'bg-tertiary-ink/[0.06]'
-                    }`} />
-                  )}
-                </div>
+                  {/* One word per line, so "Picked Up In Transit" can't read as one phrase.
+                      Mono only from md: it needs 65px for "Delivered", and a column at 375px has 49. */}
+                  <span className={`w-min text-caption md:font-mono mt-1.5 text-center leading-tight ${
+                    isActive ? 'text-tertiary-ink/50' : 'text-tertiary-ink/55'
+                  }`}>
+                    {step.label}
+                  </span>
+                </li>
               )
             })}
-          </div>
+          </ol>
         </div>
       </div>
 
       {/* Bottom glow */}
       <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/20 to-transparent" />
     </ModalShell>
+  )
+}
+
+function TrackLine({ done, hidden, className }: { done: boolean; hidden: boolean; className: string }) {
+  return (
+    <div className={`h-px flex-1 ${className} ${hidden ? 'invisible' : done ? 'bg-status-success/30' : 'bg-tertiary-ink/[0.06]'}`} />
   )
 }
 
