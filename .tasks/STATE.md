@@ -235,7 +235,6 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 - Four kit sections have no placed row and no use: `kit_process`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`, and `kit_writing` waits for a post. Their stylesheet is still in a lazy chunk.
 - Confetti bursts are the wrong colour. See `.tasks/bugs/confetti-colours.md`.
 - A dead class that isn't a colour utility still passes. `colour-classes.test.ts` compiles every colour-prefixed class in `src/`, but a custom name nothing defines (`case-study-tertiary-card` until 2026-11-22) or a utility outside those prefixes compiles to nothing unnoticed. One is left: `scrollbar-thin` in `TerminalFooter`. The `useReveal` hooks (`omnigrid-sidebar`, `cap-card` and the like) are meant to have no rule.
-- The shipment modal's tracking timeline needs 344px and gets 293px at 375px, so "Delivered" is clipped at the panel's edge.
 - MerchForge's Premium switch has no accessible name, so `/demos/merchforge` scores 94 for accessibility in Lighthouse.
 - `main` has been protected since 2026-11-21, admins included, so a merge past a red check is refused. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
 - Fonts are the Latin subsets only. Russian needs the Cyrillic ones in S12. `src/i18n/locales/ru` is unreachable until then too.
