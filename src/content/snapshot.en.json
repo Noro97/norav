@@ -462,7 +462,7 @@
           "id": "e6322352-8555-4eef-b1bc-fd94d236bf76",
           "type": "hero",
           "content": {
-            "sub": "I've written JavaScript and TypeScript since 2018. At MTS Web Services I built a design system of 200+ components that 15+ teams used. At Proof App I built the whole product alone, Postgres backend included.",
+            "sub": "I've written JavaScript and TypeScript since 2018. At MTS Web Services I built a design system of 200+ components that 15+ teams used. At Proof App I built the whole product alone, Postgres backend included. ",
             "eyebrow": "Norayr Avetisyan · Senior Fullstack Engineer: TypeScript, React, Next.js, Node.js",
             "headline": [
               {
@@ -587,6 +587,21 @@
             "compact": true,
             "linkHref": "/about",
             "showImages": false
+          }
+        },
+        {
+          "id": "2d4d3d4d-d929-4a3e-88b5-0c12bf074c64",
+          "type": "lab_teaser",
+          "content": {
+            "title": "Experiments I build to learn.",
+            "linkLabel": "Open the Lab",
+            "description": "Simulations, 3D and games that run in the browser. They live in a separate app, so none of their code loads until you open one.",
+            "sectionLabel": "Lab"
+          },
+          "anchorId": "lab",
+          "settings": {
+            "count": 3,
+            "linkHref": "/lab/"
           }
         },
         {
@@ -793,7 +808,7 @@
             "metrics": [
               {
                 "label": "SQL migrations, append-only",
-                "value": "35"
+                "value": "35+"
               },
               {
                 "label": "API routes in the CMS",
@@ -801,7 +816,7 @@
               },
               {
                 "label": "automated tests: site, CMS and schema",
-                "value": "594"
+                "value": "590+"
               },
               {
                 "label": "LCP on mobile, home page",
@@ -816,11 +831,11 @@
                 "title": "Bake the content into the build, then revalidate"
               },
               {
-                "body": "Each of the 28 block types is a Zod schema in a shared package. The admin draws its forms from it, publish validates every block against it, and the site takes its types from it. A page that would render broken can't be published. The cost: validation checks shape, not truth, so a false claim passes. And removing a block type takes two releases: retire its rows, then its code.",
+                "body": "Each block type is a Zod schema in a shared package. The admin draws its forms from it, publish validates every block against it, and the site takes its types from it. A page that would render broken can't be published. The cost: validation checks shape, not truth, so a false claim passes. And removing a block type takes two releases: retire its rows, then its code.",
                 "title": "One block registry for the admin, publish and the site"
               },
               {
-                "body": "There are 35 numbered SQL migrations, never edited once shipped. The schema tests apply them all to PGlite, Postgres compiled to WebAssembly, and local development runs on it with no database server. Each publication is an immutable row, so any version can be read back. The cost: no ORM writes a migration for me, and content changes are SQL written by hand.",
+                "body": "There are 35+ numbered SQL migrations, never edited once shipped. The schema tests apply them all to PGlite, Postgres compiled to WebAssembly, and local development runs on it with no database server. Each publication is an immutable row, so any version can be read back. The cost: no ORM writes a migration for me, and content changes are SQL written by hand.",
                 "title": "Raw SQL and append-only migrations, tested on an embedded Postgres"
               }
             ],
@@ -1070,56 +1085,56 @@
     }
   ],
   "locale": "en",
-  "version": 29,
-  "checksum": "4db01156478c166fdf22fff57ff8b16f058adee70c3dd3ef44da148c2de7917d",
+  "version": 31,
+  "checksum": "ba5964f3858126f8fe830d90da435851261d7773059ef0333197230e0c4915a0",
   "settings": {
     "site": {},
     "theme": {
-      "accent": "#B51A2B",
+      "accent": "#338316",
       "tokens": {
         "--color-ink": "#ffffff",
-        "--color-card": "#0c0c1d",
+        "--color-card": "#020226",
         "--color-info": "#38bdf8",
-        "--color-ring": "#B51A2B",
+        "--color-ring": "#338316",
         "--color-input": "rgba(255, 255, 255, 0.06)",
-        "--color-muted": "#17172b",
-        "--color-accent": "#B51A2B",
+        "--color-muted": "#0c0c36",
+        "--color-accent": "#338316",
         "--color-border": "rgba(255, 255, 255, 0.08)",
         "--color-danger": "#ef4444",
-        "--color-cyan-50": "#f5fcfd",
-        "--color-primary": "#B51A2B",
+        "--color-cyan-50": "#fcf4f3",
+        "--color-primary": "#338316",
         "--color-success": "#22c55e",
         "--color-warning": "#eab308",
-        "--color-cyan-100": "#ebf9fb",
-        "--color-cyan-200": "#d7f2f6",
-        "--color-cyan-300": "#b9e9f0",
-        "--color-cyan-400": "#69e1f3",
-        "--color-cyan-500": "#22d3ee",
-        "--color-cyan-600": "#0fadc5",
-        "--color-cyan-700": "#1d6975",
-        "--color-cyan-800": "#154c55",
-        "--color-cyan-900": "#0f353a",
-        "--color-secondary": "#17172b",
-        "--color-background": "#0a0a1a",
-        "--color-crimson-50": "#fcf3f4",
+        "--color-cyan-100": "#f9e9e7",
+        "--color-cyan-200": "#f3d4cf",
+        "--color-cyan-300": "#ebb3aa",
+        "--color-cyan-400": "#ec604a",
+        "--color-cyan-500": "#C32C14",
+        "--color-cyan-600": "#982210",
+        "--color-cyan-700": "#5b2219",
+        "--color-cyan-800": "#421912",
+        "--color-cyan-900": "#2d110c",
+        "--color-secondary": "#0c0c36",
+        "--color-background": "#010123",
+        "--color-crimson-50": "#f4fbf1",
         "--color-foreground": "#e0e0e0",
-        "--color-crimson-100": "#f8e7e9",
-        "--color-crimson-200": "#f1cfd3",
-        "--color-crimson-300": "#e7abb1",
-        "--color-crimson-400": "#e54b5c",
-        "--color-crimson-500": "#B51A2B",
-        "--color-crimson-600": "#8d1422",
-        "--color-crimson-700": "#551a21",
-        "--color-crimson-800": "#3e1318",
-        "--color-crimson-900": "#2a0d10",
+        "--color-crimson-100": "#e8f7e3",
+        "--color-crimson-200": "#d2eec7",
+        "--color-crimson-300": "#b0e19e",
+        "--color-crimson-400": "#5edc30",
+        "--color-crimson-500": "#338316",
+        "--color-crimson-600": "#2e591e",
+        "--color-crimson-700": "#1f3e15",
+        "--color-crimson-800": "#172d0f",
+        "--color-crimson-900": "#101f0a",
         "--color-card-foreground": "#e0e0e0",
         "--color-muted-foreground": "#888888",
         "--color-accent-foreground": "#ffffff",
         "--color-primary-foreground": "#ffffff",
         "--color-secondary-foreground": "#e0e0e0"
       },
-      "secondary": "#22d3ee",
-      "background": "#0a0a1a"
+      "secondary": "#C32C14",
+      "background": "#010123"
     },
     "profile": {
       "name": "Norayr Avetisyan",
@@ -1340,9 +1355,6 @@
           "name": "TypeScript"
         },
         {
-          "name": "Vue.js"
-        },
-        {
           "name": "Design Systems"
         },
         {
@@ -1360,6 +1372,107 @@
     }
   },
   "collections": {
+    "lab": [
+      {
+        "id": "a2e5fe28-9227-4a5f-8a93-546072c85880",
+        "data": {
+          "clip": "/assets/lab/thermal-v1.mp4",
+          "href": "/lab/#thermal",
+          "line": "A city's heat and airflow, simulated in the browser, with the city generated in a Web Worker.",
+          "title": "Aeris Thermal Zero",
+          "poster": "/assets/lab/thermal-v1.webp"
+        },
+        "slug": "thermal"
+      },
+      {
+        "id": "96f472cc-cbe3-4dd5-b812-d2bba635f667",
+        "data": {
+          "clip": "/assets/lab/globe-v1.mp4",
+          "href": "/lab/#globe",
+          "line": "A globe drawn from coastline data, with flight arcs between hubs and labels laid over it.",
+          "title": "Logistics 3D Globe",
+          "poster": "/assets/lab/globe-v1.webp"
+        },
+        "slug": "globe"
+      },
+      {
+        "id": "a104740f-856b-4d61-bdfd-3493e79f92b5",
+        "data": {
+          "clip": "/assets/lab/axiom-v1.mp4",
+          "href": "/lab/#axiom",
+          "line": "An infrastructure dashboard: a 3D network of nodes, a plan view, and synthetic telemetry with alarms.",
+          "title": "AXIOM//GRID",
+          "poster": "/assets/lab/axiom-v1.webp"
+        },
+        "slug": "axiom"
+      },
+      {
+        "id": "5500c851-8ea3-4324-9cde-60c9f2932113",
+        "data": {
+          "clip": "",
+          "href": "/lab/#camera",
+          "line": "A camera on a workbench: focal length, aperture and focus drive a thin-lens model and a live depth of field.",
+          "title": "Optic Lab",
+          "poster": "/assets/lab/camera-v1.webp"
+        },
+        "slug": "camera"
+      },
+      {
+        "id": "e47050f1-08b2-4b22-8aac-a7176f55cc84",
+        "data": {
+          "clip": "",
+          "href": "/lab/#avatar",
+          "line": "A cloud of GPU particles that changes shape with sound, analysed live with Web Audio.",
+          "title": "Holographic Avatar",
+          "poster": "/assets/lab/avatar-v1.webp"
+        },
+        "slug": "avatar"
+      },
+      {
+        "id": "74c7706d-68d4-4e1c-a786-ad4f47c3f79f",
+        "data": {
+          "clip": "",
+          "href": "/lab/#tactile-glitch",
+          "line": "Inflated 3D letters that react to the pointer, over a glitch field, for an imaginary studio's home page.",
+          "title": "Tactile Type · Glitch",
+          "poster": "/assets/lab/tactile-glitch-v1.webp"
+        },
+        "slug": "tactile-glitch"
+      },
+      {
+        "id": "84b26305-b725-4fe3-9e5e-3fcb9638e7ab",
+        "data": {
+          "clip": "",
+          "href": "/lab/#legal",
+          "line": "An interface study for a contract-review workspace, with a live hex data stream and a layout that packs itself.",
+          "title": "Adaptive AI Legal OS",
+          "poster": "/assets/lab/legal-v1.webp"
+        },
+        "slug": "legal"
+      },
+      {
+        "id": "ecf8c414-ab2e-4ac6-aa0c-952de3d556c9",
+        "data": {
+          "clip": "",
+          "href": "/lab/#2048",
+          "line": "The sliding-number puzzle on a 3D board, with sound and keyboard or swipe controls.",
+          "title": "2048 3D",
+          "poster": "/assets/lab/2048-v1.webp"
+        },
+        "slug": "2048"
+      },
+      {
+        "id": "116c7714-8831-4a31-8e21-73aa885b83fe",
+        "data": {
+          "clip": "",
+          "href": "/lab/#bomber",
+          "line": "An arcade game: drive a bomb cart through a generated arena and clear it before the fuse runs out.",
+          "title": "Blast Haulers",
+          "poster": "/assets/lab/bomber-v1.webp"
+        },
+        "slug": "bomber"
+      }
+    ],
     "posts": [],
     "experience": [
       {
@@ -1657,5 +1770,5 @@
       }
     ]
   },
-  "publishedAt": "2026-11-12T12:50:05.154Z"
+  "publishedAt": "2026-11-21T22:06:31.582Z"
 }

@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21.** The live site is true, fast and clear, and `Noro97/norav` is public. Milestone 2 started with S9 (`docs/plan/prompts/S9-lab-teaser.md`) on 2026-11-21. Results of the last checks are in `.tasks/done/S8-launch.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22.** Next is S10 (`docs/plan/prompts/S10-cms-depth.md`). The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -31,6 +31,7 @@ See "Session rules" in `docs/plan/README.md`.
 | S6 Case studies | Done, version 29 live. Proof App has no footage |
 | S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` stays private, the owner's call on 2026-11-21 (D18) |
 | S8 Launch | Done. The repo is public since 2026-11-21, after a full-history scan of a mirror clone. Security headers on the site and the CMS |
+| S9 Lab teaser | Done, version 31 live. Lab catalog and teaser, facts that drifted, the new palette. `creative-lab`'s page stylesheet went from 536 KB to 183 KB |
 
 ## Lab, as of 2026-11-16
 
@@ -38,15 +39,38 @@ See "Session rules" in `docs/plan/README.md`.
 - **Repo and project:** `Noro97/creative-lab` (private), main at the merge of #2. Vercel project `creative-lab` in `noro97s-projects`: root `.`, Node 26.x, install `pnpm install --frozen-lockfile`, build `pnpm build:lab`, output `apps/portfolio/dist`, all from the repo's own `vercel.json`, Git connected, so a push to `main` deploys. Its unique deployment URLs sit behind Vercel Authentication; the production domain is public.
 - **Public ten (D8):** thermal, camera, avatar, globe, tactile-glitch, web3, axiom, legal, 2048, bomber. Landing & Brand Sites and Components & Case Studies have none. The list is `packages/catalog/src/public-exhibits.json`; the other twenty stay in dev, Storybook and the plain build, and a plain `pnpm build` still builds them. The reasons are in the Lab's README and in `.tasks/done/S7-creative-lab.md`.
 - **Measured** on the live site at 1440 px and 375 px (DPR 3, CPU throttled 6x, GPU not throttled, an Apple M5): see the done file. This is a floor for a mid-range phone, not proof of one.
+- **Stylesheets, since S9 (`creative-lab` #3):** the page loads one sorted utilities sheet, 183 KB raw and 49 KB gzip (it was 536 KB and 94 KB). Each exhibit's scoped scene CSS, 290–2,713 B, loads with the exhibit through `withScene` in `packages/catalog/src/catalog.ts`. The public build leaves out the hidden exhibits' sources with `@source not`. Utilities can't be split per exhibit: a later sheet's duplicate class beats an earlier responsive one (see RETRO). `check-exhibits` and `check-public-build` enforce all of this.
 - The Lab's CI runs lint, types, tests, both builds and `check:lab`, which reads the finished public build for `.glb` files and the hidden exhibits' titles. There is no `merge-when-green` there: read the checks and merge by hand with `--match-head-commit`.
 
-## Production, as of 2026-11-12
+## Production, as of 2026-11-22
 
-- `cms.norav.dev/api/health`: 35 migrations applied of 35 in the repo, `publishedVersion` 29, published 2026-11-12 12:50 UTC. Checksum `4db01156478c`. The site bakes version 29 from S6's snapshot PR.
+- `cms.norav.dev/api/health`: 38 migrations applied of 38 in the repo, `publishedVersion` 31, published 2026-11-21 22:06 UTC. Checksum `ba5964f38581`. The site bakes version 31 from S9's closing PR.
+- Version 31 is S9's, written by 0036–0038:
+  - the Lab teaser on `/` and nine catalog rows;
+  - on `/work/norav`, "590+" tests, "35+" migrations and no count of block types;
+  - no Vue.js in `knowsAbout`;
+  - palette B: `#338316`, `#C32C14`, `#010123`.
+- Version 30 was the owner's own publish on 2026-11-21: a trailing space in the hero's `sub`.
+- Before a release, read every line of the dry run. A theme draft the owner had saved and not published turned up in S9's dry run, and a release publishes every saved draft.
 - Version 29 is S6's: `/work/proof` has its story under the widget, `/work/nova-prism` and `/work/norav` are new, and `/` and `/work` list all three. Copy in `.tasks/done/S6-copy.md`, approved by the owner. Media are files under `public/assets/case-studies/`, not library items.
-- Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. The D5 palette. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
+- Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. D5's palette of the time, crimson on near-black. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
 - `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
 - English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Baseline, 2026-11-22, S9
+
+Version 31 with palette B, built from the closing PR, Lighthouse 13.6.0, mobile preset, median of 3, local `vite preview`. On the live site, re-measure after the deploy.
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | CLS | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 | 0.90s | 0.004 | 267 KB |
+| `/work/norav` | 100 | 100 | 100 | 100 | 0.90s | 0.000 | 307 KB |
+
+**Entry bundle with version 31 baked, Node 20:**
+- JS: 362.4 KB raw against a 363 KB limit, raised from 362 in S9's closing PR; 118.1 KB gzip of 119.
+- CSS: 96.5 KB raw, 14.3 KB gzip.
+
+The gzip budget has 0.9 KB left, so the snapshot should leave the entry chunk before the next sizeable publish.
 
 ## Baseline, 2026-11-21, S8
 
@@ -168,6 +192,16 @@ Nothing.
 ## Owner's open items
 
 - Collect two real testimonials. They don't block anything.
+- Two content backups from S6 are still on the Desktop, `norav-content-2026-11-10.dump` and `norav-content-2026-11-12.dump`. Production has moved on since, so they can go whenever you like.
+
+## Decided 2026-11-22
+
+The owner's answers to S9's questions, asked with the `grilling` skill:
+
+- **The teaser's copy and the catalog's nine lines:** published as written.
+- **web3 in the site's catalog:** left out. Its title names a "Do not use" claim. It stays in the Lab.
+- **`/work/norav`'s counts:** floors, like the CV. "35+" migrations, and no count of block types. Written by 0037 with S8's two fixes.
+- **The theme:** a new one. The owner's CMS draft failed contrast, so B ships: the same hues and background, the green a step darker, the rust lighter. D5 is updated.
 
 ## Decided 2026-11-21
 
@@ -186,7 +220,8 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 
 ## Tech debt register
 
-- **Lab, for S9:** the footer has no link to `/lab/` (the footer links are CMS content, so it is a migration plus a copy review, and it has to be a plain `<a href="/lab/">`, because a router `Link` would hit this SPA's NotFound). The Lab's stylesheet is about 535 KB because `packages/catalog/src/styles.css` imports every exhibit's scene, public or not. Ten exhibits are Russian-first and stay out (aero, aether, black-hole, chronos, cyber-city, echoes, forma, nexus, and most of neon-os); translating them would widen the set. Auto-fix could not be turned on for Norav PRs from a session started in the `creative-lab` folder, so S7 watched them by hand.
+- **Lab:** the footer has no link to `/lab/`. The footer links are CMS content, so adding one takes a migration and a copy review, and it has to be a plain `<a href="/lab/">`, because a router `Link` would hit this SPA's NotFound. The home page's teaser links there now. Ten exhibits are Russian-first and stay out (aero, aether, black-hole, chronos, cyber-city, echoes, forma, nexus, and most of neon-os); translating them would widen the set. Auto-fix could not be turned on for Norav PRs from a session started in the `creative-lab` folder, so S7 watched them by hand.
+- The CMS can't preview a path into the site's public folder: Lab posters and case-study figures show as broken images in the admin. `mediaDisplaySrc` could prefix the site's origin for a root-relative path.
 - **Lab, small:** the shell's status bar prints "WEBGL 2.0" whatever the browser has; `lab-tabs` rows in other exhibits may still overflow at 375 px (only the public ten were checked); the Lab's CI runs Node 26, this site's CI runs 20.
 
 - `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Checked in S8: unchanged, and the fixes are now majors, Next 16 and `@vercel/blob` 2.4. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.
@@ -207,7 +242,6 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 - Every page shares one `og:image`, `/og.png`, drawn by `scripts/generate-share-card.mjs`. S11 adds per-page images on the same method.
 - A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.
 - `npm --prefix cms run import` stops on `tech_marquee`, which #128 removed from the registry, so a fresh embedded database gets the seed but not the rest of the content. `cms/scripts/import-content.mts` still lists the removed types.
-- The norav.dev case study says "594 automated tests" until S9's release writes "590+". Some site tests run once per published page, so the exact count moves with content.
 - Case-study figures reserve a 16:9 frame (9:16 for portrait) until the file arrives, then take its own ratio, so a 16:10 still moves what's below it by about 70px, off screen. Width and height in the `case_study` schema would remove even that.
 - `/about`'s photo is the site's own file, `public/assets/img/norayr-avetisyan.webp`, not a library item. Replacing it is a commit, not a CMS upload. The owner was offered a new photo and kept this one.
 

@@ -11,8 +11,8 @@ describe('the palette', () => {
 
   it('keeps the shipped palette shipping', () => {
     const tokens = deriveThemeTokens(DEFAULT_THEME)
-    expect(tokens['--color-crimson-500']).toBe('#B51A2B')
-    expect(tokens['--color-background']).toBe('#0a0a1a')
+    expect(tokens['--color-crimson-500']).toBe('#338316')
+    expect(tokens['--color-background']).toBe('#010123')
     expect(tokens['--color-foreground']).toBe('#e0e0e0')
   })
 

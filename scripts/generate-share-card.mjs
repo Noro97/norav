@@ -34,7 +34,7 @@ const tokens = JSON.parse(readFileSync(join(root, 'packages/design-tokens/tokens
 const physical = tokens.color.physical
 const colour = {
   accent: physical.crimson['500'].$value,
-  background: physical.background?.$value ?? '#0a0a1a',
+  background: physical.background?.$value ?? '#010123',
 }
 
 const font = (spec) => pathToFileURL(require.resolve(spec)).href
