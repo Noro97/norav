@@ -5,6 +5,7 @@ import type { SerializedCollectionDefinition, Theme, ThemeTokens } from '@norav/
 import { type WorkspaceView } from './ViewSwitcher'
 import { Workspace, FeedbackBanner, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
+import { publishFromAdmin } from '@/lib/publish-client'
 
 /** The steps worth showing: the accent itself and the tones built around it. */
 const PREVIEW_STEPS = [300, 400, 500, 600, 700] as const
@@ -84,24 +85,9 @@ export function ThemeEditor({
   async function publish() {
     setBusy('publish')
     setFeedback(null)
-
-    const response = await fetch('/api/admin/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    })
-    const body = await response.json().catch(() => null)
+    const { feedback } = await publishFromAdmin()
     setBusy(null)
-
-    if (!response.ok) {
-      setFeedback({ kind: 'err', message: body?.error?.message ?? 'Publish failed.' })
-      return
-    }
-    setFeedback(
-      body.data.unchanged
-        ? { kind: 'warn', message: `Nothing changed since version ${body.data.version}.` }
-        : { kind: 'ok', message: `Published version ${body.data.version}.` },
-    )
+    setFeedback(feedback)
   }
 
   const dirty = Boolean(

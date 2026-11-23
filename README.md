@@ -72,10 +72,21 @@ CMS edit ──► publish ──► immutable snapshot (one JSON per locale)
    through the real site with a fixed `DRAFT PREVIEW` badge, and is forgotten on
    the next reload.
 
-Revision restore isn't built yet. Every publication stays readable at
-`/api/public/content?v=<n>`, but nothing puts an older one back on the site. S10
-in [the plan](./docs/plan/README.md) adds it. Until then, see "Roll back" in
+**Restore.** Every publication stays readable at `/api/public/content?v=<n>`, and
+the admin's History screen can put any of them back on the site. A restore never
+rewrites a row: it checks the old content against today's block registry, profile
+and media, shows what would change, and publishes that content again as a new
+version that names its source. The drafts stay as they were, so the next publish
+asks before it puts them live over the restore. A single section's earlier texts
+are under History in its editor, and go back through an ordinary save. Sessions
+restore through the runbook: see "Roll back" in
 [the publish runbook](./docs/plan/runbook-publish.md).
+
+**Page metadata.** Each page's settings hold its search title and description and
+its own link-preview image with alt text, per language. Anything left empty falls
+back: the title and description to the page's first section, then to the profile;
+the image to the site's card, `/og.png`. The prerender writes them into each page's
+HTML, because link unfurlers never run the JavaScript.
 
 ## Quick start
 

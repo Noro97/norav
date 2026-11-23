@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22.** Next is S10 (`docs/plan/prompts/S10-cms-depth.md`). The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, and S10 on 2026-11-23.** Next is S11 (`docs/plan/prompts/S11-media-and-motion.md`). The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -32,6 +32,7 @@ See "Session rules" in `docs/plan/README.md`.
 | S7 Creative-Lab | Done, live at `norav.dev/lab`. Ten exhibits. `creative-lab` stays private, the owner's call on 2026-11-21 (D18) |
 | S8 Launch | Done. The repo is public since 2026-11-21, after a full-history scan of a mirror clone. Security headers on the site and the CMS |
 | S9 Lab teaser | Done, version 31 live. Lab catalog and teaser, facts that drifted, the new palette. `creative-lab`'s page stylesheet went from 536 KB to 183 KB |
+| S10 CMS depth | Done, 0039 on production, version 31 unchanged. History and restore in the admin and in `release`, a section's earlier texts, a share image and its alt per page |
 
 ## Lab, as of 2026-11-16
 
@@ -42,9 +43,11 @@ See "Session rules" in `docs/plan/README.md`.
 - **Stylesheets, since S9 (`creative-lab` #3):** the page loads one sorted utilities sheet, 183 KB raw and 49 KB gzip (it was 536 KB and 94 KB). Each exhibit's scoped scene CSS, 290–2,713 B, loads with the exhibit through `withScene` in `packages/catalog/src/catalog.ts`. The public build leaves out the hidden exhibits' sources with `@source not`. Utilities can't be split per exhibit: a later sheet's duplicate class beats an earlier responsive one (see RETRO). `check-exhibits` and `check-public-build` enforce all of this.
 - The Lab's CI runs lint, types, tests, both builds and `check:lab`, which reads the finished public build for `.glb` files and the hidden exhibits' titles. There is no `merge-when-green` there: read the checks and merge by hand with `--match-head-commit`.
 
-## Production, as of 2026-11-22
+## Production, as of 2026-11-23
 
-- `cms.norav.dev/api/health`: 38 migrations applied of 38 in the repo, `publishedVersion` 31, published 2026-11-21 22:06 UTC. Checksum `ba5964f38581`. The site bakes version 31 from S9's closing PR.
+- `cms.norav.dev/api/health`: 39 migrations applied of 39 in the repo, `publishedVersion` 31, published 2026-11-21 22:06 UTC. Checksum `ba5964f38581`. The site bakes version 31 from S9's closing PR.
+- 0039 (S10) added `publications.restored_from`. Nothing was published with it. No version has been restored on production; the rehearsal restored 30 over 31 on a copy and put 31 back.
+- A restore leaves the drafts as they were. While the live version is a restore, Publish asks and a release's dry run says so: fix the drafts first, or the release puts back what the restore removed.
 - Version 31 is S9's, written by 0036–0038:
   - the Lab teaser on `/` and nine catalog rows;
   - on `/work/norav`, "590+" tests, "35+" migrations and no count of block types;
@@ -191,6 +194,8 @@ Nothing.
 
 ## Owner's open items
 
+- `/work/norav` says the CMS has "28" API routes. S10 made it 32. S10 asked whether to make it "30+", a floor like the CV's, in S11's release; no answer yet, so nothing was published. "35+" migrations still holds at 39, and "590+" tests at 718.
+
 - Collect two real testimonials. They don't block anything.
 - Two content backups from S6 are still on the Desktop, `norav-content-2026-11-10.dump` and `norav-content-2026-11-12.dump`. Production has moved on since, so they can go whenever you like.
 
@@ -221,7 +226,8 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 ## Tech debt register
 
 - **Lab:** the footer has no link to `/lab/`. The footer links are CMS content, so adding one takes a migration and a copy review, and it has to be a plain `<a href="/lab/">`, because a router `Link` would hit this SPA's NotFound. The home page's teaser links there now. Ten exhibits are Russian-first and stay out (aero, aether, black-hole, chronos, cyber-city, echoes, forma, nexus, and most of neon-os); translating them would widen the set. Auto-fix could not be turned on for Norav PRs from a session started in the `creative-lab` folder, so S7 watched them by hand.
-- The CMS can't preview a path into the site's public folder: Lab posters and case-study figures show as broken images in the admin. `mediaDisplaySrc` could prefix the site's origin for a root-relative path.
+- The CMS can't preview a path into the site's public folder: Lab posters, case-study figures and a share image typed as `/og/…` show as broken images in the admin. `mediaDisplaySrc` could prefix the site's origin for a root-relative path.
+- Collection rows and settings keep revisions like sections do, with no screen to read them. Nobody has asked for one.
 - **Lab, small:** the shell's status bar prints "WEBGL 2.0" whatever the browser has; `lab-tabs` rows in other exhibits may still overflow at 375 px (only the public ten were checked); the Lab's CI runs Node 26, this site's CI runs 20.
 
 - `npm audit` still reports two causes in `cms/`, both pinned upstream and neither reachable here. Next 15 pins `postcss` 8.4.31, which only runs at build time on the CMS's own CSS. `@vercel/cli-config` pins `zod` 4.1.11, and only parses local CLI config files. Checked in S8: unchanged, and the fixes are now majors, Next 16 and `@vercel/blob` 2.4. The site's 10 moderate reports are `minimatch` inside `eslint` and `typescript-eslint`, which are dev tools, and `npm audit` only offers a major-version change.

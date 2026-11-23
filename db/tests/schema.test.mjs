@@ -1412,6 +1412,38 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0039: a restore names the version it copied
+// ---------------------------------------------------------------------------
+{
+  const { rows: [{ ordinary }] } = await db.query(
+    `select count(*)::int as ordinary from publications where restored_from is null`,
+  )
+  const { rows: [{ total }] } = await db.query(`select count(*)::int as total from publications`)
+  check('an ordinary publish names no source', ordinary === total && total > 0, `${ordinary} of ${total}`)
+
+  const { rows: [source] } = await db.query(`select version from publications order by version limit 1`)
+  const { rows: [copy] } = await db.query(
+    `insert into publications (payload, locales, checksum, restored_from)
+     values ('{"pages":[]}'::jsonb, array['en'], 'sha256:restored', $1)
+     returning version, restored_from`,
+    [source.version],
+  )
+  check(
+    'a restore is a new row that names its source',
+    Number(copy.version) > Number(source.version) && Number(copy.restored_from) === Number(source.version),
+  )
+  await expectError(
+    'a restore cannot name a version that does not exist',
+    () =>
+      db.query(
+        `insert into publications (payload, locales, checksum, restored_from)
+         values ('{"pages":[]}'::jsonb, array['en'], 'sha256:nowhere', 999999)`,
+      ),
+    /foreign key/,
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))

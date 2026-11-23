@@ -12,6 +12,7 @@ import { mediaDisplaySrc, toMediaRef } from '@/lib/media-refs'
 import { slugify, toEditorHtml } from '@/lib/post-html'
 import type { PostSummary } from '@/app/api/admin/posts/route'
 import type { PostDetail } from '@/app/api/admin/posts/[id]/route'
+import { publishFromAdmin } from '@/lib/publish-client'
 
 /**
  * Where posts are written.
@@ -206,27 +207,10 @@ export function PostsEditor({
       return
     }
     setBusy('publish')
-    const response = await fetch('/api/admin/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    })
-    const body = await response.json().catch(() => null)
+    const { ok, feedback } = await publishFromAdmin()
     setBusy(null)
-    if (!response.ok) {
-      setFeedback({
-        kind: 'err',
-        message: body?.error?.message ?? 'Publish failed.',
-        details: body?.error?.fields?.map((f: { path: string; message: string }) => `${f.path} — ${f.message}`),
-      })
-      return
-    }
-    await loadList()
-    setFeedback(
-      body.data.unchanged
-        ? { kind: 'warn', message: `Nothing changed since version ${body.data.version}.` }
-        : { kind: 'ok', message: `Published version ${body.data.version}.` },
-    )
+    if (ok) await loadList()
+    setFeedback(feedback)
   }
 
   async function create(title: string) {

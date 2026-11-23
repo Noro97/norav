@@ -4,6 +4,7 @@ import { clientIp, requireUser } from '@/lib/auth'
 import { audit } from '@/lib/audit'
 import { conflict, fail, invalid, notFound, ok } from '@/lib/http'
 import { ROOT_SLUG, SLUG } from '@/lib/pages'
+import { mediaRefId } from '@/lib/media-refs'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -51,12 +52,35 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
   return ok({ page, blocks })
 }
 
+/**
+ * Link previews show PNG and JPEG everywhere, GIF in most places, and drop SVG.
+ * A path or URL whose extension says otherwise is refused here; a library file
+ * is checked by its type once the request has passed this.
+ */
+const PREVIEW_TYPES = ['image/png', 'image/jpeg', 'image/gif']
+const PREVIEW_EXTENSION = /\.(png|jpe?g|gif)$/i
+const ANY_EXTENSION = /\.[a-z0-9]+$/i
+
+const shareImage = z
+  .string()
+  .max(500)
+  .refine(
+    (value) => !value || mediaRefId(value) !== null || value.startsWith('/') || value.startsWith('https://'),
+    'Choose a file, or type a path like /og/work.png or an https:// address.',
+  )
+  .refine((value) => {
+    const file = value.split(/[?#]/)[0]?.replace(/^https:\/\/[^/]+/, '').split('/').pop() ?? ''
+    return mediaRefId(value) !== null || !ANY_EXTENSION.test(file) || PREVIEW_EXTENSION.test(file)
+  }, 'Link previews drop SVG and most other formats. Use a PNG or JPEG, 1200 × 630.')
+
 const seoSchema = z.record(
   z.string(),
   z.object({
     title: z.string().max(70).optional(),
     description: z.string().max(200).optional(),
-    ogImage: z.string().optional(),
+    /** The page's own link-preview image. Empty means the site's card. */
+    ogImage: shareImage.optional(),
+    ogImageAlt: z.string().max(200).optional(),
   }),
 )
 
@@ -84,6 +108,18 @@ export async function PATCH(request: Request, context: { params: Promise<{ slug:
 
   const page = await queryOne<{ id: string }>(`select id from pages where slug = $1`, [path])
   if (!page) return notFound('Page')
+
+  for (const [locale, listing] of Object.entries(body.seo ?? {})) {
+    const id = mediaRefId(listing.ogImage)
+    if (!id) continue
+    const file = await queryOne<{ mime: string }>(`select mime from media where id = $1 and deleted_at is null`, [id])
+    const reason = !file
+      ? 'That file is no longer in the media library.'
+      : PREVIEW_TYPES.includes(file.mime)
+        ? null
+        : 'Link previews drop SVG and most other formats. Use a PNG or JPEG, 1200 × 630.'
+    if (reason) return invalid([{ path: `seo.${locale}.ogImage`, message: reason }])
+  }
 
   // The site serves this page at its root, by that name. Renaming it would not
   // move the homepage — it would leave the site without one.

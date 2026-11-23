@@ -55,7 +55,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-22, production had all 38 migrations in the repo applied, with content version 31.
+On 2026-11-23, production had all 39 migrations in the repo applied, with content version 31.
 
 ## Before any production change
 
@@ -123,10 +123,32 @@ Five failed sign-ins for one email from one address lock it for up to 15 minutes
 
 ## Roll back
 
-Every publication stays available:
+Every publication stays available, read-only:
 
 ```bash
 curl "https://cms.norav.dev/api/public/content?v=<previous version>"
 ```
 
-That only reads it. There's no restore button yet (S10 adds it), so nothing puts an older version back on the site. Until then, a session prepares a re-publish of the earlier version, and rehearses it like any other change. If the site itself is broken, use Instant Rollback in the Vercel dashboard for the site project.
+A restore publishes an older version's content again, as a new version that names its source. Nothing is rewritten, so a restore is undone by restoring the version it replaced. It refuses a version the site can no longer render: a block type that's gone, a profile that fails today's checks, a file swept from storage.
+
+**The owner:** sign in at `cms.norav.dev`, open **History**, and choose **Restore…** on the version to go back to. It lists what changes before anything happens.
+
+**A session (D21)** restores with the release script, in the same order as a release, minus the migration:
+
+1. Note `publishedVersion` and take a backup, as above.
+2. Dry-run the restore. It only reads, and with no migration involved it is the rehearsal:
+   ```bash
+   npm --prefix ~/Desktop/projects/webapp/cms run release:production -- --restore <version> --dry-run
+   ```
+3. Read every line. Each change should be one the restore is meant to make. A refusal names the block or the file.
+4. Release that checksum:
+   ```bash
+   npm --prefix ~/Desktop/projects/webapp/cms run release:production -- --restore <version> --expect <checksum> --note "Restore <version>: why"
+   ```
+5. Check the result, as above, and open the snapshot PR, since a session's release reports `rebuild: not_configured`.
+
+**Afterwards, the drafts still hold what the restore took off the site.** The next release's dry run starts with "Version N is a restore of version M", and the Publish button asks first. Fix the drafts before that release, or it puts the content back.
+
+Don't restore on production to try it out. The embedded database (`npm --prefix cms run dev:local`, or `npm --prefix cms run release -- --restore <version> --dry-run`) is the place for that.
+
+If the site itself is broken rather than its content, use Instant Rollback in the Vercel dashboard for the site project.

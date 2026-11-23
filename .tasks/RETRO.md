@@ -4,6 +4,22 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-22: A prompt's "where we are" can be behind the code
+
+S10's prompt said page metadata wasn't editable per page. The settings dialog already edited a search title and description per language, and the prerender already wrote them. The real gap was the share image, which the API accepted and no field set. Read the code a prompt points at before building what it describes.
+
+### 2026-11-22: A restore that leaves the drafts alone has to guard every Publish button
+
+Putting the drafts back from a publication would have meant reviving S2's 330-line restorer, lossy on library ids and hidden sections. Leaving them alone made the next publish quietly undo the restore. Five editors had their own copy of the publish call, so the guard went into the server, as a 409 until the caller says it asked, and the five copies became one helper. Without the server refusing, a copy that forgot to ask would have published straight over a restore.
+
+### 2026-11-22: A hidden header can widen a page from inside a scroll box
+
+The History table scrolled inside `.table-scroll`, and the page was still 499 px wide at 375. The visually hidden "Actions" header is `position: absolute`, and an absolute element escapes a scroll box that isn't positioned. Hiding elements one at a time and reading `scrollWidth` found it in one pass, as it did for the Lab in S7. The grid's `1fr` track had widened the page too, because `1fr` grows to fit its content's minimum; `minmax(0, 1fr)` doesn't. The collections table had both faults already.
+
+### 2026-11-22: Stopping a preview server is a hard kill for PGlite
+
+After `preview_stop`, the next local publication was version 35, not 4. Postgres logs sequence values 32 ahead, and an unclean stop skips them. The rows were intact. Expect gaps in version numbers after a stopped dev server, and don't read one as lost data.
+
 ### 2026-11-22: Ask the compiler which classes are dead, not the list
 
 The tech-debt entry named four dead colour classes. Scanning `src/` with Tailwind's own scanner and compiling every candidate found twelve: OmniGrid's status tones were dead too, and the shipment modal had four names a September rebase (645f99f) put back from before the colour migration. A list is what someone noticed. The compiler's answer is the full set, and `colour-classes.test.ts` now asks it on every run. A committed snapshot can lag the CMS too: build with `CMS_URL` set before measuring a palette in the browser.

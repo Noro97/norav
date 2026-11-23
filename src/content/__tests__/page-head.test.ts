@@ -46,6 +46,14 @@ describe('resolveSeo', () => {
     )
   })
 
+  it('describes a page’s own image with its alt, or else its title', () => {
+    expect(resolveSeo(page({ en: { title: 'Proof', ogImage: '/og/p.png', ogImageAlt: 'A card' } }), 'en').imageAlt).toBe(
+      'A card',
+    )
+    expect(resolveSeo(page({ en: { title: 'Proof', ogImage: '/og/p.png' } }), 'en').imageAlt).toBe('Proof')
+    expect(resolveSeo(page({ en: { title: 'Proof', ogImageAlt: 'A card' } }), 'en').imageAlt).toBeUndefined()
+  })
+
   it('leaves an absolute URL alone', () => {
     const blob = 'https://blob.vercel-storage.com/media/card.png'
     expect(resolveSeo(page({ en: { ogImage: blob } }), 'en').image).toBe(blob)
@@ -76,6 +84,7 @@ describe('applySeo', () => {
       <meta name="description" content="${SHELL_DESCRIPTION}" />
       <meta property="og:title" content="${SHELL_TITLE}" />
       <meta property="og:image" content="${SHELL_IMAGE}" />
+      <meta property="og:image:alt" content="The site's card." />
       <meta name="twitter:title" content="${SHELL_TITLE}" />
     `
     document.title = SHELL_TITLE
@@ -112,6 +121,16 @@ describe('applySeo', () => {
     expect(document.title).toBe(SHELL_TITLE)
     expect(content('property', 'og:image')).toBe(SHELL_IMAGE)
     expect(content('name', 'twitter:image')).toBe(SHELL_IMAGE)
+  })
+
+  it('never describes a page’s own image with the shell’s alt', () => {
+    applySeo({ title: 'Proof', image: `${SITE}/og/proof.png` })
+    expect(content('property', 'og:image:alt')).toBe('Proof')
+    expect(content('name', 'twitter:image:alt')).toBe('Proof')
+
+    applySeo({})
+    expect(content('property', 'og:image')).toBe(SHELL_IMAGE)
+    expect(content('property', 'og:image:alt')).toBe("The site's card.")
   })
 
   it('does not leave the previous page’s title behind', () => {

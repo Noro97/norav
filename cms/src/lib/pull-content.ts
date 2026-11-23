@@ -51,6 +51,8 @@ const SERIAL_COLUMNS: Partial<Record<ContentTable, string>> = {
 
 const ROW_FILTER: Partial<Record<ContentTable, string>> = {
   audit_log: `where action not like 'auth.%'`,
+  // A restored publication names an older one, which has to be there first.
+  publications: 'order by publications.version',
 }
 
 export type PullReport = Record<ContentTable, number>

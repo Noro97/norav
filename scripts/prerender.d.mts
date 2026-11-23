@@ -4,6 +4,7 @@ export interface FilledRoute {
   title?: string
   description?: string
   image?: string
+  imageAlt?: string
   canonical?: string
   body: string
   theme?: Record<string, string>

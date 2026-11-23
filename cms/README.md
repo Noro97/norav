@@ -21,9 +21,46 @@ edit ──► save ──► publish ──► immutable snapshot ──► sit
    checksum means it pulls the new snapshot and swaps the copy in — no redeploy
    for a typo fix.
 
-Revision restore isn't built yet. Every `publications` row keeps its resolved
-payload, and `/api/public/content?v=<n>` serves any of them, but nothing puts an
-older one back on the site. S10 in [the plan](../docs/plan/README.md) adds it.
+## History and restore
+
+Every `publications` row keeps its resolved payload, and
+`/api/public/content?v=<n>` serves any of them. The **History** screen lists them
+and restores one:
+
+1. **Restore…** checks the old content against what the site can render today:
+   every block against the current registry, the profile, and every file it
+   shows, since a file swept from storage would be a hole in the page. Any
+   problem is listed and the restore is refused.
+2. Otherwise it shows what would change, page by page, against the live version.
+3. Confirming publishes that content again as a **new** version, with
+   `restored_from` naming its source. No row is rewritten, so undoing a restore
+   is restoring the version it replaced. It lands in `audit_log` as
+   `publication.restore`, and triggers the site's rebuild like a publish.
+
+A restore leaves the drafts alone: a publication can't be turned back into them
+without losing library ids, hidden sections and untranslated fields. So while a
+restore is live, Publish asks before it puts the drafts back over it, in every
+editor, and History says whether the drafts match the live site.
+
+`npm run release -- --restore <version> --dry-run` does the same from a script,
+and `release:production` takes the same two steps as a release. See "Roll back"
+in [the publish runbook](../docs/plan/runbook-publish.md).
+
+**One section's earlier texts.** Each save keeps the text it replaced in
+`revisions`. **History** in a section's editor lists the last 30 in the language
+on screen, each compared with the form. Choosing one only fills the form, so
+Save validates it like any edit and keeps the current text as a revision in turn.
+Collection rows and settings are kept the same way, with no screen to read them.
+
+## Page metadata
+
+A page's settings hold, per language, its search title and description and its
+own link-preview image with alt text. The image is a library file, a path in the
+site's `public/` folder, or an `https://` address, and has to be a PNG, JPEG or
+GIF: link unfurlers drop SVG. Publish resolves a library file to its URL. Empty
+fields fall back to the page's first section, then to the shell's defaults from
+the profile, and the image to `/og.png`. The site's prerender writes them into
+each page's HTML.
 
 ## Local development
 
@@ -223,7 +260,11 @@ Admin (session cookie, same-origin only):
 | GET | `/api/admin/schema` | the block registry, as form descriptors |
 | GET | `/api/admin/pages/:slug` | page with blocks and every translation |
 | PATCH | `/api/admin/blocks/:id` | save settings / visibility / one locale |
-| POST | `/api/admin/publish` | validate everything and cut a new version |
+| POST | `/api/admin/publish` | validate everything and cut a new version; `replaceRestore` once asked |
+| GET | `/api/admin/publications` | recent versions, and whether the drafts match the live one |
+| GET | `/api/admin/publications/:version` | what restoring it would change, or why it can't |
+| POST | `/api/admin/publications/:version/restore` | publish it again as a new version |
+| GET | `/api/admin/blocks/:id/revisions?locale=` | a section's earlier texts |
 | GET/PUT | `/api/admin/settings/:key` | read or save `theme`, `site` or `profile` |
 | GET/POST | `/api/admin/media` | list the library / upload a file |
 | POST | `/api/admin/media/direct` | a token to send one file straight to the blob store |
@@ -242,7 +283,7 @@ Responses are `{ data }` or `{ error: { code, message, fields } }`, where
 - CSRF: every mutating route requires a same-origin `Origin` header.
 - Login throttling: 5 failures per (email, IP) per 15 minutes.
 - No public sign-up. Accounts exist only via `npm run user:add`.
-- Every write and every publish lands in `audit_log`; previous content lands in
+- Every write, publish and restore lands in `audit_log`; previous content lands in
   `revisions`.
 
 ## Deploying

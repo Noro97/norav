@@ -12,6 +12,7 @@ import { BlockForm } from './BlockForm'
 import { type WorkspaceView } from './ViewSwitcher'
 import { Workspace, FeedbackBanner, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
+import { publishFromAdmin } from '@/lib/publish-client'
 
 /**
  * The facts about the owner: title, years, employers, numbers. One `settings` row,
@@ -86,24 +87,9 @@ export function ProfileEditor({
   async function publish() {
     setBusy('publish')
     setFeedback(null)
-
-    const response = await fetch('/api/admin/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    })
-    const body = await response.json().catch(() => null)
+    const { feedback } = await publishFromAdmin()
     setBusy(null)
-
-    if (!response.ok) {
-      setFeedback({ kind: 'err', message: body?.error?.message ?? 'Publish failed.' })
-      return
-    }
-    setFeedback(
-      body.data.unchanged
-        ? { kind: 'warn', message: `Nothing changed since version ${body.data.version}.` }
-        : { kind: 'ok', message: `Published version ${body.data.version}.` },
-    )
+    setFeedback(feedback)
   }
 
   const dirty = Boolean(profile && saved && JSON.stringify(profile) !== JSON.stringify(saved))

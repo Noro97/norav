@@ -11,10 +11,12 @@ import { BlockForm, type FieldSource } from './BlockForm'
 import { type WorkspaceView } from './ViewSwitcher'
 import { usePages } from './PagesContext'
 import { PageSettings } from './PageSettings'
+import { BlockHistory } from './BlockHistory'
 import { Modal } from './Modal'
 import { SLUG } from '@/lib/pages'
 import { Workspace, FeedbackBanner, LocaleTabs, PreviewButton, type Feedback } from './Workspace'
 import type { EnvironmentInfo } from '@/lib/environment'
+import { publishFromAdmin } from '@/lib/publish-client'
 
 export interface EditorBlock {
   id: string
@@ -138,6 +140,7 @@ export function Editor({
   const [filter, setFilter] = useState('')
   const [pendingType, setPendingType] = useState('')
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [historyOpen, setHistoryOpen] = useState(false)
   const [newPageSlug, setNewPageSlug] = useState<string | null>(null)
 
   // A singleton already on the page cannot be added twice.
@@ -305,29 +308,9 @@ export function Editor({
   async function publish() {
     setBusy('publish')
     setFeedback(null)
-
-    const response = await fetch('/api/admin/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    })
-    const body = await response.json().catch(() => null)
+    const { feedback } = await publishFromAdmin()
     setBusy(null)
-
-    if (!response.ok) {
-      setFeedback({
-        kind: 'err',
-        message: body?.error?.message ?? 'Publish failed.',
-        details: body?.error?.fields?.map((f: { path: string; message: string }) => `${f.path} — ${f.message}`),
-      })
-      return
-    }
-
-    setFeedback(
-      body.data.unchanged
-        ? { kind: 'warn', message: `Nothing changed since version ${body.data.version}.` }
-        : { kind: 'ok', message: `Published version ${body.data.version}.` },
-    )
+    setFeedback(feedback)
   }
 
   const { pages } = usePages()
@@ -576,6 +559,15 @@ export function Editor({
 
               <span className="spacer" />
 
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => setHistoryOpen(true)}
+                disabled={busy !== null}
+                title="Earlier texts of this section"
+              >
+                History
+              </button>
               <button className="ghost" type="button" onClick={save} disabled={busy !== null || !dirty[selected.id]}>
                 {busy === 'save' ? 'Saving…' : 'Save'}
               </button>
@@ -616,11 +608,38 @@ export function Editor({
           </>
         )}
       </>
+      {historyOpen && selected && draft && definition && (
+        <BlockHistory
+          blockId={selected.id}
+          label={definition.label}
+          locale={locale}
+          sourceLocale={sourceLocale}
+          source={draft.content[sourceLocale] ?? {}}
+          current={draft.content[locale] ?? {}}
+          onClose={() => setHistoryOpen(false)}
+          onUse={(content, replacedAt) => {
+            setHistoryOpen(false)
+            setDrafts((all) => {
+              const existing = all[selected.id]
+              return existing
+                ? { ...all, [selected.id]: { ...existing, content: { ...existing.content, [locale]: content } } }
+                : all
+            })
+            setDirty((all) => ({ ...all, [selected.id]: true }))
+            setFieldErrors({})
+            setFeedback({
+              kind: 'warn',
+              message: `The form holds the text from before ${new Date(replacedAt).toLocaleString()}. Save to keep it, then publish.`,
+            })
+          }}
+        />
+      )}
+
       {settingsOpen && current && (
         <PageSettings
           slug={pageSlug}
           status={current.status}
-          seo={(current.seo ?? {}) as Record<string, { title?: string; description?: string }>}
+          seo={current.seo ?? {}}
           locales={locales}
           blocks={current.blocks}
           menuItems={current.menuItems}

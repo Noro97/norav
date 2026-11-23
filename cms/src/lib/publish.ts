@@ -169,6 +169,15 @@ export async function buildPublication(): Promise<PublishResult> {
 
   const locales = {} as Record<Locale, Snapshot>
 
+  // A page's search listing holds every locale at once, so it is resolved once,
+  // not per locale. A share image can be a library file, named by id.
+  const seoOf = new Map(
+    pages.map((page) => [
+      page.slug,
+      withMedia(page.seo, { page: page.slug, block: '(search listing)', locale: SOURCE_LOCALE }),
+    ]),
+  )
+
   for (const locale of LOCALES) {
     const pageDocs: SnapshotPage[] = pages.map((page) => {
       const pageBlocks: SnapshotBlock[] = []
@@ -216,7 +225,7 @@ export async function buildPublication(): Promise<PublishResult> {
         })
       }
 
-      return { slug: page.slug, seo: page.seo, blocks: pageBlocks }
+      return { slug: page.slug, seo: seoOf.get(page.slug) ?? {}, blocks: pageBlocks }
     })
 
     const collections: Record<string, SnapshotEntry[]> = {}
@@ -294,13 +303,26 @@ export async function buildPublication(): Promise<PublishResult> {
   if (problems.length > 0) return { ok: false, problems }
 
   const payload: PublicationPayload = { locales }
-  // Hash the content only. Version, checksum and publish time are metadata:
-  // including them would make every publish look like a change.
-  const checksum = createHash('sha256')
+  const checksum = checksumOf(payload)
+  for (const locale of LOCALES) {
+    const snapshot = locales[locale]
+    if (snapshot) snapshot.checksum = checksum
+  }
+
+  return { ok: true, payload, checksum }
+}
+
+/**
+ * Hashes the content only. Version, checksum and publish time are metadata:
+ * including them would make every publish look like a change, and a restore
+ * of identical content look like new content.
+ */
+export function checksumOf(payload: PublicationPayload): string {
+  return createHash('sha256')
     .update(
       canonical(
         LOCALES.map((locale) => {
-          const snapshot = locales[locale]
+          const snapshot = payload.locales[locale]
           return snapshot
             ? {
                 locale,
@@ -313,12 +335,6 @@ export async function buildPublication(): Promise<PublishResult> {
       ),
     )
     .digest('hex')
-  for (const locale of LOCALES) {
-    const snapshot = locales[locale]
-    if (snapshot) snapshot.checksum = checksum
-  }
-
-  return { ok: true, payload, checksum }
 }
 
 /**
