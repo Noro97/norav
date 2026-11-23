@@ -1,6 +1,6 @@
 # S10: CMS depth
 
-**Status:** PR open, waiting for the owner's yes to apply migration 0039 to production. The PR merges only after it, because the code reads and writes `publications.restored_from`.
+**Status:** done, 2026-11-23. PR #146. Migration 0039 on production with the owner's yes, given in this session; version 31 unchanged.
 **Origin:** `docs/plan/prompts/S10-cms-depth.md`, started by S9 under D24. Branch `claude/blissful-wiles-520702`, cut from `main` at `6ac43ec`.
 
 ## What the prompt assumed, checked
@@ -32,7 +32,18 @@
 - Release script on the embedded database: dry runs, a wrong `--expect` refused, a real restore.
 - Not run: anything on production.
 
+## Production, 2026-11-23
+
+Through the runbook, with the owner's yes:
+
+1. Backup `~/Desktop/norav-content-2026-11-23.dump`, 498 KB, at 38 migrations and version 31.
+2. Rehearsal on a private Postgres restored from it: 0039 applied; a release's dry run showed 0 changes against version 31, same checksum; `--restore 30` showed its changes page by page and wrote version 32 with version 30's own checksum, so today's checks changed nothing in it; the release after it said the live version was a restore and put 31's content back as version 33.
+3. 0039 on production: 39 of 39, `publishedVersion` 31. Nothing published.
+
+## Case study counts
+
+Recounted on the merged code: 32 API routes in the CMS (28 before S10) and 39 migrations. `/work/norav` says "28" routes, which is now out of date, and "35+" migrations, which holds. "590+" tests holds: 389 site, 118 CMS and 211 schema checks make 718. Making the routes "30+" is a copy question for the owner, asked and not yet answered, so nothing was published.
+
 ## Left
 
-- The owner's yes for 0039, then the runbook's migration steps, then merge with `--match-head-commit`.
-- After merge: recount the routes and migrations in the norav.dev case study.
+- The owner's answer on "28" routes. The recommendation is "30+", carried in S11's release.
