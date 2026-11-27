@@ -43,6 +43,11 @@ export function routes(): PrerenderRoute[] {
   return [...pages, ...posts]
 }
 
+/** The name on every share card, from the profile (facts.md). */
+export function profileName(): string {
+  return profileOf(snapshot.settings).name
+}
+
 /** The published palette, so the first paint already has it. Only colour tokens, as in applyTheme. */
 export function themeTokens(): Record<string, string> {
   const theme = snapshot.settings.theme as { tokens?: Record<string, string> } | undefined
