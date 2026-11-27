@@ -194,10 +194,14 @@ Nothing.
 
 ## Owner's open items
 
-- `/work/norav` says the CMS has "28" API routes. S10 made it 32. S10 asked whether to make it "30+", a floor like the CV's, in S11's release; no answer yet, so nothing was published. "35+" migrations still holds at 39, and "590+" tests at 718.
-
 - Collect two real testimonials. They don't block anything.
 - Two content backups from S6 are still on the Desktop, `norav-content-2026-11-10.dump` and `norav-content-2026-11-12.dump`. Production has moved on since, so they can go whenever you like.
+
+## Decided 2026-11-27
+
+The owner's answer to S10's question, asked with the `grilling` skill:
+
+- **`/work/norav`'s API routes:** "30+", a floor like the CV's and the page's other counts. The page says "28"; `main` has 32 route files under `cms/src/app/api`. S11's release writes it, in S11's migration, so there is no separate publish. Until then version 31 says "28".
 
 ## Decided 2026-11-22
 

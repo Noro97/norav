@@ -46,4 +46,4 @@ Recounted on the merged code: 32 API routes in the CMS (28 before S10) and 39 mi
 
 ## Left
 
-- The owner's answer on "28" routes. The recommendation is "30+", carried in S11's release.
+- "28" routes becomes "30+" in S11's release. The owner answered on 2026-11-27.
