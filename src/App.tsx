@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
-import { useScrollTracking } from '@/hooks/useScrollTracking'
 import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate'
 import { useRouterLinks } from '@/hooks/useRouterLinks'
 import { Navigation } from '@/components/navigation/Navigation'
@@ -34,7 +33,6 @@ function App() {
   // A post is not a page in the CMS: /writing/<slug> is answered from the
   // `posts` collection, under the Writing page it belongs to.
   const post = page ? undefined : postAt(snapshot, slug)
-  useScrollTracking()
   useScrollToTopOnNavigate()
 
   const mainRef = useRef<HTMLElement>(null)

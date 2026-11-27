@@ -188,7 +188,7 @@ html { scroll-behavior: smooth; }
    It fades in only when it arrives after the page is up; reduced motion makes
    that instant through the clamp above. */
 .lab-plate img {
-  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
   mask-image: linear-gradient(to bottom, #000 70%, transparent);
 }
 .lab-plate img.plate--loading { opacity: 0; }

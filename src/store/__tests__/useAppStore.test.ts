@@ -3,22 +3,18 @@ import { useAppStore } from '../useAppStore'
 
 describe('useAppStore', () => {
   beforeEach(() => {
-    useAppStore.setState({ scrollProgress: 0 })
+    useAppStore.setState({ terminalOpen: false })
   })
 
-  it('initializes with default values', () => {
-    const state = useAppStore.getState()
-    expect(state.scrollProgress).toBe(0)
+  it('starts with the terminal closed, and opens it on request', () => {
+    expect(useAppStore.getState().terminalOpen).toBe(false)
+    useAppStore.getState().setTerminalOpen(true)
+    expect(useAppStore.getState().terminalOpen).toBe(true)
   })
 
-  it('updates scroll progress', () => {
-    useAppStore.getState().setScrollProgress(0.5)
-    expect(useAppStore.getState().scrollProgress).toBe(0.5)
-  })
-
-  it('carries nothing the scene or the scroll-driven menu used to read', () => {
+  it('carries nothing the scene, the scroll-driven menu or the progress bar used to read', () => {
     const state = useAppStore.getState() as unknown as Record<string, unknown>
-    for (const gone of ['isMobile', 'mousePosition', 'particleBurst', 'particlesCollapsed', 'heroExploded', 'heroScrollProgress', 'activeSection']) {
+    for (const gone of ['isMobile', 'mousePosition', 'particleBurst', 'particlesCollapsed', 'heroExploded', 'heroScrollProgress', 'activeSection', 'scrollProgress']) {
       expect(state).not.toHaveProperty(gone)
     }
   })
