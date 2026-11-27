@@ -21,6 +21,13 @@
 6. Lighthouse before and after, on `/` and `/work/norav`.
 7. PR, merge, the release through the runbook with the owner's yes (G2, G3).
 
+## Where it stands, 2026-11-27
+
+- Done on the branch, draft PR #149: the asset sheet; share cards for 10 pages; the plate fields and their rendering; the reveal cascade and curve; the scroll bar off React state; `scripts/duotone-plate.mjs`; 0040's "30+".
+- Waiting on the owner: round 1 (what to generate, the subject, the tool, the hand-over folder) and then the images in `~/Desktop/norav-plates/`.
+- Then: review and duotone the plate, add its rows to 0040 (path and caption), Lighthouse after, the copy review of the caption on the finished page, label the PR, merge, the runbook.
+- Lighthouse before, local build of `main` at `c64df2b`: `/` 100/100/100/100, LCP 0.90s, 267 KB; `/work/norav` 100/100/100/100, 0.90s, 307 KB; `/work/proof` 95/100/100/100, 2.86s (as in S6, its widget is the LCP).
+
 ## Verification
 
 - Site, CMS and schema checks; `size:check`, `prerender:check`.
