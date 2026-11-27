@@ -3,7 +3,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 /**
  * The one entrance the site has: a 300 ms fade and an 8 px rise, once, for
- * things that are below the fold when the page mounts.
+ * things that are below the fold when the page mounts. Things that come into
+ * view together cascade, 60 ms apart.
  *
  * Everything starts visible. Only an element whose top edge is off the bottom
  * of the viewport is marked pending — so the first paint is never a blank
@@ -27,6 +28,10 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 export const REVEAL_CLASS = 'reveal'
 export const PENDING_CLASS = 'reveal--pending'
 
+/** Elements that come into view together arrive one after another, this far apart, at most four steps. */
+export const STAGGER_MS = 60
+const STAGGER_STEPS = 4
+
 export function useReveal(ref: RefObject<HTMLElement | null>, selector?: string): void {
   const reducedMotion = useReducedMotion()
 
@@ -44,10 +49,20 @@ export function useReveal(ref: RefObject<HTMLElement | null>, selector?: string)
     below.forEach((el) => el.classList.add(PENDING_CLASS))
     const observer = new IntersectionObserver(
       (entries) => {
+        let step = 0
         for (const entry of entries) {
           if (!entry.isIntersecting) continue
-          entry.target.classList.remove(PENDING_CLASS)
-          observer.unobserve(entry.target)
+          const element = entry.target as HTMLElement
+          // A row of cards entering at once reads as one block dropping in; a
+          // short cascade reads as a row. The delay goes once the entrance ends,
+          // so it never holds up the element's own hover transitions.
+          const delay = Math.min(step++, STAGGER_STEPS) * STAGGER_MS
+          if (delay > 0) {
+            element.style.transitionDelay = `${delay}ms`
+            element.addEventListener('transitionend', () => element.style.removeProperty('transition-delay'), { once: true })
+          }
+          element.classList.remove(PENDING_CLASS)
+          observer.unobserve(element)
         }
       },
       // Fire a little before the element's top reaches the bottom edge, so the
@@ -58,7 +73,10 @@ export function useReveal(ref: RefObject<HTMLElement | null>, selector?: string)
 
     return () => {
       observer.disconnect()
-      targets.forEach((el) => el.classList.remove(REVEAL_CLASS, PENDING_CLASS))
+      targets.forEach((el) => {
+        el.classList.remove(REVEAL_CLASS, PENDING_CLASS)
+        el.style.removeProperty('transition-delay')
+      })
     }
   }, [ref, selector, reducedMotion])
 }

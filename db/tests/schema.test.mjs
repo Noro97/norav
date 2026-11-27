@@ -1444,6 +1444,37 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0040: a plate for the Lab, and 30+ routes
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0040_a_plate_for_the_lab_and_30_plus_routes.sql'), 'utf8')
+  const caseStudy = async () =>
+    (
+      await db.query(
+        `select t.content
+           from block_translations t join blocks b on b.id = t.block_id join pages p on p.id = b.page_id
+          where p.slug = 'work/norav' and b.type = 'case_study' and b.deleted_at is null and t.locale = 'en'`,
+      )
+    ).rows[0]?.content ?? {}
+  const routes = (content) => content.metrics?.find((m) => m.label === 'API routes in the CMS')?.value
+
+  const before = await caseStudy()
+  await db.exec(file)
+  const after = await caseStudy()
+
+  check('0035\'s "28" routes are there to change', routes(before) === '28', routes(before))
+  check('the routes on /work/norav are a floor, 30+', routes(after) === '30+', routes(after))
+  check(
+    'every other metric, and the rest of the case study, is untouched',
+    JSON.stringify({ ...after, metrics: after.metrics.map((m) => (m.label === 'API routes in the CMS' ? null : m)) }) ===
+      JSON.stringify({ ...before, metrics: before.metrics.map((m) => (m.label === 'API routes in the CMS' ? null : m)) }),
+  )
+
+  await db.exec(file)
+  check('a second run changes nothing', JSON.stringify(await caseStudy()) === JSON.stringify(after))
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))
