@@ -160,13 +160,19 @@ Every published page except `/` gets its own 1200×630 PNG, drawn at build time 
 
 ## 5. After generation
 
-Done by the session, with `ffmpeg` and `cwebp`, which this machine has.
+Done by the session. Steps 2–4 are `scripts/duotone-plate.mjs`, which needs the `ffmpeg` and `cwebp` this machine has:
+
+```bash
+node scripts/duotone-plate.mjs ~/Desktop/norav-plates/<file>.png public/assets/plates/lab-v1.webp --crop <w:h:x:y>
+```
 
 1. **Pick and review** against section 3.5.
 2. **Crop** to 21:9 with the subject in the right third.
-3. **Duotone:** greyscale, levels with the black point at 3% and the white at 97%, then a gradient map from the page background `#010123` through the accent `#338316` to a pale green for the brightest highlights. The map's ends come from `packages/design-tokens/tokens.json`, so the plate follows the palette.
+3. **Duotone:** greyscale, levels with the black point at 3% and the white at 97%, then a gradient map from the page background `#010123` through the accent `#338316` to its palest step `#d2eec7` for the brightest highlights. The stops come from `packages/design-tokens/tokens.json`, so a re-run after a palette change repaints the plate.
 4. **Encode:** WebP at 1600 px wide, 120 KB or less.
 5. **Record** the file, tool, date and prompt in section 6.
+
+On the page, the plate is two optional fields of the Lab teaser block in the CMS: the image and its caption. Without a caption the site shows no plate, so it can't appear undisclosed.
 
 ---
 
