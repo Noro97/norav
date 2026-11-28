@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 import { readPath } from './routing'
 import { resolveContentLinks } from './links'
 import type { Locale, Snapshot } from '@norav/content-schema'
-import { BAKED_SNAPSHOTS, findBlock, findBlockById } from './index'
+import { findBlock, findBlockById } from './index'
 import { setCurrentSnapshots } from './current'
 import { applyTheme } from './theme'
 
@@ -125,7 +125,14 @@ async function fetchLatest(baseUrl: string, manifest: Manifest): Promise<Record<
  return { en, ru: en }
 }
 
-export function ContentProvider({ children }: { children: React.ReactNode }) {
+export function ContentProvider({
+  baked,
+  children,
+}: {
+  /** The snapshots this build baked in: what the prerendered page was rendered from. */
+  baked: Record<Locale, Snapshot>
+  children: React.ReactNode
+}) {
  const { i18n } = useTranslation()
  // The address decides the language. i18n still holds it, because the code's
  // own strings are translated through it — but it follows the URL rather than
@@ -139,7 +146,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  // string asks i18n to change language on every render, for ever.
  if (i18n.language?.split('-')[0] !== locale) void i18n.changeLanguage(locale)
   }, [i18n, locale])
- const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(BAKED_SNAPSHOTS)
+ const [snapshots, setSnapshots] = useState<Record<Locale, Snapshot>>(baked)
  // Set only once the manifest disagrees with the bundle. The first render has to
  // match the prerendered page, which carries the menu.
  const [isRefreshing, setIsRefreshing] = useState(false)
@@ -181,10 +188,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  const manifest = (await response.json()) as Manifest
  // Checksum, not version: a rollback republishes older copy under a new
  // version, and identical copy must not trigger a pointless fetch.
- if (manifest.checksum === BAKED_SNAPSHOTS.en.checksum) {
+ if (manifest.checksum === baked.en.checksum) {
  if (import.meta.env.DEV) {
             console.info(
-              `[content] up to date with ${baseUrl} (version ${BAKED_SNAPSHOTS.en.version}).`,
+              `[content] up to date with ${baseUrl} (version ${baked.en.version}).`,
             )
           }
           return
@@ -200,7 +207,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  if (import.meta.env.DEV) {
           console.info(
             `[content] swapped in version ${manifest.version} from ${baseUrl} ` +
-              `(bundle was built with ${BAKED_SNAPSHOTS.en.version}).`,
+              `(bundle was built with ${baked.en.version}).`,
           )
         }
       } catch (error) {
@@ -236,7 +243,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
  if (idle !== undefined) window.cancelIdleCallback?.(idle)
  if (timer !== undefined) window.clearTimeout(timer)
     }
-  }, [])
+    // `baked` is the same object for the life of the page, so this runs once.
+  }, [baked])
 
  const value = useMemo<ContentValue>(
     () => ({ snapshot: locale === 'ru' ? snapshots.ru : snapshots.en, locale, isRefreshing, isPreview }),

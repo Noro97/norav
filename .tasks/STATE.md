@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, S10 on 2026-11-23 and S11 on 2026-11-28.** Next is S12 (`docs/plan/prompts/S12-extras.md`). Every page but `/` unfurls with its own share card, drawn at build time; the Lab's cards arrive in a short cascade; `/work/norav` counts "30+" API routes. S11 shipped no generated image: the Lab teaser's plate fields wait, empty. Details are in `.tasks/done/S11-media-and-motion.md`. The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, S10 on 2026-11-23 and S11 on 2026-11-28.** S12 is in progress (`.tasks/active/S12-extras.md`): the snapshot has left the entry chunk, and the owner chooses which of the post, Russian and testimonials to do. Every page but `/` unfurls with its own share card, drawn at build time; the Lab's cards arrive in a short cascade; `/work/norav` counts "30+" API routes. S11 shipped no generated image: the Lab teaser's plate fields wait, empty. Details are in `.tasks/done/S11-media-and-motion.md`. The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -62,6 +62,10 @@ See "Session rules" in `docs/plan/README.md`.
 - Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. D5's palette of the time, crimson on near-black. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
 - `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
 - English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Entry bundle, 2026-11-28, S12
+
+The baked snapshot is its own chunk, `snapshot.en-<hash>.js`, preloaded from `index.html` beside the entry, and `size:check` budgets it as `content`. On Node 20, with version 32: JS 320.2 KB raw of 321, 104.4 KB gzip of 105; content 43.0 KB raw of 64, 14.1 KB gzip of 20. A publish now moves the content budget, not the code's.
 
 ## Baseline, 2026-11-28, S11
 

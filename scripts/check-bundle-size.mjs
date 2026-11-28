@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 // =============================================================================
-// Fails when the JavaScript or CSS every page loads first grows past its limit.
+// Fails when the code, the stylesheets or the baked content every page loads
+// first grows past its limit.
 //
 // Reads dist/index.html, so it counts what the browser is told to fetch before
 // anything else: the entry script, the chunks preloaded with it, and the
-// stylesheets. Lazy chunks don't count.
+// stylesheets. Lazy chunks don't count. The baked snapshot is preloaded too, and
+// counts against a budget of its own, so that content and code can't eat into
+// each other's.
 //
-// Runs in CI, not in `npm run build`. The Vercel build bakes whatever is published
-// into the entry chunk, and publishing content must never be able to fail a deploy.
-// CI builds the committed snapshot, so a rebake that adds content can need a higher
+// Runs in CI, not in `npm run build`. The Vercel build bakes whatever is published,
+// and publishing content must never be able to fail a deploy. CI builds the
+// committed snapshot, so a rebake that adds content can need a higher content
 // limit: raise it in that PR, and say why.
 // =============================================================================
 import { readFileSync } from 'node:fs'
@@ -17,24 +20,33 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
 
 /**
- * Bytes. Measured 2026-11-07 with version 27 baked, on CI's Node 20, and rounded up to
- * a whole KB. Gzip output differs slightly between Node versions, so a local run on
- * another Node can read a little differently from CI.
+ * Bytes, on CI's Node 20, rounded up to a whole KB. Gzip output differs slightly
+ * between Node versions, so a local run on another Node can read a little
+ * differently from CI.
  *
- * JS raw went from 362 to 363 KB on 2026-11-22: version 31 adds the Lab catalog to the
- * snapshot in the entry chunk (362.4 KB raw, 118.1 KB gzip). Gzip has under 1 KB left,
- * so the next sizeable publish should move the snapshot out of the entry chunk rather
- * than raise this again.
+ * JS is the code alone. Until 2026-11-28 the snapshot sat inside the entry chunk,
+ * and every publish that added copy pushed this limit up, to 363 KB raw and 119 KB
+ * gzip with version 32. The snapshot is its own chunk now (src/content/baked.ts),
+ * measured on its own as `content`, and this limit came down to the code's own size.
+ *
+ * `content` is one locale's snapshot, which is all a page loads. Version 32 is
+ * 43.0 KB raw and 14.1 KB gzip. The limit leaves room for a few posts; past it, a
+ * post's body should load with its page rather than with every page.
  *
  * One stylesheet holds every class in `src`, lazy or not, so a lazy section still
  * counts here.
  */
 export const LIMITS = {
-  js: { raw: 363_000, gzip: 119_000 },
+  js: { raw: 321_000, gzip: 105_000 },
   css: { raw: 127_000, gzip: 17_000 },
+  content: { raw: 64_000, gzip: 20_000 },
 }
 
+const KINDS = ['js', 'css', 'content']
+
 const ASSET = /^\/assets\//
+/** The chunk Vite makes of src/content/snapshot.<locale>.json. */
+const SNAPSHOT = /^\/assets\/snapshot\.[a-z]{2}-[\w-]+\.js$/
 
 /** The same-origin files index.html loads up front. External URLs aren't ours to budget. */
 export function entryAssets(html) {
@@ -42,17 +54,22 @@ export function entryAssets(html) {
   const attribute = (tag, name) => new RegExp(`\\b${name}="([^"]*)"`).exec(tag)?.[1]
   const js = []
   const css = []
+  const content = []
 
   for (const tag of tags) {
     const src = attribute(tag, 'src')
     const href = attribute(tag, 'href')
     const rel = attribute(tag, 'rel')
-    if (tag.startsWith('<script') && attribute(tag, 'type') === 'module' && src && ASSET.test(src)) js.push(src)
-    if (rel === 'modulepreload' && href && ASSET.test(href)) js.push(href)
+    const script =
+      tag.startsWith('<script') && attribute(tag, 'type') === 'module' && src && ASSET.test(src) ? src : undefined
+    const preload = rel === 'modulepreload' && href && ASSET.test(href) ? href : undefined
+    for (const path of [script, preload]) {
+      if (path) (SNAPSHOT.test(path) ? content : js).push(path)
+    }
     if (rel === 'stylesheet' && href && ASSET.test(href)) css.push(href)
   }
 
-  return { js, css }
+  return { js, css, content }
 }
 
 function measureFile(dist, path) {
@@ -64,22 +81,31 @@ function total(files) {
   return files.reduce((sum, file) => ({ raw: sum.raw + file.raw, gzip: sum.gzip + file.gzip }), { raw: 0, gzip: 0 })
 }
 
-/** Throws when index.html lists no script or stylesheet, so a broken build can't pass as a small one. */
+/**
+ * Throws when index.html lists no script or stylesheet, so a broken build can't pass
+ * as a small one, and when it preloads no snapshot, because hydration would then
+ * wait a round trip for it.
+ */
 export function measure(dist) {
-  const { js, css } = entryAssets(readFileSync(join(dist, 'index.html'), 'utf8'))
-  if (js.length === 0 || css.length === 0) {
+  const assets = entryAssets(readFileSync(join(dist, 'index.html'), 'utf8'))
+  if (assets.js.length === 0 || assets.css.length === 0) {
     throw new Error(`${join(dist, 'index.html')} lists no entry script or stylesheet. Run the build first.`)
   }
-  const files = {
-    js: js.map((path) => measureFile(dist, path)),
-    css: css.map((path) => measureFile(dist, path)),
+  if (assets.content.length === 0) {
+    throw new Error(`${join(dist, 'index.html')} preloads no baked snapshot. See preloadSnapshotPlugin in vite.config.ts.`)
   }
-  return { files, totals: { js: total(files.js), css: total(files.css) } }
+  const files = Object.fromEntries(KINDS.map((kind) => [kind, assets[kind].map((path) => measureFile(dist, path))]))
+  return { files, totals: Object.fromEntries(KINDS.map((kind) => [kind, total(files[kind])])) }
+}
+
+/** The code files that carry the snapshot's checksum: the copy is back inside the code. */
+export function codeWithSnapshot(dist, files, checksum) {
+  return files.filter((file) => readFileSync(join(dist, file.path), 'utf8').includes(checksum)).map((file) => file.path)
 }
 
 /** Every limit the totals are past, as `{ kind, measure, size, limit }`. */
 export function overBudget(totals, limits = LIMITS) {
-  return ['js', 'css'].flatMap((kind) =>
+  return KINDS.flatMap((kind) =>
     ['raw', 'gzip']
       .filter((measure) => totals[kind][measure] > limits[kind][measure])
       .map((measure) => ({ kind, measure, size: totals[kind][measure], limit: limits[kind][measure] })),
@@ -98,7 +124,14 @@ function main() {
     process.exit(1)
   }
 
-  for (const kind of ['js', 'css']) {
+  const { checksum } = JSON.parse(readFileSync(join(dist, '..', 'src', 'content', 'snapshot.en.json'), 'utf8'))
+  const inlined = codeWithSnapshot(dist, sizes.files.js, checksum)
+  if (inlined.length > 0) {
+    console.error(`[size] ${inlined.join(', ')} carries the baked snapshot. Import it only from src/content/baked.ts.`)
+    process.exit(1)
+  }
+
+  for (const kind of KINDS) {
     for (const file of sizes.files[kind]) {
       console.log(`[size]   ${file.path}  ${kb(file.raw)}, ${kb(file.gzip)} gzip`)
     }

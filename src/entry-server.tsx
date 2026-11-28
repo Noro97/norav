@@ -3,12 +3,15 @@ import { prerenderToNodeStream } from 'react-dom/static'
 import { StaticRouter } from 'react-router'
 import './i18n'
 import App from './App'
-import { BAKED_SNAPSHOTS } from '@/content'
+import { bakedSnapshots } from '@/content'
+import { setCurrentSnapshots } from '@/content/current'
+import en from '@/content/snapshot.en.json'
 import { ContentProvider } from '@/content/ContentProvider'
 import { resolveSeo, SITE, type ResolvedSeo } from '@/content/PageHead'
 import { postSeo, postsOf, WRITING_SLUG } from '@/content/posts'
 import { DEFAULT_LOCALE, hrefFor, SITE_SLUG } from '@/content/routing'
 import { profileOf } from '@/lib/profile'
+import type { Snapshot } from '@norav/content-schema'
 
 /**
  * What `scripts/prerender.mjs` needs from the site, built by Vite for Node. It renders
@@ -19,7 +22,10 @@ export interface PrerenderRoute extends ResolvedSeo {
   canonical: string
 }
 
-const snapshot = BAKED_SNAPSHOTS.en
+// Node reads the snapshot as the build is made; only the browser loads it as a chunk.
+const baked = bakedSnapshots(en as unknown as Snapshot)
+const snapshot = baked.en
+setCurrentSnapshots(baked)
 
 /** An address no page can have, for the markup of 404.html. */
 export const NOT_FOUND_PATH = '/__not-found__'
@@ -58,7 +64,7 @@ export async function renderRoute(path: string): Promise<string> {
   const { prelude } = await prerenderToNodeStream(
     <StrictMode>
       <StaticRouter location={path}>
-        <ContentProvider>
+        <ContentProvider baked={baked}>
           <App />
         </ContentProvider>
       </StaticRouter>
