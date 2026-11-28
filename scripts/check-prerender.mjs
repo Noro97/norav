@@ -6,7 +6,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { fileFor } from './prerender.mjs'
+import { fileFor, hasKitSection } from './prerender.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
@@ -43,6 +43,10 @@ for (const route of routes()) {
     if (image !== `${SITE}${route.card}`) problems.push(`${route.path}: og:image is ${image}, not its card`)
     const size = pngSize(join(dist, ...route.card.split('/').filter(Boolean)))
     if (size !== '1200×630') problems.push(`${route.path}: share card is ${size ?? 'missing'}`)
+  }
+  // A kit section's stylesheet comes with a lazy chunk; without it in the head, the first paint is unstyled.
+  if (hasKitSection(html) && !/<link rel="stylesheet" crossorigin href="\/assets\/KitFrame-[\w-]+\.css">/.test(html)) {
+    problems.push(`${route.path}: a kit section without its stylesheet in the head`)
   }
   // A section React held back to swap in by script isn't in the first paint.
   if (html.includes('<!--$?-->') || html.includes('$RC')) problems.push(`${route.path}: a section arrives by script`)

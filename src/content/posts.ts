@@ -1,4 +1,5 @@
 import type { Locale, Snapshot } from '@norav/content-schema'
+import { shareCardPath, type ResolvedSeo } from './PageHead'
 
 /**
  * Posts, as the publish step writes them: the `posts` collection, newest first.
@@ -24,14 +25,19 @@ export interface Post {
 /** Where posts live: /writing/<slug>, under the Writing page. */
 export const WRITING_SLUG = 'writing'
 
-/** What a post says about itself in the head, with the site's name when it says nothing. */
-export function postSeo(post: Post, siteName: string, site: string) {
-  const image = post.cover ? (/^https?:\/\//.test(post.cover) ? post.cover : `${site}${post.cover}`) : undefined
-  return {
-    title: post.seo.title || `${post.title} — ${siteName}`,
-    description: post.seo.description || post.excerpt,
-    image,
+/**
+ * What a post says about itself in the head, with the site's name when it says nothing.
+ * A post with no cover gets a card drawn at build time, as a page does, with its title on it.
+ */
+export function postSeo(post: Post, siteName: string, site: string): ResolvedSeo {
+  const title = post.seo.title || `${post.title} — ${siteName}`
+  const description = post.seo.description || post.excerpt
+  if (post.cover) {
+    const image = /^https?:\/\//.test(post.cover) ? post.cover : `${site}${post.cover}`
+    return { title, description, image, imageAlt: post.title }
   }
+  const card = shareCardPath(`${WRITING_SLUG}/${post.slug}`)
+  return { title, description, image: `${site}${card}`, imageAlt: post.title, card, cardTitle: post.title }
 }
 
 export function postsOf(snapshot: Snapshot): Post[] {

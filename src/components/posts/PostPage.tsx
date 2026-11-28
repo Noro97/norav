@@ -40,8 +40,8 @@ export function PostPage({ post }: { post: Post }) {
             <span aria-hidden="true"> · </span>
             {t('writing.minutes', { count: post.readingMinutes })}
           </p>
-          <h1 className="mt-4 font-display text-heading-large font-black text-tertiary-ink">{post.title}</h1>
-          {post.excerpt && <p className="mt-4 text-body-large text-tertiary-ink/70">{post.excerpt}</p>}
+          <h1 className="mt-4 font-display text-heading-large font-black text-tertiary-ink wrap-break-word">{post.title}</h1>
+          {post.excerpt && <p className="mt-4 max-w-[68ch] text-body-large text-tertiary-ink/70">{post.excerpt}</p>}
           {post.lang !== locale && (
             <p className="mt-4 text-caption text-tertiary-ink/50" lang={locale}>
               {t('writing.englishOnly')}

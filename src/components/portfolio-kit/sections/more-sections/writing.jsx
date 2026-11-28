@@ -15,8 +15,10 @@ export const DEFAULTS = {
   ],
 };
 
-export function Writing({ accent, content }) {
+export function Writing({ accent, content, first }) {
   const c = withDefaults(DEFAULTS, content);
+  // One level under the section's title, which is the page's H1 when it opens the page.
+  const CardHeading = first ? 'h2' : 'h3';
   return (
     <section className="writing" data-screen-label="Writing">
       <SectionHead
@@ -26,6 +28,7 @@ export function Writing({ accent, content }) {
         title={c.title}
         titleAccent={c.titleAccent}
         titleTail={c.titleTail}
+        heading={first ? 'h1' : 'h2'}
       />
       {c.posts.length === 0 && c.emptyText ? (
         <p className="writing-empty">{c.emptyText}</p>
@@ -45,9 +48,9 @@ export function Writing({ accent, content }) {
             <div className="post-meta">
               <span>{p.date}</span><span className="dot-sep">·</span><span>{p.reads}</span>
             </div>
-            <h3>{p.title}</h3>
+            <CardHeading>{p.title}</CardHeading>
             <p>{p.excerpt}</p>
-            <div className="post-link" style={{ color: accent }}>
+            <div className="post-link">
               {c.readLabel} <span>→</span>
             </div>
           </a>

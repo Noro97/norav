@@ -382,7 +382,10 @@ html { position: relative; }
   border-radius: 12px;
   border: 1px solid var(--color-tertiary-line);
 }
+/* The case study's measure: the column keeps the site's left edge, the lines stay readable. */
 .post-body {
+  max-width: 68ch;
+  overflow-wrap: break-word;
   font-size: var(--text-body-large);
   line-height: 1.75;
   color: color-mix(in srgb, var(--color-tertiary-ink) 88%, transparent);

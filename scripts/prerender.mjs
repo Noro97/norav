@@ -11,7 +11,7 @@
 // bargain as fetch-content.mjs: content must never cost a deploy. CI builds the
 // committed snapshot and runs check-prerender.mjs, which fails on that shell.
 // =============================================================================
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -38,7 +38,10 @@ function removeTag(html, tag) {
 }
 
 /** The shell with a route's head and content written in. */
-export function fillShell(shell, { path, title, description, image, imageAlt, card, canonical, body, theme = {}, noindex = false }) {
+export function fillShell(
+  shell,
+  { path, title, description, image, imageAlt, card, canonical, body, theme = {}, noindex = false, styles = [] },
+) {
   let html = shell
   const style = Object.entries(theme)
     .map(([name, value]) => `${name}:${value}`)
@@ -81,6 +84,7 @@ export function fillShell(shell, { path, title, description, image, imageAlt, ca
     head.push(`<meta property="og:url" content="${escapeAttribute(canonical)}" />`)
   }
   if (noindex) head.push('<meta name="robots" content="noindex" />')
+  for (const href of styles) head.push(`<link rel="stylesheet" crossorigin href="${escapeAttribute(href)}">`)
   html = html.replace('</head>', `${head.map((tag) => `  ${tag}`).join('\n')}\n  </head>`)
 
   return html.replace(
@@ -110,7 +114,7 @@ export async function drawCards(dist, routes, { name, tokens }) {
       continue
     }
     try {
-      const png = await cards.drawCard({ title: route.title ?? name, description: route.description, name, palette })
+      const png = await cards.drawCard({ title: route.cardTitle ?? route.title ?? name, description: route.description, name, palette })
       const file = join(dist, ...route.card.split('/').filter(Boolean))
       mkdirSync(dirname(file), { recursive: true })
       writeFileSync(file, png)
@@ -126,6 +130,23 @@ export async function drawCards(dist, routes, { name, tokens }) {
 function withoutCard(route) {
   return route.card ? { ...route, image: undefined, imageAlt: undefined, card: undefined } : route
 }
+
+/**
+ * The stylesheet the kit sections bring with their lazy chunk. index.html doesn't
+ * link it, so a page that renders a kit section links it in its own head: otherwise
+ * the first paint is unstyled and shifts when the chunk arrives. Vite names it after
+ * KitFrame.tsx, which imports it.
+ */
+export function kitStylesheets(dist) {
+  const assets = join(dist, 'assets')
+  if (!existsSync(assets)) return []
+  return readdirSync(assets)
+    .filter((file) => /^KitFrame-[\w-]+\.css$/.test(file))
+    .map((file) => `/assets/${file}`)
+}
+
+/** Whether rendered markup holds a kit section: KitFrame's wrapper. */
+export const hasKitSection = (body) => /<section class="pf-kit"/.test(body)
 
 export function fileFor(dist, path) {
   return path === '/' ? join(dist, 'index.html') : join(dist, ...decodeURI(path).split('/').filter(Boolean), 'index.html')
@@ -145,6 +166,7 @@ async function main() {
     /* @vite-ignore */ pathToFileURL(join(root, 'node_modules/.cache/prerender/entry-server.js')).href
   )
   const theme = themeTokens()
+  const kit = kitStylesheets(dist)
   const pages = await drawCards(dist, routes(), { name: profileName(), tokens: theme })
 
   const failed = []
@@ -153,7 +175,7 @@ async function main() {
       const body = await renderRoute(route.path)
       const file = fileFor(dist, route.path)
       mkdirSync(dirname(file), { recursive: true })
-      writeFileSync(file, fillShell(shell, { ...route, body, theme }))
+      writeFileSync(file, fillShell(shell, { ...route, body, theme, styles: hasKitSection(body) ? kit : [] }))
     } catch (error) {
       failed.push(route.path)
       console.error(`[prerender] ${route.path} keeps the empty shell: ${error.message}`)

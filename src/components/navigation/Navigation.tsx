@@ -42,7 +42,8 @@ export function Navigation() {
   const { locale, isRefreshing } = useContent()
   const { t } = useTranslation('common')
   const here = readPath(useLocation().pathname).slug
-  const published = useNavigation()
+  // An item marked for the footer only stays out of this menu.
+  const published = useNavigation().filter((item) => !item.footerOnly)
   const items = isRefreshing ? [] : published
   // Which item is lit follows the address: every item is a page.
   const active = activeNavItem(items, here)
