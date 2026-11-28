@@ -21,12 +21,18 @@ import { defineCollection } from '../define-collection'
  * ignores it until then.
  *
  * `external` wins when set, for the links that leave: a CV, a profile, a repo.
+ *
+ * `footerOnly` keeps an item out of the menu at the top and lists it only in
+ * the footer: a page worth a link from every page that isn't worth a place in
+ * a three-item menu yet. Writing, with one post, is the first.
  */
 const data = z.object({
   /** Slug of the page this points at. Empty when `external` is set. */
   page: z.string().max(120),
   /** A full URL. Takes precedence over `page` when present. */
   external: z.string().max(300),
+  /** Listed in the footer, and not in the menu at the top. Absent means both. */
+  footerOnly: z.boolean().optional(),
 })
 
 const content = z.object({
@@ -55,6 +61,7 @@ export const navigationCollection = defineCollection({
       localized: false,
       help: 'A full URL. Set this and the page above is ignored.',
     },
+    { field: 'footerOnly', control: 'boolean', label: 'Footer only, not in the menu', source: 'data', localized: false },
   ],
 })
 

@@ -19,9 +19,11 @@ import '@/styles/portfolio-kit-mobile.css'
  * through a `lazy()` boundary: its CSS should not be on a page with no kit
  * section on it.
  */
-export function KitFrame({ children }: { children: ReactNode }) {
+export function KitFrame({ children, first = false }: { children: ReactNode; first?: boolean }) {
   return (
-    <section className="pf-kit">
+    // Opening the page, it starts its title where the other pages' first sections do.
+    // Inline, because the kit stylesheet loads later and zeroes `.pf-kit`'s padding.
+    <section className="pf-kit" style={first ? { paddingTop: '4rem' } : undefined}>
       {children}
     </section>
   )

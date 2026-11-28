@@ -1,7 +1,8 @@
-import { readFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { fileFor, fillShell } from '../../../scripts/prerender.mjs'
+import { fileFor, fillShell, hasKitSection, kitStylesheets } from '../../../scripts/prerender.mjs'
 
 const SHELL = `<!doctype html>
 <html lang="en" class="dark">
@@ -126,6 +127,30 @@ describe('fillShell', () => {
     const notFound = fillShell(SHELL, { path: '/__not-found__', body: '<main>Nothing</main>', noindex: true })
     expect(notFound).toContain('<meta name="robots" content="noindex" />')
     expect(notFound).not.toContain('rel="canonical"')
+  })
+})
+
+describe('a page with a kit section', () => {
+  it('links the kit stylesheet in its head, after the shell\'s', () => {
+    const html = fillShell(SHELL, { ...route, styles: ['/assets/KitFrame-a1.css'] })
+    expect(html).toContain('<link rel="stylesheet" crossorigin href="/assets/KitFrame-a1.css">')
+    expect(html.indexOf('KitFrame-a1.css')).toBeLessThan(html.indexOf('</head>'))
+  })
+
+  it('is told from its markup', () => {
+    expect(hasKitSection('<main><section class="pf-kit"><section class="writing">')).toBe(true)
+    expect(hasKitSection('<main><section class="story-part">')).toBe(false)
+  })
+
+  it('finds the stylesheet Vite named after KitFrame, and nothing else', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'prerender-'))
+    try {
+      mkdirSync(join(dist, 'assets'))
+      for (const file of ['KitFrame-wf_VEp1y.css', 'KitFrame-CqktonyR.js', 'index-BNB.css']) writeFileSync(join(dist, 'assets', file), '')
+      expect(kitStylesheets(dist)).toEqual(['/assets/KitFrame-wf_VEp1y.css'])
+    } finally {
+      rmSync(dist, { recursive: true, force: true })
+    }
   })
 })
 

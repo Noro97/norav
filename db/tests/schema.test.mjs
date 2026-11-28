@@ -1475,6 +1475,77 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
+// 0041: the first post
+// ---------------------------------------------------------------------------
+{
+  const file = readFileSync(join(root, 'migrations', '0041_the_first_post.sql'), 'utf8')
+  const state = async () => {
+    const one = async (sql) => (await db.query(sql)).rows
+    return {
+      posts: await one(`select p.slug, p.status, p.published_at, p.tags, t.locale, t.title, length(t.body_html) > 1000 as long_body
+                          from posts p left join post_translations t on t.post_id = p.id
+                         where p.deleted_at is null order by p.slug, t.locale`),
+      writing: await one(`select status, seo -> 'en' as seo from pages where slug = 'writing'`),
+      sections: await one(`select b.is_visible, t.locale, t.content
+                             from blocks b join pages p on p.id = b.page_id
+                             left join block_translations t on t.block_id = b.id
+                            where p.slug = 'writing' and b.type = 'kit_writing' and b.deleted_at is null
+                            order by t.locale`),
+      menu: await one(`select e.is_visible, e.data, t.data as copy
+                         from entries e left join entry_translations t on t.entry_id = e.id and t.locale = 'en'
+                        where e.collection = 'navigation' and e.slug = 'writing' and e.deleted_at is null`),
+      links: await one(`select t.content -> 'links' as links
+                          from block_translations t join blocks b on b.id = t.block_id join pages p on p.id = b.page_id
+                         where p.slug = 'work/norav' and b.type = 'case_study' and b.deleted_at is null and t.locale = 'en'`),
+    }
+  }
+
+  const before = await state()
+  await db.exec(file)
+  const after = await state()
+
+  check('there was no post before', before.posts.length === 0, JSON.stringify(before.posts))
+  check(
+    'one published post, in English only, with its date and a full body',
+    after.posts.length === 1 &&
+      after.posts[0].slug === 'baked-content' &&
+      after.posts[0].status === 'published' &&
+      after.posts[0].published_at !== null &&
+      after.posts[0].locale === 'en' &&
+      after.posts[0].title === 'Why this site bakes its content into the build' &&
+      after.posts[0].long_body,
+    JSON.stringify(after.posts),
+  )
+  check(
+    '/writing is published, with a description that names no placeholder topic',
+    after.writing[0]?.status === 'published' && /how this site publishes/.test(after.writing[0]?.seo?.description ?? ''),
+    JSON.stringify(after.writing),
+  )
+  const english = after.sections.find((row) => row.locale === 'en')
+  check(
+    'its one section is visible, and its English row names no placeholder',
+    after.sections.length >= 1 &&
+      after.sections.every((row) => row.is_visible) &&
+      english?.content?.title === 'Notes on' &&
+      !JSON.stringify(english.content).includes('Placeholder'),
+    JSON.stringify(english?.content),
+  )
+  check(
+    'Writing is a footer link only',
+    after.menu.length === 1 && after.menu[0].is_visible && after.menu[0].data.footerOnly === true && after.menu[0].copy?.label === 'Writing',
+    JSON.stringify(after.menu),
+  )
+  check(
+    '/work/norav ends with a link to the post',
+    after.links.length === 1 && after.links[0].links?.length === 1 && after.links[0].links[0].href === '/writing/baked-content',
+    JSON.stringify(after.links),
+  )
+
+  await db.exec(file)
+  check('a second run changes nothing', JSON.stringify(await state()) === JSON.stringify(after))
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 const width = Math.max(...results.map(([, name]) => name.length))

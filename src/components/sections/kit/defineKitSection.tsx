@@ -5,6 +5,8 @@ import type { BlockComponentProps } from '@/content/blocks'
 interface KitSectionProps<TContent> {
   accent: string
   content: TContent
+  /** Opens the page, so its title is the page's H1. */
+  first?: boolean
 }
 
 interface KitBlockSettings {
@@ -39,15 +41,15 @@ export function defineKitSection<TContent>(
     const [{ KitFrame, useKitAccent }, module] = await Promise.all([import('./KitFrame'), loader()])
     const Section = module[name] as ComponentType<KitSectionProps<TContent>>
 
-    function KitSection({ blockId }: BlockComponentProps) {
+    function KitSection({ blockId, first }: BlockComponentProps) {
       const block = useBlock<TContent, KitBlockSettings>(type, blockId)
       const accent = useKitAccent(block?.settings.accent)
       const content = useContentFor(block?.content as TContent)
       if (!block) return null
 
       return (
-        <KitFrame>
-          <Section accent={accent} content={content} />
+        <KitFrame first={first}>
+          <Section accent={accent} content={content} first={first} />
         </KitFrame>
       )
     }

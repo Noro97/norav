@@ -8,7 +8,10 @@ const useBlock = vi.hoisted(() => vi.fn())
 const useContent = vi.hoisted(() => vi.fn())
 vi.mock('@/content/ContentProvider', () => ({ useBlock, useContent }))
 vi.mock('@/content/navigation', () => ({
-  useNavigation: () => [{ id: 'work', label: 'Work', href: '/work', page: 'work', external: false }],
+  useNavigation: () => [
+    { id: 'work', label: 'Work', href: '/work', page: 'work', external: false, footerOnly: false },
+    { id: 'writing', label: 'Writing', href: '/writing', page: 'writing', external: false, footerOnly: true },
+  ],
 }))
 
 const footer = {
@@ -67,6 +70,12 @@ describe('SiteFooter', () => {
     useContent.mockReturnValue(site(false))
     renderFooter()
     expect(screen.queryByRole('button')).toBeNull()
+  })
+
+  it('lists an item kept out of the menu', () => {
+    useContent.mockReturnValue(site(true))
+    renderFooter()
+    expect(screen.getByRole('link', { name: 'Writing' })).toHaveAttribute('href', '/writing')
   })
 
   it('links the email and the CV', () => {

@@ -19,19 +19,20 @@ export function SectionEyebrow({ lead, label }) {
   );
 }
 
-export function SectionTitle({ accent, title, titleAccent, titleTail, subtitle }) {
+// `heading` is h1 when the section opens its page, which every page needs once.
+export function SectionTitle({ accent, title, titleAccent, titleTail, subtitle, heading: Heading = 'h2' }) {
   if (!title) return null;
   return (
-    <h2 className="section-title">
+    <Heading className="section-title">
       {title}
       {titleAccent && <>{" "}<em style={{ color: accent }}>{titleAccent}</em></>}
       {titleTail}
       {subtitle && <><br/><span className="muted">{subtitle}</span></>}
-    </h2>
+    </Heading>
   );
 }
 
-export function SectionHead({ accent, lead, label, title, titleAccent, titleTail, subtitle }) {
+export function SectionHead({ accent, lead, label, title, titleAccent, titleTail, subtitle, heading }) {
   return (
     <div className="section-head">
       <SectionEyebrow lead={lead} label={label} />
@@ -41,6 +42,7 @@ export function SectionHead({ accent, lead, label, title, titleAccent, titleTail
         titleAccent={titleAccent}
         titleTail={titleTail}
         subtitle={subtitle}
+        heading={heading}
       />
     </div>
   );

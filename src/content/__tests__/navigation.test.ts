@@ -59,6 +59,7 @@ describe('activeNavItem', () => {
     href: page ? `/${page}` : 'https://example.com',
     page,
     external: page === null,
+    footerOnly: false,
   })
   const items = [
     item('home', 'home'),

@@ -22,6 +22,8 @@ export interface ResolvedSeo {
   imageAlt?: string
   /** The card the build draws for a page with no image of its own, at this path. `image` points at it. */
   card?: string
+  /** What that card says, when not the title: a post's own title, since the card prints the name anyway. */
+  cardTitle?: string
 }
 
 /**

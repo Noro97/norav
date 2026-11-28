@@ -347,15 +347,17 @@
 
 /* WRITING */
 .pf-kit .writing { padding: 120px 0; border-bottom: 1px solid var(--line-soft); }
-.pf-kit .writing-grid { display: grid; margin: 0 var(--kit-gutter); grid-template-columns: repeat(var(--writing-cols, 3), 1fr); gap: 1px; background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
-.pf-kit .post { background: var(--bg); padding: 32px max(28px, 3vw); display: flex; flex-direction: column; gap: 14px; transition: background 300ms; min-height: 280px; }
+.pf-kit .writing-grid { display: grid; margin: 0 var(--kit-gutter); grid-template-columns: repeat(var(--writing-cols, 3), minmax(0, 1fr)); gap: 1px; background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+/* minmax(0, 1fr) and overflow-wrap: one unbroken word must not widen every card in the row. */
+.pf-kit .post { background: var(--bg); padding: 32px max(28px, 3vw); display: flex; flex-direction: column; gap: 14px; transition: background 300ms; min-height: 280px; overflow-wrap: anywhere; }
 .pf-kit .post:hover { background: var(--bg-2); }
 .pf-kit .post-meta { font-family: var(--mono); font-size: var(--text-label); letter-spacing: 0.06em; color: var(--fg-muted); display: flex; gap: 8px; }
-.pf-kit .post h3 { font-family: var(--serif); font-size: var(--text-heading-small); margin: 0; font-weight: 900; line-height: var(--text-heading-small--line-height); letter-spacing: var(--text-heading-small--letter-spacing); }
+.pf-kit .post :is(h2, h3) { font-family: var(--serif); font-size: var(--text-heading-small); margin: 0; font-weight: 900; line-height: var(--text-heading-small--line-height); letter-spacing: var(--text-heading-small--letter-spacing); }
 .pf-kit .post p { color: var(--fg-muted); margin: 0; font-size: var(--text-body-small); flex: 1; text-wrap: pretty; }
-.pf-kit .post-link { font-family: var(--mono); font-size: var(--text-caption); letter-spacing: 0.08em; text-transform: uppercase; display: flex; gap: 8px; align-items: center; }
+/* The accent's 400 step: small text in the accent itself misses 4.5:1 on the background. */
+.pf-kit .post-link { font-family: var(--mono); font-size: var(--text-caption); letter-spacing: 0.08em; text-transform: uppercase; display: flex; gap: 8px; align-items: center; color: var(--color-primary-400); }
 .pf-kit .post:hover .post-link span { transform: translateX(4px); transition: transform 300ms; }
-@media (max-width: 900px) { .pf-kit .writing-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .pf-kit .writing-grid { grid-template-columns: minmax(0, 1fr); } }
 /* Said in place of the cards while no post is published. */
 .pf-kit .writing-empty { margin: 0 var(--kit-gutter); padding: 48px 0; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); color: var(--fg-muted); font-size: var(--text-body-regular); }
 

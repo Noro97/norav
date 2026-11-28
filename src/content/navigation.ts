@@ -13,6 +13,7 @@ interface NavigationRow {
    */
   anchor?: string
   external: string
+  footerOnly?: boolean
 }
 
 export interface NavItem {
@@ -23,6 +24,8 @@ export interface NavItem {
   /** The page the item leads to — what decides whether it is the active one. */
   page: string | null
   external: boolean
+  /** Listed in the footer, and not in the menu at the top. */
+  footerOnly: boolean
 }
 
 /**
@@ -73,8 +76,9 @@ export function useNavigation(): NavItem[] {
 
     for (const { id, data } of rows) {
       const { label, page, anchor, external } = data
+      const footerOnly = data.footerOnly === true
       if (external) {
-        items.push({ id, label, href: external, page: null, external: true })
+        items.push({ id, label, href: external, page: null, external: true, footerOnly })
         continue
       }
 
@@ -84,7 +88,7 @@ export function useNavigation(): NavItem[] {
       // used to send Contact there, to a terminal; /contact is a page now.
       if (target === SITE_SLUG) continue
 
-      items.push({ id, label, href: hrefFor(target, locale), page: target, external: false })
+      items.push({ id, label, href: hrefFor(target, locale), page: target, external: false, footerOnly })
     }
 
     return items
