@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import type { Product } from '@/types'
+import { readToken } from '@/content/theme'
 import { CATEGORY_COLORS } from './EcommerceWidget'
 import { ModalShell, type ModalOrigin } from '@/components/ui/ModalShell'
 import { SPRING } from '@/lib/motion'
@@ -147,6 +148,24 @@ function formatExpiry(value: string): string {
   return digits
 }
 
+/**
+ * The accent scale as hex, read when the burst fires.
+ *
+ * canvas-confetti parses a colour string itself, keeping only hex digits and
+ * reading six from the front, so `var(--color-primary-500)` came out as
+ * `#aca500` whatever the palette. The physical `crimson` scale is read because
+ * it is what sits on :root: the `primary` roles are `@theme inline` and have no
+ * custom property to read. The fallbacks are the shipped palette.
+ */
+function burstColours(): string[] {
+  return [
+    readToken('--color-crimson-500', '#338316'),
+    readToken('--color-crimson-400', '#5edc30'),
+    readToken('--color-crimson-700', '#1f3e15'),
+    readToken('--color-crimson-300', '#b0e19e'),
+  ]
+}
+
 interface Props {
   product: Product
   onClose: () => void
@@ -184,7 +203,7 @@ export function ProductDetailModal({ product, onClose, origin }: Props) {
       particleCount: 30,
       spread: 50,
       origin: { x: 0.5, y: 0.6 },
-      colors: ['var(--color-primary-500)', 'var(--color-primary-400)', 'var(--color-primary-700)', '#f7a0a6'],
+      colors: burstColours(),
       ticks: 150,
       gravity: 1.2,
       decay: 0.94,
@@ -479,7 +498,7 @@ function ConfirmationStep({
       particleCount: 80,
       spread: 70,
       origin: { x: 0.5, y: 0.4 },
-      colors: ['var(--color-primary-500)', 'var(--color-primary-400)', 'var(--color-primary-700)', '#f7a0a6'],
+      colors: burstColours(),
       ticks: 200,
       gravity: 1.2,
       decay: 0.94,

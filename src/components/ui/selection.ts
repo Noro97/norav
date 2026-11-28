@@ -14,6 +14,10 @@
  *
  * Written as whole class names rather than assembled from parts: Tailwind scans
  * source text, and a name built at runtime is a name it never sees.
+ *
+ * Colour is only what a sighted reader sees. A button wearing either class also
+ * sets `aria-pressed`, and its group is a `role="group"` named by its label, so
+ * a screen reader hears which option is chosen and what it is a choice of.
  */
 export const CHOSEN = 'border-secondary-500 bg-secondary-500/10 text-secondary-400'
 
