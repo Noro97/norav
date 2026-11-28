@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { BLOCK_REGISTRY } from '@norav/content-schema'
 import { BLOCK_COMPONENTS } from '../blocks'
-import { BAKED_SNAPSHOTS, findBlock, findBlockById, HOME_SLUG } from '../index'
+import type { Snapshot } from '@norav/content-schema'
+import { bakedSnapshots, findBlock, findBlockById, HOME_SLUG } from '../index'
+import en from '../snapshot.en.json'
+
+const BAKED_SNAPSHOTS = bakedSnapshots(en as unknown as Snapshot)
 
 describe('the site can render what the CMS can publish', () => {
   it('has a component for every registered block type', () => {

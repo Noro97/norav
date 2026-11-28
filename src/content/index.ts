@@ -1,24 +1,10 @@
 import type { Snapshot, SnapshotBlock } from '@norav/content-schema'
-import enSnapshot from './snapshot.en.json'
 
-/**
- * The published copy, baked into the bundle at build time by
- * `scripts/fetch-content.mjs`.
- *
- * Content arrives with the JavaScript, so the first render costs no network
- * round trip; the CMS is only consulted afterwards, in the background, to
- * notice that a newer version exists.
- *
- * Only *types* are imported from @norav/content-schema here — pulling a value
- * would drag zod into the entry chunk.
+/*
+ * Only *types* are imported from @norav/content-schema here: pulling a value would
+ * drag zod into the entry chunk. The baked copy itself is loaded from `./baked`.
  */
-export const BAKED_SNAPSHOTS = {
-  en: enSnapshot as unknown as Snapshot,
-  // Russian is retired until it is retranslated (docs/plan D13). /ru redirects
-  // to English, so this only keeps the locale record whole.
-  ru: enSnapshot as unknown as Snapshot,
-} as const
-
+export { bakedSnapshots, loadBakedSnapshots } from './baked'
 export { HOME_SLUG } from './routing'
 
 /**

@@ -1,14 +1,19 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { executeCommand } from '../terminal-commands'
-import { BAKED_SNAPSHOTS } from '@/content'
+import type { Snapshot } from '@norav/content-schema'
+import { bakedSnapshots } from '@/content'
+import en from '@/content/snapshot.en.json'
 import { setCurrentSnapshots } from '@/content/current'
 import { profileOf } from '../profile'
 
+const BAKED_SNAPSHOTS = bakedSnapshots(en as unknown as Snapshot)
 const PROFILE = profileOf(BAKED_SNAPSHOTS.en.settings)
 
 // Initialize i18n before tests
 beforeAll(async () => {
   await import('@/i18n')
+  // main.tsx does this before the first render.
+  setCurrentSnapshots(BAKED_SNAPSHOTS)
 })
 
 describe('executeCommand', () => {
