@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { SnapshotPage } from '@norav/content-schema'
-import { applySeo, forgetShellDefaults, resolveSeo, SITE } from '../PageHead'
+import { applySeo, forgetShellDefaults, resolveSeo, shareCardPath, SITE } from '../PageHead'
 
 const page = (seo: unknown, blocks: unknown[] = []): SnapshotPage =>
   ({ slug: 'work/merch', seo, blocks }) as SnapshotPage
@@ -28,14 +28,36 @@ describe('resolveSeo', () => {
     expect(resolved.description).toBe('AI merch designer.')
   })
 
-  it('leaves a page that says nothing undefined', () => {
+  it('leaves a page that says nothing undefined, but for its drawn card', () => {
     // What fills these is the shell's own copy, in applySeo — not a constant
     // here that would be a second place to keep the site's defaults.
     const nothing = resolveSeo(page({}), 'en')
     expect(nothing.title).toBeUndefined()
     expect(nothing.description).toBeUndefined()
-    expect(nothing.image).toBeUndefined()
+    expect(nothing.image).toBe(`${SITE}/og/work/merch.png`)
     expect(resolveSeo(undefined, 'en').title).toBeUndefined()
+    expect(resolveSeo(undefined, 'en').image).toBeUndefined()
+  })
+
+  it('points a page without an image of its own at the card the build draws', () => {
+    const resolved = resolveSeo(page({ en: { title: 'MerchForge' } }), 'en')
+    expect(resolved.card).toBe('/og/work/merch.png')
+    expect(resolved.image).toBe(`${SITE}/og/work/merch.png`)
+    expect(resolved.imageAlt).toBe('MerchForge')
+  })
+
+  it('draws no card for a page with its own image, or for the home page', () => {
+    expect(resolveSeo(page({ en: { ogImage: '/media/card.png' } }), 'en').card).toBeUndefined()
+    // Home keeps the shell's card, the one with the name on it.
+    const home = resolveSeo({ slug: 'home', seo: { en: { title: 'Home' } }, blocks: [] } as unknown as SnapshotPage, 'en')
+    expect(home.card).toBeUndefined()
+    expect(home.image).toBeUndefined()
+  })
+
+  it('names the card after the page', () => {
+    expect(shareCardPath('work/norav')).toBe('/og/work/norav.png')
+    expect(shareCardPath('about')).toBe('/og/about.png')
+    expect(shareCardPath('home')).toBeUndefined()
   })
 
   it('makes a typed-in path absolute', () => {
@@ -51,7 +73,8 @@ describe('resolveSeo', () => {
       'A card',
     )
     expect(resolveSeo(page({ en: { title: 'Proof', ogImage: '/og/p.png' } }), 'en').imageAlt).toBe('Proof')
-    expect(resolveSeo(page({ en: { title: 'Proof', ogImageAlt: 'A card' } }), 'en').imageAlt).toBeUndefined()
+    // An alt written without an image describes nothing: the drawn card takes the title.
+    expect(resolveSeo(page({ en: { title: 'Proof', ogImageAlt: 'A card' } }), 'en').imageAlt).toBe('Proof')
   })
 
   it('leaves an absolute URL alone', () => {

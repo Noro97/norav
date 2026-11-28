@@ -197,6 +197,15 @@ Nothing.
 - Collect two real testimonials. They don't block anything.
 - Two content backups from S6 are still on the Desktop, `norav-content-2026-11-10.dump` and `norav-content-2026-11-12.dump`. Production has moved on since, so they can go whenever you like.
 
+## Decided 2026-11-28
+
+The owner's answers to S11's first round, asked with the `grilling` skill. All four recommendations, in one "yes":
+
+- **What to generate:** one image, the plate behind the Lab teaser on `/`. Share cards are drawn in code. The hero backdrop, case-study covers and the 404 illustration are cut (`docs/plan/asset-prompts.md`, section 2).
+- **Subject:** A, five glass vessels joined by one copper wire. B only if A won't come out clean.
+- **Tool:** the one the owner already pays for, named to the session for the record. No subscription.
+- **Hand-over:** 3–4 variants, 21:9 or 16:9, at least 1920 px wide, PNG, in `~/Desktop/norav-plates/`.
+
 ## Decided 2026-11-27
 
 The owner's answer to S10's question, asked with the `grilling` skill:

@@ -12,12 +12,20 @@ import { SECTION_HEADER_FIELDS, sectionHeader } from './shared'
  */
 const content = sectionHeader.extend({
   linkLabel: z.string().min(1).max(60),
+  /** Says the plate is generated. Without it the site shows no plate (D12). */
+  plateCaption: z.string().max(80).optional(),
 })
 
 const settings = z.object({
   /** How many exhibits to show, from the top of the collection. */
   count: z.number().int().min(1).max(6),
   linkHref: z.string().min(1).max(300),
+  /**
+   * A generated atmosphere image behind the heading: a site path, a library
+   * file or a URL. Never a picture of the work (D12). Optional, and with no
+   * default, so a teaser published without one stays as it was.
+   */
+  plate: z.string().max(300).optional(),
 })
 
 export const labTeaserBlock = defineBlock({
@@ -48,6 +56,19 @@ export const labTeaserBlock = defineBlock({
       label: 'Exhibits shown',
       source: 'settings',
       help: 'From the top of the Lab collection, skipping rows without a poster. Three fit a row.',
+    },
+    {
+      field: 'plate',
+      control: 'media',
+      label: 'Plate',
+      source: 'settings',
+      help: 'Optional. A generated atmosphere image behind the heading, never a picture of the work. Black in it shows as the page background.',
+    },
+    {
+      field: 'plateCaption',
+      control: 'text',
+      label: 'Plate caption',
+      help: 'Says the image is generated. Without a caption the plate is not shown.',
     },
     {
       field: 'entries',

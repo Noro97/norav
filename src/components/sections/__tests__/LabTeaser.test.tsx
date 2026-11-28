@@ -135,4 +135,46 @@ describe('LabTeaser', () => {
     fireEvent.pointerEnter(third.container.querySelector('li')!, { pointerType: 'touch' })
     expect(third.container.querySelector('video')).toBeNull()
   })
+  describe('plate', () => {
+    const withPlate = (plate: string, plateCaption?: string) => {
+      const block = teaser()
+      useBlock.mockReturnValue({
+        ...block,
+        content: { ...block.content, ...(plateCaption === undefined ? {} : { plateCaption }) },
+        settings: { ...block.settings, plate },
+      })
+    }
+
+    it('sits behind the heading, decorative, lazy and sized, with its caption', () => {
+      withPlate('/assets/plates/lab-v1.webp', 'Generated image')
+      useCollection.mockReturnValue([exhibit('thermal')])
+      const { container } = render(<LabTeaser blockId="lab" />)
+      const plate = container.querySelector<HTMLImageElement>('.lab-plate img')
+      expect(plate?.getAttribute('src')).toBe('/assets/plates/lab-v1.webp')
+      expect(plate?.getAttribute('alt')).toBe('')
+      expect(plate?.getAttribute('loading')).toBe('lazy')
+      expect(plate?.getAttribute('width')).toBeTruthy()
+      expect(plate?.getAttribute('height')).toBeTruthy()
+      expect(screen.getByText('Generated image').tagName).toBe('FIGCAPTION')
+    })
+
+    it('is not shown without a caption saying it is generated', () => {
+      withPlate('/assets/plates/lab-v1.webp')
+      useCollection.mockReturnValue([exhibit('thermal')])
+      const { container } = render(<LabTeaser blockId="lab" />)
+      expect(container.querySelector('.lab-plate')).toBeNull()
+    })
+
+    it('fades in only while it is still loading, and never stays hidden', () => {
+      withPlate('/assets/plates/lab-v1.webp', 'Generated image')
+      useCollection.mockReturnValue([exhibit('thermal')])
+      const complete = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+      const { container } = render(<LabTeaser blockId="lab" />)
+      const plate = container.querySelector<HTMLImageElement>('.lab-plate img')!
+      expect(plate.classList.contains('plate--loading')).toBe(true)
+      fireEvent.load(plate)
+      expect(plate.classList.contains('plate--loading')).toBe(false)
+      complete.mockRestore()
+    })
+  })
 })

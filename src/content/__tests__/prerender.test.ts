@@ -65,6 +65,21 @@ describe('fillShell, with a page’s own share image', () => {
     expect(titled).toContain('<meta property="og:image:alt" content="Proof App"')
   })
 
+  it('keeps the size for a card the build drew, which is the shell card’s size', () => {
+    const drawn = fillShell(CARD_SHELL, {
+      path: '/work/proof',
+      title: 'Proof App',
+      image: 'https://norav.dev/og/work/proof.png',
+      imageAlt: 'Proof App',
+      card: '/og/work/proof.png',
+      body: '',
+    })
+    expect(drawn).toContain('<meta property="og:image" content="https://norav.dev/og/work/proof.png"')
+    expect(drawn).toContain('<meta property="og:image:width" content="1200" />')
+    expect(drawn).toContain('<meta property="og:image:height" content="630" />')
+    expect(drawn).toContain('<meta property="og:image:alt" content="Proof App"')
+  })
+
   it('keeps the shell’s card, alt and size for a page without its own image', () => {
     const plain = fillShell(CARD_SHELL, { path: '/x', title: 'Proof App', body: '' })
     expect(plain).toContain('<meta property="og:image:width" content="1200" />')

@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { render } from '@testing-library/react'
 import { act } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useReveal } from '@/hooks/useReveal'
+import { STAGGER_MS, useReveal } from '@/hooks/useReveal'
 
 /**
  * jsdom has no layout, so every element reports a top of 0 and the hook would
@@ -87,6 +87,23 @@ describe('useReveal', () => {
       expect(getByTestId('root').classList.contains('reveal')).toBe(false)
       expect(getByTestId('a').classList.contains('reveal--pending')).toBe(true)
       expect(getByTestId('b').classList.contains('reveal--pending')).toBe(true)
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original
+    }
+  })
+
+  it('cascades elements that arrive together, then lets go of the delay', () => {
+    const original = HTMLElement.prototype.getBoundingClientRect
+    HTMLElement.prototype.getBoundingClientRect = () => ({ top: 1200, bottom: 1300, left: 0, right: 0, width: 0, height: 100, x: 0, y: 1200, toJSON: () => ({}) })
+    try {
+      const { getByTestId } = render(<Section selector=".card" />)
+      const [a, b] = [getByTestId('a'), getByTestId('b')]
+      act(() => fire([{ target: a, isIntersecting: true }, { target: b, isIntersecting: true }]))
+      expect(a.style.transitionDelay).toBe('')
+      expect(b.style.transitionDelay).toBe(`${STAGGER_MS}ms`)
+      // Kept past the entrance, it would hold up the card's own hover transitions.
+      act(() => b.dispatchEvent(new Event('transitionend')))
+      expect(b.style.transitionDelay).toBe('')
     } finally {
       HTMLElement.prototype.getBoundingClientRect = original
     }

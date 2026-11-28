@@ -58,6 +58,18 @@ describe('lab_teaser block', () => {
     expect(validateBlockContent('lab_teaser', content)).toMatchObject({ ok: false })
   })
 
+  it('takes an optional plate and its caption, and adds neither to a teaser without them', () => {
+    const settings = { ...labTeaserBlock.defaults.settings, plate: '/assets/plates/lab-v1.webp' }
+    expect(validateBlockSettings('lab_teaser', settings)).toMatchObject({ ok: true })
+    const content = { ...labTeaserBlock.defaults.content, plateCaption: 'Generated image' }
+    expect(validateBlockContent('lab_teaser', content)).toMatchObject({ ok: true })
+    // No default: publishing a teaser that has none must not write one in.
+    const plain = validateBlockSettings('lab_teaser', labTeaserBlock.defaults.settings)
+    expect(plain.ok && 'plate' in (plain.data as object)).toBe(false)
+    expect(validateBlockContent('lab_teaser', { ...content, plateCaption: 'x'.repeat(81) })).toMatchObject({ ok: false })
+    expect(labTeaserBlock.form.find((field) => field.field === 'plate')).toMatchObject({ control: 'media', source: 'settings' })
+  })
+
   it('appears once per page and points the editor at the collection', () => {
     expect(labTeaserBlock.singleton).toBe(true)
     expect(labTeaserBlock.form.find((field) => field.control === 'collection')?.collection).toBe('lab')

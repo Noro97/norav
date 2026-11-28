@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { Locale, SnapshotPage } from '@norav/content-schema'
 import { useContent } from './ContentProvider'
-import { DEFAULT_LOCALE, hrefFor } from './routing'
+import { DEFAULT_LOCALE, HOME_SLUG, hrefFor } from './routing'
 
 /** Guarded against the sitemap generator's copy by a test. */
 export const SITE = 'https://norav.dev'
@@ -20,6 +20,17 @@ export interface ResolvedSeo {
   image?: string
   /** What the page's own image shows. Without one, the page's title says what the card is. */
   imageAlt?: string
+  /** The card the build draws for a page with no image of its own, at this path. `image` points at it. */
+  card?: string
+}
+
+/**
+ * Where scripts/prerender.mjs draws a page's share card: its title and
+ * description on the site's palette. The home page keeps the shell's card,
+ * which has the name on it.
+ */
+export function shareCardPath(slug: string): string | undefined {
+  return slug === HOME_SLUG ? undefined : `/og/${slug}.png`
 }
 
 const ABSOLUTE = /^https?:\/\//
@@ -47,12 +58,14 @@ export function resolveSeo(page: SnapshotPage | undefined, locale: Locale): Reso
  const first = page?.blocks[0]?.content as { title?: string; description?: string } | undefined
  const image = written.ogImage
  const title = written.title ?? first?.title
+ const card = page && !image ? shareCardPath(page.slug) : undefined
 
  return {
  title,
  description: written.description ?? first?.description,
- image: !image ? undefined : ABSOLUTE.test(image) ? image : `${SITE}${image}`,
- imageAlt: image ? written.ogImageAlt || title : undefined,
+ image: image ? (ABSOLUTE.test(image) ? image : `${SITE}${image}`) : card && `${SITE}${card}`,
+ imageAlt: image ? written.ogImageAlt || title : card && title,
+ card,
   }
 }
 

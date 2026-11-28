@@ -38,7 +38,7 @@ function removeTag(html, tag) {
 }
 
 /** The shell with a route's head and content written in. */
-export function fillShell(shell, { path, title, description, image, imageAlt, canonical, body, theme = {}, noindex = false }) {
+export function fillShell(shell, { path, title, description, image, imageAlt, card, canonical, body, theme = {}, noindex = false }) {
   let html = shell
   const style = Object.entries(theme)
     .map(([name, value]) => `${name}:${value}`)
@@ -64,12 +64,15 @@ export function fillShell(shell, { path, title, description, image, imageAlt, ca
     html = setContent(html, 'name="twitter:image"', image)
     // The shell's alt and size describe the shell's card. A page's own image gets
     // its own alt, and no size, so an unfurler reads the file's rather than a wrong one.
+    // A drawn card is the shell card's size, so that stays.
     const alt = imageAlt || title
     for (const tag of ['property="og:image:alt"', 'name="twitter:image:alt"']) {
       html = alt ? setContent(html, tag, alt) : removeTag(html, tag)
     }
-    html = removeTag(html, 'property="og:image:width"')
-    html = removeTag(html, 'property="og:image:height"')
+    if (!card) {
+      html = removeTag(html, 'property="og:image:width"')
+      html = removeTag(html, 'property="og:image:height"')
+    }
   }
 
   const head = []
@@ -86,6 +89,44 @@ export function fillShell(shell, { path, title, description, image, imageAlt, ca
   )
 }
 
+/**
+ * Draws each page's share card into dist, for pages with no image of their own.
+ * A card that can't be drawn, or a renderer that won't load, leaves its page on
+ * the shell's card: a share image must never cost a deploy.
+ */
+export async function drawCards(dist, routes, { name, tokens }) {
+  let cards
+  try {
+    cards = await import('./share-cards.mjs')
+  } catch (error) {
+    console.error(`[prerender] no share cards, every page keeps the shell's: ${error.message}`)
+    return routes.map(withoutCard)
+  }
+  const palette = cards.paletteOf(tokens)
+  const drawn = []
+  for (const route of routes) {
+    if (!route.card) {
+      drawn.push(route)
+      continue
+    }
+    try {
+      const png = await cards.drawCard({ title: route.title ?? name, description: route.description, name, palette })
+      const file = join(dist, ...route.card.split('/').filter(Boolean))
+      mkdirSync(dirname(file), { recursive: true })
+      writeFileSync(file, png)
+      drawn.push(route)
+    } catch (error) {
+      console.error(`[prerender] ${route.path} keeps the shell's share card: ${error.message}`)
+      drawn.push(withoutCard(route))
+    }
+  }
+  return drawn
+}
+
+function withoutCard(route) {
+  return route.card ? { ...route, image: undefined, imageAlt: undefined, card: undefined } : route
+}
+
 export function fileFor(dist, path) {
   return path === '/' ? join(dist, 'index.html') : join(dist, ...decodeURI(path).split('/').filter(Boolean), 'index.html')
 }
@@ -100,13 +141,14 @@ async function main() {
   // every address working if the rest of this script doesn't get to run.
   copyFileSync(shellPath, join(dist, '404.html'))
 
-  const { routes, renderRoute, themeTokens, NOT_FOUND_PATH } = await import(
+  const { routes, renderRoute, themeTokens, profileName, NOT_FOUND_PATH } = await import(
     /* @vite-ignore */ pathToFileURL(join(root, 'node_modules/.cache/prerender/entry-server.js')).href
   )
   const theme = themeTokens()
+  const pages = await drawCards(dist, routes(), { name: profileName(), tokens: theme })
 
   const failed = []
-  for (const route of routes()) {
+  for (const route of pages) {
     try {
       const body = await renderRoute(route.path)
       const file = fileFor(dist, route.path)
@@ -120,7 +162,8 @@ async function main() {
 
   const body = await renderRoute(NOT_FOUND_PATH)
   writeFileSync(join(dist, '404.html'), fillShell(shell, { path: NOT_FOUND_PATH, body, theme, noindex: true }))
-  console.log(`[prerender] ${routes().length - failed.length} of ${routes().length} routes, and 404.html`)
+  const cards = pages.filter((route) => route.card).length
+  console.log(`[prerender] ${pages.length - failed.length} of ${pages.length} routes, ${cards} share cards, and 404.html`)
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

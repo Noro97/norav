@@ -11,6 +11,15 @@ import { fileFor } from './prerender.mjs'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
 const { routes } = await import(pathToFileURL(join(root, 'node_modules/.cache/prerender/entry-server.js')).href)
+const SITE = 'https://norav.dev'
+
+/** A PNG's width×height, from its header, or undefined when there's no PNG there. */
+function pngSize(file) {
+  if (!existsSync(file)) return undefined
+  const bytes = readFileSync(file)
+  if (bytes.toString('ascii', 1, 4) !== 'PNG') return undefined
+  return `${bytes.readUInt32BE(16)}×${bytes.readUInt32BE(20)}`
+}
 
 const problems = []
 const titles = new Map()
@@ -28,6 +37,13 @@ for (const route of routes()) {
   if (!html.includes(`<link rel="canonical" href="${route.canonical}"`)) problems.push(`${route.path}: no canonical`)
   if (!html.includes(`<meta property="og:url" content="${route.canonical}"`)) problems.push(`${route.path}: no og:url`)
   if (!/<main\b/.test(html)) problems.push(`${route.path}: no content`)
+  if (route.card) {
+    // The committed snapshot's pages all draw: a missing card here is a renderer that broke.
+    const image = /<meta property="og:image" content="([^"]*)"/.exec(html)?.[1]
+    if (image !== `${SITE}${route.card}`) problems.push(`${route.path}: og:image is ${image}, not its card`)
+    const size = pngSize(join(dist, ...route.card.split('/').filter(Boolean)))
+    if (size !== '1200×630') problems.push(`${route.path}: share card is ${size ?? 'missing'}`)
+  }
   // A section React held back to swap in by script isn't in the first paint.
   if (html.includes('<!--$?-->') || html.includes('$RC')) problems.push(`${route.path}: a section arrives by script`)
 }
