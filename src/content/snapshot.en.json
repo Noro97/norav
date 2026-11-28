@@ -812,7 +812,7 @@
               },
               {
                 "label": "API routes in the CMS",
-                "value": "28"
+                "value": "30+"
               },
               {
                 "label": "automated tests: site, CMS and schema",
@@ -1085,8 +1085,8 @@
     }
   ],
   "locale": "en",
-  "version": 31,
-  "checksum": "ba5964f3858126f8fe830d90da435851261d7773059ef0333197230e0c4915a0",
+  "version": 32,
+  "checksum": "1ddb1069d878eb7954f602f4755a0b8ee016cf5e28073a74f46a78ee462e825c",
   "settings": {
     "site": {},
     "theme": {
@@ -1770,5 +1770,5 @@
       }
     ]
   },
-  "publishedAt": "2026-11-21T22:06:31.582Z"
+  "publishedAt": "2026-11-28T07:52:30.219Z"
 }
