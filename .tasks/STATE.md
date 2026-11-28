@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, S10 on 2026-11-23 and S11 on 2026-11-28.** S12 is in progress (`.tasks/active/S12-extras.md`): the snapshot has left the entry chunk, and the owner chooses which of the post, Russian and testimonials to do. Every page but `/` unfurls with its own share card, drawn at build time; the Lab's cards arrive in a short cascade; `/work/norav` counts "30+" API routes. S11 shipped no generated image: the Lab teaser's plate fields wait, empty. Details are in `.tasks/done/S11-media-and-motion.md`. The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, S10 on 2026-11-23 and S11 on 2026-11-28.** S12 is in progress (`.tasks/active/S12-extras.md`): the snapshot has left the entry chunk, and the first post is live at `/writing/baked-content`, version 33. Russian is next; testimonials are out of S12 for lack of material. Every page but `/` unfurls with its own share card, drawn at build time; the Lab's cards arrive in a short cascade; `/work/norav` counts "30+" API routes. S11 shipped no generated image: the Lab teaser's plate fields wait, empty. Details are in `.tasks/done/S11-media-and-motion.md`. The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -46,7 +46,13 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Production, as of 2026-11-28
 
-- `cms.norav.dev/api/health`: 40 migrations applied of 40 in the repo, `publishedVersion` 32, published 2026-11-28 07:52 UTC. Checksum `1ddb1069d878`. The site bakes version 32 from S11's closing PR.
+- `cms.norav.dev/api/health`: 41 migrations applied of 41 in the repo, `publishedVersion` 33, published 2026-11-28 11:18 UTC. Checksum `e7e56cbf60dd`. The site bakes version 33 from S12's snapshot PR.
+- Version 33 is S12's, written by 0041:
+  - the first post, `/writing/baked-content`, in English;
+  - `/writing` published again, with one card;
+  - Writing in the footer's page links only (`footerOnly`);
+  - a link to the post at the end of `/work/norav`.
+  The production dry run matched the rehearsal's 8 lines with UUIDs masked: each change in `en` and in the `ru` fallback.
 - Version 32 is S11's, written by 0040: on `/work/norav`, "30+" CMS API routes. Nothing else changed; the dry run showed 2 lines, `en` and the `ru` fallback.
 - The Lab teaser has no plate. Its `plate` and `plateCaption` fields are empty in the drafts and the publication.
 - 0039 (S10) added `publications.restored_from`. Nothing was published with it. No version has been restored on production; the rehearsal restored 30 over 31 on a copy and put 31 back.
@@ -219,6 +225,17 @@ Nothing.
 - Collect two real testimonials. They don't block anything.
 - Two content backups from S6 are still on the Desktop, `norav-content-2026-11-10.dump` and `norav-content-2026-11-12.dump`. Production has moved on since, so they can go whenever you like.
 
+## Decided 2026-11-28, S12
+
+Asked with the `grilling` skill. The owner said yes to every recommendation, both times ("Да, все три"):
+
+- **Round 1:**
+  - the first post, on the publish pipeline, in English only, covering decisions and costs and not who or what wrote the code;
+  - `/writing` linked from the footer and from `/work/norav`, and not from the menu until there are three posts;
+  - Russian for the whole site after the post, addressed as «вы», with the CV, the post and the Lab in English;
+  - no testimonials in S12, since none were sent.
+- **The post's review (G3):** published as written. The two paragraphs that state the owner's reasons stay, and so does the line about the unpublished theme draft at 1.37:1.
+
 ## Decided 2026-11-28
 
 The owner's answers to S11's first round, asked with the `grilling` skill. All four recommendations, in one "yes":
@@ -273,13 +290,13 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 - The seed data no longer holds banned claims, but `seed.mts`, `import-content.mts` and `legacy-i18n` still hold other old copy. No published page uses them, and S8's scan should catch the rest.
 - No local setup has a blob store, so a change to direct upload can only be tested for real on production. The token, the checks and the recording have tests.
 - Migrations 0016–0027 hold old copy, and they are append-only, so a brand-new database still gets it in its drafts. 0034 rewrites what the live pages show, and leaves a database with no hero untouched.
-- Four kit sections have no placed row and no use: `kit_process`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`, and `kit_writing` waits for a post. Their stylesheet is still in a lazy chunk.
+- Four kit sections have no placed row and no use: `kit_process`, `kit_compare_table`, `kit_tool_stack`, `kit_cta_banner`. `kit_writing` is placed on `/writing` since S12. Their stylesheet is in a lazy chunk, and a prerendered page that renders a kit section links it in its head (`prerender.mjs`, checked by `prerender:check`).
 - A dead class that isn't a colour utility still passes. `colour-classes.test.ts` compiles every colour-prefixed class in `src/`, but a custom name nothing defines (`case-study-tertiary-card` until 2026-11-22) or a utility outside those prefixes compiles to nothing unnoticed. The last known one, `scrollbar-thin` in `TerminalFooter`, went on 2026-11-28 rather than being defined: `index.css`'s `::-webkit-scrollbar` rules already draw every bar 6px wide in the theme's colours, and Chrome ignores them on an element with `scrollbar-width`. The `useReveal` hooks (`omnigrid-sidebar`, `cap-card` and the like) are meant to have no rule.
 - At 375px MerchForge's total ends a pixel from the card's edge, inside its padding: the row of quantity, Premium and total is wider than the column. Nothing scrolls sideways. Seen on 2026-11-28; the row's markup is older.
 - `main` has been protected since 2026-11-21, admins included, so a merge past a red check is refused. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
 - Fonts are the Latin subsets only. Russian needs the Cyrillic ones in S12. `src/i18n/locales/ru` is unreachable until then too.
 - A page published since the last build returns 404 with the right content until the rebuild finishes, and its `noindex` from `404.html` stays until the next full load. A publish triggers that rebuild, so the window is short.
-- Share cards: `/` uses `/og.png`, drawn by Chrome in `scripts/generate-share-card.mjs` and committed. Every other page gets `/og/<slug>.png`, drawn at build time by `scripts/share-cards.mjs` (satori and resvg, since Vercel has no Chrome). Two renderers for one look: redrawing `og.png` with satori would leave one. Posts get no card yet, and a Russian page would point at the English card: S12 should draw per locale.
+- Share cards: `/` uses `/og.png`, drawn by Chrome in `scripts/generate-share-card.mjs` and committed. Every other page gets `/og/<slug>.png`, drawn at build time by `scripts/share-cards.mjs` (satori and resvg, since Vercel has no Chrome). Two renderers for one look: redrawing `og.png` with satori would leave one. A post with no cover gets `/og/writing/<slug>.png`, with its own title (S12). A Russian page would point at the English card: S12 should draw per locale.
 - The Lab teaser can show a generated plate (`settings.plate` and `content.plateCaption`, both empty). `scripts/duotone-plate.mjs` and `docs/plan/asset-prompts.md` say how to make one.
 - `Capabilities` and `Testimonials`, on no published page, still carry `transition-all` and a glow on hover, which S11's motion review would flag. They're out of the reveal cascade's way; delete or fix them if they're ever placed.
 - A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.

@@ -67,4 +67,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://norav.dev/work/proof"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://norav.dev/work/proof"/>
   </url>
+  <url>
+    <loc>https://norav.dev/writing</loc>
+    <lastmod>2026-11-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norav.dev/writing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://norav.dev/writing"/>
+  </url>
+  <url>
+    <loc>https://norav.dev/writing/baked-content</loc>
+    <lastmod>2026-11-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norav.dev/writing/baked-content"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://norav.dev/writing/baked-content"/>
+  </url>
 </urlset>
