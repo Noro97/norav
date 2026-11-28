@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
+import { useId, useRef, useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
 import { useBlock } from '@/content/ContentProvider'
@@ -63,6 +63,7 @@ export function ProofWidget({ first }: BlockComponentProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   const [selectedActivity, setSelectedActivity] = useState(0)
+  const id = useId()
   const [livenessChallenge, setLivenessChallenge] = useState(
     () => LIVENESS_CHALLENGES[Math.floor(Math.random() * LIVENESS_CHALLENGES.length)]!
   )
@@ -277,19 +278,20 @@ export function ProofWidget({ first }: BlockComponentProps) {
 
             {/* Activity selector */}
             <div>
-              <label className="type-label block text-tertiary-ink/55 mb-2">
+              <span id={`${id}-activity`} className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:proof.labels.activity')}
-              </label>
-              <div className="flex flex-wrap gap-2">
+              </span>
+              <div role="group" aria-labelledby={`${id}-activity`} className="flex flex-wrap gap-2">
                 {ACTIVITIES.map((act, i) => (
                   <button
                     key={act.key}
                     onClick={() => handleSelectActivity(i)}
+                    aria-pressed={selectedActivity === i}
                     className={`px-3 py-1.5 text-caption font-mono rounded border transition-all ${
                       selectedActivity === i ? CHOSEN : UNCHOSEN
                     }`}
                   >
-                    <span className="mr-1.5">{act.icon}</span>
+                    <span className="mr-1.5" aria-hidden="true">{act.icon}</span>
                     {t(`projects:proof.activities.${act.key}`)}
                   </button>
                 ))}

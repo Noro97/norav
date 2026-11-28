@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { useId, useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { Coffee, Image as ImageIcon, Shirt, Sticker, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useReveal } from '@/hooks/useReveal'
@@ -99,6 +99,7 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const jsonRef = useRef<HTMLPreElement>(null)
   const [config, setConfig] = useState<MerchConfig>(DEFAULT_CONFIG)
+  const id = useId()
   const [displayedJson, setDisplayedJson] = useState('')
   const [changeCount, setChangeCount] = useState(0)
 
@@ -222,14 +223,15 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
 
             {/* Product Type */}
             <div>
-              <label className="type-label block text-tertiary-ink/55 mb-2">
+              <span id={`${id}-type`} className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.productType')}
-              </label>
-              <div className="flex flex-wrap gap-2">
+              </span>
+              <div role="group" aria-labelledby={`${id}-type`} className="flex flex-wrap gap-2">
                 {PRODUCT_TYPE_VALUES.map((type, i) => (
                   <button
                     key={type}
                     onClick={() => selectProduct(type)}
+                    aria-pressed={config.productType === type}
                     className={`px-3 py-1.5 text-caption font-mono rounded border transition-all ${
                       config.productType === type ? CHOSEN : UNCHOSEN
                     }`}
@@ -242,15 +244,16 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
 
             {/* Color */}
             <div>
-              <label className="type-label block text-tertiary-ink/55 mb-2">
+              <span id={`${id}-color`} className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.color')}
-              </label>
-              <div className="flex gap-2">
+              </span>
+              <div role="group" aria-labelledby={`${id}-color`} className="flex gap-2">
                 {COLOR_VALUES.map((colorName, i) => (
                   <button
                     key={colorName}
                     onClick={() => updateConfig('color', colorName)}
                     title={t(`projects:${COLOR_KEYS[i]}`)}
+                    aria-pressed={config.color === colorName}
                     className={`w-8 h-8 rounded-full border-2 transition-all ${
                       config.color === colorName
                         ? 'border-secondary-500 scale-110'
@@ -267,14 +270,15 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
 
             {/* Size */}
             <div>
-              <label className="type-label block text-tertiary-ink/55 mb-2">
+              <span id={`${id}-size`} className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.size')}
-              </label>
-              <div className="flex gap-1.5">
+              </span>
+              <div role="group" aria-labelledby={`${id}-size`} className="flex gap-1.5">
                 {sizes.map((s) => (
                   <button
                     key={s}
                     onClick={() => updateConfig('size', s)}
+                    aria-pressed={config.size === s}
                     className={`h-10 min-w-10 px-2 text-caption font-mono rounded border transition-all ${
                       config.size === s ? CHOSEN : UNCHOSEN
                     }`}
@@ -287,10 +291,11 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
 
             {/* Custom Text */}
             <div>
-              <label className="type-label block text-tertiary-ink/55 mb-2">
+              <label htmlFor={`${id}-text`} className="type-label block text-tertiary-ink/55 mb-2">
                 {t('projects:merch.labels.customText')}
               </label>
               <input
+                id={`${id}-text`}
                 type="text"
                 value={config.text}
                 onChange={(e) => updateConfig('text', e.target.value)}
@@ -304,10 +309,10 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
             {/* Quantity + Premium */}
             <div className="flex items-end gap-6">
               <div>
-                <label className="type-label block text-tertiary-ink/55 mb-2">
+                <span id={`${id}-quantity`} className="type-label block text-tertiary-ink/55 mb-2">
                   {t('projects:merch.labels.quantity')}
-                </label>
-                <div className="flex items-center gap-1">
+                </span>
+                <div role="group" aria-labelledby={`${id}-quantity`} className="flex items-center gap-1">
                   <button
                     onClick={() => updateConfig('quantity', Math.max(1, config.quantity - 1))}
                     className="w-9 h-9 rounded border border-tertiary-ink/10 text-tertiary-ink/55 font-mono text-body-small hover:border-tertiary-ink/20 transition-colors"
@@ -325,16 +330,25 @@ export function AIMerchWidget({ first }: BlockComponentProps) {
               </div>
 
               <div>
-                <label className="type-label block text-tertiary-ink/55 mb-2">
+                <label
+                  id={`${id}-premium-label`}
+                  htmlFor={`${id}-premium`}
+                  className="type-label block text-tertiary-ink/55 mb-2"
+                >
                   {t('projects:merch.labels.premium')}
                 </label>
                 <button
+                  id={`${id}-premium`}
+                  type="button"
+                  role="switch"
+                  aria-checked={config.premium}
+                  aria-labelledby={`${id}-premium-label`}
                   onClick={() => updateConfig('premium', !config.premium)}
                   className={`relative w-12 h-6 rounded-full transition-colors ${
                     config.premium ? 'bg-primary-500' : 'bg-tertiary-ink/10'
                   }`}
                 >
-                  <div
+                  <span
                     className={`absolute top-1 w-4 h-4 rounded-full bg-tertiary-ink transition-all duration-200 ${
                       config.premium ? 'left-7' : 'left-1'
                     }`}

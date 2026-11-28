@@ -48,7 +48,7 @@ export function TerminalFooter({ blockId }: BlockComponentProps) {
             <span className="ml-3 font-mono text-caption text-tertiary-ink/55">{content.titleBar}</span>
           </div>
 
-          <div ref={outputRef} className="p-4 h-[22rem] overflow-y-auto scrollbar-thin">
+          <div ref={outputRef} className="p-4 h-[22rem] overflow-y-auto">
             {lines.map((line, i) => (
               <div key={i} className="font-mono text-body-small leading-relaxed">
                 {line.type === 'input' ? (
