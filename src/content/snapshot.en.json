@@ -791,7 +791,12 @@
           "id": "1390522b-9364-4acd-9cbf-ec4d5f483d51",
           "type": "case_study",
           "content": {
-            "links": [],
+            "links": [
+              {
+                "href": "/writing/baked-content",
+                "label": "Writing: why this site bakes its content into the build"
+              }
+            ],
             "retro": "Was it worth it? As a content tool, no: a hosted CMS would have cost far less time for a site that changes once a month. As evidence of how I work, yes: I can open any layer of it in an interview, from a migration to the first paint. I'd wire the site rebuild into the release script on day one, and publish early. The September rebuild merged 21 PRs, and none of its copy went live for six weeks.",
             "title": "norav.dev",
             "context": "norav.dev is my portfolio, and the CMS behind it is part of the portfolio. The site is Vite and React 19, prerendered at build time. The CMS is Next.js on raw PostgreSQL, with no ORM. The two share one package of block schemas. I wanted the site to show how I work, not just list it, and a CMS I can open in an interview does that. I built both, and I run both, alone.",
@@ -1082,11 +1087,51 @@
           "settings": {}
         }
       ]
+    },
+    {
+      "seo": {
+        "en": {
+          "title": "Writing — Norayr Avetisyan",
+          "description": "Notes on the decisions behind software I've shipped, starting with how this site publishes its content."
+        },
+        "ru": {
+          "title": "Заметки — Норайр Аветисян",
+          "description": "Короткие технические эссе о решениях за выпущенным софтом — контентные пайплайны, границы типов и продукт, построенный в одиночку."
+        }
+      },
+      "slug": "writing",
+      "blocks": [
+        {
+          "id": "360a632f-dc9b-4e80-b547-6d62234a9810",
+          "type": "kit_writing",
+          "content": {
+            "posts": [
+              {
+                "date": "Nov 2026",
+                "href": "/writing/baked-content",
+                "reads": "5 min",
+                "title": "Why this site bakes its content into the build",
+                "excerpt": "The first paint makes no request to the CMS, and a CMS outage can't break a deploy. What that bought, four things I got wrong, and what it still costs."
+              }
+            ],
+            "title": "Notes on",
+            "headGlyph": "✎",
+            "headLabel": "Writing",
+            "readLabel": "Read",
+            "titleTail": ".",
+            "titleAccent": "how the software gets built"
+          },
+          "anchorId": "writing",
+          "settings": {
+            "accent": ""
+          }
+        }
+      ]
     }
   ],
   "locale": "en",
-  "version": 32,
-  "checksum": "1ddb1069d878eb7954f602f4755a0b8ee016cf5e28073a74f46a78ee462e825c",
+  "version": 33,
+  "checksum": "e7e56cbf60ddb00fea4f06d493e5d3f10c6d70484f9131d1743b64822c08f14b",
   "settings": {
     "site": {},
     "theme": {
@@ -1473,7 +1518,27 @@
         "slug": "bomber"
       }
     ],
-    "posts": [],
+    "posts": [
+      {
+        "id": "a9cb74a3-47a8-46de-81ce-6933f244e66b",
+        "data": {
+          "seo": {},
+          "lang": "en",
+          "tags": [
+            "CMS",
+            "Prerendering",
+            "Caching"
+          ],
+          "cover": "",
+          "title": "Why this site bakes its content into the build",
+          "excerpt": "The first paint makes no request to the CMS, and a CMS outage can't break a deploy. What that bought, four things I got wrong, and what it still costs.",
+          "bodyHtml": "<p>This site is a Vite and React 19 app. Its copy comes from a CMS I wrote, on Next.js and PostgreSQL. Sites built like that usually fetch their content when the page loads. This one doesn't. Each build bakes the published copy in, and every route is prerendered to HTML.</p>\n<p>That one choice shaped most of the code on both sides. Here is what it bought, four things I got wrong, and what it still costs.</p>\n<h2>One publish, one document</h2>\n<p>When I press Publish, the CMS checks every block against a Zod schema. The site takes its types from the same package. A page that would render broken is refused, and the CMS names the field at fault.</p>\n<p>Then the CMS does what the site would otherwise do at runtime. It orders sections, drops hidden ones, resolves images, and fills gaps in Russian with English. The result is one JSON document per language, with a SHA-256 checksum. It becomes a new row in the <code>publications</code> table, and rows are never edited. Going back to an older version publishes it again, as a new one.</p>\n<p>The site's build starts by fetching the latest document. If the CMS is down, the build keeps the copy committed in the repository and carries on. A content service being down can't cost a deploy.</p>\n<p>Next, every route is rendered to a real HTML file. The browser paints the page from that file, before any JavaScript runs. Nothing on that path talks to the CMS.</p>\n<p>Once the page is idle, the browser asks the CMS for its manifest: the latest version and its checksum. If the checksum matches the build's, nothing happens. If it doesn't, the new copy is fetched and swapped in.</p>\n<p>I wanted the site to survive without its CMS. A visitor gives a portfolio a couple of minutes. A spinner or an error on the first load would be most of the impression. On Lighthouse's mobile preset, the live home page scores 100 in all four categories. Its largest paint lands at 0.95 seconds. That's the median of three runs, on 28 November 2026.</p>\n<h2>Four things I got wrong</h2>\n<h3>The manifest that kept saying 9</h3>\n<p>In August, three publishes in a row changed nothing on the site. The content endpoint served version 12. The manifest insisted the latest was 9.</p>\n<p>The query selected <code>version::text</code> and sorted by <code>version</code>. The cast made an output column with the same name, and the sort bound to that. So versions sorted as strings, and \"9\" came before \"12\".</p>\n<p>The fix was one word: <code>publications.version</code>. The lesson was bigger. A background check that can't see the state looks exactly like one with nothing to do. Nothing failed, and nothing updated.</p>\n<h3>A cache keyed on the wrong thing</h3>\n<p>A published version never changes, so the site cached each one for a year, as immutable. The address was the version number.</p>\n<p>But a version number is only unique within one database. On my laptop the CMS runs on an embedded Postgres, and recreating it counts from one again. Version 36 can come round a second time with different content. A browser told the first one was immutable would keep serving it, reload or not.</p>\n<p>The checksum is part of the address now. Ask for a version with the wrong checksum, and the CMS returns nothing rather than the wrong document.</p>\n<h3>Prerendered, and still a spinner</h3>\n<p>In November I measured the live site and found pages painting a spinner. Their HTML files held all the text. <code>/work</code> shifted by 0.54 as its copy arrived; Google counts anything under 0.1 as good.</p>\n<p>React 19.2 streams a large Suspense boundary in two parts. The fallback comes first, then the content and a small script that swaps them. Above about 12.8 KB, a section counted as large. Every check I had passed, because each one read the page after hydration.</p>\n<p>One option, <code>progressiveChunkSize</code>, turns that off. The build's prerender check now fails on the marker React leaves when it happens.</p>\n<h3>The copy ate the code's budget</h3>\n<p>CI fails when the JavaScript every page loads first passes 119 KB, gzipped. The baked copy sat inside that entry file. Every publish that added text took budget from the code. With version 32, the entry file was at 118.2 KB.</p>\n<p>The copy is its own file now, about 14 KB gzipped, preloaded beside the entry so both download together. The code came back to 104.4 KB, under a limit of its own. The content has a separate budget, so neither can quietly eat the other's.</p>\n<h2>What it still costs</h2>\n<ul>\n<li><strong>Two copies of the content.</strong> The CMS holds one and the build holds the other. They agree only after a rebuild. Until then, the page paints the old copy and swaps in the new one once it's idle.</li>\n<li><strong>A new page waits for the build.</strong> A page published since the last build has no HTML file yet. The not-found page answers, renders the right content in the browser, and still sends a 404 until the rebuild finishes.</li>\n<li><strong>Validation checks shape, not truth.</strong> The schema passes a false claim as happily as a true one. So every release starts with a dry run that prints each change. Production only accepts the checksum that dry run printed. One release I expected 58 changes, and the dry run listed 118. The other 60 were a colour theme I had saved and never published, with one colour at 1.37:1 contrast. A release publishes every saved draft, and reading that list is the only check.</li>\n<li><strong>Removing a block type takes two releases.</strong> Publish validates every block against the registry. So a type's rows are retired and published first, and only then can its code go.</li>\n</ul>\n<h2>Would I build it this way again?</h2>\n<p>For a site people read for two minutes, yes. The first paint is the part every visitor sees, and nothing between them and it can fail. What I'd change is when I looked. The spinner was invisible on my machine and plain on the live site. I'd measure the live site from the first deploy.</p>\n<p>The code is public, in <a href=\"https://github.com/Noro97/norav\">Noro97/norav</a>. The pipeline starts at <code>scripts/fetch-content.mjs</code> and ends in <code>src/content/ContentProvider.tsx</code>.</p>",
+          "publishedAt": "2026-11-28T09:00:00.000Z",
+          "readingMinutes": 5
+        },
+        "slug": "baked-content"
+      }
+    ],
     "experience": [
       {
         "id": "4de8a889-dfb1-48db-b9eb-c7137eff832e",
@@ -1767,8 +1832,18 @@
           "external": ""
         },
         "slug": "contact"
+      },
+      {
+        "id": "49db4c9c-70ae-49a0-a207-94832bf7e351",
+        "data": {
+          "page": "writing",
+          "label": "Writing",
+          "external": "",
+          "footerOnly": true
+        },
+        "slug": "writing"
       }
     ]
   },
-  "publishedAt": "2026-11-28T07:52:30.219Z"
+  "publishedAt": "2026-11-28T11:18:10.968Z"
 }

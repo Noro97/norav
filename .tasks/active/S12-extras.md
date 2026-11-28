@@ -1,6 +1,10 @@
 # S12: Extras
 
-**Status:** in progress, 2026-11-28. #152 (snapshot out of the entry chunk) merged at `7692d32`. The first post waits for the owner's review: copy in `.tasks/active/S12-post.md`.
+**Status:** in progress, 2026-11-28.
+
+- #152, the snapshot out of the entry chunk, merged at `7692d32`.
+- #153, the first post, merged at `6f6948e`. Version 33 live; this snapshot PR bakes it.
+- Russian is next.
 **Origin:** `docs/plan/prompts/S12-extras.md`, started by the status-review session on 2026-11-28. Branches `claude/s12-snapshot-chunk` (#152), then `claude/s12-first-post`.
 
 ## What the prompt assumed, checked
@@ -36,7 +40,7 @@ Round 1, asked with the `grilling` skill. "Да, все три" accepted every r
 - `scripts/check-bundle-size.mjs` measures it as `content`, with a budget of its own (64 KB raw, 20 KB gzip), and fails when `index.html` doesn't preload it or a code chunk carries its checksum. `entry-imports.test.ts` fails if `main.tsx` reaches a snapshot by static import.
 - Entry on Node 20: JS 320.2 KB raw and 104.4 KB gzip, down from 362.7 and 118.2. The JS limit comes down with it, to 321 KB and 105 KB. Content: 43.0 KB raw, 14.1 KB gzip.
 
-### 2. The first post (in review)
+### 2. The first post (live, version 33)
 
 - **Copy:** `.tasks/active/S12-post.md`, 1,034 words, every claim traced to code, a commit or `RETRO.md`. Written by 0041 as drafts.
 - **0041:**
@@ -54,6 +58,14 @@ Round 1, asked with the `grilling` skill. "Да, все три" accepted every r
   - post lines are capped at 68ch, as in the case studies;
   - an unbroken word or address wraps in a post and in its card, and the cards' grid tracks are `minmax(0, 1fr)`.
 - **Rehearsal** on a backup taken 2026-11-28 14:42 Yerevan, in a private Postgres. 0041 applies. `release --dry-run` validates with 8 changes, all expected: the post, `/writing`, the footer link and `/work/norav`'s link, each in English and in the Russian fallback. Checksum `745764dd…`.
+- **Review:** the owner approved the copy as written on 2026-11-28. The post's date is that day.
+- **Release:**
+  - #153 merged at `6f6948e` with all six checks green on `d7ef88d`;
+  - a fresh backup at 15:17 Yerevan, rehearsed again: the same 8 changes;
+  - 0041 on production, 41 of 41;
+  - production's dry run identical to the rehearsal's with UUIDs masked;
+  - the release waited until the live entry carried `footerOnly`, so the old menu could never show Writing;
+  - version 33, published 11:18 UTC, checksum `e7e56cbf60dd`, `rebuild: not_configured`. This PR bakes it.
 
 ## Verification
 

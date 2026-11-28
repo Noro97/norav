@@ -1,6 +1,8 @@
 # S12: the first post, for the one review (D23)
 
-Every word below goes live with migration 0041 and the release after it. The pages were built on a rehearsal of that release (version 33 on a copy of production) and checked at 1440 and 375 px.
+**Approved by the owner on 2026-11-28, as written** ("Да, все три": the copy, the two paragraphs that state their reasons, and the theme anecdote). Live in version 33, released 2026-11-28 11:18 UTC.
+
+Every word below went live with migration 0041 and the release after it. The pages were built on a rehearsal of that release (version 33 on a copy of production) and checked at 1440 and 375 px.
 
 ## Where it shows
 
