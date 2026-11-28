@@ -1444,10 +1444,10 @@ await expectError(
 }
 
 // ---------------------------------------------------------------------------
-// 0040: a plate for the Lab, and 30+ routes
+// 0040: the CMS counts 30+ routes
 // ---------------------------------------------------------------------------
 {
-  const file = readFileSync(join(root, 'migrations', '0040_a_plate_for_the_lab_and_30_plus_routes.sql'), 'utf8')
+  const file = readFileSync(join(root, 'migrations', '0040_the_cms_counts_30_plus_routes.sql'), 'utf8')
   const caseStudy = async () =>
     (
       await db.query(

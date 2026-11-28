@@ -1,13 +1,12 @@
 -- =============================================================================
--- norav CMS · 0040 · A plate for the Lab, and 30+ routes
+-- norav CMS · 0040 · The CMS counts 30+ routes
 --
--- 1. /work/norav counts the CMS's API routes as "28". S10 made them 32. It
---    becomes a floor, "30+", like the tests and migrations beside it. The
---    owner chose it on 2026-11-27.
+-- /work/norav counts the CMS's API routes as "28". S10 made them 32. It
+-- becomes a floor, "30+", like the tests and migrations beside it. The owner
+-- chose it on 2026-11-27.
 --
--- Each change touches only the exact value it replaces and does nothing where
--- that value is already gone. A second run, or a database with no site,
--- changes nothing.
+-- It touches only that value and does nothing where it is already gone. A
+-- second run, or a database with no site, changes nothing.
 -- =============================================================================
 
 update block_translations t

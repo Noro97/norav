@@ -24,7 +24,7 @@
 ## Where it stands, 2026-11-27
 
 - Done on the branch, draft PR #149: the asset sheet; share cards for 10 pages; the plate fields and their rendering; the reveal cascade and curve; the scroll bar off React state; `scripts/duotone-plate.mjs`; 0040's "30+".
-- Round 1 answered 2026-11-28: yes to all four (see `STATE.md`). Waiting on the images in `~/Desktop/norav-plates/`.
+- Round 1 answered 2026-11-28: yes to all four (see `STATE.md`). No images came; on 2026-11-28 the owner told the session to finish without waiting on them. S11 ships without the plate: its CMS fields stay, empty, and 0040 carries only "30+".
 - The PR's Vercel preview built on Linux and drew all 10 cards (`[prerender] 11 of 11 routes, 10 share cards`).
 - Then: review and duotone the plate, add its rows to 0040 (path and caption), Lighthouse after, the copy review of the caption on the finished page, label the PR, merge, the runbook.
 - Lighthouse before, local build of `main` at `c64df2b`: `/` 100/100/100/100, LCP 0.90s, 267 KB; `/work/norav` 100/100/100/100, 0.90s, 307 KB; `/work/proof` 95/100/100/100, 2.86s (as in S6, its widget is the LCP).

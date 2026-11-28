@@ -6,6 +6,8 @@
 
 The owner generates the images in the tool they already use. The session reviews them, duotones them to the palette, and integrates them. No new subscriptions (D12).
 
+**Status, 2026-11-28:** S11 shipped without the plate. The owner chose not to wait on generating it, and sessions can't run image generators. Everything else here is done: the share cards are live code, and the Lab teaser's plate fields wait in the CMS. To add the plate later, follow sections 3 and 5, then set the image and its caption on the Lab teaser and publish.
+
 ---
 
 ## 1. What this site allows
@@ -180,4 +182,4 @@ On the page, the plate is two optional fields of the Lab teaser block in the CMS
 
 | File | Subject | Tool | Date | Prompt |
 | --- | --- | --- | --- | --- |
-| *none yet* | | | | |
+| *none: S11 shipped without a plate* | | | | |
