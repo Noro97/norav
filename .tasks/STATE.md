@@ -19,7 +19,7 @@ See "Session rules" in `docs/plan/README.md`.
 
 ## Current focus
 
-**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, and S10 on 2026-11-23.** Next is S11 (`docs/plan/prompts/S11-media-and-motion.md`). The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
+**Milestone 1 is done, 2026-11-21. In Milestone 2, S9 is done, 2026-11-22, S10 on 2026-11-23 and S11 on 2026-11-28.** Next is S12 (`docs/plan/prompts/S12-extras.md`). Every page but `/` unfurls with its own share card, drawn at build time; the Lab's cards arrive in a short cascade; `/work/norav` counts "30+" API routes. S11 shipped no generated image: the Lab teaser's plate fields wait, empty. Details are in `.tasks/done/S11-media-and-motion.md`. The CMS restores any published version as a new one, shows a section's earlier texts, and gives each page a share image. Details are in `.tasks/done/S10-cms-depth.md`. The home page has a Lab teaser fed by a CMS catalog. The site wears the owner's new palette (D5). Each Lab exhibit loads only its own scene stylesheet. Details are in `.tasks/done/S9-lab-teaser.md`. Sessions start each other and run production themselves (D20–D24 in `docs/plan/README.md`).
 
 | Session | Status |
 | --- | --- |
@@ -33,6 +33,7 @@ See "Session rules" in `docs/plan/README.md`.
 | S8 Launch | Done. The repo is public since 2026-11-21, after a full-history scan of a mirror clone. Security headers on the site and the CMS |
 | S9 Lab teaser | Done, version 31 live. Lab catalog and teaser, facts that drifted, the new palette. `creative-lab`'s page stylesheet went from 536 KB to 183 KB |
 | S10 CMS depth | Done, 0039 on production, version 31 unchanged. History and restore in the admin and in `release`, a section's earlier texts, a share image and its alt per page |
+| S11 Media and motion | Done, 0040 on production, version 32 live. Share cards per page, motion polish, "30+" routes. No generated plate: the owner chose not to wait on it |
 
 ## Lab, as of 2026-11-16
 
@@ -43,9 +44,11 @@ See "Session rules" in `docs/plan/README.md`.
 - **Stylesheets, since S9 (`creative-lab` #3):** the page loads one sorted utilities sheet, 183 KB raw and 49 KB gzip (it was 536 KB and 94 KB). Each exhibit's scoped scene CSS, 290–2,713 B, loads with the exhibit through `withScene` in `packages/catalog/src/catalog.ts`. The public build leaves out the hidden exhibits' sources with `@source not`. Utilities can't be split per exhibit: a later sheet's duplicate class beats an earlier responsive one (see RETRO). `check-exhibits` and `check-public-build` enforce all of this.
 - The Lab's CI runs lint, types, tests, both builds and `check:lab`, which reads the finished public build for `.glb` files and the hidden exhibits' titles. There is no `merge-when-green` there: read the checks and merge by hand with `--match-head-commit`.
 
-## Production, as of 2026-11-23
+## Production, as of 2026-11-28
 
-- `cms.norav.dev/api/health`: 39 migrations applied of 39 in the repo, `publishedVersion` 31, published 2026-11-21 22:06 UTC. Checksum `ba5964f38581`. The site bakes version 31 from S9's closing PR.
+- `cms.norav.dev/api/health`: 40 migrations applied of 40 in the repo, `publishedVersion` 32, published 2026-11-28 07:52 UTC. Checksum `1ddb1069d878`. The site bakes version 32 from S11's closing PR.
+- Version 32 is S11's, written by 0040: on `/work/norav`, "30+" CMS API routes. Nothing else changed; the dry run showed 2 lines, `en` and the `ru` fallback.
+- The Lab teaser has no plate. Its `plate` and `plateCaption` fields are empty in the drafts and the publication.
 - 0039 (S10) added `publications.restored_from`. Nothing was published with it. No version has been restored on production; the rehearsal restored 30 over 31 on a copy and put 31 back.
 - A restore leaves the drafts as they were. While the live version is a restore, Publish asks and a release's dry run says so: fix the drafts first, or the release puts back what the restore removed.
 - Version 31 is S9's, written by 0036–0038:
@@ -59,6 +62,21 @@ See "Session rules" in `docs/plan/README.md`.
 - Version 28 is S5's site, written by migration 0034 and reviewed by the owner: home, `/work`, `/demos/nexusroute`, `/demos/omnigrid`, `/demos/filtergraph`, `/demos/merchforge`, `/work/proof`, `/about`, `/contact`. D5's palette of the time, crimson on near-black. The menu is Work, About, Contact. The live search for "Do not use" claims finds nothing in either locale.
 - `/experience` and `/skills` are archived and redirect to `/about`. The four old demo URLs redirect to `/demos/*`, and `/site` to `/`.
 - English only: `/ru` redirects to English until S12. The Russian rows of every block 0034 rewrote are deleted, so `?locale=ru` returns the English copy for those.
+
+## Baseline, 2026-11-28, S11
+
+Lighthouse 13.6.0, mobile preset, median of 3. Local is `vite preview` of a Node 20 build; live is version 32's site, with version 31 still baked until the closing PR.
+
+| Page | Where | Performance | Accessibility | Best practices | SEO | LCP | CLS | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | local, before | 100 | 100 | 100 | 100 | 0.90s | 0.004 | 267 KB |
+| `/` | local, after | 100 | 100 | 100 | 100 | 0.91s | 0.004 | 270 KB |
+| `/work/norav` | local, before | 100 | 100 | 100 | 100 | 0.90s | 0.000 | 307 KB |
+| `/work/norav` | local, after | 100 | 100 | 100 | 100 | 0.90s | 0.000 | 308 KB |
+| `/` | live | 100 | 100 | 100 | 100 | 0.95s | 0.000 | 273 KB |
+| `/work/norav` | live | 100 | 100 | 100 | 100 | 0.98s | 0.000 | 312 KB |
+
+**Entry bundle with version 32 baked, Node 20:** JS 362.7 KB raw of 363, 118.2 KB gzip of 119; CSS 98.3 KB raw, 14.7 KB gzip. Still under 1 KB of gzip left: the snapshot should leave the entry chunk before the next sizeable publish.
 
 ## Baseline, 2026-11-22, S9
 
@@ -258,7 +276,9 @@ The owner's answers to S8's questions, asked with the `grilling` skill:
 - `main` has been protected since 2026-11-21, admins included, so a merge past a red check is refused. A merge by the job's token doesn't run CI on `main`, because GitHub skips workflows for it, and the branch doesn't have to be up to date first. Vercel still deploys.
 - Fonts are the Latin subsets only. Russian needs the Cyrillic ones in S12. `src/i18n/locales/ru` is unreachable until then too.
 - A page published since the last build returns 404 with the right content until the rebuild finishes, and its `noindex` from `404.html` stays until the next full load. A publish triggers that rebuild, so the window is short.
-- Every page shares one `og:image`, `/og.png`, drawn by `scripts/generate-share-card.mjs`. S11 adds per-page images on the same method.
+- Share cards: `/` uses `/og.png`, drawn by Chrome in `scripts/generate-share-card.mjs` and committed. Every other page gets `/og/<slug>.png`, drawn at build time by `scripts/share-cards.mjs` (satori and resvg, since Vercel has no Chrome). Two renderers for one look: redrawing `og.png` with satori would leave one. Posts get no card yet, and a Russian page would point at the English card: S12 should draw per locale.
+- The Lab teaser can show a generated plate (`settings.plate` and `content.plateCaption`, both empty). `scripts/duotone-plate.mjs` and `docs/plan/asset-prompts.md` say how to make one.
+- `Capabilities` and `Testimonials`, on no published page, still carry `transition-all` and a glow on hover, which S11's motion review would flag. They're out of the reveal cascade's way; delete or fix them if they're ever placed.
 - A release still reports `rebuild: not_configured`, so a publish from a session needs a snapshot PR before the first paint is current. S5's took about ten minutes from release to deploy.
 - `npm --prefix cms run import` stops on `tech_marquee`, which #128 removed from the registry, so a fresh embedded database gets the seed but not the rest of the content. `cms/scripts/import-content.mts` still lists the removed types.
 - Case-study figures reserve a 16:9 frame (9:16 for portrait) until the file arrives, then take its own ratio, so a 16:10 still moves what's below it by about 70px, off screen. Width and height in the `case_study` schema would remove even that.

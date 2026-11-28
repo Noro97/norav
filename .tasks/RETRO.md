@@ -4,6 +4,26 @@ Lessons for this repository. Read after `STATE.md` every session. Newest first. 
 
 ## Lessons
 
+### 2026-11-28: An optional asset shouldn't put the owner on the critical path
+
+S11's plan waited for the owner to generate one image, and the owner asked what the session was waiting for and told it to finish alone. Everything else had been built so the plate was optional: two empty CMS fields, a component that shows nothing without a caption, a script to process the image later. That's why the session could ship the same day. When a step needs the owner's hands and isn't essential, build it so the session can finish without it, and say up front that it will.
+
+### 2026-11-28: A Neon dump doesn't restore into plain Postgres as it is
+
+Its schema sets `pg_attver` on a column of `publications`, which only Neon knows, so `pg_restore` skipped the whole table and then every row of it. Write the pre-data section to a file, drop that line, and run it with `psql` before the data. And a private Postgres in the scratchpad can't open its Unix socket, because the path passes 103 bytes: listen on TCP only. The runbook's rehearsal section now has the commands.
+
+### 2026-11-28: satori lays out content boxes, and keeps one font per name
+
+The first cards ran off the bottom and the right edge: a padded root sized 1200×630 grew to 1360×774, and text with no width never wrapped. `boxSizing: 'border-box'` and a fixed text width fixed both. A Cyrillic title drew as boxes until each subset had its own font name, listed in `fontFamily`; two files under one name and weight, and satori keeps the first. Its debug mode, which draws every box, found each of these in one run.
+
+### 2026-11-28: A hidden browser pane runs no animation frames
+
+Checking the scroll bar in the pane, the bar stayed at zero: `requestAnimationFrame` never fired and `scrollY` stayed 0, because the pane was hidden. Headless Chrome through `puppeteer-core` ran the same page correctly. Check motion there, not in the pane, as with media loading.
+
+### 2026-11-28: Two sessions were started for one plan step
+
+S10's session started an S11 session, and so did the session that closed S10. One did the work; the other never ran. Before starting the next step, check `list_sessions` with `linked` for one that already has it.
+
 ### 2026-11-22: A prompt's "where we are" can be behind the code
 
 S10's prompt said page metadata wasn't editable per page. The settings dialog already edited a search title and description per language, and the prerender already wrote them. The real gap was the share image, which the API accepted and no field set. Read the code a prompt points at before building what it describes.

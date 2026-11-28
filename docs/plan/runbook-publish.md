@@ -55,7 +55,7 @@ curl https://cms.norav.dev/api/public/manifest
 npm --prefix ~/Desktop/projects/webapp/db run migrate:status
 ```
 
-On 2026-11-23, production had all 39 migrations in the repo applied, with content version 31.
+On 2026-11-28, production had all 40 migrations in the repo applied, with content version 32.
 
 ## Before any production change
 
@@ -69,6 +69,21 @@ On 2026-11-23, production had all 39 migrations in the repo applied, with conten
 ## Copy production for a rehearsal
 
 The backup command above is the copy. Restore the file into a private Postgres. The restore has to clear `author_id` on `revisions` and `publications` before foreign keys go on, because `admin_users` stays behind.
+
+Neon's schema also sets `pg_attver` on a column, which plain Postgres refuses, and a data folder in the session's scratchpad has a socket path too long for macOS. With a free port checked first (`lsof -nP -iTCP:<port> -sTCP:LISTEN`), and `$D` the backup, `$DIR` a new folder:
+
+```bash
+LC_ALL=en_US.UTF-8 initdb -D "$DIR" -U postgres --auth=trust
+LC_ALL=en_US.UTF-8 pg_ctl -D "$DIR" -o "-p 55440 -c listen_addresses=127.0.0.1 -c unix_socket_directories=''" -l "$DIR.log" start
+createdb -h 127.0.0.1 -p 55440 -U postgres rehearsal
+U=postgresql://postgres@127.0.0.1:55440/rehearsal
+pg_restore --no-owner --no-privileges --section=pre-data -f pre.sql "$D" && grep -v 'SET (pg_attver=' pre.sql | psql "$U" -q -v ON_ERROR_STOP=1 -f -
+pg_restore -d "$U" --no-owner --no-privileges --section=data "$D"
+psql "$U" -c "update revisions set author_id = null; update publications set author_id = null"
+pg_restore -d "$U" --no-owner --no-privileges --section=post-data "$D"
+```
+
+Then `DATABASE_URL=$U node db/scripts/migrate.mjs` and `DATABASE_URL=$U npm run release:production -- --dry-run` from the worktree. Stop it with `pg_ctl -D "$DIR" stop`.
 
 `npm --prefix cms run pull:production` also copies production, into the embedded database. It refuses while production is behind the repository, because both sides have to be on the same migrations and the embedded one always applies all of them. To rehearse a migration that hasn't reached production, use the backup above.
 
